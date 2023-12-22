@@ -10,26 +10,17 @@ import SwiftUI
 struct CardView: View {
     
     var game: Game
-    @Binding var screenSize: CGSize
-    @State var isTapped = false
     
     var body: some View {
-        AsyncImageView(with: game.cover?.url ?? "", type: .infinity)
-            .aspectRatio(contentMode: .fill)
-            .frame(height: isTapped ? screenSize.height - 200 : 500)
-            .frame(width: isTapped ? screenSize.width : screenSize.width - 40)
-            .cornerRadius(20)
-            .overlay(alignment: .bottom) {
-                CardContent
-            }
-            .offset(y: isTapped ? -100 : 0)
-            .dynamicTypeSize(.xSmall ... .xLarge)
-            .frame(maxWidth: screenSize.width, maxHeight: .infinity)
-            .padding(.vertical, 10)
-            .animation(.bouncy, value: isTapped)
-            .onTapGesture {
-                isTapped.toggle()
-            }
+        if let cover = game.cover, let url = cover.url {
+            AsyncImageView(with: url, type: .infinity)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: UIScreen.main.bounds.size.width - 40, height: 500)
+                .cornerRadius(20)
+                .overlay(alignment: .bottom) {
+                    CardContent
+                }
+        }
     }
     
     var CardContent: some View {
@@ -37,11 +28,9 @@ struct CardView: View {
             
             RoundedRectangle(cornerRadius: 20)
                 .strokeBorder(linearGradient)
-                .opacity(isTapped ? 0 : 1)
             
             VStack(alignment: .leading) {
                 Text(game.name ?? "")
-                    .font(isTapped ? .title : .title2)
                     .foregroundStyle(.white)
                     .fontWeight(.semibold)
                     .shadow(color: .black, radius: 10, y: 10)

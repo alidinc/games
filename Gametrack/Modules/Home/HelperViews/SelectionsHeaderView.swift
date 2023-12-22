@@ -7,10 +7,17 @@
 
 import SwiftUI
 
-enum SegmentType: String, CaseIterable {
+enum SegmentType: String, CaseIterable, Identifiable {
     case category
     case platform
     case genre
+    
+    var id: String {
+        switch self {
+        default:
+            UUID().uuidString
+        }
+    }
 }
 
 struct SelectionsHeaderView: View {
@@ -23,6 +30,7 @@ struct SelectionsHeaderView: View {
         PlatformButton
         .hSpacing(.leading)
         .padding(.horizontal)
+        .padding(.bottom, 10)
         .sheet(isPresented: $showSelection, content: {
             SelectionsView(vm: vm, selectedSegment: $selectedSegment)
                 .presentationDetents([.medium, .large])

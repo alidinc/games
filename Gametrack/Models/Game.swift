@@ -21,6 +21,8 @@ struct Game: Codable, Equatable, Identifiable, Hashable {
     let screenshots: [Cover]?
     let summary: String?
     let totalRating: Double?
+    let versionTitle: String?
+    let ratingCount: Int?
     let gameModes: [GameMode]?
     let videos: [Video]?
     let websites: [Website]?
@@ -34,8 +36,10 @@ struct Game: Codable, Equatable, Identifiable, Hashable {
         case releaseDates = "release_dates"
         case screenshots, summary
         case totalRating = "total_rating"
+        case ratingCount = "rating_count"
         case gameModes = "game_modes"
         case videos, websites
+        case versionTitle = "version_title"
         case similarGames = "similar_games"
     }
     
@@ -52,12 +56,18 @@ struct Game: Codable, Equatable, Identifiable, Hashable {
     }
     
     var imageURLs: [String] {
-        guard let artworks = self.artworks?.compactMap({$0.url}),
-              let screenshotURLs = self.screenshots?.compactMap({$0.url})  else {
+        guard let artworks = self.artworks,
+              let screenshots = self.screenshots,
+              let cover = self.cover,
+              let url = cover.url else {
             return []
         }
         
-        return artworks + screenshotURLs
+        let coverUrl = [url]
+        let artworkURLs = artworks.compactMap({$0.url})
+        let screenshotURLs = screenshots.compactMap({$0.url})
+        
+        return coverUrl + artworkURLs + screenshotURLs
     }
     
     var screenshotURLs: [String] {
@@ -206,6 +216,15 @@ struct Platform: Codable, Hashable {
         case platformLogo = "platform_logo"
         case summary
     }
+    
+    var platform: PopularPlatform? {
+        guard let id = self.id,
+              let platform = PopularPlatform(rawValue: id) else {
+            return nil
+        }
+        
+        return platform
+    }
 }
 
 // MARK: - ReleaseDate
@@ -243,6 +262,15 @@ struct Website: Codable, Hashable {
     let trusted: Bool?
     let url: String?
     let checksum: String?
+    
+    var platformWebsite: PlatformWebsite? {
+        guard let category = self.category,
+              let platformWebsite = PlatformWebsite(rawValue: category) else {
+            return nil
+        }
+        
+        return platformWebsite
+    }
 }
 
 
@@ -266,7 +294,9 @@ extension Game {
         releaseDates: [ReleaseDate(id: 1, date: 1609459200, game: 1, human: "2021-Dec-31", platform: 1)],
         screenshots: [Cover(game: 1, url: "https://example.com/screenshot1.png")],
         summary: "This is an example summary for Example Game 1.",
-        totalRating: 85.0,
+        totalRating: 85.0, 
+        versionTitle: "Gold Edition",
+        ratingCount: 100,
         gameModes: [GameMode(id: 1, name: "Single player", url: "https://example.com/single-player")],
         videos: [],
         websites: [],

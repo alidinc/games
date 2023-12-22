@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-let appTint: Color = .indigo
-
 struct ContentView: View {
     
+    @AppStorage("appTint") var appTint: Color = .purple
     @State private var activeTab: Tab = .home
     
     var body: some View {
@@ -27,7 +26,7 @@ struct ContentView: View {
                 .tag(Tab.library)
                 .tabItem { Tab.library.tabContent }
             
-            Text("")
+            SettingsView()
                 .tag(Tab.settings)
                 .tabItem { Tab.settings.tabContent }
         }

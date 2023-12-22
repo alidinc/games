@@ -25,6 +25,7 @@ struct ListRowView: View {
                         .foregroundStyle(.primary)
                         .font(.headline)
                         .lineLimit(2)
+                        .multilineTextAlignment(.leading)
                 }
                 
                 ReleaseDateView(game: game)
@@ -33,6 +34,7 @@ struct ListRowView: View {
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .lineLimit(2)
+                    .multilineTextAlignment(.leading)
                 
                 Spacer()
                 
@@ -43,8 +45,7 @@ struct ListRowView: View {
             }
         }
         .padding(12)
-        .background(.ultraThickMaterial)
-        .cornerRadius(16)
+        .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
         .frame(maxHeight: .infinity)
         .shadow(radius: 4)
     }

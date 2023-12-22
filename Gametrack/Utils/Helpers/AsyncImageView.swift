@@ -12,9 +12,11 @@ enum AsyncImageType: String, CaseIterable {
     
     case list
     case grid
+    case card
     case horizontal
     case mediaView
     case infinity
+    case detail
     
     var placeholderSize: CGFloat {
         switch self {
@@ -31,10 +33,14 @@ enum AsyncImageType: String, CaseIterable {
             return 150
         case .grid:
             return UIScreen.main.bounds.size.width / 3.3
+        case .card:
+            return UIScreen.main.bounds.size.width
         case .mediaView:
             return UIScreen.main.bounds.size.width - 20
         case .infinity:
             return .infinity
+        case .detail:
+            return UIScreen.main.bounds.size.width
         }
     }
     
@@ -46,10 +52,14 @@ enum AsyncImageType: String, CaseIterable {
             return 210
         case .grid:
             return self.width * 1.32
+        case .card:
+            return UIScreen.main.bounds.size.height * 0.5
         case .mediaView:
             return self.width * 0.75
         case .infinity:
             return .infinity
+        case .detail:
+            return UIScreen.main.bounds.size.height * 0.6
         }
     }
     
@@ -62,14 +72,8 @@ enum AsyncImageType: String, CaseIterable {
     
     var downloadQuality: String {
         switch self {
-        case .list:
-            return "720p"
-        case .grid:
-            return "cover_big"
-        case .mediaView:
-            return "1080p"
         default:
-            return "720p"
+            return "1080p"
         }
     }
     
@@ -129,9 +133,8 @@ struct AsyncImageView: View {
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: self.type.ratio)
-                                .shadow(color: .white.opacity(0.5), radius: 10)
-                                .clipShape(RoundedRectangle(cornerRadius: self.radius))
-                                .padding(.horizontal)
+                                .shadow(color: .primary.opacity(0.5), radius: 10)
+                                .clipShape(.rect(cornerRadius: self.radius))
                             
                         } else {
                             image

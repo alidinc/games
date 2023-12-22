@@ -55,6 +55,10 @@ extension View {
         return formatter.string(from: .init(value: value)) ?? ""
     }
     
+    func navigationLink<Destination: View>(_ destination: @escaping () -> Destination) -> some View {
+        modifier(NavigationLinkModifier(destination: destination))
+    }
+    
     func backgroundBlur(radius: CGFloat = 3, opaque: Bool = false) -> some View {
         self.background(
             Blur(radius: radius, opaque: opaque)
@@ -83,3 +87,18 @@ extension View {
                 }
         }
 }
+
+fileprivate struct NavigationLinkModifier<Destination: View>: ViewModifier {
+    
+    @ViewBuilder var destination: () -> Destination
+    
+    func body(content: Content) -> some View {
+        content
+            .background(
+                NavigationLink(destination: self.destination) {
+                    EmptyView()
+                }.opacity(0)
+            )
+    }
+}
+

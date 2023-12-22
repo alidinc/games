@@ -13,6 +13,7 @@ struct SelectionsView:  View {
     @Binding var selectedSegment: SegmentType
     @Namespace private var animation
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("appTint") var appTint: Color = .purple
     
     var body: some View {
         VStack {
@@ -31,7 +32,7 @@ struct SelectionsView:  View {
                             .multilineTextAlignment(.leading)
                             .hSpacing(.leading)
                     } else {
-                        Text("You can also select a category from the title.")
+                        Text("You can select a category from the title too.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.leading)
@@ -39,11 +40,9 @@ struct SelectionsView:  View {
                     }
                 }
                 
-                Spacer()
-                
                 HStack(spacing: 16) {
                     RefreshButton
-                    CloseButton
+                    CloseButton(.large)
                 }
             }
             .padding(20)
@@ -74,15 +73,6 @@ struct SelectionsView:  View {
         })
     }
     
-    private var CloseButton: some View {
-        Button {
-            dismiss()
-        } label: {
-            Image(systemName: "xmark.circle.fill")
-                .font(.title2)
-        }
-    }
-    
     private var RefreshButton: some View {
         Button {
             vm.fetchTaskToken.platforms = [.database]
@@ -103,28 +93,36 @@ struct SelectionsView:  View {
     private var SegmentedView: some View {
         HStack(spacing: 0) {
             ForEach(SegmentType.allCases, id: \.rawValue) { segment in
-                Text(segment.rawValue.capitalized)
-                    .hSpacing()
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.primary)
-                    .padding(.vertical, 10)
-                    .background {
-                        if selectedSegment == segment {
-                            Capsule()
-                                .fill(appTint)
-                                .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
-                        }
-                    }
-                    .contentShape(.capsule)
-                    .onTapGesture {
-                        withAnimation(.snappy) {
-                            selectedSegment = segment
-                        }
-                    }
+                SegmentItem(segment: segment)
             }
         }
         .background(appTint.opacity(0.15), in: .capsule)
         .padding(.horizontal, 20)
+    }
+    
+    private func SegmentItem(segment: SegmentType) -> some View {
+        Text(segment.rawValue.capitalized)
+            .hSpacing()
+            .tag(segment.id)
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(selectedSegment == segment ? .black : .secondary)
+            .padding(.vertical, 10)
+            .background {
+                if selectedSegment == segment {
+                    Capsule()
+                        .fill(appTint)
+                        .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
+                }
+            }
+            .contentShape(.capsule)
+            .onTapGesture {
+                withAnimation(.snappy) {
+                    selectedSegment = segment
+                }
+            }
+            .onChange(of: segment) { oldValue, newValue in
+                selectedSegment = newValue
+            }
     }
     
     @ViewBuilder

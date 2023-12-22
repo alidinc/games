@@ -83,6 +83,7 @@ extension NSCacheType {
         if let value {
             let expiredTimestamp = Date().addingTimeInterval(self.expirationInterval)
             let cacheEntry = CacheEntry(key: key, value: value, expiredTimestamp: expiredTimestamp)
+            
             self.insert(cacheEntry)
         } else {
             self.removeValue(forKey: key)

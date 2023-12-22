@@ -14,7 +14,7 @@ class HomeViewModel {
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     @ObservationIgnored
-    private var newReleasedCache = DiskCache<[Game]>(filename: "NewReleasedGames", expirationInterval: 24 * 60)
+    private var newReleasedCache = DiskCache<[Game]>(filename: "NewReleasedGames", expirationInterval: 24 * 60 * 60 * 60)
     
     private var limit = 21
     private var offset = 0
@@ -30,7 +30,6 @@ class HomeViewModel {
         return false
     }
     
-    @MainActor
     var viewNotReady: Bool {
         guard let value1 = self.dataFetchPhase.value else {
             return true
@@ -59,6 +58,7 @@ extension HomeViewModel {
         await self.newReleasedCache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
     }
     
+    @MainActor
     func fetchGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
@@ -92,6 +92,7 @@ extension HomeViewModel {
         }
     }
     
+    @MainActor
     func fetchNextSetOfGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
