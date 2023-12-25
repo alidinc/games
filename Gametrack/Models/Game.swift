@@ -28,6 +28,7 @@ struct Game: Codable, Equatable, Identifiable, Hashable {
     let websites: [Website]?
     let similarGames: [Game]?
     let artworks: [Artwork]?
+    let involvedCompanies: [Int]?
     
     enum CodingKeys: String, CodingKey {
         case id, cover, artworks
@@ -41,6 +42,7 @@ struct Game: Codable, Equatable, Identifiable, Hashable {
         case videos, websites
         case versionTitle = "version_title"
         case similarGames = "similar_games"
+        case involvedCompanies = "involved_companies"
     }
     
     static func == (lhs: Game, rhs: Game) -> Bool {
@@ -198,7 +200,7 @@ struct GameMode: Codable, Hashable {
 
 // MARK: - Genre
 struct Genre: Codable, Hashable {
-    let id: Int?
+    let id: Int
     let name: String?
 }
 
@@ -282,6 +284,28 @@ enum Rating: String, CaseIterable {
     case NotReviewed = "No Feedback"
 }
 
+// MARK: - Company
+struct Company: Codable, Hashable {
+    let id, changeDateCategory, createdAt: Int
+    let name, slug: String
+    let startDateCategory, updatedAt: Int
+    let url: String
+    let checksum: String
+    let developed, published: [Int]?
+    let description: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case changeDateCategory = "change_date_category"
+        case createdAt = "created_at"
+        case name, slug
+        case startDateCategory = "start_date_category"
+        case updatedAt = "updated_at"
+        case url, checksum, developed, published, description
+    }
+}
+
+
 extension Game {
     
     static var MockGame = Game(
@@ -301,6 +325,7 @@ extension Game {
         videos: [],
         websites: [],
         similarGames: [],
-        artworks: []
+        artworks: [],
+        involvedCompanies: []
     )
 }

@@ -36,9 +36,8 @@ struct GameGridView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .padding(.top, 10)
             .padding(.horizontal)
-            .if(hasReachedEnd) { view in
+            .if(!vm.games.isEmpty && hasReachedEnd) { view in
                 view
                     .padding(.bottom, 100)
                     .overlay(alignment: .bottom) {

@@ -16,9 +16,7 @@ struct SimilarGamesView: View {
         if let similarGames = game.similarGames, !similarGames.isEmpty {
             VStack(alignment: .leading) {
                 Text("Similar games")
-                    .font(.system(size: 16))
-                    .padding(.top, 15)
-                    .padding(.horizontal)
+                    .font(.caption2)
                     .foregroundColor(.secondary)
                 
                 ScrollView(.horizontal) {
@@ -33,12 +31,11 @@ struct SimilarGamesView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 15)
+                    
                     .padding(.bottom, 15)
                     .frame(maxWidth: .infinity)
                 }
             }
-            .cornerRadius(10)
         }
     }
 }

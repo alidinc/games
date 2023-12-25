@@ -10,28 +10,9 @@ import SwiftUI
 struct CloseButton: View {
     
     @Environment(\.dismiss) private var dismiss
-    @State private var type: ButtonType = .medium
     var onDismiss: (() -> Void)?
     
-    enum ButtonType {
-        case large
-        case medium
-        case small
-        
-        var size: Font {
-            switch self {
-            case .large:
-                return .title
-            case .medium:
-                return .title2
-            case .small:
-                return .title3
-            }
-        }
-    }
-    
-    init(_ type: ButtonType, onDismiss: ( () -> Void)? = nil) {
-        self.type = type
+    init(onDismiss: ( () -> Void)? = nil) {
         self.onDismiss = onDismiss
     }
     
@@ -43,9 +24,15 @@ struct CloseButton: View {
                 onDismiss()
             }
         } label: {
-            Image(systemName: "xmark.circle.fill")
+            Circle()
+                        .fill(Color(.secondarySystemBackground))
+                        .frame(width: 30, height: 30) // You can make this whatever size, but keep UX in mind.
+                        .overlay(
+                            Image(systemName: "xmark")
+                                .font(.system(size: 15, weight: .bold, design: .rounded)) // This should be less than the frame of the circle
+                                .foregroundColor(.secondary)
+                        )
         }
-        .font(type.size)
         .padding()
     }
 }

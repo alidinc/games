@@ -11,101 +11,74 @@ struct GameDetailView: View {
     
     var game: Game
     
+    @State private var vm = GameDetailViewModel()
+    
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
                 ImagesView(game: game)
+                    .ignoresSafeArea()
                     .mask(alignment: .bottom, {
                         VStack(spacing: 0) {
-                            Color.black.frame(maxHeight: .infinity)
+                            Color.black
+                                .frame(maxHeight: .infinity)
                             LinearGradient(
                                 stops: [
-                                    Gradient.Stop(color: .black, location: 0.00),
-                                    Gradient.Stop(color: .black.opacity(0), location: 1)
+                                    Gradient.Stop(color: .gray, location: 0.00),
+                                    Gradient.Stop(color: .clear, location: 1)
                                 ],
                                 startPoint: .top,
                                 endPoint: .center
                             )
-                            .frame(height: 60)
+                            .frame(height: 40)
                         }
                     })
                 
-                VStack(alignment: .leading, spacing: 0) {
-                    Spacer()
-                    if let name = game.name {
-                        Text(name)
-                            .font(.system(size: 24, weight: .semibold))
-                            .foregroundStyle(.primary)
-                            .padding(.top)
+                VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 20) {
+                        if let name = game.name {
+                            Text(name)
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundStyle(.primary)
+                                .padding(.horizontal)
+                        }
+
+                        GenresView(game: game)
                             .padding(.leading)
-                    }
-                    
-                    if let platforms = game.platforms {
-                        PlatformsView(platforms: platforms)
-                            .padding(.top)
-                            .padding(.horizontal)
-                            .hSpacing(.trailing)
+                        
+                        SummaryView(game: game)
+
                     }
                     
                     
-//                    Text(game.ratingText)
-//                        .font(.caption)
-//                        .bold()
-//                        .foregroundStyle(.primary)
-//                        .padding(.vertical, 6)
-//                        .padding(.horizontal, 10)
-//                        .background(game.ratingColor.gradient, in: .capsule)
-//                        .padding()
-                    
-                    
-                   
-                    
-                    if let summary = game.summary {
-                        Text(summary)
-                            .font(.subheadline)
-                            .foregroundStyle(.primary)
-                            .padding()
+                    HStack(alignment: .center, spacing: 10) {
+                        RatingView(game: game)
+                        Divider()
+                            .foregroundStyle(.white)
+                            .frame(height: 50)
+                        
+                        PlatformsView(game: game)
                     }
+                    .padding(.leading)
+                    .padding(.top)
                     
-                    
-                    
-                    
-                    Spacer()
-                    
-                    SimilarGamesView(game: game)
+                    VideosView(game: game)
+                        .padding(.leading)
                     
                     SocialsView(game: game)
-                    
-                    
-                    HStack(spacing: 10) {
-                        if let ratingCount = game.ratingCount {
-                            Text(String(ratingCount))
-                                .font(.footnote)
-                        }
-                        
-                        if let rating = game.totalRating {
-                            RatingStarsView(rating: Int(5 * rating / 100))
-                        }
-                        
-                        Image(.IGDB)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 36)
-                    }
-                    .hSpacing(.trailing)
+                        .padding(.leading)
+
+                    SimilarGamesView(game: game)
+                        .padding(.leading)
                 }
                 .hSpacing(.leading)
-                .offset(y: -50)
-                
-                
-                
-                Spacer()
-            }
             
+            }
         }
         .ignoresSafeArea()
-        .padding(.bottom)
-        .background(.black)
+        .padding(.bottom, 10)
+        .background(.gray.opacity(0.15))
         .toolbarBackground(.hidden, for: .navigationBar)
     }
 }

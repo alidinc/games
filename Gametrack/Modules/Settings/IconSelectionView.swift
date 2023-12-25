@@ -64,7 +64,7 @@ struct IconSelectionView: View {
             HStack {
                 MoreHeaderTextView(title: "Change app icon", subtitle: "Select one of the selections below.")
                 Spacer()
-                CloseButton(.large)
+                CloseButton()
             }
             
             ScrollView {

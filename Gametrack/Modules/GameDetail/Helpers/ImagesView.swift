@@ -22,9 +22,13 @@ struct ImagesView: View {
                         .tag(screenshotURL)
                 }
                 .cornerRadius(10)
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
             .tabViewStyle(.page(indexDisplayMode: .always))
-            .frame(height: UIScreen.main.bounds.size.height * 0.6)
+            .frame(width: UIScreen.main.bounds.size.width,
+                   height: UIScreen.main.bounds.size.height * 0.6)
+            .offset(y: -10)
         }
     }
 }

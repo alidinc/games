@@ -14,9 +14,10 @@ struct SelectionsView:  View {
     @Namespace private var animation
     @Environment(\.dismiss) private var dismiss
     @AppStorage("appTint") var appTint: Color = .purple
+    @State private var showClear = false
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 VStack {
                     Text("Select your \(selectedSegment.rawValue)")
@@ -42,7 +43,7 @@ struct SelectionsView:  View {
                 
                 HStack(spacing: 16) {
                     RefreshButton
-                    CloseButton(.large)
+                    CloseButton()
                 }
             }
             .padding(20)
@@ -86,8 +87,17 @@ struct SelectionsView:  View {
             Text("Clear filters")
                 .font(.subheadline)
         }
-        .opacity((vm.fetchTaskToken.platforms.count > 1 || vm.fetchTaskToken.genres.count > 1) ? 1 : 0)
-        .disabled(vm.fetchTaskToken.platforms.count < 1 || vm.fetchTaskToken.genres.count < 1)
+        .opacity(showClear ? 1 : 0)
+        .onChange(of: vm.fetchTaskToken.platforms) { oldValue, newValue in
+            if newValue.count >= 1 {
+                showClear = true
+            }
+        }
+        .onChange(of: vm.fetchTaskToken.genres) { oldValue, newValue in
+            if newValue.count >= 1 {
+                showClear = true
+            }
+        }
     }
     
     private var SegmentedView: some View {

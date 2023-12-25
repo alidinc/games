@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 
 extension Color: RawRepresentable {
-
+    
     public init?(rawValue: String) {
         
         guard let data = Data(base64Encoded: rawValue) else{
@@ -26,7 +26,7 @@ extension Color: RawRepresentable {
         }
         
     }
-
+    
     public var rawValue: String {
         
         do{
@@ -40,5 +40,30 @@ extension Color: RawRepresentable {
         }
         
     }
+    
+}
 
+extension Color {
+    static var randomColor: Color {
+        let red = Double.random(in: 0...1)
+        let green = Double.random(in: 0...1)
+        let blue = Double.random(in: 0...1)
+        
+        return Color(red: red, green: green, blue: blue)
+    }
+    
+    static var randomDarkColor: Color {
+        let red = Double.random(in: 0...0.5)
+        let green = Double.random(in: 0...0.5)
+        let blue = Double.random(in: 0...0.5)
+        
+        return Color(red: red, green: green, blue: blue)
+    }
+    
+    static func gradientBackground() -> some View {
+        let startColor = Color.randomColor
+        let endColor = Color.randomColor
+        
+        return LinearGradient(gradient: Gradient(colors: [startColor, endColor]), startPoint: .leading, endPoint: .trailing)
+    }
 }

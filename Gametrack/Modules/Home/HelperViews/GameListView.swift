@@ -10,6 +10,7 @@ import SwiftUI
 struct GameListView: View {
     
     var vm: HomeViewModel
+    
     @State private var hasReachedEnd = false
     
     var body: some View {
@@ -33,9 +34,8 @@ struct GameListView: View {
                     }
                 }
             }
-            .padding(.top, 10)
             .padding(.horizontal)
-            .if(hasReachedEnd) { view in
+            .if(!vm.games.isEmpty && hasReachedEnd) { view in
                 view
                     .padding(.bottom, 100)
                     .overlay(alignment: .bottom) {

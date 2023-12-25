@@ -7,9 +7,16 @@
 
 import SwiftUI
 
+enum HomeContentType: String, CaseIterable {
+    case main
+    case search
+}
+
 struct HomeView: View {
     
     @State private var vm = HomeViewModel()
+    @FocusState private var focused: Bool
+    @State private var homeContentType: HomeContentType = .main
     @AppStorage("collectionViewType") private var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .purple
     @Environment(\.dismiss) private var dismiss
@@ -29,11 +36,29 @@ struct HomeView: View {
             .task(id: vm.fetchTaskToken) {
                 await vm.fetchGames()
             }
-            .onChange(of: vm.fetchTaskToken.category, { oldValue, newValue in
+            .onChange(of: vm.fetchTaskToken.category, { _, _ in
                 Task {
                     await vm.refreshTask()
                 }
             })
+            .onChange(of: homeContentType, { oldValue, newValue in
+                focused = newValue == .search
+                vm.searchQuery = ""
+            })
+            .onChange(of: vm.searchQuery) { _, newValue in
+                Task {
+                    if !newValue.isEmpty {
+                        Task {
+                            try await Task.sleep(seconds: 0.5)
+                            await vm.refreshTask()
+                        }
+                    } else {
+                        await vm.refreshTask()
+                        dismissKeyboard()
+                    }
+                }
+            }
+            
         }
     }
     
@@ -42,13 +67,14 @@ struct HomeView: View {
         if vm.viewNotReady {
             ZStack {
                 ProgressView("Please wait, \nwhile we are getting ready! ☺️")
-                    .font(.headline)
-                    .foregroundStyle(.primary)
+                    .font(.subheadline)
+                    .tint(.white)
                     .multilineTextAlignment(.center)
                     .controlSize(.large)
             }
             .padding(.horizontal, 50)
             .hSpacing(.center)
+            .offset(y: -100)
             .ignoresSafeArea()
         }
     }
@@ -58,14 +84,24 @@ struct HomeView: View {
         ZStack {
             switch viewType {
             case .list:
-                GameListView(vm: vm)
+                VStack(spacing: 0) {
+                    SearchButton
+                    GameListView(vm: vm)
+                }.padding(.top, 10)
             case .grid:
-                GameGridView(vm: vm)
+                VStack(spacing: 0) {
+                    SearchButton
+                    GameGridView(vm: vm)
+                }.padding(.top, 10)
             case .card:
-                GameCardsView(vm: vm)
+                VStack(spacing: 20) {
+                    SearchButton
+                    GameCardsView(vm: vm)
+                }.padding(.top, 10)
             }
         }
         .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
+        .padding(.bottom, 5)
     }
     
     @ViewBuilder
@@ -78,32 +114,81 @@ struct HomeView: View {
             }
             .padding(.vertical, 10)
             .padding(.horizontal)
+            .animation(.spring, value: homeContentType)
             
             SelectionsHeaderView(vm: $vm)
         }
     }
     
-   
+    
+    private var SearchButton: some View {
+        HStack(spacing: 0) {
+            TextField("", text: $vm.searchQuery)
+                .frame(height: 24, alignment: .leading)
+                .padding(10)
+                .background(.ultraThinMaterial, in: .rect(topLeadingRadius: 8, bottomLeadingRadius: 8))
+                .focused($focused)
+                .autocorrectionDisabled()
+                .transition(.asymmetric(insertion: .push(from: .trailing), removal: .push(from: .leading)))
+                .overlay {
+                    if !vm.searchQuery.isEmpty {
+                        HStack {
+                            Spacer()
+                            Button {
+                                vm.searchQuery = ""
+                            } label: {
+                                Image(systemName: "multiply.circle.fill")
+                            }
+                            .foregroundColor(.secondary)
+                        }
+                        .padding(.trailing, 6)
+                    }
+                }
+            
+            Image(systemName: "magnifyingglass")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .foregroundStyle(appTint)
+                .aspectRatio(contentMode: .fit)
+                .padding(10)
+                .background(
+                    .ultraThinMaterial,
+                    in: .rect(
+                        topLeadingRadius: 0,
+                        bottomLeadingRadius: 0,
+                        bottomTrailingRadius: 8,
+                        topTrailingRadius: 8
+                    )
+                )
+        }
+        .padding(.horizontal)
+    }
     
     private var ViewTypeButton: some View {
         Menu {
             Section("View type") {
                 Button {
-                    viewType = .list
+                    DispatchQueue.main.async {
+                        viewType = .list
+                    }
                 } label: {
                     Image(systemName: "rectangle.grid.1x2.fill")
                     Text("List")
                 }
                 
                 Button {
-                    viewType = .grid
+                    DispatchQueue.main.async {
+                        viewType = .grid
+                    }
                 } label: {
                     Image(systemName: "rectangle.grid.3x2.fill")
                     Text("Grid")
                 }
                 
                 Button {
-                    viewType = .card
+                    DispatchQueue.main.async {
+                        viewType = .card
+                    }
                 } label: {
                     Image(systemName: "list.bullet.rectangle.portrait.fill")
                     Text("Card")
@@ -161,3 +246,4 @@ struct HomeView: View {
     
     
 }
+

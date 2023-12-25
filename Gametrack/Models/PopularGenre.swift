@@ -5,7 +5,7 @@
 //  Created by Ali Dinc on 27/02/2023.
 //
 
-import Foundation
+import SwiftUI
 
 enum PopularGenre: Int, CaseIterable, Equatable, Identifiable {
     
@@ -38,6 +38,59 @@ enum PopularGenre: Int, CaseIterable, Equatable, Identifiable {
         switch self {
         default:
             return self.rawValue
+        }
+    }
+    
+    var color: Color {
+        switch self {
+        case .allGenres:
+            return .gray
+        case .fighting:
+            return .red
+        case .shooter:
+            return .blue
+        case .music:
+            return .indigo
+        case .platform:
+            return .purple
+        case .puzzle:
+            return .brown
+        case .racing:
+            return .teal
+        case .realTimeStrategy:
+            return .cyan
+        case .rolePlaying:
+            return .red
+        case .simulator:
+            return .cherry
+        case .sport:
+            return .forest
+        case .strategy:
+            return .sunset
+        case .turnBasedStrategy:
+            return .orange
+        case .tactical:
+            return .pink
+        case .quizTrivia:
+            return .indigo
+        case .hackSlash:
+            return .red.opacity(0.5)
+        case .pinball:
+            return .darkForest
+        case .adventure:
+            return .brown.opacity(0.5)
+        case .arcade:
+            return .blue.opacity(0.5)
+        case .visualNovel:
+            return .green
+        case .indie:
+            return .mint
+        case .cardBoard:
+            return .purple.opacity(0.5)
+        case .moba:
+            return .red.opacity(0.5)
+        case .pointClick:
+            return .orange
         }
     }
     

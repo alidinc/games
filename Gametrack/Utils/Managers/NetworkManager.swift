@@ -103,7 +103,15 @@ struct NetworkManager {
         return try await self.fetch(with: Constants.IGDBAPI.MultiQueryURL, with: apicalypse)
     }
     
-    func fetchMulti(with category: Category, 
+    func fetchCompanies() async throws -> [Company] {
+        let apiCalypse = APICalypse(type: .standard)
+            .fields(fields: "*")
+        
+        return try await self.fetch(with: Constants.IGDBAPI.CompaniesURL, with: apiCalypse)
+    }
+    
+    func fetchMulti(query: String? = nil,
+                    with category: Category,
                     platforms: [PopularPlatform],
                     genres: [PopularGenre],
                     limit: Int, offset: Int = 0) async throws -> [MultiQueryModel] {
@@ -116,6 +124,7 @@ struct NetworkManager {
         let apicalypse = APICalypse(type: .multi)
             .multiQuery(name: "games")
             .fields(fields: Constants.IGDBAPI.DetailFields)
+            .search(searchQuery: query)
             .sort(field: category.sort, order: category.sortBy)
             .where(query: "\(platformQuery)\(genreQuery)\(category.where)")
             .limit(value: limit)
@@ -127,20 +136,22 @@ struct NetworkManager {
     func fetchDetailedGames(query: String? = nil,
                             with category: Category,
                             platforms: [PopularPlatform],
-                            genre: PopularGenre,
-                            limit: Int? = nil,
-                            offset: Int? = nil) async throws -> [Game] {
+                            genres: [PopularGenre],
+                            limit: Int = 0,
+                            offset: Int = 0) async throws -> [Game] {
         
         let platformsString = platforms.map({ String($0.rawValue) }).joined(separator: ",")
         let platformQuery = platforms.contains(.database) ? "" : "platforms = (\(platformsString)) & "
-        let genreString = genre == .allGenres ? "" : "genres = (\(genre.rawValue)) &"
+        let genreString = genres.map { String($0.rawValue) }.joined(separator: ",")
+        let genreQuery = genres.contains(.allGenres) ? "" : "genres = (\(genreString)) &"
+        
         let apicalypse = APICalypse(type: .standard)
             .fields(fields: Constants.IGDBAPI.DetailFields)
-            .search(searchQuery: query ?? "")
+            .search(searchQuery: query)
             .sort(field: category.sort, order: category.sortBy)
-            .where(query: "\(platformQuery)\(genreString)\(category.where)")
-            .limit(value: limit ?? 0)
-            .offset(value: offset ?? 0)
+            .where(query: "\(platformQuery)\(genreQuery)\(category.where)")
+            .limit(value: limit)
+            .offset(value: offset)
         
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
     }

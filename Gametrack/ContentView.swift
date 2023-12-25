@@ -19,10 +19,6 @@ struct ContentView: View {
                 .tabItem { Tab.home.tabContent }
             
             Text("")
-                .tag(Tab.search)
-                .tabItem { Tab.search.tabContent }
-            
-            Text("")
                 .tag(Tab.library)
                 .tabItem { Tab.library.tabContent }
             
@@ -41,7 +37,6 @@ struct ContentView: View {
 
 enum Tab: String {
     case home = "Home"
-    case search = "Search"
     case library = "Library"
     case settings = "Settings"
     
@@ -50,9 +45,6 @@ enum Tab: String {
         switch self {
         case .home:
             Image(systemName: "house")
-            Text(self.rawValue)
-        case .search:
-            Image(systemName: "magnifyingglass")
             Text(self.rawValue)
         case .library:
             Image(systemName: "bookmark.square.fill")

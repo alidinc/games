@@ -8,7 +8,6 @@
 import SwiftUI
 
 
-
 struct SettingsView: View {
     
     @AppStorage("appTint") var appTint: Color = .purple
@@ -24,7 +23,11 @@ struct SettingsView: View {
                         ColorPicker("", selection: $appTint, supportsOpacity: false)
                     }
                     
-                    Button { self.showIcons.toggle() } label: {
+                    Button {
+                        DispatchQueue.main.async {
+                            self.showIcons.toggle()
+                        }
+                    } label: {
                         HStack {
                             MoreMainRowView(imageName: "apps.iphone", imageColor: .teal, text: "App Icons")
                             Spacer()

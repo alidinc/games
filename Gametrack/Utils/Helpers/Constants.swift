@@ -20,10 +20,10 @@ struct Constants {
     }
     
     static let radius: CGFloat = 16
-       static let indicatorHeight: CGFloat = 6
-       static let indicatorWidth: CGFloat = 60
-       static let snapRatio: CGFloat = 0.25
-       static let minHeightRatio: CGFloat = 0.3
+    static let indicatorHeight: CGFloat = 6
+    static let indicatorWidth: CGFloat = 60
+    static let snapRatio: CGFloat = 0.25
+    static let minHeightRatio: CGFloat = 0.3
     
     struct Text {
         static let AddGames = "In order to see our recommendations here, please add some games to your collection."
@@ -42,33 +42,49 @@ struct Constants {
         static let BaseURL = "https://api.igdb.com/v4/games"
         static let PlatformsURL = "https://api.igdb.com/v4/platforms"
         static let GenresURL = "https://api.igdb.com/v4/genres"
+        static let SearchURL = "https://api.igdb.com/v4/search"
         static let MultiQueryURL = "https://api.igdb.com/v4/multiquery"
         static let PlatformWebsitesURL = "https://api.igdb.com/v4/websites"
         static let OnboardingURL = "https://alidinc.github.io/onboarding/data/onboarding.json"
-        
+        static let CompaniesURL = "https://api.igdb.com/v4/companies"
         static let RequestType = "POST"
         static let ClientID = "9ipkbw3f1dzvsiz4mbigsvdy481y3s"
         static let ClientScreet = "xam1av902mpgwqasz4ujaamqn90rnq"
         
-        static let DatabaseFields = """
+        static let SearchFields =
+"""
+alternative_name,character,checksum,collection,company,description,game,name,platform,published_at,test_dummy,theme;
+"""
+        static let CompanyField =
+"""
+change_date,change_date_category,changed_company_id,checksum,country,created_at,description,developed,logo,name,parent,published,slug,start_date,start_date_category,updated_at,url,websites;
+"""
+        
+        static let DatabaseFields = 
+"""
 query platforms/count "Count of Platforms" {
        
       };
 """
+        
         static let StandardFields =
 """
 genres.name,name,platforms.*,total_rating,cover.url,first_release_date,release_dates.*,artworks.*,videos.video_id,websites.*,screenshots.url,summary
 """
         
+        static let AllFields = "*"
+        
         static let DetailFields =
 """
-artworks.*,game_modes.name,genres.name,name,platforms.*,screenshots.url,summary,version_title,total_rating,rating_count,cover.url,first_release_date,release_dates.*,videos.video_id,websites.*,url,similar_games.artworks.*,similar_games.game_modes.name,similar_games.genres.name,similar_games.name,similar_games.platforms.*,similar_games.screenshots.url,similar_games.summary,similar_games.total_rating,similar_games.cover.url,similar_games.first_release_date,similar_games.release_dates.*,similar_games.videos.video_id,similar_games.websites.*,similar_games.url
+artworks.*,game_modes.name,genres.name,name,platforms.*,screenshots.url,summary,total_rating,rating_count,cover.url,first_release_date,release_dates.*,videos.video_id,websites.*,url,similar_games.artworks.*,similar_games.game_modes.name,similar_games.genres.name,similar_games.name,similar_games.platforms.*,similar_games.screenshots.url,similar_games.summary,similar_games.total_rating,similar_games.cover.url,similar_games.first_release_date,similar_games.release_dates.*,similar_games.videos.video_id,similar_games.websites.*,similar_games.url
 """
+        
         static let PlatformFields =
 """
 abbreviation,alternative_name,category,checksum,created_at,generation,name,platform_family,platform_logo,slug,summary,updated_at,url,versions,websites
 """
-        
+
+    
         static let PlatformWebsiteFields =
 """
 category,checksum,trusted,url

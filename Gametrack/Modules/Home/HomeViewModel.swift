@@ -11,8 +11,11 @@ import Observation
 @Observable
 class HomeViewModel {
     
+    var searchQuery = ""
     var fetchTaskToken: FetchTaskToken
+
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
+    
     @ObservationIgnored
     private var newReleasedCache = DiskCache<[Game]>(filename: "NewReleasedGames", expirationInterval: 24 * 60 * 60 * 60)
     
@@ -58,7 +61,6 @@ extension HomeViewModel {
         await self.newReleasedCache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
     }
     
-    @MainActor
     func fetchGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
@@ -66,58 +68,77 @@ extension HomeViewModel {
         let genres = self.fetchTaskToken.genres
         
         if let games = await self.newReleasedCache.value(forKey: category.rawValue) {
-            self.dataFetchPhase = .success(games)
             if Task.isCancelled { return }
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .success(games)
+            }
             return
         }
         
         self.offset = 0
-        self.dataFetchPhase = .empty
+        DispatchQueue.main.async {
+            self.dataFetchPhase = .empty
+        }
         
         do {
-            let response = try await NetworkManager.shared.fetchMulti(with: category,
+            let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
+                                                                      with: category,
                                                                       platforms: platforms,
                                                                       genres: genres,
                                                                       limit: self.limit,
                                                                       offset: self.offset)
-            let games = response.first?.result ?? []
+      //      let games = response.first?.result ?? []
             if Task.isCancelled { return }
-            self.dataFetchPhase = .success(games)
+            
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .success(response)
+            }
             if !games.isEmpty {
                 await self.newReleasedCache.setValue(games, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            self.dataFetchPhase = .failure(error)
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .failure(error)
+            }
         }
     }
     
-    @MainActor
     func fetchNextSetOfGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
         let platforms = self.fetchTaskToken.platforms
         let genres = self.fetchTaskToken.genres
         let games = self.dataFetchPhase.value ?? []
-        self.dataFetchPhase = .fetchingNextPage(games)
+    
+        if Task.isCancelled { return }
+        DispatchQueue.main.async {
+            self.dataFetchPhase = .fetchingNextPage(games)
+        }
         
         do {
             self.offset += self.limit
-            let response = try await NetworkManager.shared.fetchMulti(with: category,
+            let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
+                                                                      with: category,
                                                                       platforms: platforms,
                                                                       genres: genres,
                                                                       limit: self.limit,
                                                                       offset: self.offset)
-            let newGames = response.first?.result ?? []
-            let totalGames = games + newGames
+       //     let newGames = response.first?.result ?? []
+            let totalGames = games + response
             if Task.isCancelled { return }
-            self.dataFetchPhase = .success(totalGames)
+           
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .success(totalGames)
+            }
             if !totalGames.isEmpty {
                 await self.newReleasedCache.setValue(totalGames, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            self.dataFetchPhase = .failure(error)
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .failure(error)
+            }
         }
     }
     

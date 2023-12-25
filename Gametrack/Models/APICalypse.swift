@@ -56,8 +56,10 @@ public class APICalypse {
         return self
     }
     
-    public func search(searchQuery: String) -> APICalypse {
-        self.search = "search \"\(searchQuery)\";"
+    public func search(searchQuery: String?) -> APICalypse {
+        if let searchQuery, !searchQuery.isEmpty {
+            self.search = "search \"\(searchQuery)\";"
+        }
         return self
     }
     

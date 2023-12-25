@@ -34,10 +34,11 @@ struct CardView: View {
                     .foregroundStyle(.white)
                     .fontWeight(.semibold)
                     .shadow(color: .black, radius: 10, y: 10)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
                 
                 RatingStatusView(game: game)
             }
+            .hSpacing(.leading)
             .padding(.horizontal)
             .padding(.vertical, 40)
             .background (

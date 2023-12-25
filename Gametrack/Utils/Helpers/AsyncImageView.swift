@@ -72,6 +72,8 @@ enum AsyncImageType: String, CaseIterable {
     
     var downloadQuality: String {
         switch self {
+        case .list, .grid:
+            return "cover_big"
         default:
             return "1080p"
         }
@@ -147,9 +149,12 @@ struct AsyncImageView: View {
                                 }
                                 .if(self.type != .infinity) { view in
                                     view
-                                        .frame(width: self.type.width, height: self.type.height)
+                                        .frame(width: self.type.width, 
+                                               height: self.type.height)
                                 }
-                                .clipShape(RoundedRectangle(cornerRadius: self.radius))
+                                .if(self.type != .detail) { view in
+                                      view.clipShape(RoundedRectangle(cornerRadius: self.radius))
+                                }
                         }
 
                     case .failure:

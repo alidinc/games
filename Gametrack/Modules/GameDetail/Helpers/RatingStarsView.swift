@@ -19,7 +19,7 @@ struct RatingStarsView: View {
     var onColor = Color.orange
     
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 0) {
             if self.label.isEmpty == false {
                 Text(self.label)
             }

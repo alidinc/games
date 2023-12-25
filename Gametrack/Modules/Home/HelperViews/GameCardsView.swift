@@ -28,7 +28,7 @@ struct GameCardsView: View {
                                     .blur(radius: phase.isIdentity ? 0 : 60)
                                     .offset(x: phase.isIdentity ? 0 : -200)
                             }
-                            .padding(.vertical, 100)
+                            .padding(.top, 20)
                             .task {
                                 hasReachedEnd = vm.hasReachedEnd(of: game)
                             }
@@ -40,7 +40,7 @@ struct GameCardsView: View {
             .task(id: hasReachedEnd) {
                 await vm.fetchNextSetOfGames()
             }
-            .if(hasReachedEnd) { view in
+            .if(!vm.games.isEmpty && hasReachedEnd) { view in
                 view
                     .padding(.bottom, 100)
                     .overlay(alignment: .bottom) {
