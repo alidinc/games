@@ -9,6 +9,14 @@ import Foundation
 
 extension Int {
     
+    func numberToYear() -> String {
+        let date = self.numberToDate()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.dateFormat = "YYYY"
+        return formatter.string(from: date)
+    }
+    
     func numberToDateString() -> String {
         let date = self.numberToDate()
         let formatter = DateFormatter()

@@ -12,27 +12,22 @@ struct RatingView: View {
     var game: Game
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text("Reviews")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                
-                Image(.IGDB)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 36)
+        VStack(alignment: .leading) {
+            if let rating = game.totalRating {
+                RatingStarsView(rating: Int(5 * rating / 100))
             }
             
             HStack {
                 if let ratingCount = game.ratingCount {
-                    Text(String(ratingCount))
-                        .font(.footnote)
+                    Text("\(String(ratingCount)) Reviews")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
                 }
                 
-                if let rating = game.totalRating {
-                    RatingStarsView(rating: Int(5 * rating / 100))
-                }
+                Image(.IGDB)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 34)
             }
         }
     }

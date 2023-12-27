@@ -23,6 +23,8 @@ struct GameDetailView: View {
                         VStack(spacing: 0) {
                             Color.black
                                 .frame(maxHeight: .infinity)
+                            
+//                          /  LinearGradient(colors: [.gray, .clear], startPoint: .top, endPoint: .center)
                             LinearGradient(
                                 stops: [
                                     Gradient.Stop(color: .gray, location: 0.00),
@@ -31,7 +33,8 @@ struct GameDetailView: View {
                                 startPoint: .top,
                                 endPoint: .center
                             )
-                            .frame(height: 40)
+                            .frame(height: 70)
+           
                         }
                     })
                 

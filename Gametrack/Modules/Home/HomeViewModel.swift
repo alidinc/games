@@ -17,7 +17,7 @@ class HomeViewModel {
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     
     @ObservationIgnored
-    private var newReleasedCache = DiskCache<[Game]>(filename: "NewReleasedGames", expirationInterval: 24 * 60 * 60 * 60)
+    private var cache = InMemoryCache<[Game]>(expirationInterval: 24 * 60 * 60 * 60)
     
     private var limit = 21
     private var offset = 0
@@ -33,14 +33,6 @@ class HomeViewModel {
         return false
     }
     
-    var viewNotReady: Bool {
-        guard let value1 = self.dataFetchPhase.value else {
-            return true
-        }
-        
-        return value1.isEmpty
-    }
-    
     init() {
         self.fetchTaskToken = FetchTaskToken(
             category: .topRated,
@@ -53,12 +45,11 @@ class HomeViewModel {
 
 extension HomeViewModel {
     
-    @Sendable
     func refreshTask() async {
         self.offset = 0
         self.dataFetchPhase = .empty
         self.fetchTaskToken.token = Date()
-        await self.newReleasedCache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
+        await self.cache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
     }
     
     func fetchGames() async {
@@ -67,11 +58,11 @@ extension HomeViewModel {
         let platforms = self.fetchTaskToken.platforms
         let genres = self.fetchTaskToken.genres
         
-        if let games = await self.newReleasedCache.value(forKey: category.rawValue) {
-            if Task.isCancelled { return }
+        if let games = await self.cache.value(forKey: category.rawValue) {
             DispatchQueue.main.async {
                 self.dataFetchPhase = .success(games)
             }
+            if Task.isCancelled { return }
             return
         }
         
@@ -87,14 +78,12 @@ extension HomeViewModel {
                                                                       genres: genres,
                                                                       limit: self.limit,
                                                                       offset: self.offset)
-      //      let games = response.first?.result ?? []
             if Task.isCancelled { return }
-            
             DispatchQueue.main.async {
                 self.dataFetchPhase = .success(response)
             }
-            if !games.isEmpty {
-                await self.newReleasedCache.setValue(games, forKey: category.rawValue)
+            if !response.isEmpty {
+                await self.cache.setValue(response, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
@@ -111,7 +100,7 @@ extension HomeViewModel {
         let genres = self.fetchTaskToken.genres
         let games = self.dataFetchPhase.value ?? []
     
-        if Task.isCancelled { return }
+        
         DispatchQueue.main.async {
             self.dataFetchPhase = .fetchingNextPage(games)
         }
@@ -132,7 +121,7 @@ extension HomeViewModel {
                 self.dataFetchPhase = .success(totalGames)
             }
             if !totalGames.isEmpty {
-                await self.newReleasedCache.setValue(totalGames, forKey: category.rawValue)
+                await self.cache.setValue(totalGames, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }

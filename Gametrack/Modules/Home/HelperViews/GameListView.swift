@@ -35,7 +35,7 @@ struct GameListView: View {
                 }
             }
             .padding(.horizontal)
-            .if(!vm.games.isEmpty && hasReachedEnd) { view in
+            .if(vm.isFetchingNextPage) { view in
                 view
                     .padding(.bottom, 100)
                     .overlay(alignment: .bottom) {

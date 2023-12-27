@@ -7,16 +7,10 @@
 
 import SwiftUI
 
-enum HomeContentType: String, CaseIterable {
-    case main
-    case search
-}
-
 struct HomeView: View {
     
     @State private var vm = HomeViewModel()
     @FocusState private var focused: Bool
-    @State private var homeContentType: HomeContentType = .main
     @AppStorage("collectionViewType") private var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .purple
     @Environment(\.dismiss) private var dismiss
@@ -41,30 +35,23 @@ struct HomeView: View {
                     await vm.refreshTask()
                 }
             })
-            .onChange(of: homeContentType, { oldValue, newValue in
-                focused = newValue == .search
-                vm.searchQuery = ""
-            })
             .onChange(of: vm.searchQuery) { _, newValue in
                 Task {
                     if !newValue.isEmpty {
-                        Task {
-                            try await Task.sleep(seconds: 0.5)
-                            await vm.refreshTask()
-                        }
+                        try await Task.sleep(seconds: 0.5)
+                        await vm.refreshTask()
                     } else {
                         await vm.refreshTask()
                         dismissKeyboard()
                     }
                 }
             }
-            
         }
     }
     
     @ViewBuilder
     var LoadingView: some View {
-        if vm.viewNotReady {
+        if vm.games.isEmpty {
             ZStack {
                 ProgressView("Please wait, \nwhile we are getting ready! ☺️")
                     .font(.subheadline)
@@ -74,7 +61,7 @@ struct HomeView: View {
             }
             .padding(.horizontal, 50)
             .hSpacing(.center)
-            .offset(y: -100)
+            .offset(y: -50)
             .ignoresSafeArea()
         }
     }
@@ -114,7 +101,6 @@ struct HomeView: View {
             }
             .padding(.vertical, 10)
             .padding(.horizontal)
-            .animation(.spring, value: homeContentType)
             
             SelectionsHeaderView(vm: $vm)
         }
@@ -129,7 +115,6 @@ struct HomeView: View {
                 .background(.ultraThinMaterial, in: .rect(topLeadingRadius: 8, bottomLeadingRadius: 8))
                 .focused($focused)
                 .autocorrectionDisabled()
-                .transition(.asymmetric(insertion: .push(from: .trailing), removal: .push(from: .leading)))
                 .overlay {
                     if !vm.searchQuery.isEmpty {
                         HStack {
@@ -241,9 +226,5 @@ struct HomeView: View {
             }
         }
     }
-    
-    
-    
-    
 }
 
