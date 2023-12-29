@@ -26,7 +26,7 @@ struct Game: Codable, Equatable, Identifiable, Hashable {
     let gameModes: [GameMode]?
     let videos: [Video]?
     let websites: [Website]?
-    let similarGames: [Game]?
+    let similarGames: [Int]?
     let artworks: [Artwork]?
     let involvedCompanies: [Int]?
     
@@ -49,122 +49,44 @@ struct Game: Codable, Equatable, Identifiable, Hashable {
         return lhs.id == rhs.id
     }
     
-    var similarGameCovers: [String] {
-        guard let coverURLs = self.similarGames?.compactMap({$0.cover?.url ?? ""}) else {
-            return []
-        }
-        
-        return coverURLs
-    }
-    
-    var imageURLs: [String] {
-        guard let artworks = self.artworks,
-              let screenshots = self.screenshots,
-              let cover = self.cover,
-              let url = cover.url else {
-            return []
-        }
-        
-        let coverUrl = [url]
-        let artworkURLs = artworks.compactMap({$0.url})
-        let screenshotURLs = screenshots.compactMap({$0.url})
-        
-        return coverUrl + artworkURLs + screenshotURLs
-    }
-    
-    var screenshotURLs: [String] {
-        var urls = [String]()
-        guard let videos = self.screenshots?.compactMap({$0.url ?? ""}) else {
-            return []
-        }
-        
-        for url in videos {
-            urls.append(url)
-        }
-        return urls
-    }
-    
-    var videoURLs: [String] {
-        var urls = [String]()
-        guard let videos = self.videos?.compactMap({$0.videoID ?? ""}) else {
-            return []
-        }
-        
-        for url in videos {
-            urls.append(url)
-        }
-        return urls
-    }
-    
-    var platformsText: String {
-        guard let platforms else {
-            return "N/A"
-        }
-        
-        return platforms.compactMap({$0.name}).joined(separator: ", ")
-    }
-    
-    var genreText: String {
-        guard let genres else {
-            return "N/A"
-        }
-        
-        return genres.compactMap({$0.name}).joined(separator: ", ")
-    }
-    
-    var ratingText: String {
-        guard let rating = self.totalRating else {
-            return Rating.NotReviewed.rawValue
-        }
-        
-        switch Int(rating) {
-        case 0...40:
-            return Rating.Skip.rawValue
-        case 40...50:
-            return Rating.Meh.rawValue
-        case 50...80:
-            return Rating.Good.rawValue
-        case 80...100:
-            return Rating.Exceptional.rawValue
-        default:
-            return Rating.NotReviewed.rawValue
-        }
-    }
-    
-    var ratingColor: Color {
-        guard let rating = self.totalRating else {
-            return Color.gray
-        }
-        switch Int(rating) {
-        case 0...40:
-            return Color.red
-        case 40...50:
-            return Color.orange
-        case 50...80:
-            return Color.blue
-        case 80...100:
-            return Color.green
-        default:
-            return Color.gray
-        }
-    }
-    
-    var ratingImage: Image {
-        guard let rating = self.totalRating else {
-            return Image(systemName: "dot.squareshape.fill")
-        }
-        switch Int(rating) {
-        case 0...40:
-            return Image(systemName: "arrowtriangle.down.square.fill")
-        case 40...50:
-            return Image(systemName: "minus.square.fill")
-        case 50...80:
-            return Image(systemName: "arrowtriangle.up.square")
-        case 80...100:
-            return Image(systemName: "star.square.fill")
-        default:
-            return Image(systemName: "dot.squareshape.fill")
-        }
+    init(
+        id: Int,
+        cover: Cover? = nil,
+        firstReleaseDate: Int? = nil,
+        genres: [Genre]? = nil,
+        name: String? = nil,
+        platforms: [Platform]? = nil,
+        releaseDates: [ReleaseDate]? = nil,
+        screenshots: [Cover]? = nil,
+        summary: String? = nil,
+        totalRating: Double? = nil,
+        versionTitle: String? = nil,
+        ratingCount: Int? = nil,
+        gameModes: [GameMode]? = nil,
+        videos: [Video]? = nil,
+        websites: [Website]? = nil,
+        similarGames: [Int]? = nil,
+        artworks: [Artwork]? = nil,
+        involvedCompanies: [Int]? = nil
+    ) {
+        self.id = id
+        self.cover = cover
+        self.firstReleaseDate = firstReleaseDate
+        self.genres = genres
+        self.name = name
+        self.platforms = platforms
+        self.releaseDates = releaseDates
+        self.screenshots = screenshots
+        self.summary = summary
+        self.totalRating = totalRating
+        self.versionTitle = versionTitle
+        self.ratingCount = ratingCount
+        self.gameModes = gameModes
+        self.videos = videos
+        self.websites = websites
+        self.similarGames = similarGames
+        self.artworks = artworks
+        self.involvedCompanies = involvedCompanies
     }
 }
 
@@ -219,7 +141,7 @@ struct Platform: Codable, Hashable {
         case summary
     }
     
-    var platform: PopularPlatform? {
+    var popularPlatform: PopularPlatform? {
         guard let id = self.id,
               let platform = PopularPlatform(rawValue: id) else {
             return nil
@@ -231,7 +153,6 @@ struct Platform: Codable, Hashable {
 
 // MARK: - ReleaseDate
 struct ReleaseDate: Codable, Hashable, Comparable {
-    
     let id, date: Int?
     let game: Int?
     let human: String?
@@ -275,15 +196,6 @@ struct Website: Codable, Hashable {
     }
 }
 
-
-enum Rating: String, CaseIterable {
-    case Exceptional
-    case Good
-    case Meh
-    case Skip
-    case NotReviewed = "No Feedback"
-}
-
 // MARK: - Company
 struct Company: Codable, Hashable {
     let id, changeDateCategory, createdAt: Int
@@ -306,26 +218,43 @@ struct Company: Codable, Hashable {
 }
 
 
-extension Game {
+struct SimilarGame: Codable, Equatable, Identifiable, Hashable {
     
-    static var MockGame = Game(
-        id: 1,
-        cover: Cover(game: 1, url: "https://example.com/cover1.png"),
-        firstReleaseDate: 1609459200,
-        genres: [Genre(id: 1, name: "Action"), Genre(id: 2, name: "Adventure")],
-        name: "Example Game 1",
-        platforms: [Platform(id: 1, abbreviation: "PS5", name: "PlayStation 5", platformLogo: 1, summary: "Example summary for PS5")],
-        releaseDates: [ReleaseDate(id: 1, date: 1609459200, game: 1, human: "2021-Dec-31", platform: 1)],
-        screenshots: [Cover(game: 1, url: "https://example.com/screenshot1.png")],
-        summary: "This is an example summary for Example Game 1.",
-        totalRating: 85.0, 
-        versionTitle: "Gold Edition",
-        ratingCount: 100,
-        gameModes: [GameMode(id: 1, name: "Single player", url: "https://example.com/single-player")],
-        videos: [],
-        websites: [],
-        similarGames: [],
-        artworks: [],
-        involvedCompanies: []
-    )
+    let id: Int
+    let cover: Cover?
+    let firstReleaseDate: Int?
+    let genres: [Genre]?
+    let name: String?
+    let platforms: [Platform]?
+    let releaseDates: [ReleaseDate]?
+    let screenshots: [Cover]?
+    let summary: String?
+    let totalRating: Double?
+    let versionTitle: String?
+    let ratingCount: Int?
+    let gameModes: [GameMode]?
+    let videos: [Video]?
+    let websites: [Website]?
+    let similarGames: [Int]?
+    let artworks: [Artwork]?
+    let involvedCompanies: [Int]?
+    
+    enum CodingKeys: String, CodingKey {
+        case id, cover, artworks
+        case firstReleaseDate = "first_release_date"
+        case genres, name, platforms
+        case releaseDates = "release_dates"
+        case screenshots, summary
+        case totalRating = "total_rating"
+        case ratingCount = "rating_count"
+        case gameModes = "game_modes"
+        case videos, websites
+        case versionTitle = "version_title"
+        case similarGames = "similar_games"
+        case involvedCompanies = "involved_companies"
+    }
+    
+    static func == (lhs: SimilarGame, rhs: SimilarGame) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

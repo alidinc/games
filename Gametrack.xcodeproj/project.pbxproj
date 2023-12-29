@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DA0C20822B38F81F000E2D6E /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C20812B38F81F000E2D6E /* SummaryView.swift */; };
+		DA0C208A2B3E637D000E2D6E /* GameModesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C20892B3E637D000E2D6E /* GameModesView.swift */; };
 		DA43CE1D2B30B61500DAE0B6 /* GametrackApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1C2B30B61500DAE0B6 /* GametrackApp.swift */; };
 		DA43CE1F2B30B61500DAE0B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1E2B30B61500DAE0B6 /* ContentView.swift */; };
 		DA43CE212B30B61500DAE0B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA43CE202B30B61500DAE0B6 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 
 /* Begin PBXFileReference section */
 		DA0C20812B38F81F000E2D6E /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		DA0C20892B3E637D000E2D6E /* GameModesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModesView.swift; sourceTree = "<group>"; };
 		DA43CE192B30B61500DAE0B6 /* Gametrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gametrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA43CE1C2B30B61500DAE0B6 /* GametrackApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GametrackApp.swift; sourceTree = "<group>"; };
 		DA43CE1E2B30B61500DAE0B6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				DA5557A52B38764D00D440A4 /* GenresView.swift */,
 				DA93BE9A2B351D270047DD37 /* PlatformsView.swift */,
 				DA93BE982B35142E0047DD37 /* RatingStarsView.swift */,
+				DA0C20892B3E637D000E2D6E /* GameModesView.swift */,
 				DA93BE962B34F71B0047DD37 /* ImagesView.swift */,
 				DA5557A72B38769F00D440A4 /* RatingView.swift */,
 				DA5557B12B38E57F00D440A4 /* VideosView.swift */,
@@ -431,6 +434,7 @@
 				DA43CE712B30B6F200DAE0B6 /* Cache.swift in Sources */,
 				DA43CE682B30B6CD00DAE0B6 /* NetworkManager.swift in Sources */,
 				DA43CE512B30B66B00DAE0B6 /* MultiQueryModel.swift in Sources */,
+				DA0C208A2B3E637D000E2D6E /* GameModesView.swift in Sources */,
 				DA43CE5B2B30B69100DAE0B6 /* HomeView.swift in Sources */,
 				DA43CE702B30B6F200DAE0B6 /* KeysTracker.swift in Sources */,
 				DA93BE912B34F5150047DD37 /* GameListView.swift in Sources */,

@@ -24,11 +24,10 @@ struct GenresView: View {
                             
                             Text(genre.title)
                                 .font(.caption)
-                                .multilineTextAlignment(.center)
                         }
                         .padding(.vertical, 4)
                         .padding(.horizontal, 8)
-                        .background(genre.color.gradient, in: .rect(cornerRadius: 10))
+                        .background(genre.color.gradient, in: .capsule)
                     }
                 }
             }

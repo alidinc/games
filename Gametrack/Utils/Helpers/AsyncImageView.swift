@@ -13,9 +13,7 @@ enum AsyncImageType: String, CaseIterable {
     case list
     case grid
     case card
-    case horizontal
     case mediaView
-    case infinity
     case detail
     
     var placeholderSize: CGFloat {
@@ -29,16 +27,12 @@ enum AsyncImageType: String, CaseIterable {
         switch self {
         case .list:
             return 120
-        case .horizontal:
-            return 150
         case .grid:
             return UIScreen.main.bounds.size.width / 3.3
         case .card:
             return UIScreen.main.bounds.size.width
         case .mediaView:
             return UIScreen.main.bounds.size.width - 20
-        case .infinity:
-            return .infinity
         case .detail:
             return UIScreen.main.bounds.size.width
         }
@@ -48,16 +42,12 @@ enum AsyncImageType: String, CaseIterable {
         switch self {
         case .list:
             return 160
-        case .horizontal:
-            return 210
         case .grid:
             return self.width * 1.32
         case .card:
             return UIScreen.main.bounds.size.height * 0.5
         case .mediaView:
             return self.width * 0.75
-        case .infinity:
-            return .infinity
         case .detail:
             return UIScreen.main.bounds.size.height * 0.6
         }
@@ -114,49 +104,20 @@ struct AsyncImageView: View {
                 CacheAsyncImage(url: imageURL, transaction: .init(animation: .default)) { phase in
                     switch phase {
                     case .empty:
-                        if self.type == .mediaView {
+                        ZStack {
+                            Color.black.opacity(0.25)
                             ProgressView()
-                        } else {
-                            ZStack {
-                                Color.black.opacity(0.25).cornerRadius(self.radius)
-                                ProgressView()
-                            }
-                            .if(self.type == .infinity) { view in
-                                view
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            }
-                            .if(self.type != .infinity) { view in
-                                view
-                                    .frame(width: self.type.width, height: self.type.height)
-                            }
                         }
+                        .frame(width: self.type.width, height: self.type.height)
+                        .animatePlaceholder(isLoading: .constant(true))
                     case .success(let image):
-                        if self.type == .mediaView {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: self.type.ratio)
-                                .shadow(color: .primary.opacity(0.5), radius: 10)
-                                .clipShape(.rect(cornerRadius: self.radius))
-                            
-                        } else {
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: self.type.ratio)
-                                .shadow(color: .white.opacity(0.5), radius: 10)
-                                .if(self.type == .infinity) { view in
-                                    view
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                }
-                                .if(self.type != .infinity) { view in
-                                    view
-                                        .frame(width: self.type.width, 
-                                               height: self.type.height)
-                                }
-                                .if(self.type != .detail) { view in
-                                      view.clipShape(RoundedRectangle(cornerRadius: self.radius))
-                                }
-                        }
-
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: self.type.ratio)
+                            .shadow(color: .white.opacity(0.5), radius: 10)
+                            .frame(width: self.type.width, height: self.type.height)
+                            .clipShape(RoundedRectangle(cornerRadius: self.radius))
+                           
                     case .failure:
                         ImagePlaceholder(type: self.type, radius: self.radius)
                     @unknown default:
@@ -184,28 +145,14 @@ struct ImagePlaceholder: View {
                 Image(systemName: self.type.placeholderImageName)
                     .resizable()
                     .scaledToFit()
-                    .if(self.type == .infinity) { view in
-                        view
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    .if(self.type != .infinity) { view in
-                        view
-                            .frame(width: self.type.placeholderSize, height: self.type.placeholderSize)
-                    }
+                    .frame(width: self.type.placeholderSize, height: self.type.placeholderSize)
                     .foregroundColor(Color.white.opacity(0.25))
                 Spacer()
             }
             Spacer()
         }
         .background(Color.black.opacity(0.25))
-        .if(self.type == .infinity) { view in
-            view
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .if(self.type != .infinity) { view in
-            view
-                .frame(width: self.type.width, height: self.type.height)
-        }
+        .frame(width: self.type.width, height: self.type.height)
         .cornerRadius(self.radius)
     }
 }
@@ -259,5 +206,50 @@ fileprivate class ImageCache {
         set {
             ImageCache.cache[url] = newValue
         }
+    }
+}
+
+
+struct AnimatePlaceholderModifier: AnimatableModifier {
+    @Binding var isLoading: Bool
+
+    @State private var isAnim: Bool = false
+    private var center = (UIScreen.main.bounds.width / 2) + 110
+    private let animation: Animation = .linear(duration: 1.5)
+
+    init(isLoading: Binding<Bool>) {
+        self._isLoading = isLoading
+    }
+
+    func body(content: Content) -> some View {
+        content.overlay(animView.mask(content))
+    }
+
+    var animView: some View {
+        ZStack {
+            Color.black.opacity(isLoading ? 0.09 : 0.0)
+            Color.white.mask(
+                Rectangle()
+                    .fill(
+                        LinearGradient(gradient: .init(colors: [.clear, .white.opacity(0.48), .clear]), startPoint: .top , endPoint: .bottom)
+                    )
+                    .scaleEffect(1.5)
+                    .rotationEffect(.init(degrees: 70.0))
+                    .offset(x: isAnim ? center : -center)
+            )
+        }
+        .animation(isLoading ? animation.repeatForever(autoreverses: false) : nil, value: isAnim)
+        .onAppear {
+            guard isLoading else { return }
+            isAnim.toggle()
+        }
+        .onChange(of: isLoading) { _ in
+            isAnim.toggle()
+        }
+    }
+}
+extension View {
+    func animatePlaceholder(isLoading: Binding<Bool>) -> some View {
+        self.modifier(AnimatePlaceholderModifier(isLoading: isLoading))
     }
 }

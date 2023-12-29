@@ -12,6 +12,14 @@ struct ListRowView: View {
     
     var game: Game
     
+    var platformsText: String {
+        guard let platforms = self.game.platforms else {
+            return "N/A"
+        }
+        
+        return platforms.compactMap({$0.name}).joined(separator: ", ")
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             if let cover = game.cover, let url = cover.url {
@@ -30,7 +38,7 @@ struct ListRowView: View {
                 
                 ReleaseDateView(game: game)
                 
-                Text(game.platformsText)
+                Text(self.platformsText)
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .lineLimit(2)
@@ -57,9 +65,7 @@ struct ReleaseDateView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            if let firstReleaseDate = self.game.firstReleaseDate,
-               let lastReleaseDate =  self.game.releaseDates?.compactMap({$0.date}).max()  {
-                
+            if let firstReleaseDate = self.game.firstReleaseDate  {
                 HStack {
                     Image(systemName: "calendar")
                         .resizable()
@@ -72,40 +78,7 @@ struct ReleaseDateView: View {
                         .font(.caption)
                 }
                 .hSpacing(.leading)
-                
-                HStack(spacing: 2) {
-                    HStack(spacing: 10) {
-                        Text(self.timestampString(for: lastReleaseDate))
-                            .foregroundStyle(.secondary)
-                            .font(.caption2)
-                        
-//                        if let platformId = self.game.releaseDates?.first(where: {$0.date == lastReleaseDate})?.platform {
-//                            if platformId == self.game.platforms?.first(where: {$0.platform?.id == platformId })?.id {
-//                                Image(self.game.platforms?.first(where: {$0.platform?.id == platformId })?.platform?.assetName ?? "")
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fit)
-//                                    .frame(maxWidth: 14)
-//                            }
-//                        }
-                    }
-                }
-                .multilineTextAlignment(.leading)
             }
-        }
-    }
-    
-    func timestampString(for timeInterval: Int) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth, .month, .year]
-        formatter.maximumUnitCount = 1
-        formatter.unitsStyle = .abbreviated
-        
-        let releaseDate = timeInterval.numberToDate()
-        
-        if releaseDate > Date() {
-            return "Upcoming in " + formatter.string(from: Date(), to: releaseDate)!
-        } else {
-            return "Updated " + formatter.string(from: releaseDate, to: Date())! + " ago"
         }
     }
 }

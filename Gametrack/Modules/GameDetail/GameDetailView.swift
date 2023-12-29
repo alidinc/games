@@ -11,60 +11,39 @@ struct GameDetailView: View {
     
     var game: Game
     
-    @State private var vm = GameDetailViewModel()
-    
+    @State var vm = GameDetailViewModel()
     
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
                 ImagesView(game: game)
-                    .ignoresSafeArea()
-                    .mask(alignment: .bottom, {
-                        VStack(spacing: 0) {
-                            Color.black
-                                .frame(maxHeight: .infinity)
-                            
-//                          /  LinearGradient(colors: [.gray, .clear], startPoint: .top, endPoint: .center)
-                            LinearGradient(
-                                stops: [
-                                    Gradient.Stop(color: .gray, location: 0.00),
-                                    Gradient.Stop(color: .clear, location: 1)
-                                ],
-                                startPoint: .top,
-                                endPoint: .center
-                            )
-                            .frame(height: 70)
-           
-                        }
-                    })
+                    .ignoresSafeArea(edges: .top)
+                    .mask(alignment: .bottom, { GradientMask })
                 
-                VStack(alignment: .leading, spacing: 20) {
-                    VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 25) {
+                    VStack(alignment: .leading, spacing: 10) {
                         if let name = game.name {
                             Text(name)
                                 .font(.system(size: 24, weight: .semibold))
                                 .foregroundStyle(.primary)
                                 .padding(.horizontal)
                         }
-
+                        
+                        RatingView(game: game)
+                            .padding(.horizontal)
+                        
                         GenresView(game: game)
                             .padding(.leading)
                         
-                        SummaryView(game: game)
-
                     }
                     
+                    SummaryView(game: game)
                     
-                    HStack(alignment: .center, spacing: 10) {
-                        RatingView(game: game)
-                        Divider()
-                            .foregroundStyle(.white)
-                            .frame(height: 50)
-                        
-                        PlatformsView(game: game)
-                    }
-                    .padding(.leading)
-                    .padding(.top)
+                    PlatformsView(game: game)
+                        .padding(.leading)
+                    
+                    GameModesView(game: game)
+                        .padding(.leading)
                     
                     VideosView(game: game)
                         .padding(.leading)
@@ -72,16 +51,39 @@ struct GameDetailView: View {
                     SocialsView(game: game)
                         .padding(.leading)
 
-                    SimilarGamesView(game: game)
-                        .padding(.leading)
+                    if !vm.gamesFromIds.isEmpty {
+                        SimilarGamesView(similarGames: vm.gamesFromIds)
+                            .padding(.leading)
+                    }
                 }
                 .hSpacing(.leading)
-            
+                .task {
+                    if let similarGames = game.similarGames {
+                        await vm.fetchGames(from: similarGames)
+                    }
+                }
             }
         }
-        .ignoresSafeArea()
         .padding(.bottom, 10)
         .background(.gray.opacity(0.15))
         .toolbarBackground(.hidden, for: .navigationBar)
+        .ignoresSafeArea(edges: .top)
+    }
+    
+    private var GradientMask: some View {
+        VStack(spacing: 0) {
+            Color.gray
+                .frame(maxHeight: .infinity)
+    
+            LinearGradient(
+                stops: [
+                    Gradient.Stop(color: .gray, location: 0),
+                    Gradient.Stop(color: .clear, location: 1)
+                ],
+                startPoint: .top,
+                endPoint: .center
+            )
+            .frame(height: 50)
+        }
     }
 }

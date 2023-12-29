@@ -54,20 +54,24 @@ struct SelectionsView:  View {
         }
         .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
             Task {
-                if vm.fetchTaskToken.platforms.isEmpty {
-                    vm.fetchTaskToken.platforms = [.database]
-                } else {
-                    vm.fetchTaskToken.platforms = newValue
+                withAnimation {
+                    if vm.fetchTaskToken.platforms.isEmpty {
+                        vm.fetchTaskToken.platforms = [.database]
+                    } else {
+                        vm.fetchTaskToken.platforms = newValue
+                    }
                 }
                 await vm.refreshTask()
             }
         })
         .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
             Task {
-                if vm.fetchTaskToken.genres.isEmpty {
-                    vm.fetchTaskToken.genres = [.allGenres]
-                } else {
-                    vm.fetchTaskToken.genres = newValue
+                withAnimation {
+                    if vm.fetchTaskToken.genres.isEmpty {
+                        vm.fetchTaskToken.genres = [.allGenres]
+                    } else {
+                        vm.fetchTaskToken.genres = newValue
+                    }
                 }
                 await vm.refreshTask()
             }
@@ -76,8 +80,10 @@ struct SelectionsView:  View {
     
     private var RefreshButton: some View {
         Button {
-            vm.fetchTaskToken.platforms = [.database]
-            vm.fetchTaskToken.genres = [.allGenres]
+            withAnimation {
+                vm.fetchTaskToken.platforms = [.database]
+                vm.fetchTaskToken.genres = [.allGenres]
+            }
             dismiss()
            
             Task {
@@ -87,6 +93,7 @@ struct SelectionsView:  View {
             Text("Clear filters")
                 .font(.subheadline)
         }
+        .contentShape(.rect)
         .opacity(showClear ? 1 : 0)
         .onChange(of: vm.fetchTaskToken.platforms) { oldValue, newValue in
             if newValue.count >= 1 {

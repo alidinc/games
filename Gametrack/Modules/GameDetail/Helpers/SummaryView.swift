@@ -15,10 +15,10 @@ struct SummaryView: View {
     var body: some View {
         if let summary = game.summary {
             Group {
-                Text("\(showMore ? summary : String(summary.prefix(200)))")
+                Text("\(showMore ? summary : String(summary.prefix(250)))")
                     .foregroundStyle(.primary)
                    
-              +   Text(showMore || (summary.count < 150) ? "" : " ... more")
+              +   Text(showMore || (summary.count < 250) ? "" : " ... more")
                     .foregroundStyle(.blue)
             }
             .font(.subheadline)

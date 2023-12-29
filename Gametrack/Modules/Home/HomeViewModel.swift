@@ -16,8 +16,7 @@ class HomeViewModel {
 
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     
-    @ObservationIgnored
-    private var cache = InMemoryCache<[Game]>(expirationInterval: 24 * 60 * 60 * 60)
+    private var cache = DiskCache<[Game]>(filename: "GamesCache", expirationInterval: 24 * 60 * 60 * 60)
     
     private var limit = 21
     private var offset = 0

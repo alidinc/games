@@ -12,6 +12,7 @@ import Observation
 class GameDetailViewModel {
     
     var companies: [Company] = []
+    var gamesFromIds: [Game] = []
    
     func fetchCompanies(for game: Game) async {
         do {
@@ -24,6 +25,15 @@ class GameDetailViewModel {
             }
         } catch {
             self.companies = []
+        }
+    }
+    
+    func fetchGames(from ids: [Int]) async {
+        do {
+            let response = try await NetworkManager.shared.fetchGames(ids: ids)
+            self.gamesFromIds = response
+        } catch {
+            self.gamesFromIds = []
         }
     }
 }

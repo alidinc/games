@@ -31,6 +31,8 @@ struct SelectionsHeaderView: View {
         .hSpacing(.leading)
         .padding(.horizontal)
         .padding(.bottom, 10)
+        .animation(.easeInOut, value: vm.fetchTaskToken.platforms)
+        .animation(.easeInOut, value: vm.fetchTaskToken.genres)
         .sheet(isPresented: $showSelection, content: {
             SelectionsView(vm: vm, selectedSegment: $selectedSegment)
                 .presentationDetents([.medium, .large])

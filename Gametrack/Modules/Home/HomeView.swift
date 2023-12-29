@@ -24,6 +24,7 @@ struct HomeView: View {
             .background(.gray.opacity(0.15))
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
+            .animation(.easeInOut, value: vm.fetchTaskToken.category)
             .overlay {
                 LoadingView
             }
@@ -39,8 +40,14 @@ struct HomeView: View {
                 Task {
                     if !newValue.isEmpty {
                         try await Task.sleep(seconds: 0.5)
+                        withAnimation {
+                            vm.fetchTaskToken.category = .database
+                        }
                         await vm.refreshTask()
                     } else {
+                        withAnimation {
+                            vm.fetchTaskToken.category = .topRated
+                        }
                         await vm.refreshTask()
                         dismissKeyboard()
                     }
@@ -218,12 +225,13 @@ struct HomeView: View {
                     .font(.system(size: 26, weight: .semibold))
                     .foregroundStyle(.primary)
                     .shadow(radius: 10)
-                
+                   
                 Image(systemName: "chevron.down")
                     .font(.title2)
                     .bold()
                     .foregroundStyle(.primary)
             }
+            .hSpacing(.leading)
         }
     }
 }

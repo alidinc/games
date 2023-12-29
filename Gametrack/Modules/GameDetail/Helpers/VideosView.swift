@@ -12,17 +12,35 @@ struct VideosView: View {
     
     var game: Game
     
+    var videoURLs: [String] {
+        var urls = [String]()
+        guard let videos = self.game.videos?.compactMap({$0.videoID ?? ""}) else {
+            return []
+        }
+        
+        for url in videos {
+            urls.append(url)
+        }
+        return urls
+    }
+    
     var body: some View {
-        if !game.videoURLs.isEmpty {
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(game.videoURLs, id: \.self) { id in
-                        YoutubeVideoView(youtubeVideoID: id)
+        if !self.videoURLs.isEmpty {
+            VStack(alignment: .leading) {
+                Text("Videos")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(self.videoURLs, id: \.self) { id in
+                            YoutubeVideoView(youtubeVideoID: id)
+                        }
+                        .frame(width: 300, height: 170)
+                        .clipShape(.rect(cornerRadius: 8))
                     }
-                    .frame(width: 300, height: 170)
-                    .clipShape(.rect(cornerRadius: 8))
+                    .padding(.vertical)
                 }
-                .padding(.vertical)
             }
         }
     }

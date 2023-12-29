@@ -155,4 +155,12 @@ struct NetworkManager {
         
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
     }
+    
+    func fetchGames(ids: [Int]) async throws -> [Game] {
+        let apicalypse = APICalypse(type: .standard)
+            .fields(fields: Constants.IGDBAPI.DetailFields)
+            .where(query: "id=(\(ids.compactMap({String($0)}).joined(separator: ",")))")
+        
+        return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
+    }
 }

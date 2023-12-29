@@ -11,13 +11,28 @@ struct ImagesView: View {
     
     var game: Game
     
+    var imageURLs: [String] {
+        guard let artworks = self.game.artworks,
+              let screenshots = self.game.screenshots,
+              let cover = self.game.cover,
+              let url = cover.url else {
+            return []
+        }
+        
+        let coverUrl = [url]
+        let artworkURLs = artworks.compactMap({$0.url})
+        let screenshotURLs = screenshots.compactMap({$0.url})
+        
+        return coverUrl + artworkURLs + screenshotURLs
+    }
+   
     @ViewBuilder
     var body: some View {
-        if game.imageURLs.isEmpty, let cover = game.cover, let url = cover.url {
+        if self.imageURLs.isEmpty, let cover = game.cover, let url = cover.url {
             AsyncImageView(with: url, type: .detail)
         } else {
             TabView {
-                ForEach(game.imageURLs, id: \.self) { screenshotURL in
+                ForEach(self.imageURLs, id: \.self) { screenshotURL in
                     AsyncImageView(with: screenshotURL, type: .detail)
                         .tag(screenshotURL)
                 }
@@ -25,10 +40,10 @@ struct ImagesView: View {
                 .scrollTargetLayout()
             }
             .scrollTargetBehavior(.viewAligned)
-            .tabViewStyle(.page(indexDisplayMode: .always))
+            .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(width: UIScreen.main.bounds.size.width,
                    height: UIScreen.main.bounds.size.height * 0.6)
-            .offset(y: -10)
         }
     }
 }
+

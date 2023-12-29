@@ -13,7 +13,7 @@ struct CardView: View {
     
     var body: some View {
         if let cover = game.cover, let url = cover.url {
-            AsyncImageView(with: url, type: .infinity)
+            AsyncImageView(with: url, type: .detail)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: UIScreen.main.bounds.size.width - 40, height: 500)
                 .cornerRadius(20)

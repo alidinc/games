@@ -9,32 +9,30 @@ import SwiftUI
 
 struct SimilarGamesView: View {
     
-    var game: Game
+    var similarGames: [Game]
     
     @ViewBuilder
     var body: some View {
-        if let similarGames = game.similarGames, !similarGames.isEmpty {
-            VStack(alignment: .leading) {
-                Text("Similar games")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(similarGames, id: \.id) { game in
-                            NavigationLink {
-                                GameDetailView(game: game)
-                            } label: {
-                                if let cover = game.cover, let url = cover.url {
-                                    AsyncImageView(with: url, type: .grid)
-                                }
+        VStack(alignment: .leading) {
+            Text("Similar games")
+                .font(.caption2)
+                .foregroundColor(.secondary)
+            
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(similarGames, id: \.id) { game in
+                        NavigationLink {
+                            GameDetailView(game: game)
+                        } label: {
+                            if let cover = game.cover, let url = cover.url {
+                                AsyncImageView(with: url, type: .grid)
                             }
                         }
                     }
-                    
-                    .padding(.bottom, 15)
-                    .frame(maxWidth: .infinity)
                 }
+                
+                .padding(.bottom, 15)
+                .frame(maxWidth: .infinity)
             }
         }
     }

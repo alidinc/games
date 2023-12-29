@@ -76,7 +76,7 @@ genres.name,name,platforms.*,total_rating,cover.url,first_release_date,release_d
         
         static let DetailFields =
 """
-artworks.*,game_modes.name,genres.name,name,platforms.*,screenshots.url,summary,total_rating,rating_count,cover.url,first_release_date,release_dates.*,videos.video_id,websites.*,url,similar_games.artworks.*,similar_games.game_modes.name,similar_games.genres.name,similar_games.name,similar_games.platforms.*,similar_games.screenshots.url,similar_games.summary,similar_games.total_rating,similar_games.cover.url,similar_games.first_release_date,similar_games.release_dates.*,similar_games.videos.video_id,similar_games.websites.*,similar_games.url
+artworks.*,game_modes.name,genres.name,name,platforms.*,screenshots.url,summary,total_rating,rating_count,cover.url,first_release_date,release_dates.*,videos.video_id,websites.*,url,similar_games
 """
         
         static let PlatformFields =

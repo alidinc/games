@@ -10,7 +10,6 @@ import SwiftUI
 struct GameListView: View {
     
     var vm: HomeViewModel
-    
     @State private var hasReachedEnd = false
     
     var body: some View {
