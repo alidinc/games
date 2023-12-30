@@ -68,7 +68,7 @@ struct HomeView: View {
             }
             .padding(.horizontal, 50)
             .hSpacing(.center)
-            .offset(y: -50)
+            .offset(y: 50)
             .ignoresSafeArea()
         }
     }

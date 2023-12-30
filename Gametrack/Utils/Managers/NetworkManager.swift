@@ -88,6 +88,7 @@ struct NetworkManager {
         
         switch response.statusCode {
         case (200...299), (400...499):
+            self.showNetworkResponse(data: data)
             return try JSONDecoder().decode([T].self, from: data)
         default:
             throw self.generateError(description: "A server error occured.")
@@ -101,13 +102,6 @@ struct NetworkManager {
             .multiQuery(name: "games/count")
             .fields(fields: "*")
         return try await self.fetch(with: Constants.IGDBAPI.MultiQueryURL, with: apicalypse)
-    }
-    
-    func fetchCompanies() async throws -> [Company] {
-        let apiCalypse = APICalypse(type: .standard)
-            .fields(fields: "*")
-        
-        return try await self.fetch(with: Constants.IGDBAPI.CompaniesURL, with: apiCalypse)
     }
     
     func fetchMulti(query: String? = nil,
@@ -163,4 +157,14 @@ struct NetworkManager {
         
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
     }
+    
+    func showNetworkResponse(data : Data){
+            do {
+                if let jsonResult = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                    print(jsonResult)
+                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
 }

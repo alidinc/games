@@ -51,7 +51,7 @@ struct SocialsView: View {
     }
 }
 
-enum PlatformWebsite: Int, CaseIterable {
+enum PlatformWebsite: Int, CaseIterable, Codable {
     case youtube = 9
     case twitch = 6
     case wiki = 3

@@ -41,7 +41,7 @@ struct SelectionsView:  View {
                     }
                 }
                 
-                HStack(spacing: 16) {
+                HStack(spacing: 20) {
                     RefreshButton
                     CloseButton()
                 }
@@ -93,7 +93,6 @@ struct SelectionsView:  View {
             Text("Clear filters")
                 .font(.subheadline)
         }
-        .contentShape(.rect)
         .opacity(showClear ? 1 : 0)
         .onChange(of: vm.fetchTaskToken.platforms) { oldValue, newValue in
             if newValue.count >= 1 {

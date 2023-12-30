@@ -15,7 +15,7 @@ struct GenresView: View {
         if let genres = game.genres {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    let popularGenres = genres.compactMap({ PopularGenre(rawValue: $0.id) })
+                    let popularGenres = genres.compactMap({ PopularGenre(rawValue: $0.id ?? 0) })
                     ForEach(popularGenres, id: \.id) { genre in
                         HStack {
                             Image(genre.assetName)

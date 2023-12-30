@@ -54,6 +54,22 @@ struct GameDetailView: View {
                     if !vm.gamesFromIds.isEmpty {
                         SimilarGamesView(similarGames: vm.gamesFromIds)
                             .padding(.leading)
+                    } else {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(0..<7, id: \.self) { _ in
+                                    ZStack {
+                                        Color.black.opacity(0.5).frame(maxWidth: .infinity, maxHeight: .infinity)
+                                        ProgressView()
+                                    }
+                                    
+                                }
+                            }
+                            .padding(.bottom, 15)
+                            .frame(maxWidth: .infinity)
+                        }
+                        .padding(.leading)
+                        .redacted(reason: .placeholder)
                     }
                 }
                 .hSpacing(.leading)
