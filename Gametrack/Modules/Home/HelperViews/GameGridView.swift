@@ -10,7 +10,6 @@ import SwiftUI
 struct GameGridView: View {
     
     var vm: HomeViewModel
-    @State private var hasReachedEnd = false
     
     var body: some View {
         ScrollView {
@@ -24,11 +23,6 @@ struct GameGridView: View {
                                 .task {
                                     if self.vm.hasReachedEnd(of: game) {
                                         await vm.fetchNextSetOfGames()
-                                    }
-                                }
-                                .task {
-                                    if vm.hasReachedEnd(of: game) {
-                                        hasReachedEnd = true
                                     }
                                 }
                         }

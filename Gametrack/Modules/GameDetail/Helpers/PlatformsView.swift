@@ -22,7 +22,7 @@ struct PlatformsView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(platforms, id: \.self) { platform in
-                            if let popularPlatform = platform.popularPlatform {
+                            if let id = platform.id, let popularPlatform = PopularPlatform(rawValue: id) {
                                 VStack(alignment: .center, spacing: 8) {
                                     Image(popularPlatform.assetName)
                                         .resizable()

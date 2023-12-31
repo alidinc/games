@@ -23,7 +23,8 @@ struct SocialsView: View {
                         ForEach(websites, id: \.id) { website in
                             if let url = website.url,
                                let websiteURL = URL(string: url),
-                               let platform = website.platformWebsite {
+                               let category = website.category,
+                               let platform = PlatformWebsite(rawValue: category) {
                                 Link(destination: websiteURL) {
                                     if platform == .official {
                                         Image(systemName: platform.imageName)

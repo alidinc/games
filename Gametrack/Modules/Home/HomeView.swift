@@ -10,7 +10,6 @@ import SwiftUI
 struct HomeView: View {
     
     @State private var vm = HomeViewModel()
-    @FocusState private var focused: Bool
     @AppStorage("collectionViewType") private var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .purple
     @Environment(\.dismiss) private var dismiss
@@ -104,12 +103,12 @@ struct HomeView: View {
             HStack {
                 CategoryButton
                 Spacer()
-                ViewTypeButton
+                ViewTypeButton()
             }
             .padding(.vertical, 10)
             .padding(.horizontal)
             
-            SelectionsHeaderView(vm: $vm)
+            SelectionsHeaderView(vm: vm)
         }
     }
     
@@ -120,7 +119,6 @@ struct HomeView: View {
                 .frame(height: 24, alignment: .leading)
                 .padding(10)
                 .background(.ultraThinMaterial, in: .rect(topLeadingRadius: 8, bottomLeadingRadius: 8))
-                .focused($focused)
                 .autocorrectionDisabled()
                 .overlay {
                     if !vm.searchQuery.isEmpty {
@@ -154,58 +152,6 @@ struct HomeView: View {
                 )
         }
         .padding(.horizontal)
-    }
-    
-    private var ViewTypeButton: some View {
-        Menu {
-            Section("View type") {
-                Button {
-                    DispatchQueue.main.async {
-                        viewType = .list
-                    }
-                } label: {
-                    Image(systemName: "rectangle.grid.1x2.fill")
-                    Text("List")
-                }
-                
-                Button {
-                    DispatchQueue.main.async {
-                        viewType = .grid
-                    }
-                } label: {
-                    Image(systemName: "rectangle.grid.3x2.fill")
-                    Text("Grid")
-                }
-                
-                Button {
-                    DispatchQueue.main.async {
-                        viewType = .card
-                    }
-                } label: {
-                    Image(systemName: "list.bullet.rectangle.portrait.fill")
-                    Text("Card")
-                }
-            }
-            
-        } label: {
-            Image(systemName: viewType.imageName)
-                .resizable()
-                .frame(width: 24, height: 24)
-                .aspectRatio(contentMode: .fit)
-                .padding(10)
-                .background(Color.black.opacity(0.5))
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-        } primaryAction: {
-            withAnimation(.snappy) {
-                if viewType == .list {
-                    viewType = .grid
-                } else if viewType == .grid {
-                    viewType = .card
-                } else if viewType == .card {
-                    viewType = .list
-                }
-            }
-        }
     }
     
     private var CategoryButton: some View {

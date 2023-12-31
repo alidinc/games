@@ -39,7 +39,7 @@ struct VideosView: View {
                         .frame(width: 300, height: 170)
                         .clipShape(.rect(cornerRadius: 8))
                     }
-                    .padding(.vertical)
+                    .padding(.bottom)
                 }
             }
         }

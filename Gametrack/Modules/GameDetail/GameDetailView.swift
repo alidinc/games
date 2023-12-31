@@ -9,81 +9,101 @@ import SwiftUI
 
 struct GameDetailView: View {
     
-    var game: Game
+    var game: Game?
+    private var reference: ViewReference = .local
+    
+    init(game: Game?) {
+        self.reference = .network
+        self.game = game
+    }
+    
+    init(savedGame: SavedGame) {
+        self.reference = .local
+        self.game = Game(
+            id: savedGame.id,
+            name: savedGame.name,
+            cover: savedGame.cover,
+            firstReleaseDate: savedGame.firstReleaseDate,
+            summary: savedGame.summary,
+            totalRating: savedGame.totalRating,
+            ratingCount: savedGame.ratingCount,
+            genres: savedGame.genres,
+            platforms: savedGame.platforms,
+            releaseDates: savedGame.releaseDates,
+            screenshots: savedGame.screenshots,
+            gameModes: savedGame.gameModes,
+            videos: savedGame.videos,
+            websites:  savedGame.websites,
+            similarGames: savedGame.similarGames,
+            artworks: savedGame.artworks
+            )
+    }
     
     @State var vm = GameDetailViewModel()
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 0) {
-                ImagesView(game: game)
-                    .ignoresSafeArea(edges: .top)
-                    .mask(alignment: .bottom, { GradientMask })
-                
-                VStack(alignment: .leading, spacing: 25) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        if let name = game.name {
-                            Text(name)
-                                .font(.system(size: 24, weight: .semibold))
-                                .foregroundStyle(.primary)
-                                .padding(.horizontal)
-                        }
-                        
-                        RatingView(game: game)
-                            .padding(.horizontal)
-                        
-                        GenresView(game: game)
-                            .padding(.leading)
-                        
-                    }
+        if let game {
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 0) {
+                    ImagesView(game: game)
+                        .ignoresSafeArea(edges: .top)
+                        .mask(alignment: .bottom, { GradientMask })
                     
-                    SummaryView(game: game)
-                    
-                    PlatformsView(game: game)
-                        .padding(.leading)
-                    
-                    GameModesView(game: game)
-                        .padding(.leading)
-                    
-                    VideosView(game: game)
-                        .padding(.leading)
-                    
-                    SocialsView(game: game)
-                        .padding(.leading)
-
-                    if !vm.gamesFromIds.isEmpty {
-                        SimilarGamesView(similarGames: vm.gamesFromIds)
-                            .padding(.leading)
-                    } else {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(0..<7, id: \.self) { _ in
-                                    ZStack {
-                                        Color.black.opacity(0.5).frame(maxWidth: .infinity, maxHeight: .infinity)
-                                        ProgressView()
-                                    }
+                    VStack(alignment: .leading, spacing: 25) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            if let name = game.name {
+                                HStack {
+                                    Text(name)
+                                        .font(.system(size: 24, weight: .semibold))
+                                        .foregroundStyle(.primary)
                                     
+                                    Spacer()
+                                    
+                                    SavingButton(game: game, opacity: 1, padding: 8)
                                 }
+                                .padding(.horizontal)
                             }
-                            .padding(.bottom, 15)
-                            .frame(maxWidth: .infinity)
+                            
+                            RatingView(game: game)
+                                .padding(.horizontal)
+                            
+                            GenresView(game: game)
+                                .padding(.leading)
+                            
                         }
-                        .padding(.leading)
-                        .redacted(reason: .placeholder)
+                        
+                        SummaryView(game: game)
+                        
+                        PlatformsView(game: game)
+                            .padding(.leading)
+                        
+                        GameModesView(game: game)
+                            .padding(.leading)
+                        
+                        VideosView(game: game)
+                            .padding(.leading)
+                        
+                        SocialsView(game: game)
+                            .padding(.leading)
+
+                        if !vm.gamesFromIds.isEmpty {
+                            SimilarGamesView(similarGames: vm.gamesFromIds)
+                                .padding(.leading)
+                        }
                     }
-                }
-                .hSpacing(.leading)
-                .task {
-                    if let similarGames = game.similarGames {
-                        await vm.fetchGames(from: similarGames)
+                    .hSpacing(.leading)
+                    .task {
+                        if let similarGames = game.similarGames {
+                            await vm.fetchGames(from: similarGames)
+                        }
                     }
                 }
             }
+            .padding(.bottom, 10)
+            .background(.gray.opacity(0.15))
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .ignoresSafeArea(edges: .top)
         }
-        .padding(.bottom, 10)
-        .background(.gray.opacity(0.15))
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .ignoresSafeArea(edges: .top)
     }
     
     private var GradientMask: some View {

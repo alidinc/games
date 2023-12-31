@@ -16,37 +16,51 @@ struct SettingsView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Appearance") {
-                    HStack {
-                        MoreMainRowView(imageName: "paintpalette.fill", imageColor: .teal, text: "App Tint")
-                        ColorPicker("", selection: $appTint, supportsOpacity: false)
-                    }
-                    
-                    Button {
-                        DispatchQueue.main.async {
-                            self.showIcons.toggle()
-                        }
-                    } label: {
+            VStack {
+                Header
+                
+                Form {
+                    Section("Appearance") {
                         HStack {
-                            MoreMainRowView(imageName: "apps.iphone", imageColor: .teal, text: "App Icons")
-                            Spacer()
-                            Image(selectedAppIcon.title.lowercased())
-                                .resizable()
-                                .frame(width: 40, height: 40)
-                                .scaledToFit()
+                            MoreMainRowView(imageName: "paintpalette.fill", imageColor: .teal, text: "App Tint")
+                            ColorPicker("", selection: $appTint, supportsOpacity: false)
+                        }
+                        
+                        Button {
+                            DispatchQueue.main.async {
+                                self.showIcons.toggle()
+                            }
+                        } label: {
+                            HStack {
+                                MoreMainRowView(imageName: "apps.iphone", imageColor: .teal, text: "App Icons")
+                                Spacer()
+                                Image(selectedAppIcon.title.lowercased())
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .scaledToFit()
+                            }
                         }
                     }
                 }
             }
+            
             .scrollContentBackground(.hidden)
             .background(.gray.opacity(0.15))
-            .navigationTitle("Settings")
             .sheet(isPresented: $showIcons, content: {
                 IconSelectionView()
                     .presentationDetents([.medium])
             })
         }
+    }
+    
+    private var Header: some View {
+        Text("Settings")
+            .font(.system(size: 26, weight: .semibold))
+            .foregroundStyle(.primary)
+            .shadow(radius: 10)
+            .hSpacing(.leading)
+            .padding(.horizontal)
+            .padding(.vertical, 10)
     }
 }
 

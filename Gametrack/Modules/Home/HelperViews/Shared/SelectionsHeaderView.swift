@@ -22,24 +22,11 @@ enum SegmentType: String, CaseIterable, Identifiable {
 
 struct SelectionsHeaderView: View {
     
-    @Binding var vm: HomeViewModel
+    var vm: HomeViewModel
     @State private var showSelection = false
     @State private var selectedSegment: SegmentType = .platform
     
     var body: some View {
-        PlatformButton
-        .hSpacing(.leading)
-        .padding(.horizontal)
-        .padding(.bottom, 10)
-        .animation(.easeInOut, value: vm.fetchTaskToken.platforms)
-        .animation(.easeInOut, value: vm.fetchTaskToken.genres)
-        .sheet(isPresented: $showSelection, content: {
-            SelectionsView(vm: vm, selectedSegment: $selectedSegment)
-                .presentationDetents([.medium, .large])
-        })
-    }
-    
-    private var PlatformButton: some View {
         HStack {
             Button {
                 showSelection = true
@@ -69,5 +56,14 @@ struct SelectionsHeaderView: View {
                     .multilineTextAlignment(.leading)
             }
         }
+        .hSpacing(.leading)
+        .padding(.horizontal)
+        .padding(.bottom, 10)
+        .animation(.easeInOut, value: vm.fetchTaskToken.platforms)
+        .animation(.easeInOut, value: vm.fetchTaskToken.genres)
+        .sheet(isPresented: $showSelection, content: {
+            SelectionsView(vm: vm, selectedSegment: $selectedSegment)
+                .presentationDetents([.medium, .large])
+        })
     }
 }

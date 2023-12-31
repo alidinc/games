@@ -66,7 +66,7 @@ enum Category: String, CaseIterable {
         case .upcomingThisMonth:
             return "Upcoming this month"
         case .database:
-            return "All categories"
+            return "Search"
         }
     }
     

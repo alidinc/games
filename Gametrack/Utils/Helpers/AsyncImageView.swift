@@ -116,15 +116,11 @@ struct ImagePlaceholder: View {
     @State var radius: CGFloat = 5
     
     var body: some View {
-        Group {
-            Image(systemName: "photo")
-                .resizable()
-                .frame(width: 50, height: 35)
-                .hSpacing(.center)
-                .vSpacing(.center)
-        }
-        .hSpacing(.center)
-        .vSpacing(.center)
-        .frame(width: type.width, height: type.height)
+        Image(systemName: "photo")
+            .font(.largeTitle)
+            .hSpacing(.center)
+            .vSpacing(.center)
+            .background(Color.black.opacity(0.25), in: .rect(cornerRadius: 8))
+            .frame(width: type.width, height: type.height)
     }
 }

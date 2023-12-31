@@ -14,7 +14,7 @@ struct GametrackApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.dark)
-                .modelContainer(for: [Game.self])
         }
+        .modelContainer(for: [SavedGame.self])
     }
 }

@@ -10,44 +10,41 @@ import SwiftUI
 struct GameListView: View {
     
     var vm: HomeViewModel
-    @State private var hasReachedEnd = false
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(vm.games, id: \.id) { game in
-                    NavigationLink {
+        List {
+            ForEach(vm.games, id: \.id) { game in
+                ListRowView(game: game)
+                    .id(game.id)
+                    .navigationLink({
                         GameDetailView(game: game)
-                    } label: {
-                        ListRowView(game: game)
-                            .task {
-                                if self.vm.hasReachedEnd(of: game) {
-                                    await vm.fetchNextSetOfGames()
+                    })
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                    .task {
+                        if self.vm.hasReachedEnd(of: game) {
+                            await vm.fetchNextSetOfGames()
+                        }
+                    }
+                    .if(vm.games.last == game) { view in
+                        view
+                            .padding(.bottom, 100)
+                            .overlay(alignment: .bottom) {
+                                ZStack(alignment: .center) {
+                                    ProgressView()
+                                        .controlSize(.large)
                                 }
-                            }
-                            .task {
-                                if vm.hasReachedEnd(of: game) {
-                                    hasReachedEnd = true
-                                }
+                                .hSpacing(.center)
+                                .frame(height: 100)
                             }
                     }
-                }
             }
             .padding(.horizontal)
-            .if(vm.isFetchingNextPage) { view in
-                view
-                    .padding(.bottom, 100)
-                    .overlay(alignment: .bottom) {
-                        ZStack(alignment: .center) {
-                            ProgressView()
-                                .controlSize(.large)
-                        }
-                        .hSpacing(.center)
-                        .frame(height: 100)
-                    }
-            }
         }
+        .listStyle(.plain)
         .padding(.top)
         .padding(.bottom, 1)
+        
     }
 }

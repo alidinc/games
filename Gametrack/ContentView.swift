@@ -18,7 +18,7 @@ struct ContentView: View {
                 .tag(Tab.home)
                 .tabItem { Tab.home.tabContent }
             
-            Text("")
+           LibraryView()
                 .tag(Tab.library)
                 .tabItem { Tab.library.tabContent }
             
