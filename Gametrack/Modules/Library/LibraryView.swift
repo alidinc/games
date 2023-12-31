@@ -148,7 +148,7 @@ struct LibraryView: View {
                 .hSpacing(.leading)
             }
             
-            
+            AddLibraryButton()
             ViewTypeButton()
         }
         .padding(.horizontal)

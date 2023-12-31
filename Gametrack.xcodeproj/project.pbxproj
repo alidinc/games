@@ -59,6 +59,7 @@
 		DAAD3E532B40BD32005E8EBA /* SFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E522B40BD32005E8EBA /* SFImage.swift */; };
 		DAAD3E582B40D89B005E8EBA /* ViewTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */; };
 		DAAD3E5C2B412BF9005E8EBA /* AddLibraryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5B2B412BF9005E8EBA /* AddLibraryButton.swift */; };
+		DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */; };
 		DAB92AFB2B40A90400375F20 /* SavedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB92AFA2B40A90400375F20 /* SavedGame.swift */; };
 		DAB92AFE2B40AE1000375F20 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB92AFD2B40AE1000375F20 /* LibraryView.swift */; };
 		DAB92B002B40B0B800375F20 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB92AFF2B40B0B800375F20 /* Library.swift */; };
@@ -126,6 +127,7 @@
 		DAAD3E522B40BD32005E8EBA /* SFImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFImage.swift; sourceTree = "<group>"; };
 		DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeButton.swift; sourceTree = "<group>"; };
 		DAAD3E5B2B412BF9005E8EBA /* AddLibraryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLibraryButton.swift; sourceTree = "<group>"; };
+		DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFModels.swift; sourceTree = "<group>"; };
 		DAB92AFA2B40A90400375F20 /* SavedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGame.swift; sourceTree = "<group>"; };
 		DAB92AFD2B40AE1000375F20 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DAB92AFF2B40B0B800375F20 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				DA43CE442B30B66B00DAE0B6 /* PopularPlatform.swift */,
 				DA43CE472B30B66B00DAE0B6 /* PopularGenre.swift */,
 				DAC503BA2B343AC9004D4B03 /* ViewType.swift */,
+				DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				DA43CE512B30B66B00DAE0B6 /* MultiQueryModel.swift in Sources */,
 				DA0C208A2B3E637D000E2D6E /* GameModesView.swift in Sources */,
 				DA43CE5B2B30B69100DAE0B6 /* HomeView.swift in Sources */,
+				DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */,
 				DA43CE702B30B6F200DAE0B6 /* KeysTracker.swift in Sources */,
 				DA93BE912B34F5150047DD37 /* GameListView.swift in Sources */,
 				DA43CE4B2B30B66B00DAE0B6 /* AccessToken.swift in Sources */,
