@@ -12,7 +12,7 @@ struct GameGridView: View {
     var vm: HomeViewModel
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                 ForEach(vm.games, id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {
@@ -30,7 +30,6 @@ struct GameGridView: View {
                 }
             }
             .scrollContentBackground(.hidden)
-            .padding(.horizontal)
             .if(vm.isFetchingNextPage) { view in
                 view
                     .padding(.bottom, 100)
@@ -44,7 +43,5 @@ struct GameGridView: View {
                     }
             }
         }
-        .padding(.top)
-        .padding(.bottom, 1)
     }
 }

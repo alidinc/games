@@ -54,7 +54,5 @@ struct GameCardsView: View {
             }
         }
         .scrollTargetBehavior(.viewAligned)
-        .padding(.top, 1)
-        .padding(.bottom, 1)
     }
 }

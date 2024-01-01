@@ -18,7 +18,12 @@ struct LibraryView: View {
     
     @AppStorage("collectionViewType") private var viewType: ViewType = .list
     
+    @State private var searchQuery = ""
+    
     @State private var isFirstTime = true
+    
+    @State private var isSearching = false
+
     
     var body: some View {
         NavigationStack {
@@ -36,32 +41,46 @@ struct LibraryView: View {
                     }
                 }
             }
+            .onChange(of: searchQuery, { oldValue, newValue in
+                isSearching = !newValue.isEmpty
+            })
             .onAppear {
                 if isFirstTime {
-                    if !libraries.isEmpty, let richOne = libraries.max(by: { $0.games.count < $1.games.count }) {
+                    if !libraries.isEmpty, let richOne = libraries.max(by: { $0.savedGames.count < $1.savedGames.count }) {
                         selectedLibrary = richOne
                         isFirstTime = false
                     }
                 }
             }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification), perform: { _ in
+                isSearching = false
+            })
         }
     }
 
     var games: [SavedGame] {
         if let library = libraries.first(where: { $0.id == selectedLibrary.id }) {
-            return library.games
+            return library.savedGames
         }
         
         return []
     }
     
-    @ViewBuilder
-    var ViewSwitcher: some View {
-        ZStack {
-            switch viewType {
-            case .list:
+    var filteredGames: [SavedGame] {
+        if let library = libraries.first(where: { $0.id == selectedLibrary.id }) {
+            return library.savedGames.filter { game in
+                return game.name.lowercased().contains(searchQuery.lowercased())
+            }
+        }
+        
+        return []
+    }
+    
+    private var ListView: some View {
+        VStack {
+            if !games.isEmpty {
                 List {
-                    ForEach(games, id: \.id) { game in
+                    ForEach(isSearching ? filteredGames : games, id: \.id) { game in
                         ListRowView(savedGame: game)
                             .navigationLink({
                                 GameDetailView(savedGame: game)
@@ -71,14 +90,33 @@ struct LibraryView: View {
                             .listRowBackground(Color.clear)
                             .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
                     }
-                    .padding(.horizontal)
                 }
                 .listStyle(.plain)
-            case .grid:
-                ScrollView {
+                .scrollIndicators(.hidden)
+                .overlay {
+                    if isSearching && filteredGames.isEmpty {
+                        ContentUnavailableView.search(text: searchQuery)
+                    }
+                }
+            } else {
+                ContentUnavailableView(
+                    "No content found in your library",
+                    systemImage: "gamecontroller.fill",
+                    description: Text(
+                        "Please add some games to your library."
+                    )
+                )
+            }
+        }
+    }
+    
+    private var GridView: some View {
+        VStack {
+            if !games.isEmpty {
+                ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
-                        ForEach(games, id: \.id) { game in
-                            if let cover = game.cover, let url = cover.url {
+                        ForEach(isSearching ? filteredGames : games, id: \.id) { game in
+                            if let url = game.cover.url {
                                 NavigationLink {
                                     GameDetailView(savedGame: game)
                                 } label: {
@@ -88,40 +126,44 @@ struct LibraryView: View {
                         }
                     }
                     .scrollContentBackground(.hidden)
-                    .padding(.horizontal)
                 }
-                .padding(.top)
-                .padding(.bottom, 1)
-            case .card:
-                    ScrollView(.vertical, showsIndicators: false) {
-                        LazyVStack(spacing: 120) {
-                            ForEach(games, id: \.id) { game in
-                                NavigationLink {
-                                    GameDetailView(savedGame: game)
-                                } label: {
-                                    CardView(savedGame: game)
-                                        .scrollTransition { content, phase in
-                                            content
-                                                .scaleEffect(phase.isIdentity ? 1 : 0.8)
-                                                .rotationEffect(.degrees(phase.isIdentity ? 0 : -30))
-                                                .rotation3DEffect(.degrees(phase.isIdentity ? 0 : 60), axis: (x: -1, y: 1, z: 0))
-                                                .blur(radius: phase.isIdentity ? 0 : 60)
-                                                .offset(x: phase.isIdentity ? 0 : -200)
-                                        }
-                                        .padding(.top, 20)
-                                        .contentShape(.rect)
-                                }
-                            }
-                        }
-                        .scrollTargetLayout()
+                .overlay {
+                    if isSearching && filteredGames.isEmpty{
+                        ContentUnavailableView.search(text: searchQuery)
                     }
-                    .scrollTargetBehavior(.viewAligned)
-                    .padding(.top, 1)
-                    .padding(.bottom, 1)
+                }
+            } else {
+                ContentUnavailableView(
+                    "No content found in your library",
+                    systemImage: "gamecontroller.fill",
+                    description: Text(
+                        "Please add some games to your library."
+                    )
+                )
             }
         }
-        .padding(.top, 20)
-        .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
+    }
+    
+    
+    @ViewBuilder
+    var ViewSwitcher: some View {
+        ZStack {
+            VStack(spacing: 10) {
+                SearchTextField(searchQuery: $searchQuery)
+                switch viewType {
+                case .list:
+                    ListView
+                case .grid:
+                    GridView
+                case .card:
+                    EmptyView()
+                    Spacer()
+                }
+            }
+            .padding(.top, 10)
+            .padding(.horizontal, 10)
+        }
+        .background(.gray.opacity(0.15), in: .rect(cornerRadius: 10))
         .padding(.bottom, 5)
     }
     
@@ -149,7 +191,41 @@ struct LibraryView: View {
             }
             
             AddLibraryButton()
-            ViewTypeButton()
+            Menu {
+                Section("View type") {
+                    Button {
+                        viewType = .list
+                    } label: {
+                        Image(systemName: "rectangle.grid.1x2.fill")
+                        Text("List")
+                    }
+                    
+                    Button {
+                        viewType = .grid
+                    } label: {
+                        Image(systemName: "rectangle.grid.3x2.fill")
+                        Text("Grid")
+                    }
+                    
+                    Button {
+                        viewType = .card
+                    } label: {
+                        Image(systemName: "list.bullet.rectangle.portrait.fill")
+                        Text("Card")
+                    }
+                }
+                
+            } label: {
+                SFImage(name: viewType.imageName)
+            } primaryAction: {
+                if viewType == .list {
+                    viewType = .grid
+                } else if viewType == .grid {
+                    viewType = .card
+                } else if viewType == .card {
+                    viewType = .list
+                }
+            }
         }
         .padding(.horizontal)
         .padding(.vertical, 10)

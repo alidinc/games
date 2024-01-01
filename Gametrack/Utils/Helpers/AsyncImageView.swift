@@ -86,15 +86,14 @@ struct AsyncImageView: View {
                             ProgressView()
                         }
                         .frame(width: self.type.width, height: self.type.height)
-                        .redacted(reason: .placeholder)
                         
                     case .success(let image):
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .shadow(color: .white.opacity(0.5), radius: 10)
+                            .shadow(color: .white.opacity(0.7), radius: 10)
                             .frame(width: self.type.width, height: self.type.height)
-                            .clipShape(RoundedRectangle(cornerRadius: self.radius))
+                            .clipShape(.rect(cornerRadius: self.radius))
                         
                     case .failure:
                         ImagePlaceholder(type: self.type, radius: self.radius)

@@ -40,11 +40,8 @@ struct GameListView: View {
                             }
                     }
             }
-            .padding(.horizontal)
         }
         .listStyle(.plain)
-        .padding(.top)
-        .padding(.bottom, 1)
-        
+        .scrollIndicators(.hidden)
     }
 }

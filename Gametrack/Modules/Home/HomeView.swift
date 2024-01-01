@@ -39,14 +39,10 @@ struct HomeView: View {
                 Task {
                     if !newValue.isEmpty {
                         try await Task.sleep(seconds: 0.5)
-                        withAnimation {
-                            vm.fetchTaskToken.category = .database
-                        }
+                        vm.fetchTaskToken.category = .database
                         await vm.refreshTask()
                     } else {
-                        withAnimation {
-                            vm.fetchTaskToken.category = .topRated
-                        }
+                        vm.fetchTaskToken.category = .topRated
                         await vm.refreshTask()
                         dismissKeyboard()
                     }
@@ -75,25 +71,21 @@ struct HomeView: View {
     @ViewBuilder
     var ViewSwitcher: some View {
         ZStack {
-            switch viewType {
-            case .list:
-                VStack(spacing: 0) {
-                    SearchButton
+            VStack(spacing: 10) {
+                SearchTextField(searchQuery: $vm.searchQuery)
+                switch viewType {
+                case .list:
                     GameListView(vm: vm)
-                }.padding(.top, 10)
-            case .grid:
-                VStack(spacing: 0) {
-                    SearchButton
+                case .grid:
                     GameGridView(vm: vm)
-                }.padding(.top, 10)
-            case .card:
-                VStack(spacing: 20) {
-                    SearchButton
+                case .card:
                     GameCardsView(vm: vm)
-                }.padding(.top, 10)
+                }
             }
+            .padding(.top, 10)
+            .padding(.horizontal, 10)
         }
-        .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
+        .background(.gray.opacity(0.15), in: .rect(cornerRadius: 10))
         .padding(.bottom, 5)
     }
     
@@ -112,47 +104,6 @@ struct HomeView: View {
         }
     }
     
-    
-    private var SearchButton: some View {
-        HStack(spacing: 0) {
-            TextField("", text: $vm.searchQuery)
-                .frame(height: 24, alignment: .leading)
-                .padding(10)
-                .background(.ultraThinMaterial, in: .rect(topLeadingRadius: 8, bottomLeadingRadius: 8))
-                .autocorrectionDisabled()
-                .overlay {
-                    if !vm.searchQuery.isEmpty {
-                        HStack {
-                            Spacer()
-                            Button {
-                                vm.searchQuery = ""
-                            } label: {
-                                Image(systemName: "multiply.circle.fill")
-                            }
-                            .foregroundColor(.secondary)
-                        }
-                        .padding(.trailing, 6)
-                    }
-                }
-            
-            Image(systemName: "magnifyingglass")
-                .resizable()
-                .frame(width: 24, height: 24)
-                .foregroundStyle(appTint)
-                .aspectRatio(contentMode: .fit)
-                .padding(10)
-                .background(
-                    .ultraThinMaterial,
-                    in: .rect(
-                        topLeadingRadius: 0,
-                        bottomLeadingRadius: 0,
-                        bottomTrailingRadius: 8,
-                        topTrailingRadius: 8
-                    )
-                )
-        }
-        .padding(.horizontal)
-    }
     
     private var CategoryButton: some View {
         Menu {
