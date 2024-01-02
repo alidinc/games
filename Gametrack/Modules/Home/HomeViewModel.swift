@@ -58,17 +58,13 @@ extension HomeViewModel {
         let genres = self.fetchTaskToken.genres
         
         if let games = await self.cache.value(forKey: category.rawValue) {
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .success(games)
-            }
+            self.dataFetchPhase = .success(games)
             if Task.isCancelled { return }
             return
         }
         
         self.offset = 0
-        DispatchQueue.main.async {
-            self.dataFetchPhase = .empty
-        }
+        self.dataFetchPhase = .empty
         
         do {
             let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
@@ -78,17 +74,13 @@ extension HomeViewModel {
                                                                       limit: self.limit,
                                                                       offset: self.offset)
             if Task.isCancelled { return }
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .success(response)
-            }
+            self.dataFetchPhase = .success(response)
             if !response.isEmpty {
                 await self.cache.setValue(response, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .failure(error)
-            }
+            self.dataFetchPhase = .failure(error)
         }
     }
     
@@ -100,9 +92,7 @@ extension HomeViewModel {
         let games = self.dataFetchPhase.value ?? []
     
         
-        DispatchQueue.main.async {
-            self.dataFetchPhase = .fetchingNextPage(games)
-        }
+        self.dataFetchPhase = .fetchingNextPage(games)
         
         do {
             self.offset += self.limit
@@ -112,21 +102,17 @@ extension HomeViewModel {
                                                                       genres: genres,
                                                                       limit: self.limit,
                                                                       offset: self.offset)
-       //     let newGames = response.first?.result ?? []
+
             let totalGames = games + response
             if Task.isCancelled { return }
            
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .success(totalGames)
-            }
+            self.dataFetchPhase = .success(totalGames)
             if !totalGames.isEmpty {
                 await self.cache.setValue(totalGames, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .failure(error)
-            }
+            self.dataFetchPhase = .failure(error)
         }
     }
     

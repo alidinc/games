@@ -65,8 +65,8 @@ struct AddLibraryButton: View {
     }
     
     func addLibrary() {
-        let library = Library(name: libraryName)
-        context.insert(library)
+//        let library = Library(name: libraryName)
+//        context.insert(library)
         libraryName = ""
         showAddLibrary = false
     }

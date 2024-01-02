@@ -8,12 +8,12 @@
 import SwiftData
 import SwiftUI
 
-@Model
+
 class Library: Identifiable {
     var id: String
     var name: String
     
-    @Relationship(deleteRule: .cascade)
+  //  @Relationship(deleteRule: .cascade, inverse: \SavedGame.library)
     var games: [SavedGame]
     
     init(id: String = UUID().uuidString, name: String, games: [SavedGame] = []) {

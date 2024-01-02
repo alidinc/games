@@ -30,7 +30,9 @@ class SavedGame: Identifiable, Hashable {
     let similarGames: [Int]?
     let artworks: [Artwork]?
     
-    
+    var libraryType: Int
+   // var library: Library?
+
     init(
         id: Int?,
         name: String?,
@@ -47,7 +49,8 @@ class SavedGame: Identifiable, Hashable {
         videos: [Video]?,
         websites: [Website]?,
         similarGames: [Int]?,
-        artworks: [Artwork]?
+        artworks: [Artwork]?,
+        libraryType: Int
     ) {
         self.id = id
         self.name = name
@@ -65,8 +68,6 @@ class SavedGame: Identifiable, Hashable {
         self.websites = websites
         self.similarGames = similarGames
         self.artworks = artworks
+        self.libraryType = libraryType
     }
-    
-    @Relationship(deleteRule: .nullify)
-    var games: [Library] = []
 }

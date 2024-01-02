@@ -8,9 +8,34 @@
 import SwiftData
 import SwiftUI
 
+enum LibraryType: Int, CaseIterable, Hashable {
+    case wishlist = 0
+    case played = 1
+    case owned = 2
+    
+    var id: Int {
+        switch self {
+        default:
+            return self.rawValue
+        }
+    }
+    
+    var title: String {
+        switch self {
+        case .wishlist:
+            return "Wishlist"
+        case .played:
+            return "Played"
+        case .owned:
+            return "Owned"
+        }
+    }
+}
+
 struct LibraryView: View {
     
-    @Query var libraries: [Library]
+
+    @Query var data: [SavedGame]
     
     @State private var selectedLibrary: Library = Library(id: "123", name: "Wishlist")
     
@@ -18,10 +43,10 @@ struct LibraryView: View {
     
     @AppStorage("collectionViewType") private var viewType: ViewType = .list
     
+    @State private var selectedLibraryType: LibraryType = .wishlist
+    
     @State private var searchQuery = ""
-    
     @State private var isFirstTime = true
-    
     @State private var isSearching = false
 
     
@@ -30,28 +55,27 @@ struct LibraryView: View {
             VStack {
                 Header
                 Spacer()
-                
                 ViewSwitcher
             }
             .background(.gray.opacity(0.15))
-            .onChange(of: libraries) { oldValue, newValue in
-                if newValue.count == 1 {
-                    if let newLibrary = newValue.first {
-                        selectedLibrary = newLibrary
-                    }
-                }
-            }
+//            .onChange(of: libraries) { oldValue, newValue in
+//                if newValue.count == 1 {
+//                    if let newLibrary = newValue.first {
+//                        selectedLibrary = newLibrary
+//                    }
+//                }
+//            }
             .onChange(of: searchQuery, { oldValue, newValue in
                 isSearching = !newValue.isEmpty
             })
-            .onAppear {
-                if isFirstTime {
-                    if !libraries.isEmpty, let richOne = libraries.max(by: { $0.savedGames.count < $1.savedGames.count }) {
-                        selectedLibrary = richOne
-                        isFirstTime = false
-                    }
-                }
-            }
+//            .onAppear {
+//                if isFirstTime {
+//                    if !libraries.isEmpty, let richOne = libraries.max(by: { $0.games.count < $1.games.count }) {
+//                        selectedLibrary = richOne
+//                        isFirstTime = false
+//                    }
+//                }
+//            }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification), perform: { _ in
                 isSearching = false
             })
@@ -59,21 +83,18 @@ struct LibraryView: View {
     }
 
     var games: [SavedGame] {
-        if let library = libraries.first(where: { $0.id == selectedLibrary.id }) {
-            return library.savedGames
-        }
-        
-        return []
+        data.filter({ $0.libraryType == selectedLibraryType.id })
     }
     
     var filteredGames: [SavedGame] {
-        if let library = libraries.first(where: { $0.id == selectedLibrary.id }) {
-            return library.savedGames.filter { game in
-                return game.name.lowercased().contains(searchQuery.lowercased())
+        let games = data.filter({ $0.libraryType == selectedLibraryType.id })
+        return games.filter { game in
+            if let name = game.name {
+                return name.lowercased().contains(searchQuery.lowercased())
             }
+            
+            return false
         }
-        
-        return []
     }
     
     private var ListView: some View {
@@ -116,7 +137,7 @@ struct LibraryView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                         ForEach(isSearching ? filteredGames : games, id: \.id) { game in
-                            if let url = game.cover.url {
+                            if let cover = game.cover, let url = cover.url {
                                 NavigationLink {
                                     GameDetailView(savedGame: game)
                                 } label: {
@@ -170,14 +191,14 @@ struct LibraryView: View {
     private var Header: some View {
         HStack {
             Menu {
-                Picker("Library", selection: $selectedLibrary) {
-                    ForEach(libraries, id: \.id) { library in
-                        Text(library.name).tag(library)
+                Picker("Library", selection: $selectedLibraryType) {
+                    ForEach(LibraryType.allCases, id: \.id) { library in
+                        Text(library.title).tag(library)
                     }
                 }
             } label: {
                 HStack(alignment: .center, spacing: 4) {
-                    Text(selectedLibrary.name)
+                    Text(selectedLibraryType.title)
                         .font(.system(size: 26, weight: .semibold))
                         .foregroundStyle(.primary)
                         .shadow(radius: 10)
