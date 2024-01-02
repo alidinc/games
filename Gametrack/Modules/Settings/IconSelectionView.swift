@@ -87,7 +87,7 @@ struct IconSelectionView: View {
                         }
                     }
                     .padding()
-                    .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
+                    .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
                 }
             }
         }

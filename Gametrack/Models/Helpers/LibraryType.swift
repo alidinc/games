@@ -9,10 +9,11 @@ import Foundation
 import SwiftUI
 
 enum LibraryType: Int, CaseIterable, Hashable {
-    case wishlist = 0
-    case purchased = 1
-    case owned = 2
-    case played = 3
+    case all = 0
+    case wishlist = 1
+    case purchased = 2
+    case owned = 3
+    case played = 4
     
     var id: Int {
         switch self {
@@ -31,6 +32,8 @@ enum LibraryType: Int, CaseIterable, Hashable {
             return "Owned"
         case .played:
             return "Played"
+        default:
+            return "All"
         }
     }
     
@@ -44,6 +47,8 @@ enum LibraryType: Int, CaseIterable, Hashable {
             return "bookmark"
         case .played:
             return "checkmark.square"
+        default:
+            return "gamecontroller"
         }
     }
     
@@ -57,6 +62,8 @@ enum LibraryType: Int, CaseIterable, Hashable {
             return "bookmark.fill"
         case .played:
             return "checkmark.square.fill"
+        default:
+            return "gamecontroller.fill"
         }
     }
     
@@ -70,6 +77,8 @@ enum LibraryType: Int, CaseIterable, Hashable {
             return Color.blue
         case .played:
             return Color.green
+        default:
+            return Color.white
         }
     }
 }

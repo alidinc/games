@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchTextField: View {
     
     @Binding var searchQuery: String
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
     
     var body: some View {
         HStack(spacing: 0) {

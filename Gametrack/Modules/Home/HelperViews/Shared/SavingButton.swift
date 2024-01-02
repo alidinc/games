@@ -19,7 +19,7 @@ struct SavingButton: View {
     
     var body: some View {
         Menu {
-            ForEach(LibraryType.allCases, id: \.id) { library in
+            ForEach([LibraryType.wishlist, LibraryType.purchased, LibraryType.owned, LibraryType.played], id: \.id) { library in
                 Button {
                     handleToggle(library: library)
                 } label: {

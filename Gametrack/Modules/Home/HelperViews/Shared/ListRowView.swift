@@ -144,14 +144,6 @@ struct RatingStatusView: View {
     @ViewBuilder
     private func RatingStatusView(for game: Game) -> some View {
         HStack {
-            if let totalRating = game.totalRating, totalRating != 0 {
-                Text(String(format: "%.2f", totalRating))
-                    .font(.caption)
-                    .fixedSize()
-                    .foregroundColor(ratingColor)
-                    .frame(alignment: .bottomTrailing)
-            }
-            
             ratingImage
                 .resizable()
                 .frame(width: 16, height: 16)

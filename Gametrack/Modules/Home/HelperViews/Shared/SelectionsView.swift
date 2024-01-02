@@ -13,7 +13,7 @@ struct SelectionsView:  View {
     @Binding var selectedSegment: SegmentType
     @Namespace private var animation
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
     @State private var showClear = false
     
     var body: some View {
@@ -33,7 +33,7 @@ struct SelectionsView:  View {
                             .multilineTextAlignment(.leading)
                             .hSpacing(.leading)
                     } else {
-                        Text("You can select a category from the title too.")
+                        Text("This is a category based on the data.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.leading)

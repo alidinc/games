@@ -11,7 +11,7 @@ struct GameModesView: View {
     
     var game: Game
     
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
     
     var body: some View {
         if let gameModes = game.gameModes {

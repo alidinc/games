@@ -11,7 +11,7 @@ struct HomeView: View {
     
     @State private var vm = HomeViewModel()
     @AppStorage("collectionViewType") private var viewType: ViewType = .list
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {

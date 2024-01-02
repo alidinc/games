@@ -15,9 +15,9 @@ struct LibraryView: View {
     @Environment(\.modelContext) private var context
     
     @AppStorage("collectionViewType") private var viewType: ViewType = .list
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
 
-    @State private var selectedLibraryType: LibraryType = .wishlist
+    @State private var selectedLibraryType: LibraryType = .all
     @State private var searchQuery = ""
     @State private var isSearching = false
 
@@ -40,12 +40,15 @@ struct LibraryView: View {
     }
 
     var savedGames: [SavedGame] {
-        data.filter({ $0.libraryType == selectedLibraryType.id })
+        if selectedLibraryType == .all {
+            return data
+        } else {
+            return data.filter({ $0.libraryType == selectedLibraryType.id })
+        }
     }
     
     var filteredGames: [SavedGame] {
-        let games = data.filter({ $0.libraryType == selectedLibraryType.id })
-        return games.filter { game in
+        return savedGames.filter { game in
             if let name = game.name {
                 return name.lowercased().contains(searchQuery.lowercased())
             }
@@ -73,10 +76,14 @@ struct LibraryView: View {
             }
         } label: {
             HStack(alignment: .center, spacing: 4) {
-                Text(selectedLibraryType.title)
-                    .font(.system(size: 26, weight: .semibold))
-                    .foregroundStyle(.primary)
-                    .shadow(radius: 10)
+                HStack(spacing: 8) {
+                    SFImage(name: selectedLibraryType.selectedIconName, opacity: 0, radius: 0, padding: 0, color: appTint)
+                    
+                    Text(selectedLibraryType.title)
+                        .font(.system(size: 26, weight: .semibold))
+                        .foregroundStyle(.primary)
+                        .shadow(radius: 10)
+                }
                    
                 Image(systemName: "chevron.down")
                     .font(.title2)
@@ -137,10 +144,10 @@ struct LibraryView: View {
             List {
                 ForEach(isSearching ? filteredGames : savedGames, id: \.id) { game in
                     ListRowView(savedGame: game)
+                        .id(game.id)
                         .navigationLink({
                             GameDetailView(savedGame: game)
                         })
-                        .id(game.id)
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))

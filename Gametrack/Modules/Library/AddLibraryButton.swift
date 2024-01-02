@@ -11,7 +11,7 @@ struct AddLibraryButton: View {
     
     @State private var showAddLibrary = false
     @State private var libraryName = ""
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
     @Environment(\.modelContext) private var context
     
     var body: some View {

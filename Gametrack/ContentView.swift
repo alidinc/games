@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
     @State private var activeTab: Tab = .home
     
     var body: some View {
@@ -22,9 +22,9 @@ struct ContentView: View {
                 .tag(Tab.library)
                 .tabItem { Tab.library.tabContent }
             
-            SettingsView()
-                .tag(Tab.settings)
-                .tabItem { Tab.settings.tabContent }
+            MoreView()
+                .tag(Tab.more)
+                .tabItem { Tab.more.tabContent }
         }
         .tint(appTint)
     }
@@ -38,7 +38,7 @@ struct ContentView: View {
 enum Tab: String {
     case home = "Home"
     case library = "Library"
-    case settings = "Settings"
+    case more = "More"
     
     @ViewBuilder
     var tabContent: some View {
@@ -49,8 +49,8 @@ enum Tab: String {
         case .library:
             Image(systemName: "bookmark.square.fill")
             Text(self.rawValue)
-        case .settings:
-            Image(systemName: "gearshape")
+        case .more:
+            Image(systemName: "ellipsis.circle.fill")
             Text(self.rawValue)
         }
     }

@@ -13,11 +13,9 @@ class HomeViewModel {
     
     var searchQuery = ""
     var fetchTaskToken: FetchTaskToken
-
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
-    
+
     private var cache = DiskCache<[Game]>(filename: "GamesCache", expirationInterval: 24 * 60 * 60 * 60)
-    
     private var limit = 21
     private var offset = 0
     
