@@ -50,7 +50,7 @@ struct GameDetailView: View {
                         .mask(alignment: .bottom, { GradientMask })
                     
                     VStack(alignment: .leading, spacing: 25) {
-                        VStack(alignment: .leading, spacing: 10) {
+                        VStack(alignment: .leading, spacing: 0) {
                             if let name = game.name {
                                 HStack {
                                     Text(name)
@@ -61,16 +61,14 @@ struct GameDetailView: View {
                                     
                                     SavingButton(game: game, opacity: 1, padding: 8)
                                 }
-                                .padding(.horizontal)
                             }
                             
                             RatingView(game: game)
-                                .padding(.horizontal)
-                            
-                            GenresView(game: game)
-                                .padding(.leading)
-                            
                         }
+                        .padding(.horizontal)
+                        
+                        GenresView(game: game)
+                            .padding(.leading)
                         
                         SummaryView(game: game)
                         

@@ -23,17 +23,22 @@ struct SavingButton: View {
                 Button {
                     handleToggle(library: library)
                 } label: {
-                    Text(library.title)
+                    HStack {
+                        Text(library.title)
+                        SFImage(name:  alreadyExists(game, in: library) ? library.selectedIconName : library.iconName)
+                    }
                 }
             }
         } label: {
-            SFImage(
-                name: isSaved ? "bookmark.fill" : "bookmark",
-                opacity: opacity,
-                padding: padding
-            )
+            if let savedGame = games.first(where: { $0.id == game.id }),
+               let library = LibraryType(rawValue: savedGame.libraryType) {
+                SFImage(name: library.selectedIconName, opacity: opacity, padding: padding, color: library.color)
+            } else {
+                SFImage(name: "bookmark", opacity: opacity, padding: padding)
+            }
         }
     }
+    
     
     var isSaved: Bool {
         games.compactMap({$0.id}).contains(game.id)
@@ -44,13 +49,15 @@ struct SavingButton: View {
     }
     
     func handleToggle(library: LibraryType) {
-        guard self.alreadyExists(game, in: library) else {
+        withAnimation(.snappy) {
+            guard self.alreadyExists(game, in: library) else {
+                delete()
+                add(for: library)
+                return
+            }
+            
             delete()
-            add(for: library)
-            return
         }
-        
-        delete()
     }
     
     func delete() {

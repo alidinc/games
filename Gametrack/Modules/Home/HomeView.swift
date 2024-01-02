@@ -78,8 +78,6 @@ struct HomeView: View {
                     GameListView(vm: vm)
                 case .grid:
                     GameGridView(vm: vm)
-                case .card:
-                    GameCardsView(vm: vm)
                 }
             }
             .padding(.top, 10)

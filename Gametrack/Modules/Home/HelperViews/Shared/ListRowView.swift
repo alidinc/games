@@ -86,7 +86,7 @@ struct ListRowView: View {
                         RatingStatusView(game: game)
                         Spacer()
                         
-                        SavingButton(game: game, opacity: 0.2, padding: 8)
+                        SavingButton(game: game, opacity: 0.2, padding: 6)
                     }
                 }
             }

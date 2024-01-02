@@ -40,8 +40,8 @@
 		DA43CE712B30B6F200DAE0B6 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE6C2B30B6F200DAE0B6 /* Cache.swift */; };
 		DA43CE722B30B6F200DAE0B6 /* CacheImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE6D2B30B6F200DAE0B6 /* CacheImplementation.swift */; };
 		DA43CE732B30B6F200DAE0B6 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE6E2B30B6F200DAE0B6 /* CacheManager.swift */; };
-		DA43CE752B30B78900DAE0B6 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE742B30B78900DAE0B6 /* CardView.swift */; };
 		DA43CE7B2B31D35900DAE0B6 /* ListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE7A2B31D35900DAE0B6 /* ListRowView.swift */; };
+		DA4B1BE12B43948200EA3E8F /* LibraryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BE02B43948200EA3E8F /* LibraryType.swift */; };
 		DA5557A62B38764D00D440A4 /* GenresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557A52B38764D00D440A4 /* GenresView.swift */; };
 		DA5557A82B38769F00D440A4 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557A72B38769F00D440A4 /* RatingView.swift */; };
 		DA5557AA2B38922300D440A4 /* GameDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */; };
@@ -51,7 +51,6 @@
 		DA93BE8E2B34F47A0047DD37 /* SocialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE8D2B34F47A0047DD37 /* SocialsView.swift */; };
 		DA93BE912B34F5150047DD37 /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE902B34F5150047DD37 /* GameListView.swift */; };
 		DA93BE932B34F5730047DD37 /* GameGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE922B34F5730047DD37 /* GameGridView.swift */; };
-		DA93BE952B34F5A60047DD37 /* GameCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE942B34F5A60047DD37 /* GameCardsView.swift */; };
 		DA93BE972B34F71B0047DD37 /* ImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE962B34F71B0047DD37 /* ImagesView.swift */; };
 		DA93BE992B35142E0047DD37 /* RatingStarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE982B35142E0047DD37 /* RatingStarsView.swift */; };
 		DA93BE9B2B351D270047DD37 /* PlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE9A2B351D270047DD37 /* PlatformsView.swift */; };
@@ -109,8 +108,8 @@
 		DA43CE6C2B30B6F200DAE0B6 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		DA43CE6D2B30B6F200DAE0B6 /* CacheImplementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheImplementation.swift; sourceTree = "<group>"; };
 		DA43CE6E2B30B6F200DAE0B6 /* CacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
-		DA43CE742B30B78900DAE0B6 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		DA43CE7A2B31D35900DAE0B6 /* ListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRowView.swift; sourceTree = "<group>"; };
+		DA4B1BE02B43948200EA3E8F /* LibraryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryType.swift; sourceTree = "<group>"; };
 		DA5557A52B38764D00D440A4 /* GenresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresView.swift; sourceTree = "<group>"; };
 		DA5557A72B38769F00D440A4 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailViewModel.swift; sourceTree = "<group>"; };
@@ -120,7 +119,6 @@
 		DA93BE8D2B34F47A0047DD37 /* SocialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialsView.swift; sourceTree = "<group>"; };
 		DA93BE902B34F5150047DD37 /* GameListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListView.swift; sourceTree = "<group>"; };
 		DA93BE922B34F5730047DD37 /* GameGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGridView.swift; sourceTree = "<group>"; };
-		DA93BE942B34F5A60047DD37 /* GameCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCardsView.swift; sourceTree = "<group>"; };
 		DA93BE962B34F71B0047DD37 /* ImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesView.swift; sourceTree = "<group>"; };
 		DA93BE982B35142E0047DD37 /* RatingStarsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStarsView.swift; sourceTree = "<group>"; };
 		DA93BE9A2B351D270047DD37 /* PlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsView.swift; sourceTree = "<group>"; };
@@ -237,10 +235,8 @@
 			isa = PBXGroup;
 			children = (
 				DAAD3E552B40D121005E8EBA /* Shared */,
-				DA43CE742B30B78900DAE0B6 /* CardView.swift */,
 				DA93BE902B34F5150047DD37 /* GameListView.swift */,
 				DA93BE922B34F5730047DD37 /* GameGridView.swift */,
-				DA93BE942B34F5A60047DD37 /* GameCardsView.swift */,
 			);
 			path = HelperViews;
 			sourceTree = "<group>";
@@ -357,6 +353,7 @@
 				DA43CE472B30B66B00DAE0B6 /* PopularGenre.swift */,
 				DAC503BA2B343AC9004D4B03 /* ViewType.swift */,
 				DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */,
+				DA4B1BE02B43948200EA3E8F /* LibraryType.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -444,7 +441,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA93BE952B34F5A60047DD37 /* GameCardsView.swift in Sources */,
 				DA93BE9B2B351D270047DD37 /* PlatformsView.swift in Sources */,
 				DA43CE4E2B30B66B00DAE0B6 /* DataFetchPhase.swift in Sources */,
 				DA43CE4D2B30B66B00DAE0B6 /* PopularPlatform.swift in Sources */,
@@ -468,7 +464,6 @@
 				DA5557B22B38E57F00D440A4 /* VideosView.swift in Sources */,
 				DA43CE4F2B30B66B00DAE0B6 /* Category.swift in Sources */,
 				DA43CE362B30B65500DAE0B6 /* Blur.swift in Sources */,
-				DA43CE752B30B78900DAE0B6 /* CardView.swift in Sources */,
 				DA43CE662B30B6CD00DAE0B6 /* ImageLoader.swift in Sources */,
 				DAC503C22B344C70004D4B03 /* SettingsView.swift in Sources */,
 				DA43CE532B30B66B00DAE0B6 /* Game.swift in Sources */,
@@ -487,6 +482,7 @@
 				DA5557A82B38769F00D440A4 /* RatingView.swift in Sources */,
 				DA5557A62B38764D00D440A4 /* GenresView.swift in Sources */,
 				DAAD3E512B40B485005E8EBA /* SavingButton.swift in Sources */,
+				DA4B1BE12B43948200EA3E8F /* LibraryType.swift in Sources */,
 				DAB92AFB2B40A90400375F20 /* SavedGame.swift in Sources */,
 				DA93BE992B35142E0047DD37 /* RatingStarsView.swift in Sources */,
 				DA93BE8C2B34F4230047DD37 /* GameDetailView.swift in Sources */,

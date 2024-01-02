@@ -25,13 +25,13 @@ struct CloseButton: View {
             }
         } label: {
             Circle()
-                        .fill(Color(.secondarySystemBackground))
-                        .frame(width: 30, height: 30) // You can make this whatever size, but keep UX in mind.
-                        .overlay(
-                            Image(systemName: "xmark")
-                                .font(.system(size: 15, weight: .bold, design: .rounded)) // This should be less than the frame of the circle
-                                .foregroundColor(.secondary)
-                        )
+                .fill(Color(.secondarySystemBackground))
+                .frame(width: 30, height: 30) // You can make this whatever size, but keep UX in mind.
+                .overlay(
+                    Image(systemName: "xmark")
+                        .font(.system(size: 15, weight: .bold, design: .rounded)) // This should be less than the frame of the circle
+                        .foregroundColor(.secondary)
+                )
         }
         .padding()
     }

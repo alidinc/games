@@ -13,19 +13,23 @@ struct SFImage: View {
     var opacity: CGFloat
     var radius: CGFloat
     var padding: CGFloat
+    var color: Color
     
-    init(name: String, opacity: CGFloat = 0.5, radius: CGFloat = 8, padding: CGFloat = 10) {
+    init(name: String, opacity: CGFloat = 0.5, radius: CGFloat = 8, padding: CGFloat = 10, color: Color = .primary) {
         self.name = name
         self.opacity = opacity
         self.radius = radius
         self.padding = padding
+        self.color = color
     }
     
     var body: some View {
         Image(systemName: name)
-            .imageScale(.large)
+            .imageScale(.medium)
             .frame(width: 24, height: 24)
             .padding(padding)
+            .foregroundStyle(color)
             .background(Color.black.opacity(opacity), in: .rect(cornerRadius: radius))
+            .animation(.bouncy, value: color)
     }
 }
