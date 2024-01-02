@@ -225,6 +225,7 @@
 			children = (
 				DAB92B022B40B26A00375F20 /* Helpers */,
 				DA43CE4A2B30B66B00DAE0B6 /* Game.swift */,
+				DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -379,7 +380,6 @@
 				DA4B1BE02B43948200EA3E8F /* LibraryType.swift */,
 				DA4B1BE42B43A71700EA3E8F /* Feedback+Enum.swift */,
 				DA4B1BE52B43A71700EA3E8F /* SupportEmail.swift */,
-				DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
