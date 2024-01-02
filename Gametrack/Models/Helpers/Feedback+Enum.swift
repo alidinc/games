@@ -22,7 +22,7 @@ enum Feedback: Int, CaseIterable, Equatable, Hashable {
     var title: String {
         switch self {
         case .email:
-            return "Send an email"
+            return "Support"
         case .rate:
             return "Rate us on the AppStore"
         case .share:

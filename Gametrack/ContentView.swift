@@ -10,13 +10,13 @@ import SwiftUI
 struct ContentView: View {
     
     @AppStorage("appTint") var appTint: Color = .white
-    @State private var activeTab: Tab = .home
+    @State private var activeTab: Tab = .discover
     
     var body: some View {
         TabView(selection: $activeTab) {
-            HomeView()
-                .tag(Tab.home)
-                .tabItem { Tab.home.tabContent }
+            DiscoverView()
+                .tag(Tab.discover)
+                .tabItem { Tab.discover.tabContent }
             
            LibraryView()
                 .tag(Tab.library)
@@ -36,18 +36,18 @@ struct ContentView: View {
 
 
 enum Tab: String {
-    case home = "Home"
+    case discover = "Discover"
     case library = "Library"
     case more = "More"
     
     @ViewBuilder
     var tabContent: some View {
         switch self {
-        case .home:
-            Image(systemName: "house")
+        case .discover:
+            Image(systemName: "network")
             Text(self.rawValue)
         case .library:
-            Image(systemName: "bookmark.square.fill")
+            Image(systemName: "bookmark.circle.fill")
             Text(self.rawValue)
         case .more:
             Image(systemName: "ellipsis.circle.fill")

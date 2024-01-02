@@ -29,6 +29,7 @@ extension View {
         }
     }
     
+    @MainActor
     var safeArea: UIEdgeInsets {
         if let windowScene = (UIApplication.shared.connectedScenes.first as? UIWindowScene) {
             return windowScene.keyWindow?.safeAreaInsets ?? .zero
@@ -104,7 +105,15 @@ fileprivate struct NavigationLinkModifier<Destination: View>: ViewModifier {
 
 
 extension View {
+    @MainActor
     func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+extension View {
+    
+    func addToClipboardWithHaptics(with text: String) {
+        UIPasteboard.general.setValue(text, forPasteboardType: "public.plain-text")
     }
 }

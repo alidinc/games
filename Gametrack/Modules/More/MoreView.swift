@@ -22,6 +22,9 @@ struct MoreView: View {
     @State private var showMailApp = false
     @State private var showAbout = false
     @State private var showIcons = false
+    @State private var showSendEmail = false
+    @State private var showAppStore = false
+    @State private var showAlertNoDefaulEmailFound = false
     
     var body: some View {
         NavigationStack {
@@ -52,23 +55,18 @@ struct MoreView: View {
                     Section("Feedback") {
                         ForEach(Feedback.allCases, id: \.id) { feedback in
                             switch feedback {
-                            case .rate, .email:
-                                MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
-                                    .onTapGesture {
-                                        switch feedback {
-                                        case .email:
-                                            if MailView.canSendMail {
-                                                self.showMailApp.toggle()
-                                            } else {
-                                                self.email.send(openURL: self.openURL)
-                                            }
-                                        case .rate:
-                                            self.rateApp()
-                                        case .share:
-                                            break
-                                        }
-                                    }
-                                
+                            case .rate:
+                                Button(action: {
+                                    showAppStore = true
+                                }, label: {
+                                   MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
+                                })
+                            case .email:
+                                Button(action: {
+                                    showSendEmail = true
+                                }, label: {
+                                    MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
+                                })
                             case .share:
                                 ShareLink(item: Constants.AppStoreURL) {
                                     MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
@@ -88,6 +86,44 @@ struct MoreView: View {
             }
             .scrollContentBackground(.hidden)
             .background(.gray.opacity(0.15))
+            .confirmationDialog("Go to AppStore", isPresented: $showAppStore, titleVisibility: .visible, actions: {
+                Button {
+                    self.rateApp()
+                } label: {
+                    Text("Go to AppStore")
+                }
+
+            })
+            .confirmationDialog("Send an email", isPresented: $showSendEmail, titleVisibility: .visible, actions: {
+                Button {
+                    self.email.send(openURL: self.openURL) { didSend in
+                        showAlertNoDefaulEmailFound = !didSend
+                    }
+                } label: {
+                    Text("Default email app")
+                }
+                
+                if MailView.canSendMail {
+                    Button {
+                        self.showMailApp = true
+                    } label: {
+                        Text("iOS email app")
+                    }
+                } else {
+                    
+                }
+            })
+            .alert("No default email app found", isPresented: $showAlertNoDefaulEmailFound, actions: {
+                Button {
+                    addToClipboardWithHaptics(with: "brendan.koeleman@outlook.com")
+                } label: {
+                    Text("Copy our support email here.")
+                }
+            
+                Button {} label: {
+                    Text("OK")
+                }
+            })
             .sheet(isPresented: $showIcons, content: {
                 IconSelectionView()
                     .presentationDetents([.medium])
@@ -111,7 +147,7 @@ struct MoreView: View {
     
     private var Header: some View {
         HStack(spacing: 8) {
-            SFImage(name: "ellipsis.circle.fill", opacity: 0, radius: 0, padding: 0, color: appTint)
+          //  SFImage(name: "ellipsis.circle.fill", opacity: 0, radius: 0, padding: 0, color: appTint)
             
             Text("More")
                 .font(.system(size: 26, weight: .semibold))
@@ -123,6 +159,7 @@ struct MoreView: View {
         .padding(.vertical, 10)
     }
     
+    @MainActor
     func rateApp() {
         let urlStr = "\(Constants.AppStoreURL)?action=write-review"
         
@@ -142,7 +179,7 @@ import SwiftUI
 
 struct MoreMainRowView: View {
     
-    @AppStorage("appTint") var appTint: Color = .purple
+    @AppStorage("appTint") var appTint: Color = .white
     
     @State var imageName: String
     @State var text: String

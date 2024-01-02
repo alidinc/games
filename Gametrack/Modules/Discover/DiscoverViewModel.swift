@@ -9,13 +9,14 @@ import SwiftUI
 import Observation
 
 @Observable
-class HomeViewModel {
+class DiscoverViewModel {
     
     var searchQuery = ""
     var fetchTaskToken: FetchTaskToken
+    
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
-
-    private var cache = DiskCache<[Game]>(filename: "GamesCache", expirationInterval: 24 * 60 * 60 * 60)
+    
+    private var cache: DiskCache<[Game]>?
     private var limit = 21
     private var offset = 0
     
@@ -31,6 +32,9 @@ class HomeViewModel {
     }
     
     init() {
+        self.cache = DiskCache<[Game]>(filename: "GamesCache",
+                                       expirationInterval: 24 * 60 * 60 * 60)
+        
         self.fetchTaskToken = FetchTaskToken(
             category: .topRated,
             platforms: [.database],
@@ -38,24 +42,30 @@ class HomeViewModel {
             token: .now
         )
     }
+    
 }
 
-extension HomeViewModel {
+extension DiscoverViewModel {
     
+    @MainActor
+    @Sendable
     func refreshTask() async {
         self.offset = 0
         self.dataFetchPhase = .empty
         self.fetchTaskToken.token = Date()
-        await self.cache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
+        if let cache = self.cache {
+            await cache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
+        }
     }
     
+    @MainActor
     func fetchGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
         let platforms = self.fetchTaskToken.platforms
         let genres = self.fetchTaskToken.genres
         
-        if let games = await self.cache.value(forKey: category.rawValue) {
+        if let cache, let games = await cache.value(forKey: category.rawValue) {
             self.dataFetchPhase = .success(games)
             if Task.isCancelled { return }
             return
@@ -73,8 +83,8 @@ extension HomeViewModel {
                                                                       offset: self.offset)
             if Task.isCancelled { return }
             self.dataFetchPhase = .success(response)
-            if !response.isEmpty {
-                await self.cache.setValue(response, forKey: category.rawValue)
+            if !response.isEmpty, let cache {
+                await cache.setValue(response, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
@@ -82,6 +92,7 @@ extension HomeViewModel {
         }
     }
     
+    @MainActor
     func fetchNextSetOfGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
@@ -105,8 +116,8 @@ extension HomeViewModel {
             if Task.isCancelled { return }
            
             self.dataFetchPhase = .success(totalGames)
-            if !totalGames.isEmpty {
-                await self.cache.setValue(totalGames, forKey: category.rawValue)
+            if !totalGames.isEmpty, let cache  {
+                await cache.setValue(totalGames, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }

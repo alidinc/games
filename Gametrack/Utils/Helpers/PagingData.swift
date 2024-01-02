@@ -25,7 +25,7 @@ actor PagingData {
         !hasReachedEnd && nextPage <= maxPageLimit
     }
     
-    func loadNextPage<T>(dataFetchProvider: @escaping (Int) async throws -> [T]) async throws -> [T] {
+    func loadNextPage<T: Sendable>(dataFetchProvider: @escaping (Int) async throws -> [T]) async throws -> [T] {
         if Task.isCancelled { return [] }
         print("PAGING: Current Page \(currentPage), next page: \(nextPage)")
         

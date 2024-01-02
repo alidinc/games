@@ -9,6 +9,7 @@
 import CoreHaptics
 import UIKit
 
+@MainActor
 final class HapticsManager {
     static let shared = HapticsManager()
     

@@ -1,17 +1,19 @@
 //
-//  GamesView.swift
-//  A-games
+//  DiscoverView.swift
 //
 //  Created by Ali Dinç on 17/12/2023.
 //
 
 import SwiftUI
 
-struct HomeView: View {
+struct DiscoverView: View {
     
-    @State private var vm = HomeViewModel()
-    @AppStorage("collectionViewType") private var viewType: ViewType = .list
+    @State private var vm = DiscoverViewModel()
+    
+    @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
+    
+    @Environment(Preferences.self) private var preferences
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -20,13 +22,17 @@ struct HomeView: View {
                 Header
                 ViewSwitcher
             }
+            .refreshable {
+                if preferences.networkStatus == .network {
+                    Task {
+                        await vm.refreshTask()
+                    }
+                }
+            }
             .background(.gray.opacity(0.15))
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
             .animation(.easeInOut, value: vm.fetchTaskToken.category)
-            .overlay {
-                LoadingView
-            }
             .task(id: vm.fetchTaskToken) {
                 await vm.fetchGames()
             }
@@ -73,15 +79,20 @@ struct HomeView: View {
         ZStack {
             VStack(spacing: 10) {
                 SearchTextField(searchQuery: $vm.searchQuery)
-                switch viewType {
-                case .list:
-                    GameListView(vm: vm)
-                case .grid:
-                    GameGridView(vm: vm)
-                }
+                CollectionView(vm: vm, viewType: $viewType)
             }
             .padding(.top, 10)
             .padding(.horizontal, 10)
+            .overlay {
+                if preferences.networkStatus == .local {
+                    ContentUnavailableView("No network now, please try again later.", systemImage: "globe")
+                        .onAppear {
+                            vm.dataFetchPhase = .empty
+                        }
+                } else {
+                    LoadingView
+                }
+            }
         }
         .background(.gray.opacity(0.15), in: .rect(cornerRadius: 10))
         .padding(.bottom, 5)
@@ -93,7 +104,7 @@ struct HomeView: View {
             HStack {
                 CategoryButton
                 Spacer()
-                ViewTypeButton()
+                ViewTypeButton(viewType: $viewType)
             }
             .padding(.vertical, 10)
             .padding(.horizontal)

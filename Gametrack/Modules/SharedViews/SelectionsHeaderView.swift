@@ -22,7 +22,7 @@ enum SegmentType: String, CaseIterable, Identifiable {
 
 struct SelectionsHeaderView: View {
     
-    var vm: HomeViewModel
+    var vm: DiscoverViewModel
     @State private var showSelection = false
     @State private var selectedSegment: SegmentType = .platform
     

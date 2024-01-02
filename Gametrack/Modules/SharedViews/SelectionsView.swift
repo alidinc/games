@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SelectionsView:  View {
     
-    var vm: HomeViewModel
+    var vm: DiscoverViewModel
     @Binding var selectedSegment: SegmentType
     @Namespace private var animation
     @Environment(\.dismiss) private var dismiss

@@ -2,9 +2,8 @@
 //  SavedGame.swift
 //  Gametrack
 //
-//  Created by Ali Dinç on 30/12/2023.
+//  Created by Ali Dinç on 02/01/2024.
 //
-
 
 import SwiftData
 import SwiftUI

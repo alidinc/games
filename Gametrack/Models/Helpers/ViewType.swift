@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ViewType: String, CaseIterable {
+enum ViewType: String, CaseIterable, RawRepresentable {
     case list
     case grid
     

@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ViewTypeButton: View {
     
-    @AppStorage("collectionViewType") private var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
+    @Binding var viewType: ViewType
     
     var body: some View {
         Menu {
@@ -23,7 +23,7 @@ struct ViewTypeButton: View {
                 }
                 
                 Button {
-                    viewType = .grid
+                    viewType = .list
                 } label: {
                     Image(systemName: "rectangle.grid.3x2.fill")
                     Text("Grid")
@@ -33,11 +33,7 @@ struct ViewTypeButton: View {
         } label: {
             SFImage(name: viewType.imageName, color: appTint)
         } primaryAction: {
-            viewType = viewType == .list ? .grid : .list
+            viewType = viewType == .grid ? .list : .grid
         }
     }
-}
-
-#Preview {
-    ViewTypeButton()
 }

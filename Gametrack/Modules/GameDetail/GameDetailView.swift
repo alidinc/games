@@ -10,36 +10,35 @@ import SwiftUI
 struct GameDetailView: View {
     
     var game: Game?
-    private var reference: ViewReference = .local
-    
-    init(game: Game?) {
-        self.reference = .network
+    @State var vm = GameDetailViewModel()
+   
+    init(game: Game? = nil, savedGame: SavedGame? = nil) {
+        guard let game else {
+            if let savedGame {
+                self.game = Game(
+                                id: savedGame.id,
+                                name: savedGame.name,
+                                cover: savedGame.cover,
+                                firstReleaseDate: savedGame.firstReleaseDate,
+                                summary: savedGame.summary,
+                                totalRating: savedGame.totalRating,
+                                ratingCount: savedGame.ratingCount,
+                                genres: savedGame.genres,
+                                platforms: savedGame.platforms,
+                                releaseDates: savedGame.releaseDates,
+                                screenshots: savedGame.screenshots,
+                                gameModes: savedGame.gameModes,
+                                videos: savedGame.videos,
+                                websites:  savedGame.websites,
+                                similarGames: savedGame.similarGames,
+                                artworks: savedGame.artworks
+                                )
+            }
+            return
+        }
+        
         self.game = game
     }
-    
-    init(savedGame: SavedGame) {
-        self.reference = .local
-        self.game = Game(
-            id: savedGame.id,
-            name: savedGame.name,
-            cover: savedGame.cover,
-            firstReleaseDate: savedGame.firstReleaseDate,
-            summary: savedGame.summary,
-            totalRating: savedGame.totalRating,
-            ratingCount: savedGame.ratingCount,
-            genres: savedGame.genres,
-            platforms: savedGame.platforms,
-            releaseDates: savedGame.releaseDates,
-            screenshots: savedGame.screenshots,
-            gameModes: savedGame.gameModes,
-            videos: savedGame.videos,
-            websites:  savedGame.websites,
-            similarGames: savedGame.similarGames,
-            artworks: savedGame.artworks
-            )
-    }
-    
-    @State var vm = GameDetailViewModel()
     
     var body: some View {
         if let game {

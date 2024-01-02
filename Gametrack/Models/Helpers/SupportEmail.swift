@@ -8,11 +8,14 @@
 import UIKit
 import SwiftUI
 
+
 struct SupportEmail {
     let toAddress: String
     let subject: String
     let messageHeader: String
     var data: Data?
+    
+    @MainActor
     var body: String { """
 Application Name: \(Bundle.main.appName)
 iOS: \(UIDevice.current.systemVersion)
@@ -24,7 +27,8 @@ App build: \(Bundle.main.appBuild)
 """
     }
     
-    func send(openURL: OpenURLAction) {
+    @MainActor
+    func send(openURL: OpenURLAction, completion: @escaping (Bool) -> Void) {
         let urlString = "mailto:\(toAddress)?subject=\(subject.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")&body=\(body.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")"
         
         guard let url = URL(string: urlString) else {
@@ -32,6 +36,7 @@ App build: \(Bundle.main.appBuild)
         }
         
         openURL(url) { accepted in
+            completion(accepted)
             if !accepted {
                 print(
 """

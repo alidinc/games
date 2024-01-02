@@ -5,9 +5,11 @@
 //  Created by Ali Dinç on 19/12/2023.
 //
 
+import Connectivity
 import SwiftUI
+import Combine
 
-enum ViewReference {
+enum NetworkReference {
     case network
     case local
 }
@@ -16,43 +18,35 @@ struct ListRowView: View {
     
     var game: Game?
     var savedGame: SavedGame?
-    var reference: ViewReference = .local
     
-    init(game: Game?) {
-        self.reference = .network
-        self.game = game
-    }
+    @Environment(Preferences.self) private var preferences: Preferences
     
-    init(savedGame: SavedGame?) {
-        self.reference = .local
-        if let savedGame {
-            self.game = Game(
-                id: savedGame.id,
-                name: savedGame.name,
-                cover: savedGame.cover,
-                firstReleaseDate: savedGame.firstReleaseDate,
-                summary: savedGame.summary,
-                totalRating: savedGame.totalRating,
-                ratingCount: savedGame.ratingCount,
-                genres: savedGame.genres,
-                platforms: savedGame.platforms,
-                releaseDates: savedGame.releaseDates,
-                screenshots: savedGame.screenshots,
-                gameModes: savedGame.gameModes,
-                videos: savedGame.videos,
-                websites:  savedGame.websites,
-                similarGames: savedGame.similarGames,
-                artworks: savedGame.artworks
-                )
-        }
-    }
-    
-    var platformsText: String {
-        guard let platforms = self.game?.platforms else {
-            return "N/A"
+    init(game: Game? = nil, savedGame: SavedGame? = nil) {
+        guard let game else {
+            if let savedGame {
+                self.game = Game(
+                    id: savedGame.id,
+                    name: savedGame.name,
+                    cover: savedGame.cover,
+                    firstReleaseDate: savedGame.firstReleaseDate,
+                    summary: savedGame.summary,
+                    totalRating: savedGame.totalRating,
+                    ratingCount: savedGame.ratingCount,
+                    genres: savedGame.genres,
+                    platforms: savedGame.platforms,
+                    releaseDates: savedGame.releaseDates,
+                    screenshots: savedGame.screenshots,
+                    gameModes: savedGame.gameModes,
+                    videos: savedGame.videos,
+                    websites:  savedGame.websites,
+                    similarGames: savedGame.similarGames,
+                    artworks: savedGame.artworks
+                    )
+            }
+            return
         }
         
-        return platforms.compactMap({$0.name}).joined(separator: ", ")
+        self.game = game
     }
 
     var body: some View {
@@ -62,7 +56,7 @@ struct ListRowView: View {
                     AsyncImageView(with: url, type: .list)
                         .shadow(radius: 4)
                 }
-                
+                 
                 VStack(alignment: .leading, spacing: 6) {
                     if let name = game.name {
                         Text(name)
@@ -74,7 +68,7 @@ struct ListRowView: View {
                     
                     ReleaseDateView(game: game)
                     
-                    Text(self.platformsText)
+                    Text("")
                         .foregroundStyle(.secondary)
                         .font(.caption)
                         .lineLimit(2)
@@ -89,6 +83,43 @@ struct ListRowView: View {
                         SavingButton(game: game, opacity: 0.2, padding: 6)
                     }
                 }
+            } else {
+                if let savedGame, let imageData = savedGame.imageData, let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .shadow(color: .white.opacity(0.7), radius: 10)
+                        .frame(width: 120, height: 160)
+                        .clipShape(.rect(cornerRadius: 5))
+                    
+                    
+                    VStack(alignment: .leading, spacing: 6) {
+                        if let name = savedGame.name {
+                            Text(name)
+                                .foregroundStyle(.primary)
+                                .font(.headline)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.leading)
+                        }
+                        
+                      //  ReleaseDateView(game: game)
+                        
+                        Text("")
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                            .lineLimit(2)
+                            .multilineTextAlignment(.leading)
+                        
+                        Spacer()
+                        
+                        HStack(alignment: .bottom) {
+                          //  RatingStatusView(game: game)
+                            Spacer()
+                            
+                          //  SavingButton(game: game, opacity: 0.2, padding: 6)
+                        }
+                    }
+               }
             }
         }
         .padding(12)

@@ -66,6 +66,7 @@ struct IconSelectionView: View {
                 Spacer()
                 CloseButton()
             }
+            .padding(.horizontal)
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
@@ -88,14 +89,15 @@ struct IconSelectionView: View {
                     }
                     .padding()
                     .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                    .padding(.horizontal)
                 }
             }
         }
-        .padding()
         .background(Color.black.opacity(0.25))
         .edgesIgnoringSafeArea(.all)
     }
     
+    @MainActor
     func updateIcon(to icon: DeviceAppIcon) {
         self.selectedAppIcon = icon
         Task { @MainActor in

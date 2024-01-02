@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "connectivity",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rwbutler/connectivity",
+      "state" : {
+        "revision" : "baf392cd229138c268e5dbaf3ee84e6ae0876173",
+        "version" : "6.1.1"
+      }
+    }
+  ],
+  "version" : 2
+}
