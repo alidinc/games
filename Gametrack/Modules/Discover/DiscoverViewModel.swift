@@ -48,7 +48,6 @@ class DiscoverViewModel {
 extension DiscoverViewModel {
     
     @MainActor
-    @Sendable
     func refreshTask() async {
         self.offset = 0
         self.dataFetchPhase = .empty

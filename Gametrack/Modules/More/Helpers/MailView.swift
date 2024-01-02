@@ -11,7 +11,6 @@ import MessageUI
 
 typealias MailViewCallback = ((Result<MFMailComposeResult, Error>) -> Void)?
 
-@MainActor
 struct MailView: UIViewControllerRepresentable {
     
     @Environment(\.presentationMode) var presentation
