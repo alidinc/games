@@ -12,6 +12,7 @@ struct GametrackApp: App {
     
     @State private var preferences = Preferences()
     @State private var saving = SavingViewModel()
+    @State private var networkMonitor = NetworkMonitor()
     
     var body: some Scene {
         WindowGroup {
@@ -19,6 +20,7 @@ struct GametrackApp: App {
                 .preferredColorScheme(.dark)
                 .environment(preferences)
                 .environment(saving)
+                .environment(networkMonitor)
         }
         .modelContainer(for: [SavedGame.self])
     }

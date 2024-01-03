@@ -16,7 +16,6 @@ enum AsyncImageType: String, CaseIterable {
     case mediaView
     case detail
     
-    @MainActor
     var width: CGFloat {
         switch self {
         case .list:
@@ -32,7 +31,6 @@ enum AsyncImageType: String, CaseIterable {
         }
     }
     
-    @MainActor
     var height: CGFloat {
         switch self {
         case .list:

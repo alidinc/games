@@ -86,8 +86,8 @@ struct DiscoverView: View {
             .overlay {
                 if preferences.networkStatus == .local {
                     ContentUnavailableView("No network now, please try again later.", systemImage: "globe")
-                        .onAppear {
-                            vm.dataFetchPhase = .empty
+                        .task {
+                            await vm.refreshTask()
                         }
                 } else {
                     LoadingView

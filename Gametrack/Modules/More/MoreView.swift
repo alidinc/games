@@ -86,7 +86,7 @@ struct MoreView: View {
             }
             .scrollContentBackground(.hidden)
             .background(.gray.opacity(0.15))
-            .confirmationDialog("Go to AppStore", isPresented: $showAppStore, titleVisibility: .visible, actions: {
+            .confirmationDialog("Rate us", isPresented: $showAppStore, titleVisibility: .visible, actions: {
                 Button {
                     self.rateApp()
                 } label: {

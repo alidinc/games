@@ -26,7 +26,7 @@ struct CollectionView: View {
     private var ListView: some View {
         List {
             ForEach(vm.games, id: \.id) { game in
-                ListRowView(game: game)
+                EmptyView()
                     .navigationLink({
                         GameDetailView(game: game)
                     })

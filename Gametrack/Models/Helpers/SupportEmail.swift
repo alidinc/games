@@ -15,7 +15,6 @@ struct SupportEmail {
     let messageHeader: String
     var data: Data?
     
-    @MainActor
     var body: String { """
 Application Name: \(Bundle.main.appName)
 iOS: \(UIDevice.current.systemVersion)
@@ -27,7 +26,6 @@ App build: \(Bundle.main.appBuild)
 """
     }
     
-    @MainActor
     func send(openURL: OpenURLAction, completion: @escaping (Bool) -> Void) {
         let urlString = "mailto:\(toAddress)?subject=\(subject.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")&body=\(body.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? "")"
         

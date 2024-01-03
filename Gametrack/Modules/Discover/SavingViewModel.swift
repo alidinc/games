@@ -27,35 +27,19 @@ class SavingViewModel {
         
         delete(game: game, in: games, context: context)
     }
-    
-    func delete(game: Game, in games: [SavedGame], context: ModelContext) {
+}
+
+extension SavingViewModel {
+    private func delete(game: Game, in games: [SavedGame], context: ModelContext) {
         if let gameToDelete = games.first(where: { $0.id == game.id }) {
             context.delete(gameToDelete)
         }
     }
     
-    func add(game: Game, for library: LibraryType, context: ModelContext) {
-        let savedGame = SavedGame(
-            id: game.id,
-            name: game.name,
-            cover: game.cover,
-            firstReleaseDate: game.firstReleaseDate,
-            summary: game.summary,
-            totalRating: game.totalRating,
-            ratingCount: game.ratingCount,
-            genres: game.genres,
-            platforms: game.platforms,
-            releaseDates: game.releaseDates,
-            screenshots: game.screenshots,
-            gameModes: game.gameModes,
-            videos: game.videos,
-            websites: game.websites,
-            similarGames: game.similarGames,
-            artworks: game.artworks,
-            libraryType: library.id
-        )
+    private func add(game: Game, for library: LibraryType, context: ModelContext) {
+        let savedGame = SavedGame(from: game, library: library)
         
-        imageData(game: game) { data in
+        self.imageData(game: game) { data in
             if let data {
                 savedGame.imageData = data
             }
@@ -64,14 +48,13 @@ class SavingViewModel {
         context.insert(savedGame)
     }
     
-    func imageData(game: Game, completion: @escaping (Data?) -> Void) {
+    private func imageData(game: Game, completion: @escaping (Data?) -> Void) {
         if let cover = game.cover,
            let urlString = cover.url,
            let url = URL(string: "https:\(urlString.replacingOccurrences(of: "t_thumb", with: "t_1080p"))") {
             
             URLSession.shared.dataTaskPublisher(for: url)
                 .map(\.data)
-                .receive(on: DispatchQueue.main)
                 .sink { completion in
                     switch completion {
                     case .finished:

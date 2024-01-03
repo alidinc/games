@@ -71,4 +71,26 @@ class SavedGame: Identifiable, Hashable {
         self.artworks = artworks
         self.libraryType = libraryType
     }
+    
+    convenience init(from game: Game, library: LibraryType) {
+        self.init(
+            id: game.id,
+            name: game.name,
+            cover: game.cover,
+            firstReleaseDate: game.firstReleaseDate,
+            summary: game.summary,
+            totalRating: game.totalRating,
+            ratingCount: game.ratingCount,
+            genres: game.genres,
+            platforms: game.platforms,
+            releaseDates: game.releaseDates,
+            screenshots: game.screenshots,
+            gameModes: game.gameModes,
+            videos: game.videos,
+            websites: game.websites,
+            similarGames: game.similarGames,
+            artworks: game.artworks,
+            libraryType: library.id
+        )
+    }
 }

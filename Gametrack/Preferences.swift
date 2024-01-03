@@ -25,7 +25,7 @@ class Preferences {
         connectivityListener?.cancel() // Remove old observer
         connectivityListener = stream.receive(on: DispatchQueue.main)
             .sink { [weak self] output in
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.networkStatus = output.availableInterfaces.isEmpty ? .local : .network
                 }
             }
