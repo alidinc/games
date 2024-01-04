@@ -14,24 +14,7 @@ struct GameDetailView: View {
    
     init(game: Game? = nil, savedGame: SavedGame? = nil) {
         guard let game else {
-            self.game = Game(
-                id: savedGame?.id,
-                name: savedGame?.name,
-                cover: savedGame?.cover,
-                firstReleaseDate: savedGame?.firstReleaseDate,
-                summary: savedGame?.summary,
-                totalRating: savedGame?.totalRating,
-                ratingCount: savedGame?.ratingCount,
-                genres: savedGame?.genres,
-                platforms: savedGame?.platforms,
-                releaseDates: savedGame?.releaseDates,
-                screenshots: savedGame?.screenshots,
-                gameModes: savedGame?.gameModes,
-                videos: savedGame?.videos,
-                websites: savedGame?.websites,
-                similarGames: savedGame?.similarGames,
-                artworks: savedGame?.artworks
-            )
+            self.game = savedGame?.game
             return
         }
         

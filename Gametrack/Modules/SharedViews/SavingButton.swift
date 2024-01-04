@@ -17,6 +17,7 @@ struct SavingButton: View {
     
     @Environment(SavingViewModel.self) private var vm: SavingViewModel
     @Environment(\.modelContext) private var context
+    
     @Query var games: [SavedGame]
     
     var bag = Bag()
@@ -28,21 +29,59 @@ struct SavingButton: View {
                      LibraryType.owned,
                      LibraryType.played], id: \.id) { library in
                 Button {
-                    vm.handleToggle(game: game, library: library, games: games, context: context)
+                    handleToggle(game: game, library: library, games: games, context: context)
                 } label: {
                     HStack {
                         Text(library.title)
-                        SFImage(name:  vm.alreadyExists(game, games: games, in: library) ? library.selectedIconName : library.iconName)
+                        SFImage(name:  alreadyExists(game, games: games, in: library) ? library.selectedIconName : library.iconName)
                     }
                 }
             }
         } label: {
-            if let savedGame = games.first(where: { $0.id == game.id }),
-               let library = LibraryType(rawValue: savedGame.libraryType) {
+            if let savedGame = games.first(where: { $0.game?.id == game.id }) {
+                let library = savedGame.libraryType
                 SFImage(name: library.selectedIconName, opacity: opacity, padding: padding, color: library.color)
             } else {
                 SFImage(name: "bookmark", opacity: opacity, padding: padding)
             }
         }
+    }
+    
+    private func delete(game: Game, in games: [SavedGame], context: ModelContext) {
+        if let gameToDelete = games.first(where: { $0.game?.id == game.id }) {
+            context.delete(gameToDelete)
+        }
+    }
+    
+    private func add(game: Game, for library: LibraryType, context: ModelContext) {
+        vm.getImageData(from: game)
+        
+        let savedGame = SavedGame(library: library.id)
+        
+        do {
+            savedGame.gameData = try JSONEncoder().encode(game)
+        } catch {
+            print("Error")
+        }
+        
+        if let imageData = vm.imageData {
+            savedGame.imageData = imageData
+        }
+       
+        context.insert(savedGame)
+    }
+    
+    func alreadyExists(_ game: Game, games: [SavedGame], in library: LibraryType) -> Bool {
+        return ((games.first(where: {$0.game?.id == game.id && $0.libraryType == library })) != nil)
+    }
+    
+    func handleToggle(game: Game, library: LibraryType, games: [SavedGame], context: ModelContext) {
+        guard self.alreadyExists(game, games: games, in: library) else {
+            delete(game: game, in: games, context: context)
+            add(game: game, for: library, context: context)
+            return
+        }
+        
+        delete(game: game, in: games, context: context)
     }
 }

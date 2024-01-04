@@ -227,6 +227,7 @@
 		DA43CE2C2B30B62600DAE0B6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DAFAEB1D2B474B68008E1090 /* ViewModels */,
 				DAB92B022B40B26A00375F20 /* Helpers */,
 				DA43CE4A2B30B66B00DAE0B6 /* Game.swift */,
 				DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */,
@@ -251,8 +252,6 @@
 			children = (
 				DA4B1C032B44A32F00EA3E8F /* CollectionView.swift */,
 				DA43CE592B30B69100DAE0B6 /* DiscoverView.swift */,
-				DA43CE3E2B30B65E00DAE0B6 /* DiscoverViewModel.swift */,
-				DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -332,7 +331,6 @@
 				DA5557AB2B38927400D440A4 /* Helpers */,
 				DA93BE8B2B34F4230047DD37 /* GameDetailView.swift */,
 				DA4B1C012B448E2A00EA3E8F /* SavedGameDetailView.swift */,
-				DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */,
 			);
 			path = GameDetail;
 			sourceTree = "<group>";
@@ -389,6 +387,16 @@
 				DAC503C12B344C70004D4B03 /* MoreView.swift */,
 			);
 			path = More;
+			sourceTree = "<group>";
+		};
+		DAFAEB1D2B474B68008E1090 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				DA43CE3E2B30B65E00DAE0B6 /* DiscoverViewModel.swift */,
+				DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */,
+				DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

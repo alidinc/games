@@ -14,6 +14,8 @@ struct DiscoverView: View {
     @AppStorage("appTint") var appTint: Color = .white
     
     @Environment(Preferences.self) private var preferences
+    @Environment(NetworkMonitor.self) private var network
+    
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {

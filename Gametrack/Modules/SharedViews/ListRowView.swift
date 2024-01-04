@@ -14,45 +14,44 @@ enum NetworkReference {
     case local
 }
 
-struct ListRowView<Content: View>: View {
+struct ListRowView: View {
     
-    var imageURL: String
-    var name: String
-    var platforms: String
-    var firstReleaseDate: Int
-    var ratingImageName: String
-    var ratingText: String
-    var ratingColor: Color
-    var ButtonContent: () -> Content
+    var game: Game
     
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
-            AsyncImageView(with: imageURL, type: .list)
-                .shadow(radius: 4)
+            if let cover = game.cover, let url = cover.url {
+                AsyncImageView(with: url, type: .list)
+                    .shadow(radius: 4)
+            }
              
             VStack(alignment: .leading, spacing: 6) {
-                Text(name)
-                    .foregroundStyle(.primary)
-                    .font(.headline)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Image(systemName: "calendar")
-                            .resizable()
-                            .frame(width: 10, height: 10)
-                            .foregroundStyle(.secondary)
-                            .font(.subheadline)
-                        
-                        Text("\(firstReleaseDate.numberToDateString())")
-                            .foregroundStyle(.secondary)
-                            .font(.caption)
-                    }
-                    .hSpacing(.leading)
+                if let name = game.name {
+                    Text(name)
+                        .foregroundStyle(.primary)
+                        .font(.headline)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
                 }
                 
-                Text(platforms)
+                if let firstReleaseDate = game.firstReleaseDate {
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Image(systemName: "calendar")
+                                .resizable()
+                                .frame(width: 10, height: 10)
+                                .foregroundStyle(.secondary)
+                                .font(.subheadline)
+                            
+                            Text("\(firstReleaseDate.numberToDateString())")
+                                .foregroundStyle(.secondary)
+                                .font(.caption)
+                        }
+                        .hSpacing(.leading)
+                    }
+                }
+                
+                Text(game.availablePlatforms)
                     .foregroundStyle(.secondary)
                     .font(.caption)
                     .lineLimit(2)
@@ -62,20 +61,21 @@ struct ListRowView<Content: View>: View {
                 
                 HStack(alignment: .bottom) {
                     HStack {
-                        Image(systemName: ratingImageName)
+                        Image(systemName: game.ratingImageName)
                             .resizable()
                             .frame(width: 16, height: 16)
-                            .foregroundStyle(ratingColor)
+                            .foregroundStyle(game.ratingColor)
                         
-                        Text(ratingText)
+                        Text(game.ratingText)
                             .font(.caption)
                             .fixedSize()
-                            .foregroundStyle(ratingColor)
+                            .foregroundStyle(game.ratingColor)
                     }
                     
                     Spacer()
                     
-                    ButtonContent()
+                    
+                    SavingButton(game: game, opacity: 0.2, padding: 8)
                 }
             }
         }

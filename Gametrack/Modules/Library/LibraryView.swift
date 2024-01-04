@@ -43,13 +43,13 @@ struct LibraryView: View {
         if selectedLibraryType == .all {
             return data
         } else {
-            return data.filter({ $0.libraryType == selectedLibraryType.id })
+            return data.filter({ $0.libraryType == selectedLibraryType })
         }
     }
     
     var filteredGames: [SavedGame] {
         return savedGames.filter { game in
-            if let name = game.name {
+            if let name = game.game?.name {
                 return name.lowercased().contains(searchQuery.lowercased())
             }
             

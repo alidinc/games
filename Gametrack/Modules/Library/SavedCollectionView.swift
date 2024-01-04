@@ -26,14 +26,16 @@ struct SavedCollectionView: View {
     @ViewBuilder
     private var ListView: some View {
         List {
-            ForEach(games, id: \.id) { game in
-                EmptyView()
-                    .navigationLink({
-                        GameDetailView(savedGame: game)
-                    })
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+            ForEach(games, id: \.id) { savedGame in
+                if let game = savedGame.game {
+                    ListRowView(game: game)
+                        .navigationLink({
+                            GameDetailView(game: game)
+                        })
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                }
             }
         }
         .listStyle(.plain)
@@ -45,10 +47,10 @@ struct SavedCollectionView: View {
     private var GridView: some View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
-                ForEach(games, id: \.id) { game in
-                    if let cover = game.cover, let url = cover.url {
+                ForEach(games, id: \.id) { savedGame in
+                    if let cover = savedGame.game?.cover, let url = cover.url {
                         NavigationLink {
-                            GameDetailView(savedGame: game)
+                            GameDetailView(savedGame: savedGame)
                         } label: {
                             AsyncImageView(with: url, type: .grid)
                         }
