@@ -89,6 +89,5 @@ struct SelectedOptionsTitleView: View {
             }
         }
         .hSpacing(.leading)
-        .padding(.bottom, 10)
     }
 }

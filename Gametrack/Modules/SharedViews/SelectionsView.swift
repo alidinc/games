@@ -302,7 +302,7 @@ struct SelectionsView:  View {
         .background(Color.black.opacity(0.5), in: .rect(cornerRadius: 10))
         .overlay {
             if isSelected {
-                RoundedRectangle(cornerRadius: 20)
+                RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(appTint, lineWidth: 2)
             }
         }

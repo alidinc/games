@@ -22,11 +22,11 @@ struct MadeWithLoveView: View {
                 .scaledToFit()
             
             Text("goodgames \(Bundle.main.appVersionLong)")
-                .font(.system(size: 14, weight: .medium))
+                .font(.caption)
                 .foregroundStyle(.secondary)
             
             Text("iOS \(UIDevice.current.systemVersion)")
-                .font(.system(size: 12))
+                .font(.caption2)
                 .foregroundStyle(.secondary)
             
             Spacer()
@@ -41,7 +41,9 @@ struct MadeWithLoveView: View {
                 
                 Text(self.values[self.textIndex])
                     .font(.system(size: 22))
-                    .onAppear { self.next() }
+                    .onReceive(Timer.publish(every: 2, on: .main, in: .common).autoconnect(), perform: { _ in
+                        self.next()
+                    })
                 
                 Spacer()
             }
@@ -53,11 +55,8 @@ struct MadeWithLoveView: View {
         if next == self.values.count {
             next = 0
         }
-        withAnimation(Animation.easeInOut(duration: 1)) {
+        withAnimation {
             self.textIndex = next
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.next()
         }
     }
 }

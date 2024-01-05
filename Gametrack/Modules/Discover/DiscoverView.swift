@@ -111,10 +111,30 @@ struct DiscoverView: View {
                 ViewTypeButton(viewType: $viewType)
             }
             
-            SelectedOptionsTitleView(reference: .network, selectedSegment: $selectedSegment) {
-                showSelectionOptions = true
+            HStack(alignment: .center) {
+                SelectedOptionsTitleView(reference: .network, selectedSegment: $selectedSegment) {
+                    showSelectionOptions = true
+                }
+                
+                if (!vm.fetchTaskToken.genres.isEmpty && !vm.fetchTaskToken.genres.contains(.allGenres))  || (!vm.fetchTaskToken.platforms.isEmpty && !vm.fetchTaskToken.platforms.contains(.database)) {
+                    Button(action: {
+                        Task {
+                            vm.fetchTaskToken.platforms = [.database]
+                            vm.fetchTaskToken.genres = [.allGenres]
+                            await vm.refreshTask()
+                        }
+                    }, label: {
+                        Text("Clear")
+                            .font(.caption)
+                            .padding(6)
+                            .background(.secondary, in: .capsule)
+                            .padding(6)
+                    })
+                }
             }
+            .frame(maxHeight: 40)
         }
+        .padding(.bottom, 20)
         .padding(.horizontal)
         .sheet(isPresented: $showSelectionOptions, content: {
             SelectionsView(reference: .network, selectedSegment: $selectedSegment)

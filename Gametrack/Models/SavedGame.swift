@@ -12,6 +12,7 @@ import SwiftUI
 @Model
 class SavedGame: Identifiable, Hashable {
     
+    @Attribute(.unique)
     var id: String
     var date: Date
     var library: Int

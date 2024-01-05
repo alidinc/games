@@ -20,13 +20,10 @@ struct AboutView: View {
                     CloseButton { self.dismiss() }
                 }
                 
-                ScrollView {
-                    VStack(alignment: .center) {
-                        CreditsButton
-                        TeamButton
-                        Spacer().frame(height: 100)
-                        MadeWithLoveView()
-                    }
+                VStack(alignment: .center) {
+                    CreditsButton
+                    TeamButton
+                    Spacer()
                 }
             }
             .padding()
@@ -61,7 +58,11 @@ struct AboutView: View {
     
     private var CreditsButton: some View {
         NavigationLink {
-            CreditsView
+            VStack(alignment: .center) {
+                CreditsView
+                Spacer()
+                MadeWithLoveView()
+            }
         } label: {
             MoreMainRowView(imageName: "network", text: "Credits")
                 .padding(16)

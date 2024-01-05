@@ -61,7 +61,9 @@ struct SavingButton: View {
     }
     
     private func add(game: Game, for library: LibraryType, context: ModelContext) {
-        vm.getImageData(from: game)
+        DispatchQueue.global(qos: .background).async {
+            vm.getImageData(from: game)
+        }
         
         let savedGame = SavedGame(library: library.id)
         
