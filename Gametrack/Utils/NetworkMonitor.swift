@@ -25,7 +25,7 @@ class NetworkMonitor {
                     self?.isConnected = true
                 }
             } else {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
                     self?.isConnected = false
                 }
             }

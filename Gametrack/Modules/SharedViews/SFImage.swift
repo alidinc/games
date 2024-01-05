@@ -30,6 +30,5 @@ struct SFImage: View {
             .padding(padding)
             .foregroundStyle(color)
             .background(Color.black.opacity(opacity), in: .rect(cornerRadius: radius))
-            .animation(.bouncy, value: color)
     }
 }

@@ -5,6 +5,7 @@
 //  Created by Ali Dinç on 04/01/2024.
 //
 
+import Foundation
 import SwiftData
 import Observation
 
@@ -30,45 +31,50 @@ class LibraryViewModel {
    
 
     func filterSegment(games: [SavedGame])  {
-        
-        let libraryGames = games.filter({ $0.libraryType.id == selectedLibraryType.id })
-        
-        if selectedLibraryType == .all {
-            if searchQuery.isEmpty {
-                savedGames = games
-                    .filter({$0.containsPopularGenres(selectedGenres)})
-                    .filter({$0.containsPopularPlatforms(selectedPlatforms)})
-            } else {
-                if !selectedGenres.isEmpty {
-                    savedGames = games
-                        .filter({($0.game?.name ?? "").lowercased().contains(searchQuery.lowercased())})
-                        .filter({$0.containsPopularGenres(selectedGenres)})
-                } else if !selectedPlatforms.isEmpty {
-                    savedGames = games
-                        .filter({($0.game?.name ?? "").lowercased().contains(searchQuery.lowercased())})
-                        .filter({$0.containsPopularPlatforms(selectedPlatforms)})
-                } else {
-                    savedGames = games
-                        .filter({($0.game?.name ?? "").lowercased().contains(searchQuery.lowercased())})
-                }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else {
+                return
             }
-        } else {
-            if searchQuery.isEmpty {
-                savedGames = libraryGames
-                    .filter({$0.containsPopularGenres(selectedGenres)})
-                    .filter({$0.containsPopularPlatforms(selectedPlatforms)})
-            } else {
-                if !selectedGenres.isEmpty {
-                    savedGames = libraryGames
-                        .filter({($0.game?.name ?? "").lowercased().contains(searchQuery.lowercased())})
-                        .filter({$0.containsPopularGenres(selectedGenres)})
-                } else if !selectedPlatforms.isEmpty {
-                    savedGames = libraryGames
-                        .filter({($0.game?.name ?? "").lowercased().contains(searchQuery.lowercased())})
-                        .filter({$0.containsPopularPlatforms(selectedPlatforms)})
+            
+            let libraryGames = games.filter({ $0.libraryType.id == self.selectedLibraryType.id })
+            
+            if self.selectedLibraryType == .all {
+                if self.searchQuery.isEmpty {
+                    self.savedGames = games
+                        .filter({$0.containsPopularGenres(self.selectedGenres)})
+                        .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
                 } else {
-                    savedGames = libraryGames
-                        .filter({($0.game?.name ?? "").lowercased().contains(searchQuery.lowercased())})
+                    if !self.selectedGenres.isEmpty {
+                        self.savedGames = games
+                            .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                            .filter({$0.containsPopularGenres(self.selectedGenres)})
+                    } else if !selectedPlatforms.isEmpty {
+                        self.savedGames = games
+                            .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                            .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                    } else {
+                        self.savedGames = games
+                            .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                    }
+                }
+            } else {
+                if self.searchQuery.isEmpty {
+                    self.savedGames = libraryGames
+                        .filter({$0.containsPopularGenres(self.selectedGenres)})
+                        .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                } else {
+                    if !self.selectedGenres.isEmpty {
+                        self.savedGames = libraryGames
+                            .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                            .filter({$0.containsPopularGenres(self.selectedGenres)})
+                    } else if !self.selectedPlatforms.isEmpty {
+                        self.savedGames = libraryGames
+                            .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                            .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                    } else {
+                        self.savedGames = libraryGames
+                            .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                    }
                 }
             }
         }

@@ -90,9 +90,5 @@ struct SelectedOptionsTitleView: View {
         }
         .hSpacing(.leading)
         .padding(.bottom, 10)
-        .animation(.easeInOut, value: discoverVM.fetchTaskToken.platforms)
-        .animation(.easeInOut, value: discoverVM.fetchTaskToken.genres)
-        .animation(.easeInOut, value: libraryVM.selectedGenres)
-        .animation(.easeInOut, value: libraryVM.selectedPlatforms)
     }
 }

@@ -21,6 +21,8 @@ struct LibraryView: View {
     
     @State private var showSelectionOptions = false
     @State private var selectedSegment: SegmentType = .platform
+    
+    var didRemoteChange = NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange).receive(on: RunLoop.main)
 
     var body: some View {
         NavigationStack {
@@ -30,6 +32,9 @@ struct LibraryView: View {
                 ViewSwitcher
             }
             .background(.gray.opacity(0.15))
+            .onReceive(didRemoteChange, perform: { _ in
+                vm.filterSegment(games: data)
+            })
             .task {
                 vm.filterSegment(games: data)
             }
@@ -56,7 +61,6 @@ struct LibraryView: View {
                 Spacer()
                 ViewTypeButton(viewType: $viewType)
             }
-            .padding(.vertical, 10)
             
             HStack(alignment: .center) {
                 SelectedOptionsTitleView(reference: .local, selectedSegment: $selectedSegment) {

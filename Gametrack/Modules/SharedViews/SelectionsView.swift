@@ -297,6 +297,7 @@ struct SelectionsView:  View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
+        .padding(.horizontal, 4)
         .frame(width: 85, height: 85)
         .background(Color.black.opacity(0.5), in: .rect(cornerRadius: 10))
         .overlay {

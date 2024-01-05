@@ -16,11 +16,14 @@ struct SavingButton: View {
     var padding: CGFloat
     
     @Environment(SavingViewModel.self) private var vm: SavingViewModel
+    @Environment(LibraryViewModel.self) private var libraryVM
     @Environment(\.modelContext) private var context
     
     @Query var games: [SavedGame]
     
     var bag = Bag()
+    
+    var didRemoteChange = NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange).receive(on: RunLoop.main)
     
     var body: some View {
         Menu {
@@ -30,6 +33,7 @@ struct SavingButton: View {
                      LibraryType.played], id: \.id) { library in
                 Button {
                     handleToggle(game: game, library: library, games: games, context: context)
+                    
                 } label: {
                     HStack {
                         Text(library.title)
@@ -45,6 +49,9 @@ struct SavingButton: View {
                 SFImage(name: "bookmark", opacity: opacity, padding: padding)
             }
         }
+//        .onReceive(didRemoteChange, perform: { _ in
+//            libraryVM.filterSegment(games: games)
+//        })
     }
     
     private func delete(game: Game, in games: [SavedGame], context: ModelContext) {

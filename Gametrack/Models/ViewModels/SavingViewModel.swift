@@ -31,7 +31,9 @@ class SavingViewModel {
                         print("Failed to download")
                     }
                 } receiveValue: { [weak self] data in
-                    self?.imageData = data
+                    if let image = UIImage(data: data)?.jpegData(compressionQuality: 0.1) {
+                        self?.imageData = data
+                    }
                 }
                 .store(in: &bag)
         }

@@ -37,7 +37,6 @@ struct DiscoverView: View {
             .background(.gray.opacity(0.15))
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
-            .animation(.easeInOut, value: vm.fetchTaskToken.category)
             .task(id: vm.fetchTaskToken) {
                 await vm.fetchGames()
             }
@@ -111,7 +110,6 @@ struct DiscoverView: View {
                 Spacer()
                 ViewTypeButton(viewType: $viewType)
             }
-            .padding(.vertical, 10)
             
             SelectedOptionsTitleView(reference: .network, selectedSegment: $selectedSegment) {
                 showSelectionOptions = true
