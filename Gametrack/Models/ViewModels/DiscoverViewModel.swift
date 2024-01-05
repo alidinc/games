@@ -15,6 +15,8 @@ class DiscoverViewModel {
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     
+    
+    
     private var cache: DiskCache<[Game]>?
     private var limit = 21
     private var offset = 0

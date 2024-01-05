@@ -21,8 +21,6 @@ struct CollectionView: View {
         }
     }
     
-    @MainActor
-    @ViewBuilder
     private var ListView: some View {
         List {
             ForEach(vm.games, id: \.id) { game in
@@ -56,8 +54,6 @@ struct CollectionView: View {
         .scrollIndicators(.hidden)
     }
     
-    @MainActor
-    @ViewBuilder
     private var GridView: some View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {

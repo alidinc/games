@@ -144,7 +144,7 @@ enum PopularGenre: Int, CaseIterable, Equatable, Identifiable {
         case .pointClick:
             return "Point-click"
         case .allGenres:
-            return "All genres"
+            return "Genres"
         }
     }
     

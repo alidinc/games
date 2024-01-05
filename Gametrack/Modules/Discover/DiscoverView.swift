@@ -8,7 +8,7 @@ import SwiftUI
 
 struct DiscoverView: View {
     
-    @State private var vm = DiscoverViewModel()
+    @State var vm: DiscoverViewModel
     
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
@@ -17,6 +17,9 @@ struct DiscoverView: View {
     @Environment(NetworkMonitor.self) private var network
     
     @Environment(\.dismiss) private var dismiss
+    
+    @State private var showSelectionOptions = false
+    @State private var selectedSegment: SegmentType = .genre
     
     var body: some View {
         NavigationStack {
@@ -104,19 +107,25 @@ struct DiscoverView: View {
     var Header: some View {
         VStack {
             HStack {
-                CategoryButton
+                CategoryPicker
                 Spacer()
                 ViewTypeButton(viewType: $viewType)
             }
             .padding(.vertical, 10)
-            .padding(.horizontal)
             
-            SelectionsHeaderView(vm: vm)
+            SelectedOptionsTitleView(reference: .network, selectedSegment: $selectedSegment) {
+                showSelectionOptions = true
+            }
         }
+        .padding(.horizontal)
+        .sheet(isPresented: $showSelectionOptions, content: {
+            SelectionsView(reference: .network, selectedSegment: $selectedSegment)
+                .presentationDetents([.medium, .large])
+        })
     }
     
     
-    private var CategoryButton: some View {
+    private var CategoryPicker: some View {
         Menu {
             Picker("Category", selection: $vm.fetchTaskToken.category) {
                 ForEach([Category.topRated,

@@ -77,7 +77,7 @@ enum PopularPlatform: Int, CaseIterable, Equatable, Identifiable {
         case .oculusQuest:
             return "Oculus Quest"
         case .database:
-            return "All platforms"
+            return "Platforms"
         }
     }
     

@@ -103,7 +103,6 @@ struct Game: Codable, Identifiable, Hashable {
             return "dot.squareshape.fill"
         }
     }
-    
 }
 
 // MARK: - Artwork
@@ -150,6 +149,14 @@ struct Genre: Codable, Hashable {
         case id
         case name
     }
+    
+    var popularGenre: PopularGenre {
+        guard let id, let genre = PopularGenre(rawValue: id) else {
+            return .allGenres
+        }
+        
+        return genre
+    }
 }
 
 // MARK: - Platform
@@ -166,6 +173,14 @@ struct Platform: Codable, Hashable {
         case name
         case platformLogo = "platform_logo"
         case summary
+    }
+    
+    var popularPlatform: PopularPlatform {
+        guard let id, let platform = PopularPlatform(rawValue: id) else {
+            return .database
+        }
+        
+        return platform
     }
 }
 

@@ -16,14 +16,18 @@ struct ViewTypeButton: View {
         Menu {
             Section("View type") {
                 Button {
-                    viewType = .list
+                    DispatchQueue.main.async {
+                        viewType = .list
+                    }
                 } label: {
                     Image(systemName: "rectangle.grid.1x2.fill")
                     Text("List")
                 }
                 
                 Button {
-                    viewType = .list
+                    DispatchQueue.main.async {
+                        viewType = .list
+                    }
                 } label: {
                     Image(systemName: "rectangle.grid.3x2.fill")
                     Text("Grid")
@@ -33,7 +37,9 @@ struct ViewTypeButton: View {
         } label: {
             SFImage(name: viewType.imageName, color: appTint)
         } primaryAction: {
-            viewType = viewType == .grid ? .list : .grid
+            DispatchQueue.main.async {
+                viewType = viewType == .grid ? .list : .grid
+            }
         }
     }
 }

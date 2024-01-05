@@ -12,13 +12,19 @@ struct ContentView: View {
     @AppStorage("appTint") var appTint: Color = .white
     @State private var activeTab: Tab = .discover
     
+    @State private var preferences = Preferences()
+    @State private var saving = SavingViewModel()
+    @State private var networkMonitor = NetworkMonitor()
+    @State private var discoverViewModel = DiscoverViewModel()
+    @State private var libraryViewModel = LibraryViewModel()
+    
     var body: some View {
         TabView(selection: $activeTab) {
-            DiscoverView()
+            DiscoverView(vm: discoverViewModel)
                 .tag(Tab.discover)
                 .tabItem { Tab.discover.tabContent }
             
-           LibraryView()
+           LibraryView(vm: libraryViewModel)
                 .tag(Tab.library)
                 .tabItem { Tab.library.tabContent }
             
@@ -27,6 +33,11 @@ struct ContentView: View {
                 .tabItem { Tab.more.tabContent }
         }
         .tint(appTint)
+        .environment(preferences)
+        .environment(saving)
+        .environment(networkMonitor)
+        .environment(discoverViewModel)
+        .environment(libraryViewModel)
     }
 }
 

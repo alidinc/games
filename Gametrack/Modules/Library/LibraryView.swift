@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LibraryView: View {
 
+    @State var vm: LibraryViewModel
     @Query(animation: .snappy) var data: [SavedGame]
     
     @Environment(\.modelContext) private var context
@@ -17,9 +18,9 @@ struct LibraryView: View {
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
 
-    @State private var selectedLibraryType: LibraryType = .all
-    @State private var searchQuery = ""
-    @State private var isSearching = false
+    
+    @State private var showSelectionOptions = false
+    @State private var selectedSegment: SegmentType = .platform
 
     var body: some View {
         NavigationStack {
@@ -29,47 +30,63 @@ struct LibraryView: View {
                 ViewSwitcher
             }
             .background(.gray.opacity(0.15))
-            .onChange(of: searchQuery, { oldValue, newValue in
-                isSearching = !newValue.isEmpty
-            })
-            .onReceive(NotificationCenter.default.publisher(
-                for: UIApplication.keyboardWillHideNotification), perform: { _ in
-                isSearching = false
-            })
-        }
-    }
-
-    var savedGames: [SavedGame] {
-        if selectedLibraryType == .all {
-            return data
-        } else {
-            return data.filter({ $0.libraryType == selectedLibraryType })
-        }
-    }
-    
-    var filteredGames: [SavedGame] {
-        return savedGames.filter { game in
-            if let name = game.game?.name {
-                return name.lowercased().contains(searchQuery.lowercased())
+            .task {
+                vm.filterSegment(games: data)
             }
-            
-            return false
+            .onChange(of: vm.searchQuery, { oldValue, newValue in
+                vm.filterSegment(games: data)
+            })
+            .onChange(of: vm.selectedGenres, { oldValue, newValue in
+                vm.filterSegment(games: data)
+            })
+            .onChange(of: vm.selectedPlatforms, { oldValue, newValue in
+                vm.filterSegment(games: data)
+            })
+            .onChange(of: vm.selectedLibraryType, { oldValue, newValue in
+                vm.filterSegment(games: data)
+            })
         }
     }
+   
     
     private var Header: some View {
-        HStack {
-            LibraryPicker
-            Spacer()
-            ViewTypeButton(viewType: $viewType)
+        VStack {
+            HStack {
+                LibraryPicker
+                Spacer()
+                ViewTypeButton(viewType: $viewType)
+            }
+            .padding(.vertical, 10)
+            
+            HStack(alignment: .center) {
+                SelectedOptionsTitleView(reference: .local, selectedSegment: $selectedSegment) {
+                    showSelectionOptions = true
+                }
+                
+                if !vm.selectedGenres.isEmpty || !vm.selectedPlatforms.isEmpty {
+                    Button(action: {
+                        vm.selectedGenres.removeAll()
+                        vm.selectedPlatforms.removeAll()
+                    }, label: {
+                        Text("Clear")
+                            .font(.caption)
+                            .padding(6)
+                            .background(.secondary, in: .capsule)
+                            .padding(6)
+                    })
+                }
+            }
         }
         .padding(.horizontal)
-        .padding(.vertical, 10)
+        .sheet(isPresented: $showSelectionOptions, content: {
+            SelectionsView(reference: .local, selectedSegment: $selectedSegment)
+                .presentationDetents([.medium, .large])
+        })
     }
     
     private var LibraryPicker: some View {
         Menu {
-            Picker("Library", selection: $selectedLibraryType) {
+            Picker("Library", selection: $vm.selectedLibraryType) {
                 ForEach(LibraryType.allCases, id: \.id) { library in
                     Text(library.title).tag(library)
                 }
@@ -77,9 +94,9 @@ struct LibraryView: View {
         } label: {
             HStack(alignment: .center, spacing: 4) {
                 HStack(spacing: 8) {
-                    SFImage(name: selectedLibraryType.selectedIconName, opacity: 0, radius: 0, padding: 0, color: appTint)
+                    SFImage(name: vm.selectedLibraryType.selectedIconName, opacity: 0, radius: 0, padding: 0, color: appTint)
                     
-                    Text(selectedLibraryType.title)
+                    Text(vm.selectedLibraryType.title)
                         .font(.system(size: 26, weight: .semibold))
                         .foregroundStyle(.primary)
                         .shadow(radius: 10)
@@ -98,26 +115,9 @@ struct LibraryView: View {
     var ViewSwitcher: some View {
         ZStack {
             VStack(spacing: 10) {
-                SearchTextField(searchQuery: $searchQuery)
+                SearchTextField(searchQuery: $vm.searchQuery)
                 
-                if savedGames.isEmpty {
-                    ContentUnavailableView(
-                        "No content found in your library",
-                        systemImage: "gamecontroller.fill",
-                        description: Text(
-                            "Please add some games to your library."
-                        )
-                    )
-                } else {
-                    SavedCollectionView(games: isSearching ? filteredGames : savedGames, 
-                                        viewType: $viewType)
-                        .overlay {
-                            if isSearching && filteredGames.isEmpty{
-                                ContentUnavailableView.search(text: searchQuery)
-                            }
-                        }
-                        
-                }
+                SavedCollectionView(games: vm.savedGames, viewType: $viewType)
             }
             .padding(.top, 10)
             .padding(.horizontal, 10)
@@ -125,6 +125,4 @@ struct LibraryView: View {
         .background(.gray.opacity(0.15), in: .rect(cornerRadius: 10))
         .padding(.bottom, 5)
     }
-    
-    
 }

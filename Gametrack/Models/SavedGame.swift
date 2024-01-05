@@ -15,7 +15,11 @@ class SavedGame: Identifiable, Hashable {
     var id: String
     var date: Date
     var library: Int
+    
+    @Attribute(.externalStorage)
     var gameData: Data?
+    
+    @Attribute(.externalStorage)
     var imageData: Data?
     
     @Transient
@@ -46,5 +50,27 @@ class SavedGame: Identifiable, Hashable {
         self.date = date
         self.library = library
         self.gameData = gameData
+    }
+    
+    func containsPopularPlatforms(_ popularPlatforms: [PopularPlatform]) -> Bool {
+        guard let game, let gamePlatforms = game.platforms else {
+            return false
+        }
+        
+        let gamePlatformSet = Set(gamePlatforms.map { $0.popularPlatform })
+        let popularPlatformSet = Set(popularPlatforms)
+        
+        return popularPlatformSet.isSubset(of: gamePlatformSet)
+    }
+    
+    func containsPopularGenres(_ popularGenres: [PopularGenre]) -> Bool {
+        guard let game, let gameGenres = game.genres else {
+            return false
+        }
+        
+        let gameGenreSet = Set(gameGenres.map { $0.popularGenre })
+        let popularGenreSet = Set(popularGenres)
+        
+        return popularGenreSet.isSubset(of: gameGenreSet)
     }
 }

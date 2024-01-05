@@ -9,9 +9,16 @@ import SwiftUI
 
 struct SelectionsView:  View {
     
-    var vm: DiscoverViewModel
+    var reference: ViewReference
+    
+    @Environment(DiscoverViewModel.self) private var discoverVM
+    @Environment(LibraryViewModel.self) private var libraryVM
+    
     @Binding var selectedSegment: SegmentType
+    
+    
     @Namespace private var animation
+    
     @Environment(\.dismiss) private var dismiss
     @AppStorage("appTint") var appTint: Color = .white
     @State private var showClear = false
@@ -41,74 +48,49 @@ struct SelectionsView:  View {
                     }
                 }
                 
-                HStack(spacing: 20) {
-                    RefreshButton
-                    CloseButton()
-                }
+                CloseButton()
             }
             .padding(20)
             
             SegmentedView
-            OptionsView
+            
+            switch reference {
+            case .network:
+                OptionsView
+            case .local:
+                LocalOptionsView
+            }
                 
         }
-        .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
+        .onChange(of: discoverVM.fetchTaskToken.platforms, { oldValue, newValue in
             Task {
                 withAnimation {
-                    if vm.fetchTaskToken.platforms.isEmpty {
-                        vm.fetchTaskToken.platforms = [.database]
+                    if discoverVM.fetchTaskToken.platforms.isEmpty {
+                        discoverVM.fetchTaskToken.platforms = [.database]
                     } else {
-                        vm.fetchTaskToken.platforms = newValue
+                        discoverVM.fetchTaskToken.platforms = newValue
                     }
                 }
-                await vm.refreshTask()
+                await discoverVM.refreshTask()
             }
         })
-        .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
+        .onChange(of: discoverVM.fetchTaskToken.genres, { oldValue, newValue in
             Task {
                 withAnimation {
-                    if vm.fetchTaskToken.genres.isEmpty {
-                        vm.fetchTaskToken.genres = [.allGenres]
+                    if discoverVM.fetchTaskToken.genres.isEmpty {
+                        discoverVM.fetchTaskToken.genres = [.allGenres]
                     } else {
-                        vm.fetchTaskToken.genres = newValue
+                        discoverVM.fetchTaskToken.genres = newValue
                     }
                 }
-                await vm.refreshTask()
+                await discoverVM.refreshTask()
             }
         })
-    }
-    
-    private var RefreshButton: some View {
-        Button {
-            withAnimation {
-                vm.fetchTaskToken.platforms = [.database]
-                vm.fetchTaskToken.genres = [.allGenres]
-            }
-            dismiss()
-           
-            Task {
-                await vm.refreshTask()
-            }
-        } label: {
-            Text("Clear filters")
-                .font(.subheadline)
-        }
-        .opacity(showClear ? 1 : 0)
-        .onChange(of: vm.fetchTaskToken.platforms) { oldValue, newValue in
-            if newValue.count >= 1 {
-                showClear = true
-            }
-        }
-        .onChange(of: vm.fetchTaskToken.genres) { oldValue, newValue in
-            if newValue.count >= 1 {
-                showClear = true
-            }
-        }
     }
     
     private var SegmentedView: some View {
         HStack(spacing: 0) {
-            ForEach(SegmentType.allCases, id: \.rawValue) { segment in
+            ForEach(reference == .local ? [SegmentType.genre, SegmentType.platform] : SegmentType.allCases, id: \.rawValue) { segment in
                 SegmentItem(segment: segment)
             }
         }
@@ -141,6 +123,68 @@ struct SelectionsView:  View {
             }
     }
     
+    
+    private var LocalOptionsView: some View {
+        VStack {
+            switch selectedSegment {
+            case .category:
+                EmptyView()
+            case .platform:
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible()),
+                                        GridItem(.flexible()),
+                                        GridItem(.flexible()),
+                                        GridItem(.flexible()),
+                                       
+                                       ]) {
+                        ForEach(PopularPlatform.allCases.sorted(by: { $0.title < $1.title })) { platform in
+                            Button {
+                                if libraryVM.selectedPlatforms.contains(platform) {
+                                    if let index = libraryVM.selectedPlatforms.firstIndex(of: platform) {
+                                        libraryVM.selectedPlatforms.remove(at: index)
+                                    }
+                                } else {
+                                    libraryVM.selectedPlatforms.append(platform)
+                                }
+                            } label: {
+                                OptionTileView(imageName: platform.assetName, 
+                                               title: platform.title,
+                                               isSelected: libraryVM.selectedPlatforms.contains(platform))
+                            }
+                        }
+                    }
+                    .padding()
+                }
+            case .genre:
+                ScrollView {
+                    LazyVGrid(columns: [ GridItem(.flexible()),
+                                          GridItem(.flexible()),
+                                          GridItem(.flexible()),
+                                          GridItem(.flexible()),
+                                       ]) {
+                        ForEach(PopularGenre.allCases.sorted(by: { $0.title < $1.title })) { genre in
+                            Button {
+                                if libraryVM.selectedGenres.contains(genre) {
+                                    if let index = libraryVM.selectedGenres.firstIndex(of: genre) {
+                                        libraryVM.selectedGenres.remove(at: index)
+                                    }
+                                } else {
+                                    libraryVM.selectedGenres.append(genre)
+                                }
+                            } label: {
+                                OptionTileView(
+                                    imageName: genre.assetName,
+                                    title: genre.title,
+                                    isSelected: libraryVM.selectedGenres.contains(genre))
+                            }
+                        }
+                    }
+                    .padding()
+                }
+            }
+        }
+    }
+    
     @ViewBuilder
     private var OptionsView: some View {
         switch selectedSegment {
@@ -154,39 +198,18 @@ struct SelectionsView:  View {
                                    ]) {
                     ForEach(PopularPlatform.allCases.filter{ $0.id != PopularPlatform.database.id }.sorted(by: { $0.title < $1.title })) { platform in
                         Button {
-                            if vm.fetchTaskToken.platforms.contains(platform) {
-                                if let index = vm.fetchTaskToken.platforms.firstIndex(of: platform) {
-                                    vm.fetchTaskToken.platforms.remove(at: index)
+                            if discoverVM.fetchTaskToken.platforms.contains(platform) {
+                                if let index = discoverVM.fetchTaskToken.platforms.firstIndex(of: platform) {
+                                    discoverVM.fetchTaskToken.platforms.remove(at: index)
                                 }
                             } else {
-                                vm.fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
-                                vm.fetchTaskToken.platforms.append(platform)
+                                discoverVM.fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
+                                discoverVM.fetchTaskToken.platforms.append(platform)
                             }
                         } label: {
-                            VStack(spacing: 8) {
-                                Image(platform.assetName)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 30, height: 30)
-                                    .padding(.top, 4)
-                                    .padding(.horizontal)
-                                
-                                Text(platform.title)
-                                    .font(.caption2)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.horizontal)
-                                    .padding(.bottom, 4)
-                            }
-                            .frame(width: 85, height: 85)
-                            .background(
-                                Color.black.opacity(0.5), in: .rect(cornerRadius: 20)
-                            )
-                            .overlay {
-                                if vm.fetchTaskToken.platforms.contains(platform) {
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .strokeBorder(appTint, lineWidth: 2)
-                                }
-                            }
+                            OptionTileView(imageName: platform.assetName,
+                                           title: platform.title,
+                                           isSelected: discoverVM.fetchTaskToken.platforms.contains(platform))
                         }
                     }
                 }
@@ -201,39 +224,18 @@ struct SelectionsView:  View {
                                    ]) {
                     ForEach(PopularGenre.allCases.filter { $0.id != PopularGenre.allGenres.id }.sorted(by: { $0.title < $1.title })) { genre in
                         Button {
-                            if vm.fetchTaskToken.genres.contains(genre) {
-                                if let index = vm.fetchTaskToken.genres.firstIndex(of: genre) {
-                                    vm.fetchTaskToken.genres.remove(at: index)
+                            if discoverVM.fetchTaskToken.genres.contains(genre) {
+                                if let index = discoverVM.fetchTaskToken.genres.firstIndex(of: genre) {
+                                    discoverVM.fetchTaskToken.genres.remove(at: index)
                                 }
                             } else {
-                                vm.fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
-                                vm.fetchTaskToken.genres.append(genre)
+                                discoverVM.fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
+                                discoverVM.fetchTaskToken.genres.append(genre)
                             }
                         } label: {
-                            VStack(spacing: 8) {
-                                Image(genre.assetName)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 30, height: 30)
-                                    .padding(.top, 4)
-                                    .padding(.horizontal)
-                                
-                                Text(genre.title)
-                                    .font(.caption2)
-                                    .multilineTextAlignment(.center)
-                                    .padding(.horizontal)
-                                    .padding(.bottom, 4)
-                            }
-                            .frame(width: 85, height: 85)
-                            .background(
-                                Color.black.opacity(0.5), in: .rect(cornerRadius: 20)
-                            )
-                            .overlay {
-                                if vm.fetchTaskToken.genres.contains(genre) {
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .strokeBorder(appTint, lineWidth: 2)
-                                }
-                            }
+                            OptionTileView(imageName: genre.assetName,
+                                           title: genre.title,
+                                           isSelected: discoverVM.fetchTaskToken.genres.contains(genre))
                         }
                     }
                 }
@@ -245,10 +247,10 @@ struct SelectionsView:  View {
                     ForEach([Category.topRated, Category.newReleases, Category.upcoming, Category.upcomingThisWeek, Category.upcomingThisMonth]) { category in
                         
                         Button {
-                            if vm.fetchTaskToken.category == category {
-                                vm.fetchTaskToken.category = .database
+                            if discoverVM.fetchTaskToken.category == category {
+                                discoverVM.fetchTaskToken.category = .database
                             } else {
-                                vm.fetchTaskToken.category = category
+                                discoverVM.fetchTaskToken.category = category
                             }
                         } label: {
                             HStack(alignment: .center, spacing: 12) {
@@ -269,7 +271,7 @@ struct SelectionsView:  View {
                                 Color.black.opacity(0.5), in: .rect(cornerRadius: 20)
                             )
                             .overlay {
-                                if vm.fetchTaskToken.category == category {
+                                if discoverVM.fetchTaskToken.category == category {
                                     RoundedRectangle(cornerRadius: 20)
                                         .strokeBorder(appTint, lineWidth: 2)
                                 }
@@ -278,6 +280,29 @@ struct SelectionsView:  View {
                     }
                 }
                 .padding()
+            }
+        }
+    }
+    
+    
+    private func OptionTileView(imageName: String, title: String, isSelected: Bool) -> some View {
+        VStack(spacing: 8) {
+            Image(imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 30, height: 30)
+            
+            Text(title)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(width: 85, height: 85)
+        .background(Color.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .overlay {
+            if isSelected {
+                RoundedRectangle(cornerRadius: 20)
+                    .strokeBorder(appTint, lineWidth: 2)
             }
         }
     }

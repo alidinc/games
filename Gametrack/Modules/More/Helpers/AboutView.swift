@@ -86,7 +86,7 @@ struct AboutView: View {
             MoreHeaderTextView(title: "Team", subtitle: "")
             VStack(alignment: .leading) {
                 TeamMemberView(with: "https://www.linkedin.com/in/ali-dinc/", name: "Ali Dinç", subtitle: "Developer")
-                TeamMemberView(with: "https://www.linkedin.com/in/brendankoeleman/", name: "Brendan Koeleman", subtitle: "Consultant")
+                TeamMemberView(with: "https://www.linkedin.com/in/erwinbaragula/", name: "Erwin Baragula", subtitle: "UX Consultant")
             }
         }
         .padding()
