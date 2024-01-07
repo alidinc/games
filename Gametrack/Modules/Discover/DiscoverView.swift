@@ -27,10 +27,6 @@ struct DiscoverView: View {
                 Header
                 ViewSwitcher
             }
-            .sheet(isPresented: $showSelectionOptions, content: {
-                SelectionsView(reference: .network, selectedSegment: $selectedSegment)
-                    .presentationDetents([.medium, .large])
-            })
             .if(preferences.networkStatus == .network, transform: { view in
                 view
                     .refreshable {
@@ -134,26 +130,35 @@ struct DiscoverView: View {
                     }
                 }
                 
-                if (!vm.fetchTaskToken.genres.isEmpty && !vm.fetchTaskToken.genres.contains(.allGenres))  || (!vm.fetchTaskToken.platforms.isEmpty && !vm.fetchTaskToken.platforms.contains(.database)) {
-                    Button(action: {
-                        Task {
-                            vm.fetchTaskToken.platforms = [.database]
-                            vm.fetchTaskToken.genres = [.allGenres]
-                            await vm.refreshTask()
-                        }
-                    }, label: {
-                        Text("Clear")
-                            .font(.caption)
-                            .padding(6)
-                            .background(.secondary, in: .capsule)
-                            .padding(6)
-                    })
-                }
+                ClearButton
             }
             .frame(maxHeight: 40)
         }
         .padding(.horizontal)
-        
+        .padding(.top)
+        .sheet(isPresented: $showSelectionOptions, content: {
+            SelectionsView(reference: .network, selectedSegment: $selectedSegment)
+                .presentationDetents([.medium, .large])
+        })
+    }
+    
+    @ViewBuilder
+    private var ClearButton: some View {
+        if (!vm.fetchTaskToken.genres.isEmpty && !vm.fetchTaskToken.genres.contains(.allGenres))  || (!vm.fetchTaskToken.platforms.isEmpty && !vm.fetchTaskToken.platforms.contains(.database)) {
+            Button(action: {
+                Task {
+                    vm.fetchTaskToken.platforms = [.database]
+                    vm.fetchTaskToken.genres = [.allGenres]
+                    await vm.refreshTask()
+                }
+            }, label: {
+                Text("Clear")
+                    .font(.caption)
+                    .padding(6)
+                    .background(.secondary, in: .capsule)
+                    .padding(6)
+            })
+        }
     }
     
     

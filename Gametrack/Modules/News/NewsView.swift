@@ -54,11 +54,6 @@ struct NewsView: View {
                 }
             } label: {
                 HStack {
-//                        if let media = news.media, let mediaContents = media.mediaContents,
-//                            let content = mediaContents.first, let attributes = content.attributes, let urlString = attributes.url {
-//                            AsyncImageView(with: urlString, type: .detail)
-//                        }
-                    
                     VStack(alignment: .leading) {
                         if let title = news.title {
                             Text(title)

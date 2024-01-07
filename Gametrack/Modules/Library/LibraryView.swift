@@ -106,7 +106,7 @@ struct LibraryView: View {
             }
             .frame(maxHeight: 40)
         }
-        
+        .padding(.top)
         .padding(.horizontal)
         .sheet(isPresented: $showSelectionOptions, content: {
             SelectionsView(reference: .local, selectedSegment: $selectedSegment)

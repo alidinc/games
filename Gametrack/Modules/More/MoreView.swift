@@ -28,59 +28,54 @@ struct MoreView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Header
-                
-                Form {
-                    Section("Appearance") {
+            Form {
+                Section("Appearance") {
+                    HStack {
+                        MoreMainRowView(imageName: "swatchpalette.fill", text: "App Tint")
+                        ColorPicker("", selection: $appTint, supportsOpacity: false)
+                    }
+                    
+                    Button {
+                        self.showIcons.toggle()
+                    } label: {
                         HStack {
-                            MoreMainRowView(imageName: "swatchpalette.fill", text: "App Tint")
-                            ColorPicker("", selection: $appTint, supportsOpacity: false)
+                            MoreMainRowView(imageName: "apps.iphone", text: "App Icon")
+                            Spacer()
+                            Text(selectedAppIcon.title)
+                                .foregroundStyle(.gray)
+                                .font(.caption)
                         }
-                        
-                        Button {
-                            self.showIcons.toggle()
-                        } label: {
-                            HStack {
-                                MoreMainRowView(imageName: "apps.iphone", text: "App Icon")
-                                Spacer()
-                                Image(selectedAppIcon.title.lowercased())
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .scaledToFit()
+                    }
+                }
+                
+                Section("Feedback") {
+                    ForEach(Feedback.allCases, id: \.id) { feedback in
+                        switch feedback {
+                        case .rate:
+                            Button(action: {
+                                showAppStore = true
+                            }, label: {
+                               MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
+                            })
+                        case .email:
+                            Button(action: {
+                                showSendEmail = true
+                            }, label: {
+                                MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
+                            })
+                        case .share:
+                            ShareLink(item: Constants.AppStoreURL) {
+                                MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
                             }
                         }
                     }
-                    
-                    Section("Feedback") {
-                        ForEach(Feedback.allCases, id: \.id) { feedback in
-                            switch feedback {
-                            case .rate:
-                                Button(action: {
-                                    showAppStore = true
-                                }, label: {
-                                   MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
-                                })
-                            case .email:
-                                Button(action: {
-                                    showSendEmail = true
-                                }, label: {
-                                    MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
-                                })
-                            case .share:
-                                ShareLink(item: Constants.AppStoreURL) {
-                                    MoreMainRowView(imageName: feedback.imageName, text: feedback.title)
-                                }
-                            }
-                        }
-                    }
-                    
-                    Section("About") {
-                        Button {
-                            self.showAbout.toggle()
-                        } label: {
-                            MoreMainRowView(imageName: "info.circle.fill", text: "About")
-                        }
+                }
+                
+                Section("About") {
+                    Button {
+                        self.showAbout.toggle()
+                    } label: {
+                        MoreMainRowView(imageName: "info.circle.fill", text: "About")
                     }
                 }
             }

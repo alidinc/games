@@ -60,7 +60,7 @@ struct SelectionsView:  View {
             }
                 
         }
-        .background(.ultraThinMaterial, in : .rect(cornerRadius: 20))
+        .background(Color.black.opacity(0.25))
         .onChange(of: discoverVM.fetchTaskToken.platforms, { oldValue, newValue in
             Task {
                 withAnimation {

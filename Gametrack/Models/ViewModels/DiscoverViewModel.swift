@@ -13,8 +13,6 @@ class DiscoverViewModel {
     
     var searchQuery = ""
     var fetchTaskToken: FetchTaskToken
-    
-
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     
     private var cache: DiskCache<[Game]>?

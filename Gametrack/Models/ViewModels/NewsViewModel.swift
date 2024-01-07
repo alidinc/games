@@ -17,7 +17,7 @@ class NewsViewModel {
     var news: [RSSFeedItem] = []
     
     func fetchNews() async {
-        guard let url = URL(string: "https://www.ign.com/rss/articles/feed?tags=games&start=50&count=50") else {
+        guard let url = URL(string: "https://www.ign.com/rss/articles/feed?tags=xbox&count=50") else {
             return
         }
         
