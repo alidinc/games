@@ -19,11 +19,9 @@ class LibraryViewModel {
     var selectedGenres: [PopularGenre] = []
     var selectedLibraryType: LibraryType = .all
     var searchQuery = ""
-    
-    @MainActor
+   
     func filterSegment(games: [SavedGame])  {
-        
-        let libraryGames = games.filter({ $0.libraryType.id == self.selectedLibraryType.id })
+        let libraryGames = games.filter({ $0.library == self.selectedLibraryType.id })
         
         if self.selectedLibraryType == .all {
             if self.searchQuery.isEmpty {

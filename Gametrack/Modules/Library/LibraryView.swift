@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 
+
 struct LibraryView: View {
 
     @State var vm: LibraryViewModel
@@ -18,9 +19,13 @@ struct LibraryView: View {
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
 
-    
     @State private var showSelectionOptions = false
     @State private var selectedSegment: SegmentType = .platform
+    
+    @State private var showOverlay = false
+    @State private var showGenresOverlay = false
+    @State private var showPlatformsOverlay = false
+    @State private var showLibraryOverlay = false
     
     var didRemoteChange = NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange).receive(on: RunLoop.main)
 
@@ -28,38 +33,57 @@ struct LibraryView: View {
         NavigationStack {
             VStack {
                 Header
-                Spacer()
                 ViewSwitcher
             }
             .background(.gray.opacity(0.15))
             .onReceive(didRemoteChange, perform: { _ in
                 vm.filterSegment(games: data)
+                
+                DispatchQueue.main.async {
+                    showLibraryOverlay = vm.savedGames.isEmpty
+                }
             })
             .task {
                 vm.filterSegment(games: data)
             }
             .onChange(of: vm.searchQuery, { oldValue, newValue in
                 vm.filterSegment(games: data)
+                
+                DispatchQueue.main.async {
+                    showOverlay = vm.savedGames.isEmpty
+                }
             })
             .onChange(of: vm.selectedGenres, { oldValue, newValue in
                 vm.filterSegment(games: data)
+                
+                DispatchQueue.main.async {
+                    showGenresOverlay = vm.savedGames.isEmpty
+                }
             })
             .onChange(of: vm.selectedPlatforms, { oldValue, newValue in
                 vm.filterSegment(games: data)
+                
+                DispatchQueue.main.async {
+                    showPlatformsOverlay = vm.savedGames.isEmpty
+                }
             })
             .onChange(of: vm.selectedLibraryType, { oldValue, newValue in
                 vm.filterSegment(games: data)
+                
+                DispatchQueue.main.async {
+                    showLibraryOverlay = vm.savedGames.isEmpty
+                }
             })
         }
     }
    
     
     private var Header: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 LibraryPicker
                 Spacer()
-                ViewTypeButton(viewType: $viewType)
+                ViewTypeButton()
             }
             
             HStack(alignment: .center) {
@@ -82,7 +106,7 @@ struct LibraryView: View {
             }
             .frame(maxHeight: 40)
         }
-        .padding(.bottom, 20)
+        
         .padding(.horizontal)
         .sheet(isPresented: $showSelectionOptions, content: {
             SelectionsView(reference: .local, selectedSegment: $selectedSegment)
@@ -103,7 +127,7 @@ struct LibraryView: View {
                     SFImage(name: vm.selectedLibraryType.selectedIconName, opacity: 0, radius: 0, padding: 0, color: appTint)
                     
                     Text(vm.selectedLibraryType.title)
-                        .font(.system(size: 26, weight: .semibold))
+                        .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(.primary)
                         .shadow(radius: 10)
                 }
@@ -123,12 +147,38 @@ struct LibraryView: View {
             VStack(spacing: 10) {
                 SearchTextField(searchQuery: $vm.searchQuery)
                 
-                SavedCollectionView(games: vm.savedGames, viewType: $viewType)
+                LibraryCollectionView(games: vm.savedGames, viewType: $viewType)
+                    .overlay {
+                        Overlay
+                    }
             }
             .padding(.top, 10)
             .padding(.horizontal, 10)
         }
         .background(.gray.opacity(0.15), in: .rect(cornerRadius: 10))
         .padding(.bottom, 5)
+    }
+    
+    @ViewBuilder
+    private var Overlay: some View {
+        if showLibraryOverlay {
+            ContentUnavailableView(
+                "No content found for this library.",
+                image: "gamecontroller.fill",
+                description: Text(
+                    "Please add some games from the discover tab."
+                )
+            )
+        } else if showOverlay && !vm.searchQuery.isEmpty {
+            ContentUnavailableView.search(text: vm.searchQuery)
+        } else if showGenresOverlay || showPlatformsOverlay {
+            ContentUnavailableView(
+                "No content found for selected filters",
+                image: "gamecontroller.fill",
+                description: Text(
+                    "Please add some games from the discover tab."
+                )
+            )
+        }
     }
 }

@@ -13,9 +13,9 @@ class DiscoverViewModel {
     
     var searchQuery = ""
     var fetchTaskToken: FetchTaskToken
+    
+
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
-    
-    
     
     private var cache: DiskCache<[Game]>?
     private var limit = 21
@@ -57,7 +57,6 @@ extension DiscoverViewModel {
         }
     }
     
-    @MainActor
     func fetchGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
@@ -65,13 +64,17 @@ extension DiscoverViewModel {
         let genres = self.fetchTaskToken.genres
         
         if let cache, let games = await cache.value(forKey: category.rawValue) {
-            self.dataFetchPhase = .success(games)
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .success(games)
+            }
             if Task.isCancelled { return }
             return
         }
         
         self.offset = 0
-        self.dataFetchPhase = .empty
+        DispatchQueue.main.async {
+            self.dataFetchPhase = .empty
+        }
         
         do {
             let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
@@ -81,13 +84,17 @@ extension DiscoverViewModel {
                                                                       limit: self.limit,
                                                                       offset: self.offset)
             if Task.isCancelled { return }
-            self.dataFetchPhase = .success(response)
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .success(response)
+            }
             if !response.isEmpty, let cache {
                 await cache.setValue(response, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            self.dataFetchPhase = .failure(error)
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .failure(error)
+            }
         }
     }
     
@@ -100,7 +107,9 @@ extension DiscoverViewModel {
         let games = self.dataFetchPhase.value ?? []
     
         
-        self.dataFetchPhase = .fetchingNextPage(games)
+        DispatchQueue.main.async {
+            self.dataFetchPhase = .fetchingNextPage(games)
+        }
         
         do {
             self.offset += self.limit
@@ -114,13 +123,18 @@ extension DiscoverViewModel {
             let totalGames = games + response
             if Task.isCancelled { return }
            
-            self.dataFetchPhase = .success(totalGames)
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .success(totalGames)
+            }
+            
             if !totalGames.isEmpty, let cache  {
                 await cache.setValue(totalGames, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            self.dataFetchPhase = .failure(error)
+            DispatchQueue.main.async {
+                self.dataFetchPhase = .failure(error)
+            }
         }
     }
     

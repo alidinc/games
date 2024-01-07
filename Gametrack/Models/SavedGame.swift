@@ -14,6 +14,7 @@ class SavedGame: Identifiable, Hashable {
     
     @Attribute(.unique)
     var id: String
+    
     var date: Date
     var library: Int
     
@@ -23,34 +24,26 @@ class SavedGame: Identifiable, Hashable {
     @Attribute(.externalStorage)
     var imageData: Data?
     
-    @Transient
-    var libraryType: LibraryType {
-        get {
-            return LibraryType(rawValue: Int(library)) ?? .wishlist
-        }
-        
-        set {
-            self.library = Int(newValue.rawValue)
-        }
-    }
-    
-    @Transient
     var game: Game? {
         do {
             guard let gameData = self.gameData else {
                 return nil
             }
+            
             return try JSONDecoder().decode(Game.self, from: gameData)
         } catch {
             return nil
         }
     }
     
-    init(id: String = UUID().uuidString, date: Date = .now, library: Int, gameData: Data? = nil) {
+    init(
+        id: String = UUID().uuidString,
+        date: Date = .now,
+        library: Int
+    ) {
         self.id = id
         self.date = date
         self.library = library
-        self.gameData = gameData
     }
     
     func containsPopularPlatforms(_ popularPlatforms: [PopularPlatform]) -> Bool {

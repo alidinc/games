@@ -15,8 +15,6 @@ struct SelectionsView:  View {
     @Environment(LibraryViewModel.self) private var libraryVM
     
     @Binding var selectedSegment: SegmentType
-    
-    
     @Namespace private var animation
     
     @Environment(\.dismiss) private var dismiss
@@ -62,6 +60,7 @@ struct SelectionsView:  View {
             }
                 
         }
+        .background(.ultraThinMaterial, in : .rect(cornerRadius: 20))
         .onChange(of: discoverVM.fetchTaskToken.platforms, { oldValue, newValue in
             Task {
                 withAnimation {
@@ -90,7 +89,7 @@ struct SelectionsView:  View {
     
     private var SegmentedView: some View {
         HStack(spacing: 0) {
-            ForEach(reference == .local ? [SegmentType.genre, SegmentType.platform] : SegmentType.allCases, id: \.rawValue) { segment in
+            ForEach(reference == .local ? [SegmentType.platform, SegmentType.genre] : SegmentType.allCases, id: \.rawValue) { segment in
                 SegmentItem(segment: segment)
             }
         }
@@ -294,10 +293,10 @@ struct SelectionsView:  View {
             
             Text(title)
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(isSelected ? .primary : .secondary)
                 .multilineTextAlignment(.center)
         }
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 8)
         .frame(width: 85, height: 85)
         .background(Color.black.opacity(0.5), in: .rect(cornerRadius: 10))
         .overlay {

@@ -9,13 +9,12 @@ import SwiftUI
 
 @main
 struct GametrackApp: App {
-
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.dark)
+                .modelContainer(for: [SavedGame.self])
         }
-        .modelContainer(for: [SavedGame.self])
     }
 }

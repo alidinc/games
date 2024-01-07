@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct CollectionView: View {
+struct DiscoverCollectionView: View {
     
-    var vm: DiscoverViewModel
+    @Environment(DiscoverViewModel.self) private var vm
     @Binding var viewType: ViewType
     
     var body: some View {
@@ -26,7 +26,7 @@ struct CollectionView: View {
             ForEach(vm.games, id: \.id) { game in
                 ListRowView(game: game)
                     .navigationLink({
-                        GameDetailView(game: game)
+                        DetailView(game: game)
                     })
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
@@ -60,7 +60,7 @@ struct CollectionView: View {
                 ForEach(vm.games, id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {
                         NavigationLink {
-                            GameDetailView(game: game)
+                            DetailView(game: game)
                         } label: {
                             AsyncImageView(with: url, type: .grid)
                                 .task {

@@ -22,7 +22,7 @@ struct SimilarGamesView: View {
                 HStack {
                     ForEach(similarGames, id: \.id) { game in
                         NavigationLink {
-                            GameDetailView(game: game)
+                            DetailView(game: game)
                         } label: {
                             if let cover = game.cover, let url = cover.url {
                                 AsyncImageView(with: url, type: .grid)

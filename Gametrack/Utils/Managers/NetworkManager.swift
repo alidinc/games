@@ -127,6 +127,7 @@ struct NetworkManager {
         return try await self.fetch(with: Constants.IGDBAPI.MultiQueryURL, with: apicalypse)
     }
     
+    
     func fetchDetailedGames(query: String? = nil,
                             with category: Category,
                             platforms: [PopularPlatform],

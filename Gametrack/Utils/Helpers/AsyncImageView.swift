@@ -94,11 +94,8 @@ struct AsyncImageView: View {
                             .shadow(color: .white.opacity(0.7), radius: 10)
                             .frame(width: self.type.width, height: self.type.height)
                             .clipShape(.rect(cornerRadius: self.radius))
-                        
-                    case .failure:
+                    default:
                         ImagePlaceholder(type: self.type, radius: self.radius)
-                    @unknown default:
-                        fatalError()
                     }
                 }
             }

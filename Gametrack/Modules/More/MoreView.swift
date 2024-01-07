@@ -150,7 +150,7 @@ struct MoreView: View {
           //  SFImage(name: "ellipsis.circle.fill", opacity: 0, radius: 0, padding: 0, color: appTint)
             
             Text("More")
-                .font(.system(size: 26, weight: .semibold))
+                .font(.system(size: 24, weight: .semibold))
                 .foregroundStyle(.primary)
                 .shadow(radius: 10)
                 .hSpacing(.leading)

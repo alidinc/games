@@ -62,9 +62,9 @@ enum Category: String, CaseIterable {
         case .upcoming:
             return "Upcoming"
         case .upcomingThisWeek:
-            return "Upcoming this week"
+            return "Upcoming week"
         case .upcomingThisMonth:
-            return "Upcoming this month"
+            return "Upcoming month"
         case .database:
             return "Search"
         }

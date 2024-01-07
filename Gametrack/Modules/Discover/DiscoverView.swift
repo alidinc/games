@@ -23,17 +23,23 @@ struct DiscoverView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 8) {
+            VStack {
                 Header
                 ViewSwitcher
             }
-            .refreshable {
-                if preferences.networkStatus == .network {
-                    Task {
-                        await vm.refreshTask()
+            .sheet(isPresented: $showSelectionOptions, content: {
+                SelectionsView(reference: .network, selectedSegment: $selectedSegment)
+                    .presentationDetents([.medium, .large])
+            })
+            .if(preferences.networkStatus == .network, transform: { view in
+                view
+                    .refreshable {
+                        Task {
+                            await vm.refreshTask()
+                        }
                     }
-                }
-            }
+                
+            })
             .background(.gray.opacity(0.15))
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
@@ -71,9 +77,8 @@ struct DiscoverView: View {
                     .multilineTextAlignment(.center)
                     .controlSize(.large)
             }
-            .padding(.horizontal, 50)
             .hSpacing(.center)
-            .offset(y: 50)
+            .padding(.horizontal, 50)
             .ignoresSafeArea()
         }
     }
@@ -83,19 +88,12 @@ struct DiscoverView: View {
         ZStack {
             VStack(spacing: 10) {
                 SearchTextField(searchQuery: $vm.searchQuery)
-                CollectionView(vm: vm, viewType: $viewType)
+                DiscoverCollectionView(viewType: $viewType)
             }
             .padding(.top, 10)
             .padding(.horizontal, 10)
             .overlay {
-                if preferences.networkStatus == .local {
-                    ContentUnavailableView("No network now, please try again later.", systemImage: "globe")
-                        .task {
-                            await vm.refreshTask()
-                        }
-                } else {
-                    LoadingView
-                }
+                Overlay
             }
         }
         .background(.gray.opacity(0.15), in: .rect(cornerRadius: 10))
@@ -103,17 +101,37 @@ struct DiscoverView: View {
     }
     
     @ViewBuilder
+    private var Overlay: some View {
+        if preferences.networkStatus == .local {
+            ContentUnavailableView(
+                "No network available",
+                systemImage: "exclamationmark.triangle.fill",
+                description: Text(
+                    "We are unable to display any content as your iPhone is not currently connected to the internet."
+                )
+            )
+            .task {
+                await vm.refreshTask()
+            }
+        } else {
+            LoadingView
+        }
+    }
+    
+    @ViewBuilder
     var Header: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack {
                 CategoryPicker
                 Spacer()
-                ViewTypeButton(viewType: $viewType)
+                ViewTypeButton()
             }
             
             HStack(alignment: .center) {
                 SelectedOptionsTitleView(reference: .network, selectedSegment: $selectedSegment) {
-                    showSelectionOptions = true
+                    withAnimation {
+                        showSelectionOptions = true
+                    }
                 }
                 
                 if (!vm.fetchTaskToken.genres.isEmpty && !vm.fetchTaskToken.genres.contains(.allGenres))  || (!vm.fetchTaskToken.platforms.isEmpty && !vm.fetchTaskToken.platforms.contains(.database)) {
@@ -134,12 +152,8 @@ struct DiscoverView: View {
             }
             .frame(maxHeight: 40)
         }
-        .padding(.bottom, 20)
         .padding(.horizontal)
-        .sheet(isPresented: $showSelectionOptions, content: {
-            SelectionsView(reference: .network, selectedSegment: $selectedSegment)
-                .presentationDetents([.medium, .large])
-        })
+        
     }
     
     
@@ -156,11 +170,15 @@ struct DiscoverView: View {
             }
         } label: {
             HStack(alignment: .center, spacing: 4) {
-                Text(vm.fetchTaskToken.category.title)
-                    .font(.system(size: 26, weight: .semibold))
-                    .foregroundStyle(.primary)
-                    .shadow(radius: 10)
-                   
+                HStack(spacing: 8) {
+                    SFImage(name: vm.fetchTaskToken.category.systemImage, opacity: 0, radius: 0, padding: 0, color: appTint)
+                    
+                    Text(vm.fetchTaskToken.category.title)
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundStyle(.primary)
+                        .shadow(radius: 10)
+                }
+                
                 Image(systemName: "chevron.down")
                     .font(.title2)
                     .bold()

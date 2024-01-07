@@ -105,16 +105,15 @@ struct IconSelectionView: View {
                 /// No need to update since we're already using this icon.
                 return
             }
-
+            
             do {
                 try await UIApplication.shared.setAlternateIconName(icon.assetName)
+                dismiss()
             } catch {
                 try await UIApplication.shared.setAlternateIconName(nil)
+                dismiss()
             }
         }
-        
-        dismiss()
-        HapticsManager.shared.vibrate(for: .warning)
     }
 }
 

@@ -86,6 +86,10 @@ extension View {
                         .opacity(opacity)
                 }
         }
+    
+    func gradientMask(height: CGFloat = 50, color: Color, alignment: Alignment = .bottom) -> some View {
+        modifier(GradientMaskModifier(height: height, color: color, alignment: alignment))
+    }
 }
 
 fileprivate struct NavigationLinkModifier<Destination: View>: ViewModifier {

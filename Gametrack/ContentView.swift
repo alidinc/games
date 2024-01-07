@@ -24,9 +24,13 @@ struct ContentView: View {
                 .tag(Tab.discover)
                 .tabItem { Tab.discover.tabContent }
             
-           LibraryView(vm: libraryViewModel)
+            LibraryView(vm: libraryViewModel)
                 .tag(Tab.library)
                 .tabItem { Tab.library.tabContent }
+            
+            NewsView()
+                .tag(Tab.news)
+                .tabItem { Tab.news.tabContent }
             
             MoreView()
                 .tag(Tab.more)
@@ -50,6 +54,7 @@ enum Tab: String {
     case discover = "Discover"
     case library = "Library"
     case more = "More"
+    case news = "News"
     
     @ViewBuilder
     var tabContent: some View {
@@ -58,10 +63,13 @@ enum Tab: String {
             Image(systemName: "network")
             Text(self.rawValue)
         case .library:
-            Image(systemName: "bookmark.circle.fill")
+            Image(systemName: "bookmark")
             Text(self.rawValue)
         case .more:
             Image(systemName: "ellipsis.circle.fill")
+            Text(self.rawValue)
+        case .news:
+            Image(systemName: "newspaper.fill")
             Text(self.rawValue)
         }
     }
