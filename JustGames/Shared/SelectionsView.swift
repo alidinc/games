@@ -50,7 +50,9 @@ struct SelectionsView:  View {
             }
             .padding(20)
             
-            SegmentedView
+            SegmentedView(selectedSegment: $selectedSegment, segments: reference == .local ? [SegmentType.platform, SegmentType.genre] : SegmentType.allCases, segmentContent: { item in
+                Text(item.rawValue.capitalized)
+            })
             
             switch reference {
             case .network:
@@ -86,42 +88,6 @@ struct SelectionsView:  View {
             }
         })
     }
-    
-    private var SegmentedView: some View {
-        HStack(spacing: 0) {
-            ForEach(reference == .local ? [SegmentType.platform, SegmentType.genre] : SegmentType.allCases, id: \.rawValue) { segment in
-                SegmentItem(segment: segment)
-            }
-        }
-        .background(appTint.opacity(0.15), in: .capsule)
-        .padding(.horizontal, 20)
-    }
-    
-    private func SegmentItem(segment: SegmentType) -> some View {
-        Text(segment.rawValue.capitalized)
-            .hSpacing()
-            .tag(segment.id)
-            .font(.system(size: 14, weight: .semibold))
-            .foregroundStyle(selectedSegment == segment ? .black : .secondary)
-            .padding(.vertical, 10)
-            .background {
-                if selectedSegment == segment {
-                    Capsule()
-                        .fill(appTint)
-                        .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
-                }
-            }
-            .contentShape(.capsule)
-            .onTapGesture {
-                withAnimation(.snappy) {
-                    selectedSegment = segment
-                }
-            }
-            .onChange(of: segment) { oldValue, newValue in
-                selectedSegment = newValue
-            }
-    }
-    
     
     private var LocalOptionsView: some View {
         VStack {
