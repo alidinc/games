@@ -172,20 +172,23 @@ extension GamesViewModel {
     func filterSegment(games: [SavedGame])  {
         let libraryGames = games.filter({ $0.library == self.selectedLibraryType.id })
         
+        var platforms = self.selectedPlatforms
+        var genres = self.selectedGenres
+        
         if self.selectedLibraryType == .all {
             if self.searchQuery.isEmpty {
                 self.savedGames = games
-                    .filter({$0.containsPopularGenres(self.selectedGenres)})
-                    .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                    .filter({$0.containsPopularGenres(genres)})
+                    .filter({$0.containsPopularPlatforms(platforms)})
             } else {
-                if !self.fetchTaskToken.genres.isEmpty {
+                if !genres.isEmpty {
                     self.savedGames = games
                         .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
-                        .filter({$0.containsPopularGenres(self.selectedGenres)})
-                } else if !fetchTaskToken.platforms.isEmpty {
+                        .filter({$0.containsPopularGenres(genres)})
+                } else if !platforms.isEmpty {
                     self.savedGames = games
                         .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
-                        .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                        .filter({$0.containsPopularPlatforms(platforms)})
                 } else {
                     self.savedGames = games
                         .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
@@ -194,17 +197,17 @@ extension GamesViewModel {
         } else {
             if self.searchQuery.isEmpty {
                 self.savedGames = libraryGames
-                    .filter({$0.containsPopularGenres(self.selectedGenres)})
-                    .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                    .filter({$0.containsPopularGenres(genres)})
+                    .filter({$0.containsPopularPlatforms(platforms)})
             } else {
-                if !self.fetchTaskToken.genres.isEmpty {
+                if !genres.isEmpty {
                     self.savedGames = libraryGames
                         .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
-                        .filter({$0.containsPopularGenres(self.selectedGenres)})
-                } else if !self.fetchTaskToken.platforms.isEmpty {
+                        .filter({$0.containsPopularGenres(genres)})
+                } else if !platforms.isEmpty {
                     self.savedGames = libraryGames
                         .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
-                        .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                        .filter({$0.containsPopularPlatforms(platforms)})
                 } else {
                     self.savedGames = libraryGames
                         .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})

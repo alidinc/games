@@ -22,9 +22,9 @@ enum SegmentType: String, CaseIterable, Identifiable {
 struct SelectionsView: View {
     
     @AppStorage("appTint") var appTint: Color = .white
-    @Binding var reference: DataType
+    var reference: DataType
     @Binding var selectedSegment: SegmentType
-    @Environment(GamesViewModel.self) private var vm
+    @Binding var vm: GamesViewModel
     @Namespace private var animation
     
     var body: some View {
@@ -87,8 +87,8 @@ struct SelectionsView: View {
                                 
                                ]) {
                 switch reference {
-                default:
-                    ForEach(PopularPlatform.allCases.sorted(by: { $0.title < $1.title })) { platform in
+                case .network:
+                    ForEach(PopularPlatform.allCases.filter({$0.id != PopularPlatform.database.id}).sorted(by: { $0.title < $1.title })) { platform in
                         Button {
                             if vm.fetchTaskToken.platforms.contains(platform) {
                                 if let index = vm.fetchTaskToken.platforms.firstIndex(of: platform) {
@@ -102,6 +102,23 @@ struct SelectionsView: View {
                             OptionTileView(imageName: platform.assetName,
                                            title: platform.title,
                                            isSelected: vm.fetchTaskToken.platforms.contains(platform))
+                        }
+                    }
+                case .library:
+                    ForEach(PopularPlatform.allCases.filter({$0.id != PopularPlatform.database.id}).sorted(by: { $0.title < $1.title })) { platform in
+                        Button {
+                            if vm.selectedPlatforms.contains(platform) {
+                                if let index = vm.selectedPlatforms.firstIndex(of: platform) {
+                                    vm.selectedPlatforms.remove(at: index)
+                                }
+                            } else {
+                                vm.selectedPlatforms.removeAll(where: { $0.id == PopularPlatform.database.id })
+                                vm.selectedPlatforms.append(platform)
+                            }
+                        } label: {
+                            OptionTileView(imageName: platform.assetName,
+                                           title: platform.title,
+                                           isSelected: vm.selectedPlatforms.contains(platform))
                         }
                     }
                 }
@@ -118,8 +135,8 @@ struct SelectionsView: View {
                                  GridItem(.flexible()),
                                ]) {
                 switch reference {
-                default:
-                    ForEach(PopularGenre.allCases.sorted(by: { $0.title < $1.title })) { genre in
+                case .network:
+                    ForEach(PopularGenre.allCases.filter({$0.id != PopularGenre.allGenres.id}).sorted(by: { $0.title < $1.title })) { genre in
                         Button {
                             if vm.fetchTaskToken.genres.contains(genre) {
                                 if let index = vm.fetchTaskToken.genres.firstIndex(of: genre) {
@@ -135,6 +152,23 @@ struct SelectionsView: View {
                                            isSelected: vm.fetchTaskToken.genres.contains(genre))
                         }
                     }
+                case .library:
+                    ForEach(PopularGenre.allCases.filter({$0.id != PopularGenre.allGenres.id}).sorted(by: { $0.title < $1.title })) { genre in
+                        Button {
+                            if vm.selectedGenres.contains(genre) {
+                                if let index = vm.selectedGenres.firstIndex(of: genre) {
+                                    vm.selectedGenres.remove(at: index)
+                                }
+                            } else {
+                                vm.selectedGenres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
+                                vm.selectedGenres.append(genre)
+                            }
+                        } label: {
+                            OptionTileView(imageName: genre.assetName,
+                                           title: genre.title,
+                                           isSelected: vm.selectedGenres.contains(genre))
+                        }
+                    }
                 }
             }
             .padding()
@@ -143,7 +177,7 @@ struct SelectionsView: View {
     
     
     private func OptionTileView(imageName: String, title: String, isSelected: Bool) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 4) {
             Image(imageName)
                 .resizable()
                 .scaledToFit()
@@ -154,8 +188,9 @@ struct SelectionsView: View {
                 .foregroundStyle(isSelected ? .primary : .secondary)
                 .multilineTextAlignment(.center)
         }
-        .padding(8)
-        .frame(width: 85, height: 85)
+        .hSpacing(.center)
+        .vSpacing(.center)
+        .padding(10)
         .background(Color.black.opacity(0.5), in: .rect(cornerRadius: 10))
         .overlay {
             if isSelected {
