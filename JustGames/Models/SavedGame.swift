@@ -15,6 +15,7 @@ class SavedGame: Identifiable, Hashable {
     var date: Date
     var library: Int
     
+    @Attribute(.externalStorage)
     var gameData: Data?
     
     @Attribute(.externalStorage)

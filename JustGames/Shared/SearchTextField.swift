@@ -10,11 +10,12 @@ import SwiftUI
 struct SearchTextField: View {
     
     @Binding var searchQuery: String
+    @Binding var prompt: String
     @AppStorage("appTint") var appTint: Color = .white
     
     var body: some View {
         HStack(spacing: 0) {
-            TextField("", text: $searchQuery)
+            TextField(prompt, text: $searchQuery)
                 .frame(height: 24)
                 .padding(10)
                 .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))

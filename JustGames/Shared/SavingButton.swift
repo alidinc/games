@@ -24,7 +24,6 @@ struct SavingButton: View {
         Menu {
             ForEach([LibraryType.wishlist,
                      LibraryType.purchased,
-                     LibraryType.owned,
                      LibraryType.played], id: \.id) { library in
                 Button {
                     vm.handleToggle(
@@ -36,7 +35,7 @@ struct SavingButton: View {
                 } label: {
                     HStack {
                         Text(library.title)
-                        SFImage(name:  vm.alreadyExists(game, games: games, in: library) ? library.selectedIconName : library.iconName)
+                        SFImage(name:  vm.alreadyExists(game, games: games, in: library) ? library.imageName : library.iconName)
                     }
                 }
             }
@@ -44,7 +43,7 @@ struct SavingButton: View {
             if let savedGame = games.first(where: { $0.game?.id == game.id }), let library = LibraryType(rawValue: savedGame.library) {
                 
                 SFImage(
-                    name: library.selectedIconName,
+                    name: library.imageName,
                     opacity: opacity,
                     padding: padding,
                     color: library.color

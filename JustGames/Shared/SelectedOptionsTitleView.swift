@@ -8,54 +8,22 @@
 import SwiftData
 import SwiftUI
 
-enum SegmentType: String, CaseIterable, Identifiable {
-    case category
-    case platform
-    case genre
-    
-    var id: String {
-        switch self {
-        default:
-            UUID().uuidString
-        }
-    }
-}
-
-enum ViewReference {
-    case network
-    case local
-}
-
 struct SelectedOptionsTitleView: View {
     
-    var reference: ViewReference
+    var reference: DataType
     @Binding var selectedSegment: SegmentType
     @AppStorage("appTint") var appTint: Color = .white
     
     var onTap: () -> Void
 
-    @Environment(DiscoverViewModel.self) private var discoverVM
-    @Environment(LibraryViewModel.self) private var libraryVM
-
-    @Query private var savedGames: [SavedGame]
-    @State private var showSelection = false
+    @Environment(GamesViewModel.self) private var vm
 
     var platforms: String {
-        switch reference {
-        case .network:
-            return discoverVM.fetchTaskToken.platforms.isEmpty ? "Platforms" : "\(discoverVM.fetchTaskToken.platforms.map({$0.title}).joined(separator: ", "))"
-        case .local:
-            return libraryVM.selectedPlatforms.isEmpty ? "Platforms" : libraryVM.selectedPlatforms.compactMap({$0.title}).joined(separator: ", ")
-        }
+        return vm.fetchTaskToken.platforms.isEmpty ? "Platforms" : "\(vm.fetchTaskToken.platforms.map({$0.title}).joined(separator: ", "))"
     }
     
     var genres: String {
-        switch reference {
-        case .network:
-            return discoverVM.fetchTaskToken.genres.isEmpty ? "Genres" : "\(discoverVM.fetchTaskToken.genres.map({$0.title}).joined(separator: ", "))"
-        case .local:
-            return libraryVM.selectedGenres.isEmpty ? "Genres" : libraryVM.selectedGenres.compactMap({$0.title}).joined(separator: ", ")
-        }
+        return vm.fetchTaskToken.genres.isEmpty ? "Genres" : "\(vm.fetchTaskToken.genres.map({$0.title}).joined(separator: ", "))"
     }
     
     var body: some View {
@@ -91,6 +59,5 @@ struct SelectedOptionsTitleView: View {
         .hSpacing(.leading)
         .padding(.vertical, 4)
         .padding(.horizontal, 8)
-        .background(libraryVM.selectedGenres.isEmpty || libraryVM.selectedPlatforms.isEmpty ? Color.clear.gradient : Color.gray.gradient, in: .capsule)
     }
 }

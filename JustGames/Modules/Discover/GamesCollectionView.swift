@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct DiscoverCollectionView: View {
+struct GamesCollectionView: View {
     
-    @Environment(DiscoverViewModel.self) private var vm
-    @Binding var viewType: ViewType
+    @Environment(GamesViewModel.self) private var vm
+    
+    @AppStorage("viewType") var viewType: ViewType = .list
     
     var body: some View {
         switch viewType {

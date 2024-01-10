@@ -76,6 +76,24 @@ struct ListRowView: View {
                             }
                         }
                         
+                        if let releaseDates = game.releaseDates,
+                            let lastReleasedDate = releaseDates.max(),
+                            let lastDate = lastReleasedDate.date,
+                            let lastPlatform = lastReleasedDate.platform,
+                            Int(Date.now.timeIntervalSince1970) < lastDate {
+                            
+                            let lastOnePlatformName = PopularPlatform(rawValue: lastPlatform)
+                            let platforms = releaseDates.filter({ Int(Date.now.timeIntervalSince1970) < $0.date ?? 0 })
+                            let platformNames = platforms.compactMap({ PopularPlatform(rawValue: $0.platform ?? 0)?.title }).joined(separator: ", ")
+                            
+                            
+                            if let lastOnePlatformName {
+                                Text("Upcoming: \(lastDate.numberToDateString()) for \(lastOnePlatformName.title)")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
+                            }
+                        }
+                        
                         Text(game.availablePlatforms)
                             .foregroundStyle(.secondary)
                             .font(.caption)
@@ -144,6 +162,24 @@ struct ListRowView: View {
                                     .font(.caption)
                             }
                             .hSpacing(.leading)
+                        }
+                    }
+                    
+                    if let releaseDates = game.releaseDates,
+                        let lastReleasedDate = releaseDates.max(),
+                        let lastDate = lastReleasedDate.date,
+                        let lastPlatform = lastReleasedDate.platform,
+                        Int(Date.now.timeIntervalSince1970) < lastDate {
+                        
+                        let lastOnePlatformName = PopularPlatform(rawValue: lastPlatform)
+                        let platforms = releaseDates.filter({ Int(Date.now.timeIntervalSince1970) < $0.date ?? 0 })
+                        let platformNames = platforms.compactMap({ PopularPlatform(rawValue: $0.platform ?? 0)?.title }).joined(separator: ", ")
+                        
+                        
+                        if let lastOnePlatformName {
+                            Text("Upcoming: \(lastDate.numberToDateString()) for \(lastOnePlatformName.title)")
+                                .foregroundStyle(.secondary)
+                                .font(.caption)
                         }
                     }
                     

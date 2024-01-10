@@ -11,7 +11,7 @@ import SwiftUI
 struct LibraryCollectionView: View {
     
     var games: [SavedGame]
-    @Binding var viewType: ViewType
+    @AppStorage("viewType") var viewType: ViewType = .list
     @Environment(Preferences.self) private var preferences: Preferences
     
     var body: some View {

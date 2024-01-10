@@ -13,8 +13,6 @@ enum Category: String, CaseIterable {
     case topRated
     case newReleases
     case upcoming
-    case upcomingThisWeek
-    case upcomingThisMonth
     
     var `where`: String {
         switch self {
@@ -23,11 +21,7 @@ enum Category: String, CaseIterable {
         case .newReleases:
             return "first_release_date > \(threeMonthsBackIntervalString) & first_release_date < \(todayIntervalString) & cover.url != n"
         case .upcoming:
-            return "release_dates.date > \(todayIntervalString) & cover.url != n"
-        case .upcomingThisWeek:
-            return "release_dates.date < \(thisWeekIntervalString) & release_dates.date > \(todayIntervalString) & cover.url != n"
-        case .upcomingThisMonth:
-            return "release_dates.date < \(thisMonthIntervalString) & release_dates.date > \(todayIntervalString) & cover.url != n"
+            return " cover.url != n & first_release_date > \(threeMonthsBackIntervalString)"
         case .database:
             return "cover.url != n"
         }
@@ -35,7 +29,7 @@ enum Category: String, CaseIterable {
     
     var sort: String {
         switch self {
-        case .upcoming, .upcomingThisWeek, .upcomingThisMonth:
+        case .upcoming:
             return "release_dates.date"
         case .newReleases:
             return "first_release_date"
@@ -48,8 +42,8 @@ enum Category: String, CaseIterable {
         switch self {
         case .topRated, .newReleases, .database:
             return .DESCENDING
-        case .upcoming, .upcomingThisWeek, .upcomingThisMonth:
-            return .ASCENDING
+        case .upcoming:
+            return .DESCENDING
         }
     }
     
@@ -61,10 +55,6 @@ enum Category: String, CaseIterable {
             return "New releases"
         case .upcoming:
             return "Upcoming"
-        case .upcomingThisWeek:
-            return "Upcoming week"
-        case .upcomingThisMonth:
-            return "Upcoming month"
         case .database:
             return "Search"
         }
@@ -77,10 +67,6 @@ enum Category: String, CaseIterable {
         case .newReleases:
             return "calendar"
         case .upcoming:
-            return "calendar"
-        case .upcomingThisWeek:
-            return "calendar"
-        case .upcomingThisMonth:
             return "calendar"
         case .database:
             return "gamecontroller.fill"

@@ -15,18 +15,13 @@ struct ContentView: View {
     @State private var preferences = Preferences()
     @State private var saving = SavingViewModel()
     @State private var networkMonitor = NetworkMonitor()
-    @State private var discoverViewModel = DiscoverViewModel()
-    @State private var libraryViewModel = LibraryViewModel()
+    @State private var gamesViewModel = GamesViewModel()
     
     var body: some View {
         TabView(selection: $activeTab) {
-            DiscoverView(vm: discoverViewModel)
+            GamesView(vm: gamesViewModel)
                 .tag(Tab.discover)
                 .tabItem { Tab.discover.tabContent }
-            
-            LibraryView(vm: libraryViewModel)
-                .tag(Tab.library)
-                .tabItem { Tab.library.tabContent }
             
             NewsView()
                 .tag(Tab.news)
@@ -40,8 +35,7 @@ struct ContentView: View {
         .environment(preferences)
         .environment(saving)
         .environment(networkMonitor)
-        .environment(discoverViewModel)
-        .environment(libraryViewModel)
+        .environment(gamesViewModel)
     }
 }
 
@@ -51,8 +45,7 @@ struct ContentView: View {
 
 
 enum Tab: String {
-    case discover = "Discover"
-    case library = "Library"
+    case discover = "Games"
     case more = "More"
     case news = "News"
     
@@ -60,10 +53,7 @@ enum Tab: String {
     var tabContent: some View {
         switch self {
         case .discover:
-            Image(systemName: "network")
-            Text(self.rawValue)
-        case .library:
-            Image(systemName: "bookmark")
+            Image(systemName: "gamecontroller.fill")
             Text(self.rawValue)
         case .more:
             Image(systemName: "ellipsis.circle.fill")

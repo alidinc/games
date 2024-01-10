@@ -9,15 +9,26 @@ import SwiftUI
 import Observation
 
 @Observable
-class DiscoverViewModel {
+class GamesViewModel {
     
-    var searchQuery = ""
+
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     
     private var cache: DiskCache<[Game]>?
     private var limit = 21
     private var offset = 0
+    
+    var headerTitle = ""
+    var headerImageName = ""
+    
+   
+    var selectedPlatforms: [PopularPlatform] = []
+    var selectedGenres: [PopularGenre] = []
+    var selectedLibraryType: LibraryType = .all
+    var searchQuery = ""
+    
+    var savedGames: [SavedGame] = []
     
     var games: [Game] {
         dataFetchPhase.value ?? []
@@ -30,6 +41,14 @@ class DiscoverViewModel {
         return false
     }
     
+    var showDiscoverClearButton: Bool {
+        (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))  || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
+    }
+    
+    var showLibraryClearButton: Bool {
+        (!selectedGenres.isEmpty || !selectedPlatforms.isEmpty)
+    }
+    
     init() {
         self.cache = DiskCache<[Game]>(filename: "GamesCache",
                                        expirationInterval: 24 * 60 * 60 * 60)
@@ -40,10 +59,13 @@ class DiscoverViewModel {
             genres: [.allGenres],
             token: .now
         )
+        
+        headerTitle = fetchTaskToken.category.title
+        headerImageName = fetchTaskToken.category.systemImage
     }
 }
 
-extension DiscoverViewModel {
+extension GamesViewModel {
     
     @MainActor
     func refreshTask() async {
@@ -142,5 +164,52 @@ extension DiscoverViewModel {
         }
         
         return (lastGame.id == game.id) && ((games.count - 1) == games.lastIndex(of: game))
+    }
+}
+
+extension GamesViewModel {
+   
+    func filterSegment(games: [SavedGame])  {
+        let libraryGames = games.filter({ $0.library == self.selectedLibraryType.id })
+        
+        if self.selectedLibraryType == .all {
+            if self.searchQuery.isEmpty {
+                self.savedGames = games
+                    .filter({$0.containsPopularGenres(self.selectedGenres)})
+                    .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+            } else {
+                if !self.fetchTaskToken.genres.isEmpty {
+                    self.savedGames = games
+                        .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                        .filter({$0.containsPopularGenres(self.selectedGenres)})
+                } else if !fetchTaskToken.platforms.isEmpty {
+                    self.savedGames = games
+                        .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                        .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                } else {
+                    self.savedGames = games
+                        .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                }
+            }
+        } else {
+            if self.searchQuery.isEmpty {
+                self.savedGames = libraryGames
+                    .filter({$0.containsPopularGenres(self.selectedGenres)})
+                    .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+            } else {
+                if !self.fetchTaskToken.genres.isEmpty {
+                    self.savedGames = libraryGames
+                        .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                        .filter({$0.containsPopularGenres(self.selectedGenres)})
+                } else if !self.fetchTaskToken.platforms.isEmpty {
+                    self.savedGames = libraryGames
+                        .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                        .filter({$0.containsPopularPlatforms(self.selectedPlatforms)})
+                } else {
+                    self.savedGames = libraryGames
+                        .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
+                }
+            }
+        }
     }
 }

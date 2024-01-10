@@ -58,14 +58,14 @@ struct NewsView: View {
     }
     
     var HeaderView: some View {
-        Menu {
-            Picker("", selection: $vm.newsType) {
-                ForEach(NewsType.allCases, id: \.id) { news in
-                    Text(news.title).tag(news)
+        HStack(alignment: .center, spacing: 4) {
+            Menu {
+                Picker("", selection: $vm.newsType) {
+                    ForEach(NewsType.allCases, id: \.id) { news in
+                        Text(news.title).tag(news)
+                    }
                 }
-            }
-        } label: {
-            HStack(alignment: .center, spacing: 4) {
+            } label: {
                 HStack(spacing: 8) {
                     SFImage(name: "newspaper.fill", opacity: 0, radius: 0, padding: 0, color: appTint)
                     
@@ -79,22 +79,23 @@ struct NewsView: View {
                     .font(.title2)
                     .bold()
                     .foregroundStyle(.primary)
-                
-                
-                Spacer()
-                
-                HStack {
-                    Text("Today")
-                        .font(.headline.bold())
-                        .foregroundStyle(.primary)
-                    
-                    Text(Date.now.asString(style: .medium))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
             }
-            .foregroundStyle(appTint)
+
+            
+            
+            Spacer()
+            
+            HStack(alignment: .bottom) {
+                Text("Today")
+                    .font(.headline.bold())
+                    .foregroundStyle(.primary)
+                
+                Text(Date.now.asString(style: .medium))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
         }
+        .foregroundStyle(appTint)
         .padding(.horizontal)
         .padding(.top)
     }
