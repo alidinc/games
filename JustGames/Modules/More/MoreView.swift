@@ -12,7 +12,7 @@ struct MoreView: View {
     
     @AppStorage("appTint") var appTint: Color = .white
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
-    @AppStorage("collectionViewType") private var viewType: ViewType = .list
+    @AppStorage("viewType") private var viewType: ViewType = .list
     
     @Environment(\.openURL) var openURL
     @State private var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
@@ -116,11 +116,40 @@ struct MoreView: View {
                 self.showIcons.toggle()
             } label: {
                 HStack {
-                    MoreRowView(imageName: "apps.iphone", text: "App Icon")
+                    MoreRowView(imageName: "apps.iphone", text: " App Icon")
                     Spacer()
                     Text(selectedAppIcon.title)
                         .foregroundStyle(.gray)
-                        .font(.caption)
+                        .font(.subheadline)
+                }
+            }
+            
+            
+            HStack {
+                MoreRowView(imageName: "rectangle.grid.1x2.fill", text: "App view style")
+                Spacer()
+                
+                Menu {
+                    Section("View type") {
+                        Button {
+                            viewType = .list
+                        } label: {
+                            Image(systemName: "rectangle.grid.1x2.fill")
+                            Text("List")
+                        }
+                        
+                        Button {
+                            viewType = .grid
+                        } label: {
+                            Image(systemName: "rectangle.grid.3x2.fill")
+                            Text("Grid")
+                        }
+                    }
+                    
+                } label: {
+                    Text(viewType.rawValue.capitalized)
+                        .foregroundStyle(.gray)
+                        .font(.subheadline)
                 }
             }
         }

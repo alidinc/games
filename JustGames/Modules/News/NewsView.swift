@@ -23,6 +23,7 @@ struct NewsView: View {
             VStack {
                 HeaderView
                 GameNewsListView
+                    .offset(y: -30)
             }
             .background(.gray.opacity(0.15))
             .task(id: vm.newsType, {
@@ -58,7 +59,7 @@ struct NewsView: View {
     }
     
     var HeaderView: some View {
-        HStack(alignment: .center, spacing: 4) {
+        VStack(alignment: .leading, spacing: 0) {
             Menu {
                 Picker("", selection: $vm.newsType) {
                     ForEach(NewsType.allCases, id: \.id) { news in
@@ -81,11 +82,7 @@ struct NewsView: View {
                     .foregroundStyle(.primary)
             }
 
-            
-            
-            Spacer()
-            
-            HStack(alignment: .bottom) {
+            VStack(alignment: .trailing) {
                 Text("Today")
                     .font(.headline.bold())
                     .foregroundStyle(.primary)
@@ -94,6 +91,9 @@ struct NewsView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+            .hSpacing(.trailing)
+            .offset(y: -30)
+        
         }
         .foregroundStyle(appTint)
         .padding(.horizontal)
@@ -161,15 +161,36 @@ struct NewsView: View {
             if let title = item.title {
                 Text(title)
                     .font(.headline.bold())
-                    .padding(.bottom)
+                    .padding(.top, 4)
                     .hSpacing(.leading)
             }
             
             if let description = item.description, let desc = description.htmlToString() {
                 Text(desc)
-                    .font(.subheadline)
+                    .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(4, reservesSpace: true)
+            }
+            
+            if let author = item.author {
+                Text(author)
+                    .font(.caption)
+                    .foregroundStyle(appTint)
+                    .hSpacing(.trailing)
+            } else if let dublin = item.dublinCore, let author = dublin.dcCreator {
+                HStack(alignment: .bottom) {
+                    if let date = item.pubDate {
+                        Text(date.asString(style: .medium))
+                            .foregroundStyle(.gray.opacity(0.5))
+                    }
+                    
+                    Spacer()
+                    
+                    Text("by \(author)")
+                        .foregroundStyle(appTint.opacity(0.5))
+                }
+                .font(.caption)
+                .padding(.top)
             }
         }
         .padding(12)

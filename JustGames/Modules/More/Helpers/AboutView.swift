@@ -16,7 +16,7 @@ struct AboutView: View {
         NavigationView {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    MoreHeaderTextView(title: "About", subtitle: "Just about \(Bundle.main.appName)")
+                    MoreHeaderTextView(title: "About", subtitle: "")
                     Spacer()
                     CloseButton { self.dismiss() }
                 }
@@ -24,11 +24,11 @@ struct AboutView: View {
                 VStack(alignment: .center) {
                     CreditsButton
                     TeamButton
-                    Spacer(minLength: 100)
                     MadeWithLoveView()
+                        .vSpacing(.bottom)
                 }
             }
-            .padding()
+            .padding(.horizontal)
             .background(Color.black.opacity(0.25))
             .edgesIgnoringSafeArea(.all)
         }

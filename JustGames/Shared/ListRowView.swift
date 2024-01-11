@@ -40,7 +40,7 @@ struct ListRowView: View {
     var LocalView: some View {
         if let savedGame {
             HStack(alignment: .top, spacing: 10) {
-                if let imageData = savedGame.imageData, let thumb = UIImage(data: imageData)?.preparingThumbnail(of: .init(width: 120, height: 160))?.jpegData(compressionQuality: 0.5), let uiImage = UIImage(data: thumb) {
+                if let imageData = savedGame.imageData, let uiImage = UIImage(data: imageData)  {
                     Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)

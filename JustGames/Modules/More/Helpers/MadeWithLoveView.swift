@@ -29,8 +29,6 @@ struct MadeWithLoveView: View {
                 .font(.caption2)
                 .foregroundStyle(.secondary)
             
-            Spacer()
-            
             HStack(alignment: .center, spacing: 2) {
                 Spacer()
                 HStack(alignment: .center, spacing: 2) {

@@ -23,7 +23,7 @@ struct ViewTypeButton: View {
                 }
                 
                 Button {
-                    viewType = .list
+                    viewType = .grid
                 } label: {
                     Image(systemName: "rectangle.grid.3x2.fill")
                     Text("Grid")

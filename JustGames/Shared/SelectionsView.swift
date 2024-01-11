@@ -177,17 +177,18 @@ struct SelectionsView: View {
     
     
     private func OptionTileView(imageName: String, title: String, isSelected: Bool) -> some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 8) {
             Image(imageName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
             
             Text(title)
-                .font(.caption2)
+                .font(.caption)
                 .foregroundStyle(isSelected ? .primary : .secondary)
                 .multilineTextAlignment(.center)
         }
+        .frame(height: 70)
         .hSpacing(.center)
         .vSpacing(.center)
         .padding(10)

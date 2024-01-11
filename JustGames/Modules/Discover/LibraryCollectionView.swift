@@ -56,7 +56,7 @@ struct LibraryCollectionView: View {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                 ForEach(games, id: \.id) { savedGame in
                     if preferences.networkStatus == .local {
-                        if let imageData = savedGame.imageData, let thumb = UIImage(data: imageData)?.preparingThumbnail(of: .init(width: 120, height: 160))?.jpegData(compressionQuality: 0.5), let uiImage = UIImage(data: thumb) {
+                        if let imageData = savedGame.imageData, let uiImage = UIImage(data: imageData)  {
                             NavigationLink(destination: {
                                 DetailView(savedGame: savedGame)
                             }, label: {

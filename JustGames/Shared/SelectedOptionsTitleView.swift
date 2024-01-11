@@ -70,10 +70,14 @@ struct SelectedOptionsTitleView: View {
             Spacer()
             
             ClearButton
+                .padding(.top)
+                .padding(.vertical)
+                .padding(.leading)
+                
         }
         .hSpacing(.leading)
-        .padding(.vertical, 4)
-        .padding(.horizontal, 8)
+        .vSpacing(.bottom)
+        .padding(.vertical, 10)
     }
     
     @ViewBuilder
@@ -89,11 +93,7 @@ struct SelectedOptionsTitleView: View {
                         await vm.refreshTask()
                     }
                 }, label: {
-                    Text("Clear")
-                        .font(.caption)
-                        .padding(6)
-                        .background(.secondary, in: .capsule)
-                        .padding(6)
+                    ClearButtonView
                 })
             }
         case .library:
@@ -101,15 +101,20 @@ struct SelectedOptionsTitleView: View {
                 Button(action: {
                     vm.selectedGenres = []
                     vm.selectedPlatforms = []
-                    vm.filterSegment(games: data)
+                    vm.filterSegment(games: data, for: .init(title: "All"))
                 }, label: {
-                    Text("Clear")
-                        .font(.caption)
-                        .padding(6)
-                        .background(.secondary, in: .capsule)
-                        .padding(6)
+                    ClearButtonView
                 })
             }
         }
+    }
+    
+    private var ClearButtonView: some View {
+        Label("Clear", systemImage: "xmark.circle")
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .font(.caption)
+            .foregroundStyle(.white)
+            .background(.secondary, in: .capsule)
     }
 }
