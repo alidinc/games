@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct JustGamesApp: App {
     
+    @AppStorage("isFirstTimeLaunch") private var isFirstTimeLaunch: Bool = true
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.dark)
-                .modelContainer(for: [SavedGame.self])
         }
+        .modelContainer(ItemContainer.create(shouldCreateDefaults: &isFirstTimeLaunch))
     }
 }

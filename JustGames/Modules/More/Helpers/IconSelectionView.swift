@@ -66,6 +66,7 @@ struct IconSelectionView: View {
                 Spacer()
                 CloseButton()
             }
+            .padding(.vertical)
             .padding(.horizontal)
             
             ScrollView {
@@ -136,7 +137,7 @@ import SwiftUI
 struct MoreHeaderTextView: View {
     
     var title: String
-    var subtitle: String
+    var subtitle: String?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -144,11 +145,11 @@ struct MoreHeaderTextView: View {
                 .font(.system(.title3).bold())
                 .foregroundColor(.primary)
             
-            Text(self.subtitle)
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .padding(.bottom)
+            if let subtitle {
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
         }
-        .padding(.top)
     }
 }

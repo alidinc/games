@@ -101,7 +101,7 @@ struct SelectedOptionsTitleView: View {
                 Button(action: {
                     vm.selectedGenres = []
                     vm.selectedPlatforms = []
-                    vm.filterSegment(games: data, for: .init(title: "All"))
+                    vm.filterSegment(games: data)
                 }, label: {
                     ClearButtonView
                 })

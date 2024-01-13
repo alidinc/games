@@ -12,6 +12,7 @@ struct Constants {
     static var AppStoreURL = "https://apps.apple.com/us/app/goodgames/id1662221677"
     static var GameSpotAPIKey = "ecd63198f3fba5326bad7e9f675821b17aaa0103"
     static var ButtonSize: CGFloat = 24
+    static let allGamesLibraryID = "FC6AAA3D-5EEC-4852-847B-39982C11CD14"
     
     struct URLs {
         static var IGDB: URL {

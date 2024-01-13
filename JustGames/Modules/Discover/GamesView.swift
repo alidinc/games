@@ -34,14 +34,17 @@ struct GamesView: View {
     
     @State private var showSelectionOptions = false
     @State private var selectedSegment: SegmentType = .genre
-    @State private var multiPickerType: DataType = .network
+    @State private var dataType: DataType = .network
     @State private var showSearchOverlay = false
     @State private var showGenresOverlay = false
     @State private var showPlatformsOverlay = false
     @State private var showLibraryOverlay = false
     @State private var searchTitle = "Search in network"
     
+    @State private var showAddLibrary = false
+    
     @Query private var data: [SavedGame]
+    @Query private var libraries: [Library]
     
     var didRemoteChange = NotificationCenter
                             .default
@@ -60,13 +63,19 @@ struct GamesView: View {
             .task(id: vm.fetchTaskToken) {
                 await vm.fetchGames()
             }
-            .task {
-                libraryFetch()
-            }
+            .sheet(isPresented: $showAddLibrary, content: {
+                LibraryView()
+            })
+            .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { _ in
+                showAddLibrary = true
+            })
+            .onReceive(didRemoteChange, perform: { _ in
+                vm.filterSegment(games: data)
+            })
             .onChange(of: vm.searchQuery) { _, newValue in
                 filterType = .search
                 
-                switch multiPickerType {
+                switch dataType {
                 case .network:
                     Task {
                         if !newValue.isEmpty {
@@ -87,58 +96,6 @@ struct GamesView: View {
                     }
                 }
             }
-            .onReceive(didRemoteChange, perform: { _ in
-                libraryFetch()
-            })
-            .onChange(of: vm.selectedGenres, { oldValue, newValue in
-                vm.selectedGenres = newValue
-                vm.filterSegment(games: data)
-                
-                DispatchQueue.main.async {
-                    filterType = .platform
-                    showGenresOverlay = vm.savedGames.isEmpty
-                }
-            })
-            .onChange(of: vm.selectedPlatforms, { oldValue, newValue in
-                vm.selectedPlatforms = newValue
-                vm.filterSegment(games: data)
-                
-                DispatchQueue.main.async {
-                    filterType = .platform
-                    showGenresOverlay = vm.savedGames.isEmpty
-                }
-            })
-            .onChange(of: vm.selectedLibraryType, { oldValue, newValue in
-                libraryFetch()
-            })
-            .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
-                withAnimation {
-                    if vm.fetchTaskToken.platforms.isEmpty {
-                        vm.fetchTaskToken.platforms = [.database]
-                    } else {
-                        vm.fetchTaskToken.platforms = newValue
-                    }
-                }
-                
-                Task {
-                    filterType = .platform
-                    await vm.refreshTask()
-                }
-            })
-            .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
-                withAnimation {
-                    if vm.fetchTaskToken.genres.isEmpty {
-                        vm.fetchTaskToken.genres = []
-                    } else {
-                        vm.fetchTaskToken.genres = newValue
-                    }
-                }
-                
-                Task {
-                    filterType = .genre
-                    await vm.refreshTask()
-                }
-            })
         }
     }
     
@@ -148,7 +105,7 @@ struct GamesView: View {
             VStack(spacing: 10) {
                 SearchTextField(searchQuery: $vm.searchQuery, prompt: $searchTitle)
                 
-                switch multiPickerType {
+                switch dataType {
                 case .network:
                     GamesCollectionView()
                 case .library:
@@ -158,65 +115,10 @@ struct GamesView: View {
             .padding(.top, 10)
             .padding(.horizontal, 10)
             .overlay {
-                Overlay
+                GamesOverlayView(dataType: dataType, filterType: filterType)
             }
         }
         .padding(.bottom, 5)
-    }
-    
-    @ViewBuilder
-    private var  Overlay: some View {
-        switch multiPickerType {
-        case .network:
-            if preferences.networkStatus == .local {
-                ContentUnavailableView(
-                    "No network available",
-                    systemImage: "exclamationmark.triangle.fill",
-                    description: Text(
-                        "We are unable to display any content as your iPhone is not currently connected to the internet."
-                    )
-                )
-                .task {
-                    await vm.refreshTask()
-                }
-            } else {
-                if vm.games.isEmpty {
-                    ZStack {
-                        ProgressView("Please wait, \nwhile we are getting ready! ☺️")
-                            .font(.subheadline)
-                            .tint(.white)
-                            .multilineTextAlignment(.center)
-                            .controlSize(.large)
-                    }
-                    .hSpacing(.center)
-                    .padding(.horizontal, 50)
-                    .ignoresSafeArea()
-                }
-            }
-        case .library:
-            if vm.savedGames.isEmpty {
-                switch filterType {
-                case .search:
-                    ContentUnavailableView.search(text: vm.searchQuery)
-                case .library:
-                    ContentUnavailableView(
-                        "No content found for this library.",
-                        systemImage: "gamecontroller.fill",
-                        description: Text(
-                            "Please add some games from the discover tab."
-                        )
-                    )
-                case .genre, .platform:
-                    ContentUnavailableView(
-                        "No content found for selected filters",
-                        systemImage: "gamecontroller.fill",
-                        description: Text(
-                            "Please explore some new games."
-                        )
-                    )
-                }
-            }
-        }
     }
     
     @ViewBuilder
@@ -225,22 +127,27 @@ struct GamesView: View {
             HStack {
                 MultiPicker
                 Spacer()
+                
+                Button {
+                    showAddLibrary = true
+                } label: {
+                    SFImage(name: "tray.full.fill", color: appTint)
+                }
+                
                 ViewTypeButton()
             }
             
-            HStack(alignment: .center) {
-                SelectedOptionsTitleView(reference: $multiPickerType, selectedSegment: $selectedSegment, onTap: {
-                    withAnimation {
-                        showSelectionOptions = true
-                    }
-                }, vm: $vm)
-            }
+            SelectedOptionsTitleView(reference: $dataType, selectedSegment: $selectedSegment, onTap: {
+                withAnimation {
+                    showSelectionOptions = true
+                }
+            }, vm: $vm)
             .frame(maxHeight: 40)
         }
         .padding(.horizontal)
         .padding(.top)
         .sheet(isPresented: $showSelectionOptions, content: {
-            SelectionsView(reference: multiPickerType, selectedSegment: $selectedSegment, vm: $vm)
+            SelectionsView(reference: dataType, selectedSegment: $selectedSegment, vm: $vm)
                 .presentationDetents([.fraction(0.65), .large])
         })
     }
@@ -253,7 +160,8 @@ struct GamesView: View {
             Divider()
             
             Text("Library")
-            LibraryPicker
+             
+            ShowAllSaved
             
         } label: {
             HStack(alignment: .center, spacing: 4) {
@@ -273,12 +181,69 @@ struct GamesView: View {
             }
             .hSpacing(.leading)
         }
+        .onChange(of: vm.selectedGenres, { oldValue, newValue in
+            vm.selectedGenres = newValue
+            vm.filterSegment(games: data)
+            
+            DispatchQueue.main.async {
+                filterType = .platform
+                showGenresOverlay = vm.savedGames.isEmpty
+            }
+        })
+        .onChange(of: vm.selectedPlatforms, { oldValue, newValue in
+            vm.selectedPlatforms = newValue
+            vm.filterSegment(games: data)
+            
+            DispatchQueue.main.async {
+                filterType = .platform
+                showGenresOverlay = vm.savedGames.isEmpty
+            }
+        })
+        .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
+            withAnimation {
+                if vm.fetchTaskToken.platforms.isEmpty {
+                    vm.fetchTaskToken.platforms = [.database]
+                } else {
+                    vm.fetchTaskToken.platforms = newValue
+                }
+            }
+            
+            Task {
+                filterType = .platform
+                await vm.refreshTask()
+            }
+        })
+        .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
+            withAnimation {
+                if vm.fetchTaskToken.genres.isEmpty {
+                    vm.fetchTaskToken.genres = []
+                } else {
+                    vm.fetchTaskToken.genres = newValue
+                }
+            }
+            
+            Task {
+                filterType = .genre
+                await vm.refreshTask()
+            }
+        })
     }
     
     private func libraryFetch() {
         vm.filterSegment(games: data)
         filterType = .library
+        dataType = .library
+        vm.headerTitle = "All saved"
+        vm.headerImageName = "bookmark.fill"
         showLibraryOverlay = vm.savedGames.isEmpty
+    }
+    
+    private var ShowAllSaved: some View {
+        Button(action: {
+            libraryFetch()
+        }, label: {
+            Text("All saved games")
+        })
     }
     
     private var CategoryPicker: some View {
@@ -290,7 +255,7 @@ struct GamesView: View {
                     vm.fetchTaskToken.category = category
                     vm.headerTitle = category.title
                     vm.headerImageName = category.systemImage
-                    multiPickerType = .network
+                    dataType = .network
                     searchTitle = "Search in network"
                 } label: {
                     Label(category.title, systemImage: category.systemImage).tag(category)
@@ -317,38 +282,38 @@ struct GamesView: View {
     }
     
     
-    private var LibraryPicker: some View {
-        Menu {
-            ForEach(LibraryType.allCases, id: \.id) { library in
-                Button {
-                    vm.selectedLibraryType = library
-                    vm.headerTitle =  library.title
-                    vm.headerImageName =  library.imageName
-                    searchTitle = library.searchTitle
-                    multiPickerType = .library
-                    filterType = .library
-                } label: {
-                    Label(library.title, systemImage: library.imageName).tag(library)
-                }
-            }
-        } label: {
-            HStack(alignment: .center, spacing: 4) {
-                HStack(spacing: 8) {
-                    SFImage(name: vm.selectedLibraryType.imageName, opacity: 0, radius: 0, padding: 0, color: appTint)
-                    
-                    Text(vm.selectedLibraryType.title)
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundStyle(.primary)
-                        .shadow(radius: 10)
-                }
-                
-                Image(systemName: "chevron.down")
-                    .font(.title2)
-                    .bold()
-                    .foregroundStyle(.primary)
-            }
-            .hSpacing(.leading)
-        }
-    }
+//    private var LibraryPicker: some View {
+//        Menu {
+//            ForEach(libraries, id: \.self) { library in
+//                Button {
+//                    vm.selectedLibraryType = library
+//                    vm.headerTitle =  library.title
+//                    vm.headerImageName =  library.icon ?? "bookmark"
+//                    searchTitle = ""
+//                    multiPickerType = .library
+//                    filterType = .library
+//                } label: {
+//                    Label(library.title, systemImage: library.icon ?? "bookmark").tag(library)
+//                }
+//            }
+//        } label: {
+//            HStack(alignment: .center, spacing: 4) {
+//                HStack(spacing: 8) {
+//                    SFImage(name: vm.selectedLibraryType.icon ?? "", opacity: 0, radius: 0, padding: 0, color: appTint)
+//                    
+//                    Text(vm.selectedLibraryType.title)
+//                        .font(.system(size: 24, weight: .semibold))
+//                        .foregroundStyle(.primary)
+//                        .shadow(radius: 10)
+//                }
+//                
+//                Image(systemName: "chevron.down")
+//                    .font(.title2)
+//                    .bold()
+//                    .foregroundStyle(.primary)
+//            }
+//            .hSpacing(.leading)
+//        }
+//    }
 }
 

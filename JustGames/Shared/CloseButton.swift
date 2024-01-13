@@ -33,6 +33,5 @@ struct CloseButton: View {
                         .foregroundColor(.secondary)
                 )
         }
-        .padding()
     }
 }

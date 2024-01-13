@@ -16,10 +16,12 @@ struct AboutView: View {
         NavigationView {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    MoreHeaderTextView(title: "About", subtitle: "")
+                    MoreHeaderTextView(title: "About", subtitle: "You can find more about us here.")
                     Spacer()
                     CloseButton { self.dismiss() }
                 }
+                .padding(.vertical)
+                .padding(.horizontal)
                 
                 VStack(alignment: .center) {
                     CreditsButton
@@ -27,16 +29,15 @@ struct AboutView: View {
                     MadeWithLoveView()
                         .vSpacing(.bottom)
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
-            .background(Color.black.opacity(0.25))
-            .edgesIgnoringSafeArea(.all)
         }
     }
     
     private var TeamButton: some View {
         NavigationLink {
             TeamView
+               
         } label: {
             MoreRowView(imageName: "person.fill", text: "Team")
                 .padding(16)
@@ -46,13 +47,7 @@ struct AboutView: View {
     
     private var CreditsButton: some View {
         NavigationLink {
-            ScrollView {
-                VStack(alignment: .center) {
-                    CreditsView
-                    Spacer()
-                }
-            }
-            .navigationTitle("Credits")
+            CreditsView
         } label: {
             MoreRowView(imageName: "network", text: "Credits")
                 .padding(16)
@@ -82,29 +77,29 @@ struct AboutView: View {
     
     private var TeamView: some View {
         ScrollView {
-            MoreHeaderTextView(title: "Team", subtitle: "")
             VStack(alignment: .leading) {
                 TeamMemberView(with: Constants.URLs.LinkedIn(profile: "ali-dinc/"), name: "Ali Dinç", subtitle: "Developer")
                 TeamMemberView(with: Constants.URLs.LinkedIn(profile: "erwinbaragula/"), name: "Erwin Baragula", subtitle: "UX Consultant")
             }
+            .padding()
+            .navigationTitle("Credits")
         }
-        .padding()
-        .background(Color.black.opacity(0.25))
-        .edgesIgnoringSafeArea(.all)
     }
     
     private var CreditsView: some View {
-        VStack(alignment: .leading) {
-            Link(destination: Constants.URLs.IGDB) { CreditPlatformView(text: "Game data by", logoName: "IGDB") }
-            
-            Link(destination: Constants.URLs.IGN) { CreditPlatformView(text: "IGN articles by", logoName: "IGN")  }
-            
-            Link(destination: Constants.URLs.NintendoLife) { CreditPlatformView(text: "Nintendo articles by", logoName: "nintendoLife")  }
-            
-            Link(destination: Constants.URLs.PureXbox) { CreditPlatformView(text: "Xbox articles by", logoName: "pureXbox")  }
+        ScrollView {
+            VStack(alignment: .leading) {
+                Link(destination: Constants.URLs.IGDB) { CreditPlatformView(text: "Game data by", logoName: "IGDB") }
+                
+                Link(destination: Constants.URLs.IGN) { CreditPlatformView(text: "IGN articles by", logoName: "IGN")  }
+                
+                Link(destination: Constants.URLs.NintendoLife) { CreditPlatformView(text: "Nintendo articles by", logoName: "nintendoLife")  }
+                
+                Link(destination: Constants.URLs.PureXbox) { CreditPlatformView(text: "Xbox articles by", logoName: "pureXbox")  }
+            }
+            .padding()
+            .navigationTitle("Credits")
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     @ViewBuilder

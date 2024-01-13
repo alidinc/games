@@ -14,16 +14,9 @@ class SavingViewModel {
     
     private var bag = Bag()
     
-    var imageData: Data?
-    
-    func delete(game: Game, in games: [SavedGame], context: ModelContext) {
-        if let gameToDelete = games.first(where: { $0.game?.id == game.id }) {
-            context.delete(gameToDelete)
-        }
-    }
-    
-    func add(game: Game, for library: LibraryType, context: ModelContext) {
-        let savedGame = SavedGame(library: library.id)
+    func add(game: Game, library: Library, context: ModelContext) {
+        let savedGame = SavedGame()
+        savedGame.library = library
         
         do {
             savedGame.gameData = try JSONEncoder().encode(game)
@@ -53,17 +46,67 @@ class SavingViewModel {
         context.insert(savedGame)
     }
     
-    func alreadyExists(_ game: Game, games: [SavedGame], in library: LibraryType) -> Bool {
-        return ((games.first(where: {$0.game?.id == game.id && $0.library == library.id })) != nil)
+    func delete(game: Game, in games: [SavedGame], context: ModelContext) {
+        if let gameToDelete = games.first(where: { $0.game?.id == game.id }) {
+            context.delete(gameToDelete)
+        }
     }
     
-    func handleToggle(game: Game, library: LibraryType, games: [SavedGame], context: ModelContext) {
-        guard self.alreadyExists(game, games: games, in: library) else {
+    // MARK: - Save to "All games" first
+    
+    func savedAlreadyInAll(game: Game, libraries: [Library]) -> Bool {
+        if let allSavedGamesLibrary = libraries.first(where: { $0.savingId == Constants.allGamesLibraryID }) {
+            return allSavedGamesLibrary.savedGames?.first(where: { $0.game?.id == game.id }) != nil
+        }
+        
+        return false
+    }
+    
+    func saveToAllFirst(game: Game, games: [SavedGame], libraries: [Library], context: ModelContext) {
+        guard self.savedAlreadyInAll(game: game, libraries: libraries) else {
             delete(game: game, in: games, context: context)
-            add(game: game, for: library, context: context)
+            
+            if let library = libraries.first(where: { $0.savingId == Constants.allGamesLibraryID }) {
+                add(game: game, library: library, context: context)
+            }
+            
             return
         }
         
         delete(game: game, in: games, context: context)
+    }
+    
+    // MARK: - Saved already -not library specific
+    
+    func savedAlready(game: Game, games: [SavedGame]) -> Bool {
+        return games.first(where: { $0.game?.id == game.id }) != nil
+    }
+    
+    // MARK: - Save to "library" specific
+    
+    func savedAlreadyLibrarySpecific(_ game: Game, for library: Library, games: [SavedGame]) -> Bool {
+        games.first { savedGame in
+            guard let id = game.id,
+                  let savedGameGame = savedGame.game,
+                  let savedGameId = savedGameGame.id,
+                  let savedGameLibrary = savedGame.library else {
+                return false
+            }
+            
+            return savedGameId == id && savedGameLibrary == library
+        } != nil
+    }
+    
+    func saveGameTo(game: Game, games: [SavedGame], library: Library, libraries: [Library], context: ModelContext) {
+        guard library.savedGames?.first(where: { $0.game?.id == game.id }) != nil else {
+            delete(game: game, in: games, context: context)
+            
+            add(game: game, library: library, context: context)
+            
+            return
+        }
+        
+        delete(game: game, in: games, context: context)
+        saveToAllFirst(game: game, games: games, libraries: libraries, context: context)
     }
 }

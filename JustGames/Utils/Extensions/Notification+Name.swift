@@ -11,4 +11,5 @@ import Foundation
 public extension Notification.Name {
     
     static let viewTypeChanged = Notification.Name("viewTypeChanged")
+    static let newLibraryButtonTapped = Notification.Name("newLibraryButtonTapped")
 }

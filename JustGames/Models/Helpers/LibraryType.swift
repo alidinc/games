@@ -43,7 +43,7 @@ enum LibraryType: Int, CaseIterable, Hashable {
         }
     }
     
-    var iconName: String {
+    var imageName: String {
         switch self {
         case .wishlist:
             return "heart"
@@ -56,7 +56,7 @@ enum LibraryType: Int, CaseIterable, Hashable {
         }
     }
     
-    var imageName: String {
+    var selectedImageName: String {
         switch self {
         case .wishlist:
             return "heart.fill"

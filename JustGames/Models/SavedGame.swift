@@ -10,10 +10,10 @@ import SwiftUI
 
 // MARK: - Game
 @Model
-class SavedGame: Identifiable, Hashable {
+class SavedGame {
     
     var date: Date
-    var library: Int
+    var library: Library?
     
     @Attribute(.externalStorage)
     var gameData: Data?
@@ -33,9 +33,8 @@ class SavedGame: Identifiable, Hashable {
         }
     }
     
-    init(date: Date = .now, library: Int) {
+    init(date: Date = .now) {
         self.date = date
-        self.library = library
     }
     
     func containsPopularPlatforms(_ popularPlatforms: [PopularPlatform]) -> Bool {

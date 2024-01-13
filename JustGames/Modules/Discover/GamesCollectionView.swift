@@ -10,7 +10,6 @@ import SwiftUI
 struct GamesCollectionView: View {
     
     @Environment(GamesViewModel.self) private var vm
-    
     @AppStorage("viewType") var viewType: ViewType = .list
     
     var body: some View {

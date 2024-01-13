@@ -7,6 +7,71 @@
 
 import Foundation
 
+enum SFSections: String, CaseIterable {
+    case communication
+    case weather
+    case objects
+    case devices
+    case connectivity
+    case transportation
+    case human
+    case nature
+    case editing
+    case text
+    case media
+    case keyboard
+    case commerce
+    case time
+    case health
+    case shapes
+    case arrows
+    case indicies
+    case math
+    
+    var sfModels: [String] {
+        switch self {
+        case .communication:
+            return SFModels.communication
+        case .weather:
+            return SFModels.weather
+        case .objects:
+            return SFModels.objectsAndTools
+        case .devices:
+            return SFModels.devices
+        case .connectivity:
+            return SFModels.connectivity
+        case .transportation:
+            return SFModels.transportation
+        case .human:
+            return SFModels.human
+        case .nature:
+            return SFModels.nature
+        case .editing:
+            return SFModels.editing
+        case .text:
+            return SFModels.textFormatting
+        case .media:
+            return SFModels.media
+        case .keyboard:
+            return SFModels.keyboard
+        case .commerce:
+            return SFModels.commerce
+        case .time:
+            return SFModels.time
+        case .health:
+            return SFModels.health
+        case .shapes:
+            return SFModels.shapes
+        case .arrows:
+            return SFModels.arrows
+        case .indicies:
+            return SFModels.indicies
+        case .math:
+            return SFModels.math
+        }
+    }
+}
+
 struct SFModels {
     
     //The following file has 20 arrays, allSymbols[] has the title of every SFSymbol, and the remaining 19 arrays have the following categories:

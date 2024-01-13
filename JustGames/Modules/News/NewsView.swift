@@ -23,7 +23,7 @@ struct NewsView: View {
             VStack {
                 HeaderView
                 GameNewsListView
-                    .offset(y: -30)
+                   
             }
             .background(.gray.opacity(0.15))
             .task(id: vm.newsType, {
@@ -59,7 +59,7 @@ struct NewsView: View {
     }
     
     var HeaderView: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        HStack {
             Menu {
                 Picker("", selection: $vm.newsType) {
                     ForEach(NewsType.allCases, id: \.id) { news in
@@ -67,21 +67,23 @@ struct NewsView: View {
                     }
                 }
             } label: {
-                HStack(spacing: 8) {
+                HStack {
                     SFImage(name: "newspaper.fill", opacity: 0, radius: 0, padding: 0, color: appTint)
                     
                     Text(vm.newsType.title)
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(.primary)
                         .shadow(radius: 10)
+                    
+                    Image(systemName: "chevron.down")
+                        .font(.title2)
+                        .bold()
+                        .foregroundStyle(.primary)
                 }
-                
-                Image(systemName: "chevron.down")
-                    .font(.title2)
-                    .bold()
-                    .foregroundStyle(.primary)
             }
-
+            
+            Spacer()
+            
             VStack(alignment: .trailing) {
                 Text("Today")
                     .font(.headline.bold())
@@ -91,9 +93,6 @@ struct NewsView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
-            .hSpacing(.trailing)
-            .offset(y: -30)
-        
         }
         .foregroundStyle(appTint)
         .padding(.horizontal)
