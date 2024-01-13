@@ -20,7 +20,6 @@ actor ItemContainer {
             shouldCreateDefaults = false
             
             let library = Library(id: Constants.allGamesLibraryID, title: "Allgames3043047560248756324328234932+.;lsd")
-            print(library.savingId)
             container.mainContext.insert(library)
         }
        

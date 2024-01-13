@@ -109,4 +109,10 @@ class SavingViewModel {
         delete(game: game, in: games, context: context)
         saveToAllFirst(game: game, games: games, libraries: libraries, context: context)
     }
+    
+    // MARK: - Delete library
+    
+    func delete(library: Library, in context: ModelContext) {
+        context.delete(library)
+    }
 }

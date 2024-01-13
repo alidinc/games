@@ -63,7 +63,7 @@ struct GamesView: View {
             .task(id: vm.fetchTaskToken) {
                 await vm.fetchGames()
             }
-            .sheet(isPresented: $showAddLibrary, content: {
+            .fullScreenCover(isPresented: $showAddLibrary, content: {
                 LibraryView()
             })
             .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { _ in
