@@ -29,32 +29,7 @@ struct SelectionsView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                VStack {
-                    Text("Select your \(selectedSegment.rawValue)")
-                        .font(.headline)
-                        .foregroundStyle(.primary)
-                        .multilineTextAlignment(.leading)
-                        .hSpacing(.leading)
-                    
-                    if selectedSegment == .platform || selectedSegment == .genre {
-                        Text("You can select multiple options.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.leading)
-                            .hSpacing(.leading)
-                    } else {
-                        Text("This is a category based on the data.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.leading)
-                            .hSpacing(.leading)
-                    }
-                }
-                
-                CloseButton()
-            }
-            .padding(20)
+            Header
             
             SegmentedView(selectedSegment: $selectedSegment,
                           segments: SegmentType.allCases,
@@ -64,8 +39,60 @@ struct SelectionsView: View {
             
             OptionsView
         }
-        .background(Color.black.opacity(0.25))
     }
+    
+    private var Header: some View {
+        HStack {
+            VStack {
+                Text("Select your \(selectedSegment.rawValue)")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+                    .multilineTextAlignment(.leading)
+                    .hSpacing(.leading)
+                
+                if selectedSegment == .platform || selectedSegment == .genre {
+                    Text("You can select multiple options.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                        .hSpacing(.leading)
+                } else {
+                    Text("This is a category based on the data.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.leading)
+                        .hSpacing(.leading)
+                }
+            }
+            
+            
+            ClearFiltersButton
+                .animation(.bouncy, value: vm.hasFilters)
+            
+            CloseButton()
+        }
+        .padding(20)
+    }
+    
+    @ViewBuilder
+    private var ClearFiltersButton: some View {
+        switch dataType {
+        default:
+            Button {
+                //  vm.removeFilters(games: savedGames, libraries: savedLibraries)
+            } label: {
+                if vm.hasFilters {
+                    Text("Remove Filters")
+                        .font(.caption.bold())
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 6)
+                        .foregroundStyle(.black)
+                        .background(.white.opacity(0.75), in: .capsule)
+                }
+            }
+        }
+    }
+    
     
     private var OptionsView: some View {
         VStack {
@@ -123,7 +150,7 @@ struct SelectionsView: View {
                     }
                 }
             }
-            .padding()
+                               .padding()
         }
     }
     
@@ -171,7 +198,7 @@ struct SelectionsView: View {
                     }
                 }
             }
-            .padding()
+                               .padding()
         }
     }
     
