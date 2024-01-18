@@ -13,7 +13,7 @@ import Observation
 @Observable
 class Preferences {
     
-    var networkStatus: NetworkReference = .local
+    var networkStatus: NetworkStatus = .unavailable
     var connectivityListener: AnyCancellable?
     
     init() {
@@ -26,7 +26,7 @@ class Preferences {
         connectivityListener = stream.receive(on: DispatchQueue.main)
             .sink { [weak self] output in
                 DispatchQueue.main.async { [weak self] in
-                    self?.networkStatus = output.availableInterfaces.isEmpty ? .local : .network
+                    self?.networkStatus = output.availableInterfaces.isEmpty ? .unavailable : .available
                 }
             }
     }

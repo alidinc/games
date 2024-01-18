@@ -78,6 +78,7 @@
 		DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */; };
 		DA72D2D72B5462AA00A235C2 /* AddLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D62B5462AA00A235C2 /* AddLibraryView.swift */; };
 		DA72D2DC2B54B1D900A235C2 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2DB2B54B1D900A235C2 /* Binding+Extension.swift */; };
+		DA72F14C2B591930003C4FE0 /* CapsuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72F14B2B591930003C4FE0 /* CapsuleView.swift */; };
 		DA772C912B4DA94600DD064A /* SegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA772C902B4DA94600DD064A /* SegmentedView.swift */; };
 		DA78AA2E2B4D7DB2008F018C /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA78AA2D2B4D7DB2008F018C /* SafariView.swift */; };
 		DA78AA302B4D7F4A008F018C /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA78AA2F2B4D7F49008F018C /* String+Extension.swift */; };
@@ -96,7 +97,6 @@
 		DAAD3E582B40D89B005E8EBA /* ViewTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */; };
 		DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */; };
 		DAAD3E602B41AA97005E8EBA /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */; };
-		DAC503B52B320BA8004D4B03 /* SelectedOptionsTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503B42B320BA8004D4B03 /* SelectedOptionsTitleView.swift */; };
 		DAC503B92B327234004D4B03 /* SelectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503B82B327234004D4B03 /* SelectionsView.swift */; };
 		DAC503BB2B343AC9004D4B03 /* ViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503BA2B343AC9004D4B03 /* ViewType.swift */; };
 		DAC503BD2B34457A004D4B03 /* Task+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503BC2B34457A004D4B03 /* Task+Extension.swift */; };
@@ -175,6 +175,7 @@
 		DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryView.swift; sourceTree = "<group>"; };
 		DA72D2D62B5462AA00A235C2 /* AddLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLibraryView.swift; sourceTree = "<group>"; };
 		DA72D2DB2B54B1D900A235C2 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
+		DA72F14B2B591930003C4FE0 /* CapsuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleView.swift; sourceTree = "<group>"; };
 		DA772C902B4DA94600DD064A /* SegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedView.swift; sourceTree = "<group>"; };
 		DA78AA2D2B4D7DB2008F018C /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		DA78AA2F2B4D7F49008F018C /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -193,7 +194,6 @@
 		DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeButton.swift; sourceTree = "<group>"; };
 		DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFModels.swift; sourceTree = "<group>"; };
 		DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
-		DAC503B42B320BA8004D4B03 /* SelectedOptionsTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedOptionsTitleView.swift; sourceTree = "<group>"; };
 		DAC503B82B327234004D4B03 /* SelectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionsView.swift; sourceTree = "<group>"; };
 		DAC503BA2B343AC9004D4B03 /* ViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewType.swift; sourceTree = "<group>"; };
 		DAC503BC2B34457A004D4B03 /* Task+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extension.swift"; sourceTree = "<group>"; };
@@ -380,6 +380,7 @@
 				DA93BE892B34EAC40047DD37 /* SimilarGamesView.swift */,
 				DA93BE8D2B34F47A0047DD37 /* SocialsView.swift */,
 				DA5557A52B38764D00D440A4 /* GenresView.swift */,
+				DA72F14B2B591930003C4FE0 /* CapsuleView.swift */,
 				DA93BE9A2B351D270047DD37 /* PlatformsView.swift */,
 				DA0C20892B3E637D000E2D6E /* GameModesView.swift */,
 				DA93BE962B34F71B0047DD37 /* ImagesView.swift */,
@@ -427,7 +428,6 @@
 				DA43CE7A2B31D35900DAE0B6 /* ListRowView.swift */,
 				DAAD3E522B40BD32005E8EBA /* SFImage.swift */,
 				DAAD3E502B40B485005E8EBA /* SavingButton.swift */,
-				DAC503B42B320BA8004D4B03 /* SelectedOptionsTitleView.swift */,
 				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
 				DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */,
 				DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */,
@@ -625,10 +625,10 @@
 				DA93BE8C2B34F4230047DD37 /* DetailView.swift in Sources */,
 				DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */,
 				DA43CE692B30B6CD00DAE0B6 /* PagingData.swift in Sources */,
-				DAC503B52B320BA8004D4B03 /* SelectedOptionsTitleView.swift in Sources */,
 				DA4B1C062B44AF4500EA3E8F /* SavedCollectionView.swift in Sources */,
 				DA4B1C082B44CB9400EA3E8F /* SavedGame.swift in Sources */,
 				DA43CE1D2B30B61500DAE0B6 /* JustGamesApp.swift in Sources */,
+				DA72F14C2B591930003C4FE0 /* CapsuleView.swift in Sources */,
 				DA4B1C042B44A32F00EA3E8F /* GamesCollectionView.swift in Sources */,
 				DAAD3E532B40BD32005E8EBA /* SFImage.swift in Sources */,
 				DA43CE722B30B6F200DAE0B6 /* CacheImplementation.swift in Sources */,

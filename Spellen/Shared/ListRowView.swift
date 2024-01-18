@@ -9,9 +9,9 @@ import Connectivity
 import SwiftUI
 import Combine
 
-enum NetworkReference {
-    case network
-    case local
+enum NetworkStatus {
+    case available
+    case unavailable
 }
 
 struct ListRowView: View {
@@ -29,9 +29,9 @@ struct ListRowView: View {
     
     var body: some View {
         switch preferences.networkStatus {
-        case .local:
+        case .unavailable:
             LocalView
-        case .network:
+        case .available:
             NetworkView
         }
     }

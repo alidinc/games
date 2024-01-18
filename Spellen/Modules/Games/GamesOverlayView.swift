@@ -18,19 +18,10 @@ struct GamesOverlayView: View {
     var body: some View {
         switch dataType {
         case .network:
-            if preferences.networkStatus == .local {
-                ContentUnavailableView(
-                    "No network available",
-                    systemImage: "exclamationmark.triangle.fill",
-                    description: Text(
-                        "We are unable to display any content as your iPhone is not currently connected to the internet."
-                    )
-                )
-                .task {
-                    await vm.refreshTask()
-                }
-            } else {
-                if vm.games.isEmpty {
+            switch preferences.networkStatus {
+            case .available:
+                switch vm.dataFetchPhase {
+                case .empty:
                     ZStack {
                         ProgressView("Please wait, \nwhile we are getting ready! ☺️")
                             .font(.subheadline)
@@ -41,6 +32,27 @@ struct GamesOverlayView: View {
                     .hSpacing(.center)
                     .padding(.horizontal, 50)
                     .ignoresSafeArea()
+                case .failure:
+                    ContentUnavailableView(
+                        "No content available",
+                        systemImage: "exclamationmark.triangle.fill",
+                        description: Text(
+                            "We are unable to display any content, please enhance your query."
+                        )
+                    )
+                default:
+                    Color.clear
+                }
+            case .unavailable:
+                ContentUnavailableView(
+                    "No network available",
+                    systemImage: "exclamationmark.triangle.fill",
+                    description: Text(
+                        "We are unable to display any content as your iPhone is not currently connected to the internet."
+                    )
+                )
+                .task {
+                    await vm.refreshTask()
                 }
             }
         case .library:

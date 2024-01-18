@@ -21,11 +21,11 @@ struct DetailView: View {
     
     var body: some View {
         switch preferences.networkStatus {
-        case .local:
+        case .unavailable:
             if let savedGame {
                 SavedGameDetailView(savedGame: savedGame)
             }
-        case .network:
+        case .available:
             if let game {
                 GameDetailView(game: game)
             }

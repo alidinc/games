@@ -29,16 +29,7 @@ struct NewsView: View {
                 await vm.fetchNews()
             }
             .onChange(of: vm.newsType) { oldValue, newValue in
-                switch newValue {
-                case .ign:
-                    vm.news = vm.ignNews
-                case .nintendo:
-                    vm.news = vm.nintendoNews
-                case .xbox:
-                    vm.news = vm.xboxNews
-                case .all:
-                    vm.news = vm.nintendoNews + vm.xboxNews + vm.ignNews
-                }
+                
             }
         }
     }
@@ -46,7 +37,7 @@ struct NewsView: View {
     @ViewBuilder
     var LoadingView: some View {
         switch preferences.networkStatus {
-        case .network:
+        case .available:
             if vm.news.isEmpty {
                 ZStack {
                     ProgressView("Please wait, \nwhile we are getting ready! ☺️")
@@ -59,7 +50,7 @@ struct NewsView: View {
                 .padding(.horizontal, 50)
                 .ignoresSafeArea()
             }
-        case .local:
+        case .unavailable:
             ContentUnavailableView(
                 "No network available",
                 systemImage: "exclamationmark.triangle.fill",

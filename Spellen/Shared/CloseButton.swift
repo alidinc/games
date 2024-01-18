@@ -26,10 +26,10 @@ struct CloseButton: View {
         } label: {
             Circle()
                 .fill(Color(.secondarySystemBackground))
-                .frame(width: 30, height: 30) // You can make this whatever size, but keep UX in mind.
+                .frame(width: 30, height: 30)
                 .overlay(
                     Image(systemName: "xmark")
-                        .imageScale(.medium) // This should be less than the frame of the circle
+                        .imageScale(.medium)
                         .foregroundColor(.secondary)
                 )
         }

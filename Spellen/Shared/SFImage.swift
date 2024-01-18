@@ -15,7 +15,13 @@ struct SFImage: View {
     var padding: CGFloat
     var color: Color
     
-    init(name: String, opacity: CGFloat = 0.5, radius: CGFloat = 8, padding: CGFloat = 10, color: Color = .primary) {
+    init(
+        name: String,
+        opacity: CGFloat = 0.5,
+        radius: CGFloat = 8,
+        padding: CGFloat = 10,
+        color: Color = .primary
+    ) {
         self.name = name
         self.opacity = opacity
         self.radius = radius
@@ -25,6 +31,8 @@ struct SFImage: View {
     
     var body: some View {
         Image(systemName: name)
+            .symbolEffect(.bounce, value: color)
+            .animation(.bouncy, value: color)
             .imageScale(.medium)
             .frame(width: 24, height: 24)
             .padding(padding)

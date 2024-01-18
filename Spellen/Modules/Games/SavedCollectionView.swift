@@ -27,19 +27,20 @@ struct SavedCollectionView: View {
         List {
             ForEach(games, id: \.id) { savedGame in
                 if let game = savedGame.game {
-                    if preferences.networkStatus == .local {
-                        ListRowView(savedGame: savedGame)
-                            .navigationLink {
-                                DetailView(savedGame: savedGame)
-                            }
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Color.clear)
-                            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
-                    } else {
+                    switch preferences.networkStatus {
+                    case .available:
                         ListRowView(game: game)
                             .navigationLink({
                                 DetailView(game: game)
                             })
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                    case .unavailable:
+                        ListRowView(savedGame: savedGame)
+                            .navigationLink {
+                                DetailView(savedGame: savedGame)
+                            }
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
                             .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
@@ -55,7 +56,16 @@ struct SavedCollectionView: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                 ForEach(games, id: \.id) { savedGame in
-                    if preferences.networkStatus == .local {
+                    switch preferences.networkStatus {
+                    case .available:
+                        if let game = savedGame.game, let cover = game.cover, let url = cover.url {
+                            NavigationLink {
+                                DetailView(game: game)
+                            } label: {
+                                AsyncImageView(with: url, type: .grid)
+                            }
+                        }
+                    case .unavailable:
                         if let imageData = savedGame.imageData, let uiImage = UIImage(data: imageData)  {
                             NavigationLink(destination: {
                                 DetailView(savedGame: savedGame)
@@ -67,14 +77,6 @@ struct SavedCollectionView: View {
                                     .frame(width: 120, height: 160)
                                     .clipShape(.rect(cornerRadius: 5))
                             })
-                        }
-                    } else {
-                        if let game = savedGame.game, let cover = game.cover, let url = cover.url {
-                            NavigationLink {
-                                DetailView(game: game)
-                            } label: {
-                                AsyncImageView(with: url, type: .grid)
-                            }
                         }
                     }
                 }

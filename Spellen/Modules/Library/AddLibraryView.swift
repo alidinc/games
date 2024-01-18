@@ -21,15 +21,12 @@ struct AddLibraryView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
+    @Query var savedGames: [SavedGame]
     @Query var libraries: [Library]
     
     @State private var iconsExpanded = false
     @State private var showEmptyNameAlert = false
     @State private var showMaxLibraryAlert = false
-    
-    init(game: Game? = nil) {
-        self.game = game
-    }
     
     var body: some View {
         NavigationStack {
@@ -160,7 +157,7 @@ struct AddLibraryView: View {
         let library = Library(title: name, icon: icon)
         context.insert(library)
         if let game {
-            vm.add(game: game, library: library, context: context)
+            vm.saveGameTo(game: game, games: savedGames, library: library, context: context)
         }
         dismiss()
     }

@@ -30,13 +30,8 @@ class SavingViewModel {
             
             URLSession.shared.dataTaskPublisher(for: url)
                 .map(\.data)
-                .sink { completion in
-                    switch completion {
-                    case .finished:
-                        print("Downloaded")
-                    case .failure(_):
-                        print("Failed to download")
-                    }
+                .sink { _ in
+                
                 } receiveValue: { data in
                     savedGame.imageData = data
                 }
@@ -84,6 +79,7 @@ class SavingViewModel {
             
             deleteFromAll(game: game, in: games, context: context)
             add(game: game, library: library, context: context)
+            NotificationCenter.default.post(name: .addedToLibrary, object: library)
             
             return
         }
