@@ -32,7 +32,7 @@ struct SFImage: View {
     var body: some View {
         Image(systemName: name)
             .symbolEffect(.bounce, value: color)
-            .animation(.bouncy, value: color)
+            .symbolEffect(.bounce, value: name)
             .imageScale(.medium)
             .frame(width: 24, height: 24)
             .padding(padding)

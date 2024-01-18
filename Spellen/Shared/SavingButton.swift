@@ -63,30 +63,15 @@ struct SavingButton: View {
                 Divider()
             }
         } label: {
-            if vm.savedAlready(game: game, games: games) {
-                if let library = getLibrary(), let icon = library.icon {
-                    SFImage(
-                        name: icon,
-                        opacity: opacity,
-                        padding: padding,
-                        color: appTint
-                    )
-                } else {
-                    SFImage(
-                        name: "bookmark.fill",
-                        opacity: opacity,
-                        padding: padding,
-                        color: appTint
-                    )
-                }
-            } else {
-                SFImage(
-                    name: "bookmark",
-                    opacity: opacity,
-                    padding: padding,
-                    color: appTint
-                )
-            }
+            let libraryName = getLibrary()?.icon
+            let alreadySavedName = (getLibrary() != nil ? libraryName! : "bookmark")
+            
+            SFImage(
+                name: vm.savedAlready(game: game, games: games) ? alreadySavedName  : "bookmark",
+                opacity: opacity,
+                padding: padding,
+                color: appTint
+            )
         }
     }
     
