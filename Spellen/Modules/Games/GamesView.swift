@@ -36,7 +36,7 @@ struct GamesView: View {
     @State private var showLibraries = false
     @State private var showAddLibrary = false
     @State private var showSelectionOptions = false
-    @State private var selectedSegment: SegmentType = .genre
+    @State private var selectedSegment: SelectionOption = .genre
     @State private var dataType: DataType = .network
     @State private var receivedLibrary: Library?
     @State private var selectedLibrary: Library?
@@ -138,8 +138,47 @@ struct GamesView: View {
         .padding(.horizontal)
         .padding(.top)
         .sheet(isPresented: $showSelectionOptions, content: {
-            SelectionsView(dataType: dataType, selectedSegment: $selectedSegment, vm: $vm)
+            SelectionsView(dataType: dataType, library: selectedLibrary, selectedOption: $selectedSegment, vm: $vm)
                 .presentationDetents([.medium, .large])
+        })
+        .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
+            filterType = .platform
+            
+            withAnimation {
+                if vm.fetchTaskToken.platforms.isEmpty {
+                    switch dataType {
+                    case .network:
+                        vm.fetchTaskToken.platforms = [.database]
+                    case .library:
+                        vm.fetchTaskToken.platforms = []
+                    }
+                } else {
+                    vm.fetchTaskToken.platforms = newValue
+                }
+            }
+            
+            Task {
+                await vm.refreshTask()
+            }
+        })
+        .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
+            filterType = .genre
+            withAnimation {
+                if vm.fetchTaskToken.genres.isEmpty {
+                    switch dataType {
+                    case .network:
+                        vm.fetchTaskToken.genres = [.allGenres]
+                    case .library:
+                        vm.fetchTaskToken.genres = []
+                    }
+                } else {
+                    vm.fetchTaskToken.genres = newValue
+                }
+            }
+            
+            Task {
+                await vm.refreshTask()
+            }
         })
     }
     
@@ -152,63 +191,32 @@ struct GamesView: View {
     }
     
     private var FiltersButton: some View {
-        switch dataType {
-        case .network:
-            Button(action: {
-                showSelectionOptions = true
-            }, label: {
-                SFImage(name: "slider.horizontal.3",
-                        padding: 10,
-                        color: vm.hasNetworkFilters ? appTint : .secondary)
-                .overlay {
-                    ClearFiltersButton
-                }
-            })
-            .animation(.bouncy, value: vm.hasNetworkFilters)
-        case .library:
-            Button(action: {
-                showSelectionOptions = true
-            }, label: {
-                SFImage(name: "slider.horizontal.3",
-                        padding: 10,
-                        color: vm.hasLibraryFilters ? appTint : .secondary)
-                .overlay {
-                    ClearFiltersButton
-                }
-            })
-            .animation(.bouncy, value: vm.hasLibraryFilters)
-        }
+        Button(action: {
+            showSelectionOptions = true
+        }, label: {
+            SFImage(name: "slider.horizontal.3",
+                    padding: 10,
+                    color: vm.hasFilters ? appTint : .secondary)
+            .overlay {
+                ClearFiltersButton
+            }
+        })
+        .animation(.bouncy, value: vm.hasFilters)
     }
     
     @ViewBuilder
     private var ClearFiltersButton: some View {
-        switch dataType {
-        case .network:
-            if vm.hasNetworkFilters {
-                Button(action: {
-                    // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
-                }, label: {
-                    SFImage(name: "xmark.circle.fill",
-                            opacity: 0,
-                            padding: 0,
-                            color: vm.hasNetworkFilters ? appTint : .clear)
-                    
-                })
-                .offset(x: 18, y: -18)
-            }
-        case .library:
-            if vm.hasLibraryFilters {
-                Button(action: {
-                    // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
-                }, label: {
-                    SFImage(name: "xmark.circle.fill",
-                            opacity: 0,
-                            padding: 0,
-                            color: vm.hasLibraryFilters ? appTint : .clear)
-                    
-                })
-                .offset(x: 18, y: -18)
-            }
+        if vm.hasFilters {
+            Button(action: {
+                 vm.removeFilters(games: savedGames, library: selectedLibrary, libraries: savedLibraries)
+            }, label: {
+                SFImage(name: "xmark.circle.fill",
+                        opacity: 0,
+                        padding: 0,
+                        color: vm.hasFilters ? appTint : .clear)
+                
+            })
+            .offset(x: 18, y: -18)
         }
     }
     
@@ -243,44 +251,6 @@ struct GamesView: View {
             }
             .hSpacing(.leading)
         }
-        .onChange(of: vm.selectedGenres, { oldValue, newValue in
-            filterType = .genre
-            vm.selectedGenres = newValue
-            vm.filterSegment(games: savedGames, libraries: savedLibraries)
-        })
-        .onChange(of: vm.selectedPlatforms, { oldValue, newValue in
-            filterType = .platform
-            vm.selectedPlatforms = newValue
-            vm.filterSegment(games: savedGames, libraries: savedLibraries)
-        })
-        .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
-            filterType = .platform
-            withAnimation {
-                if vm.fetchTaskToken.platforms.isEmpty {
-                    vm.fetchTaskToken.platforms = [.database]
-                } else {
-                    vm.fetchTaskToken.platforms = newValue
-                }
-            }
-            
-            Task {
-                await vm.refreshTask()
-            }
-        })
-        .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
-            filterType = .genre
-            withAnimation {
-                if vm.fetchTaskToken.genres.isEmpty {
-                    vm.fetchTaskToken.genres = [.allGenres]
-                } else {
-                    vm.fetchTaskToken.genres = newValue
-                }
-            }
-            
-            Task {
-                await vm.refreshTask()
-            }
-        })
     }
     
     private var CategoryPicker: some View {
@@ -290,8 +260,10 @@ struct GamesView: View {
                     vm.fetchTaskToken.category = category
                     vm.headerTitle = category.title
                     vm.headerImageName = category.systemImage
-                    dataType = .network
                     vm.searchPlaceholder = "Search in network"
+                    dataType = .network
+                    filterType = .search
+
                 } label: {
                     Label(category.title, systemImage: category.systemImage).tag(category)
                 }
@@ -310,7 +282,7 @@ struct GamesView: View {
                 dataType = .library
                 filterType = .library
                 
-                vm.filterSegment(games: savedGames, libraries: savedLibraries)
+                vm.filterSegment(games: savedGames, library: selectedLibrary, libraries: savedLibraries)
             } label: {
                 Label("All games", systemImage: "bookmark")
             }
@@ -340,8 +312,8 @@ struct GamesView: View {
                             .font(.headline)
                             .foregroundStyle(.primary)
                     }
-                    .tag(library.savingId)
                 }
+                .tag(library.savingId)
             }
         } label: {
             Label("Libraries", systemImage: "tray.full.fill")

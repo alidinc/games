@@ -288,6 +288,8 @@
 		DA43CE2D2B30B62B00DAE0B6 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				DAAD3E502B40B485005E8EBA /* SavingButton.swift */,
+				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
 				DA65DB102B574D4800DBA824 /* Onboarding */,
 				DA72D2D82B54A2BD00A235C2 /* Library */,
 				DA43CE2F2B30B63C00DAE0B6 /* Games */,
@@ -427,8 +429,6 @@
 				DAC503BE2B344827004D4B03 /* CloseButton.swift */,
 				DA43CE7A2B31D35900DAE0B6 /* ListRowView.swift */,
 				DAAD3E522B40BD32005E8EBA /* SFImage.swift */,
-				DAAD3E502B40B485005E8EBA /* SavingButton.swift */,
-				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
 				DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */,
 				DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */,
 				DA44660C2B48747100361071 /* GradientMask.swift */,

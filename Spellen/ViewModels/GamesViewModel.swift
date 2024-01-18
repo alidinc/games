@@ -13,16 +13,8 @@ class GamesViewModel {
     
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
-    
-    private var cache: DiskCache<[Game]>?
-    private var limit = 21
-    private var offset = 0
-    
     var headerTitle = ""
     var headerImageName = ""
-    var selectedPlatforms: [PopularPlatform] = []
-    var selectedGenres: [PopularGenre] = []
-    
     var searchQuery = ""
     var searchPlaceholder = ""
     var savedGames: [SavedGame] = []
@@ -38,13 +30,14 @@ class GamesViewModel {
         return false
     }
     
-    var hasNetworkFilters: Bool {
-        (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))  || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
+    var hasFilters: Bool {
+        (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres)) 
+        || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
     }
     
-    var hasLibraryFilters: Bool {
-        !selectedGenres.isEmpty || !selectedPlatforms.isEmpty
-    }
+    private var cache: DiskCache<[Game]>?
+    private var limit = 21
+    private var offset = 0
     
     init() {
         self.cache = DiskCache<[Game]>(filename: "GamesCache",
@@ -166,7 +159,7 @@ extension GamesViewModel {
 
 extension GamesViewModel {
     
-    func removeGenre(_ genre: PopularGenre) {
+    func toggleGenre(_ genre: PopularGenre) {
         if fetchTaskToken.genres.contains(genre) {
             if let index = fetchTaskToken.genres.firstIndex(of: genre) {
                 fetchTaskToken.genres.remove(at: index)
@@ -177,7 +170,7 @@ extension GamesViewModel {
         }
     }
     
-    func removePlatform(_ platform: PopularPlatform) {
+    func togglePlatform(_ platform: PopularPlatform) {
         if fetchTaskToken.platforms.contains(platform) {
             if let index = fetchTaskToken.platforms.firstIndex(of: platform) {
                 fetchTaskToken.platforms.remove(at: index)
@@ -189,8 +182,21 @@ extension GamesViewModel {
         }
     }
     
+    func removeFilters(games: [SavedGame], library: Library? = nil, libraries: [Library]) {
+        fetchTaskToken.platforms = []
+        fetchTaskToken.genres = []
+        
+        Task {
+            await refreshTask()
+        }
+        
+        filterSegment(games: games, library: library, libraries: libraries)
+    }
+    
     func filterSegment(games: [SavedGame], library: Library? = nil, libraries: [Library])  {
         var libraryGames = [SavedGame]()
+        let selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
+        let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
         
         if let library {
             libraryGames = games.filter({ $0.library == library })
