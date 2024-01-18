@@ -65,12 +65,11 @@ struct GamesView: View {
                 LibraryView()
                     .presentationDetents([.medium])
             })
-            .sheet(isPresented: $showAddLibrary, content: {
-                AddLibraryView(game: gameToAddForNewLibrary)
+            .sheet(item: $gameToAddForNewLibrary, content: { game in
+                AddLibraryView(game: game)
                     .presentationDetents([.fraction(0.7)])
             })
             .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
-                showAddLibrary = true
                 if let game = notification.object as? Game {
                     gameToAddForNewLibrary = game
                 }
