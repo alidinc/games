@@ -24,6 +24,7 @@ class GamesViewModel {
     var selectedGenres: [PopularGenre] = []
     
     var searchQuery = ""
+    var searchPlaceholder = ""
     var savedGames: [SavedGame] = []
     
     var games: [Game] {

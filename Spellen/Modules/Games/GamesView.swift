@@ -38,8 +38,6 @@ struct GamesView: View {
     @State private var showSelectionOptions = false
     @State private var selectedSegment: SegmentType = .genre
     @State private var dataType: DataType = .network
-    @State private var searchTitle = "Search in network"
-    
     @State private var selectedLibrary: Library?
     
     @Query(animation: .easeInOut) private var savedGames: [SavedGame]
@@ -105,7 +103,7 @@ struct GamesView: View {
     private var ViewSwitcher: some View {
         ZStack {
             VStack(spacing: 10) {
-                SearchTextField(searchQuery: $vm.searchQuery, prompt: $searchTitle)
+                SearchTextField(searchQuery: $vm.searchQuery, prompt: $vm.searchPlaceholder)
                 
                 switch dataType {
                 case .network:
@@ -260,7 +258,7 @@ struct GamesView: View {
                     vm.headerTitle = category.title
                     vm.headerImageName = category.systemImage
                     dataType = .network
-                    searchTitle = "Search in network"
+                    vm.searchPlaceholder = "Search in network"
                 } label: {
                     Label(category.title, systemImage: category.systemImage).tag(category)
                 }
@@ -275,7 +273,7 @@ struct GamesView: View {
             Button {
                 vm.headerTitle = "All games"
                 vm.headerImageName =  "bookmark"
-                searchTitle = "Search in library"
+                vm.searchPlaceholder = "Search in library"
                 dataType = .library
                 filterType = .library
                 
@@ -292,7 +290,7 @@ struct GamesView: View {
                         vm.headerImageName =  icon
                     }
                     
-                    searchTitle = ""
+                    vm.searchPlaceholder = "Search in library"
                     dataType = .library
                     filterType = .library
                     
