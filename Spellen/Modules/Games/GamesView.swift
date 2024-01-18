@@ -42,13 +42,13 @@ struct GamesView: View {
     
     @State private var selectedLibrary: Library?
     
-    @Query(animation: .easeInOut) private var data: [SavedGame]
-    @Query(animation: .easeInOut) private var libraries: [Library]
+    @Query(animation: .easeInOut) private var savedGames: [SavedGame]
+    @Query(animation: .easeInOut) private var savedLibraries: [Library]
     
     var didRemoteChange = NotificationCenter
-                                    .default
-                                    .publisher(for: .NSPersistentStoreRemoteChange)
-                                    .receive(on: RunLoop.main)
+        .default
+        .publisher(for: .NSPersistentStoreRemoteChange)
+        .receive(on: RunLoop.main)
     
     var body: some View {
         NavigationStack {
@@ -77,11 +77,11 @@ struct GamesView: View {
                 }
             })
             .onReceive(didRemoteChange, perform: { _ in
-                vm.filterSegment(games: data, library: selectedLibrary,  libraries: libraries)
+                vm.filterSegment(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
             })
             .onChange(of: vm.searchQuery) { _, newValue in
                 filterType = .search
-        
+                
                 switch dataType {
                 case .network:
                     Task {
@@ -96,7 +96,7 @@ struct GamesView: View {
                         }
                     }
                 case .library:
-                    vm.filterSegment(games: data, library: selectedLibrary, libraries: libraries)
+                    vm.filterSegment(games: savedGames, library: selectedLibrary, libraries: savedLibraries)
                 }
             }
         }
@@ -130,7 +130,6 @@ struct GamesView: View {
                 Spacer()
                 FiltersButton
                 LibraryButton
-                ViewTypeButton()
             }
         }
         .padding(.horizontal)
@@ -145,7 +144,7 @@ struct GamesView: View {
         Button {
             showLibraries = true
         } label: {
-            SFImage(name: "tray.full.fill", padding: 6, color: appTint)
+            SFImage(name: "tray.full.fill", padding: 10, color: .secondary)
         }
     }
     
@@ -153,8 +152,33 @@ struct GamesView: View {
         Button(action: {
             showSelectionOptions = true
         }, label: {
-            SFImage(name: "slider.horizontal.3", padding: 6, color: appTint)
+            SFImage(name: "slider.horizontal.3",
+                    padding: 10,
+                    color: vm.hasFilters ? appTint : .secondary)
+            .overlay {
+                switch dataType {
+                default:
+                    ClearFiltersButton
+                }
+            }
         })
+        .animation(.bouncy, value: vm.hasFilters)
+    }
+    
+    @ViewBuilder
+    private var ClearFiltersButton: some View {
+        if vm.hasFilters {
+            Button(action: {
+               // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
+            }, label: {
+                SFImage(name: "xmark.circle.fill",
+                        opacity: 0,
+                        padding: 0,
+                        color: vm.hasFilters ? appTint : .clear)
+                
+            })
+            .offset(x: 18, y: -18)
+        }
     }
     
     private var MultiPicker: some View {
@@ -191,12 +215,12 @@ struct GamesView: View {
         .onChange(of: vm.selectedGenres, { oldValue, newValue in
             filterType = .genre
             vm.selectedGenres = newValue
-            vm.filterSegment(games: data, libraries: libraries)
+            vm.filterSegment(games: savedGames, libraries: savedLibraries)
         })
         .onChange(of: vm.selectedPlatforms, { oldValue, newValue in
             filterType = .platform
             vm.selectedPlatforms = newValue
-            vm.filterSegment(games: data, libraries: libraries)
+            vm.filterSegment(games: savedGames, libraries: savedLibraries)
         })
         .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
             filterType = .platform
@@ -255,25 +279,25 @@ struct GamesView: View {
                 dataType = .library
                 filterType = .library
                 
-                vm.filterSegment(games: data, libraries: libraries)
+                vm.filterSegment(games: savedGames, libraries: savedLibraries)
             } label: {
                 Label("All games", systemImage: "bookmark")
             }
-
-            ForEach(libraries, id: \.savingId) { library in
+            
+            ForEach(savedLibraries, id: \.savingId) { library in
                 Button {
                     vm.headerTitle = library.title
                     
                     if let icon = library.icon {
                         vm.headerImageName =  icon
                     }
-                   
+                    
                     searchTitle = ""
                     dataType = .library
                     filterType = .library
                     
                     selectedLibrary = library
-                    vm.filterSegment(games: data, library: library, libraries: libraries)
+                    vm.filterSegment(games: savedGames, library: library, libraries: savedLibraries)
                 } label: {
                     HStack {
                         if let icon = library.icon {

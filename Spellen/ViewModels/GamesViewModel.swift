@@ -37,12 +37,8 @@ class GamesViewModel {
         return false
     }
     
-    var showDiscoverClearButton: Bool {
+    var hasFilters: Bool {
         (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))  || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
-    }
-    
-    var showLibraryClearButton: Bool {
-        (!selectedGenres.isEmpty || !selectedPlatforms.isEmpty)
     }
     
     init() {
@@ -94,11 +90,11 @@ extension GamesViewModel {
         
         do {
             let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
-                                                                      with: category,
-                                                                      platforms: platforms,
-                                                                      genres: genres,
-                                                                      limit: self.limit,
-                                                                      offset: self.offset)
+                                                                              with: category,
+                                                                              platforms: platforms,
+                                                                              genres: genres,
+                                                                              limit: self.limit,
+                                                                              offset: self.offset)
             if Task.isCancelled { return }
             DispatchQueue.main.async {
                 self.dataFetchPhase = .success(response)
@@ -121,7 +117,7 @@ extension GamesViewModel {
         let platforms = self.fetchTaskToken.platforms
         let genres = self.fetchTaskToken.genres
         let games = self.dataFetchPhase.value ?? []
-    
+        
         
         DispatchQueue.main.async {
             self.dataFetchPhase = .fetchingNextPage(games)
@@ -130,15 +126,15 @@ extension GamesViewModel {
         do {
             self.offset += self.limit
             let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
-                                                                      with: category,
-                                                                      platforms: platforms,
-                                                                      genres: genres,
-                                                                      limit: self.limit,
-                                                                      offset: self.offset)
-
+                                                                              with: category,
+                                                                              platforms: platforms,
+                                                                              genres: genres,
+                                                                              limit: self.limit,
+                                                                              offset: self.offset)
+            
             let totalGames = games + response
             if Task.isCancelled { return }
-           
+            
             DispatchQueue.main.async {
                 self.dataFetchPhase = .success(totalGames)
             }
@@ -164,7 +160,7 @@ extension GamesViewModel {
 }
 
 extension GamesViewModel {
-   
+    
     func filterSegment(games: [SavedGame], library: Library? = nil, libraries: [Library])  {
         var libraryGames = [SavedGame]()
         
