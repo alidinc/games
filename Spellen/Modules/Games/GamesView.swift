@@ -139,8 +139,8 @@ struct GamesView: View {
         .padding(.horizontal)
         .padding(.top)
         .sheet(isPresented: $showSelectionOptions, content: {
-            SelectionsView(reference: dataType, selectedSegment: $selectedSegment, vm: $vm)
-                .presentationDetents([.fraction(0.65), .large])
+            SelectionsView(dataType: dataType, selectedSegment: $selectedSegment, vm: $vm)
+                .presentationDetents([.medium, .large])
         })
     }
     
@@ -244,7 +244,7 @@ struct GamesView: View {
             filterType = .genre
             withAnimation {
                 if vm.fetchTaskToken.genres.isEmpty {
-                    vm.fetchTaskToken.genres = []
+                    vm.fetchTaskToken.genres = [.allGenres]
                 } else {
                     vm.fetchTaskToken.genres = newValue
                 }

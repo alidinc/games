@@ -22,7 +22,7 @@ enum SegmentType: String, CaseIterable, Identifiable {
 struct SelectionsView: View {
     
     @AppStorage("appTint") var appTint: Color = .white
-    var reference: DataType
+    var dataType: DataType
     @Binding var selectedSegment: SegmentType
     @Binding var vm: GamesViewModel
     @Namespace private var animation
@@ -86,7 +86,7 @@ struct SelectionsView: View {
                                 GridItem(.flexible()),
                                 
                                ]) {
-                switch reference {
+                switch dataType {
                 case .network:
                     ForEach(PopularPlatform.allCases.filter({$0.id != PopularPlatform.database.id}).sorted(by: { $0.title < $1.title })) { platform in
                         Button {
@@ -134,7 +134,7 @@ struct SelectionsView: View {
                                  GridItem(.flexible()),
                                  GridItem(.flexible()),
                                ]) {
-                switch reference {
+                switch dataType {
                 case .network:
                     ForEach(PopularGenre.allCases.filter({$0.id != PopularGenre.allGenres.id}).sorted(by: { $0.title < $1.title })) { genre in
                         Button {
