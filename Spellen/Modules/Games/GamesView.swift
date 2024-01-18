@@ -153,35 +153,63 @@ struct GamesView: View {
     }
     
     private var FiltersButton: some View {
-        Button(action: {
-            showSelectionOptions = true
-        }, label: {
-            SFImage(name: "slider.horizontal.3",
-                    padding: 10,
-                    color: vm.hasFilters ? appTint : .secondary)
-            .overlay {
-                switch dataType {
-                default:
+        switch dataType {
+        case .network:
+            Button(action: {
+                showSelectionOptions = true
+            }, label: {
+                SFImage(name: "slider.horizontal.3",
+                        padding: 10,
+                        color: vm.hasNetworkFilters ? appTint : .secondary)
+                .overlay {
                     ClearFiltersButton
                 }
-            }
-        })
-        .animation(.bouncy, value: vm.hasFilters)
+            })
+            .animation(.bouncy, value: vm.hasNetworkFilters)
+        case .library:
+            Button(action: {
+                showSelectionOptions = true
+            }, label: {
+                SFImage(name: "slider.horizontal.3",
+                        padding: 10,
+                        color: vm.hasLibraryFilters ? appTint : .secondary)
+                .overlay {
+                    ClearFiltersButton
+                }
+            })
+            .animation(.bouncy, value: vm.hasLibraryFilters)
+        }
     }
     
     @ViewBuilder
     private var ClearFiltersButton: some View {
-        if vm.hasFilters {
-            Button(action: {
-                // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
-            }, label: {
-                SFImage(name: "xmark.circle.fill",
-                        opacity: 0,
-                        padding: 0,
-                        color: vm.hasFilters ? appTint : .clear)
-                
-            })
-            .offset(x: 18, y: -18)
+        switch dataType {
+        case .network:
+            if vm.hasNetworkFilters {
+                Button(action: {
+                    // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
+                }, label: {
+                    SFImage(name: "xmark.circle.fill",
+                            opacity: 0,
+                            padding: 0,
+                            color: vm.hasNetworkFilters ? appTint : .clear)
+                    
+                })
+                .offset(x: 18, y: -18)
+            }
+        case .library:
+            if vm.hasLibraryFilters {
+                Button(action: {
+                    // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
+                }, label: {
+                    SFImage(name: "xmark.circle.fill",
+                            opacity: 0,
+                            padding: 0,
+                            color: vm.hasLibraryFilters ? appTint : .clear)
+                    
+                })
+                .offset(x: 18, y: -18)
+            }
         }
     }
     

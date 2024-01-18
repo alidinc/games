@@ -38,8 +38,12 @@ class GamesViewModel {
         return false
     }
     
-    var hasFilters: Bool {
+    var hasNetworkFilters: Bool {
         (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))  || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
+    }
+    
+    var hasLibraryFilters: Bool {
+        !selectedGenres.isEmpty || !selectedPlatforms.isEmpty
     }
     
     init() {
@@ -161,6 +165,29 @@ extension GamesViewModel {
 }
 
 extension GamesViewModel {
+    
+    func removeGenre(_ genre: PopularGenre) {
+        if fetchTaskToken.genres.contains(genre) {
+            if let index = fetchTaskToken.genres.firstIndex(of: genre) {
+                fetchTaskToken.genres.remove(at: index)
+            }
+        } else {
+            fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
+            fetchTaskToken.genres.append(genre)
+        }
+    }
+    
+    func removePlatform(_ platform: PopularPlatform) {
+        if fetchTaskToken.platforms.contains(platform) {
+            if let index = fetchTaskToken.platforms.firstIndex(of: platform) {
+                fetchTaskToken.platforms.remove(at: index)
+            }
+            
+        } else {
+            fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
+            fetchTaskToken.platforms.append(platform)
+        }
+    }
     
     func filterSegment(games: [SavedGame], library: Library? = nil, libraries: [Library])  {
         var libraryGames = [SavedGame]()

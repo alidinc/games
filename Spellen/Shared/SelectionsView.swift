@@ -67,7 +67,8 @@ struct SelectionsView: View {
             
             
             ClearFiltersButton
-                .animation(.bouncy, value: vm.hasFilters)
+                .animation(.bouncy, value: vm.hasNetworkFilters)
+                .animation(.bouncy, value: vm.hasLibraryFilters)
             
             CloseButton()
         }
@@ -77,11 +78,24 @@ struct SelectionsView: View {
     @ViewBuilder
     private var ClearFiltersButton: some View {
         switch dataType {
-        default:
+        case .network:
             Button {
                 //  vm.removeFilters(games: savedGames, libraries: savedLibraries)
             } label: {
-                if vm.hasFilters {
+                if vm.hasNetworkFilters {
+                    Text("Remove Filters")
+                        .font(.caption.bold())
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 6)
+                        .foregroundStyle(.black)
+                        .background(.white.opacity(0.75), in: .capsule)
+                }
+            }
+        case .library:
+            Button {
+                //  vm.removeFilters(games: savedGames, libraries: savedLibraries)
+            } label: {
+                if vm.hasLibraryFilters {
                     Text("Remove Filters")
                         .font(.caption.bold())
                         .padding(.vertical, 4)
@@ -117,14 +131,7 @@ struct SelectionsView: View {
                 case .network:
                     ForEach(PopularPlatform.allCases.filter({$0.id != PopularPlatform.database.id}).sorted(by: { $0.title < $1.title })) { platform in
                         Button {
-                            if vm.fetchTaskToken.platforms.contains(platform) {
-                                if let index = vm.fetchTaskToken.platforms.firstIndex(of: platform) {
-                                    vm.fetchTaskToken.platforms.remove(at: index)
-                                }
-                            } else {
-                                vm.fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
-                                vm.fetchTaskToken.platforms.append(platform)
-                            }
+                            vm.removePlatform(platform)
                         } label: {
                             OptionTileView(imageName: platform.assetName,
                                            title: platform.title,
@@ -165,14 +172,7 @@ struct SelectionsView: View {
                 case .network:
                     ForEach(PopularGenre.allCases.filter({$0.id != PopularGenre.allGenres.id}).sorted(by: { $0.title < $1.title })) { genre in
                         Button {
-                            if vm.fetchTaskToken.genres.contains(genre) {
-                                if let index = vm.fetchTaskToken.genres.firstIndex(of: genre) {
-                                    vm.fetchTaskToken.genres.remove(at: index)
-                                }
-                            } else {
-                                vm.fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
-                                vm.fetchTaskToken.genres.append(genre)
-                            }
+                            vm.removeGenre(genre)
                         } label: {
                             OptionTileView(imageName: genre.assetName,
                                            title: genre.title,
