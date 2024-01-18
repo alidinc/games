@@ -38,6 +38,7 @@ struct GamesView: View {
     @State private var showSelectionOptions = false
     @State private var selectedSegment: SegmentType = .genre
     @State private var dataType: DataType = .network
+    @State private var receivedLibrary: Library?
     @State private var selectedLibrary: Library?
     
     @Query(animation: .easeInOut) private var savedGames: [SavedGame]
@@ -72,6 +73,11 @@ struct GamesView: View {
                 showAddLibrary = true
                 if let game = notification.object as? Game {
                     gameToAddForNewLibrary = game
+                }
+            })
+            .onReceive(NotificationCenter.default.publisher(for: .addedToLibrary), perform: { notification in
+                if let library = notification.object as? Library {
+                    receivedLibrary = library
                 }
             })
             .onReceive(didRemoteChange, perform: { _ in
@@ -167,7 +173,7 @@ struct GamesView: View {
     private var ClearFiltersButton: some View {
         if vm.hasFilters {
             Button(action: {
-               // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
+                // vm.removeFilters(games: savedGames, library: selectedLibrary,  libraries: savedLibraries)
             }, label: {
                 SFImage(name: "xmark.circle.fill",
                         opacity: 0,
