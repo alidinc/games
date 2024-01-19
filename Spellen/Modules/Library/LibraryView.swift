@@ -14,6 +14,7 @@ struct LibraryView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(SavingViewModel.self) private var vm: SavingViewModel
+    @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
     @State private var showAddLibrary = false
@@ -68,20 +69,30 @@ struct LibraryView: View {
     }
     
     private var TotalGames: some View {
-        HStack {
-            Text("Total")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            
-            Spacer()
-            
-            Text("\(savedGames.count) games")
-                .font(.subheadline.bold())
-                .foregroundStyle(.secondary)
+        Button {
+            gamesVM.headerTitle = "All games"
+            gamesVM.headerImageName =  "bookmark"
+            gamesVM.searchPlaceholder = "Search in library"
+            gamesVM.dataType = .library
+            gamesVM.filterType = .library
+    
+            gamesVM.filterSegment(games: savedGames)
+        } label: {
+            HStack {
+                Text("All")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                
+                Spacer()
+                
+                Text("\(savedGames.count) games")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.secondary)
+            }
+            .padding(10)
+            .background(.black.opacity(0.25), in: .rect(cornerRadius: 10))
+            .padding(.horizontal, 20)
         }
-        .padding(10)
-        .background(.black.opacity(0.25), in: .rect(cornerRadius: 10))
-        .padding(.horizontal, 20)
     }
     
     private var Header: some View {

@@ -35,7 +35,6 @@ struct SelectionsView: View {
     var body: some View {
         VStack(spacing: 0) {
             Header
-            
             SegmentedView(selectedSegment: $selectedOption,
                           segments: SelectionOption.allCases,
                           segmentContent: { item in
@@ -83,7 +82,7 @@ struct SelectionsView: View {
     private var ClearFiltersButton: some View {
         if vm.hasFilters {
             Button {
-                  vm.removeFilters(games: savedGames, library: library, libraries: savedLibraries)
+                vm.removeFilters()
             } label: {
                 Text("Remove Filters")
                     .font(.caption.bold())
@@ -107,7 +106,7 @@ struct SelectionsView: View {
                     case .platform:
                         ForEach(platforms) { platform in
                             Button {
-                                vm.togglePlatform(platform)
+                                vm.togglePlatform(platform, selectedLibrary: library, games: savedGames)
                             } label: {
                                 OptionTileView(imageName: platform.assetName,
                                                title: platform.title,
@@ -117,7 +116,7 @@ struct SelectionsView: View {
                     case .genre:
                         ForEach(genres) { genre in
                             Button {
-                                vm.toggleGenre(genre)
+                                vm.toggleGenre(genre, selectedLibrary: library, games: savedGames)
                             } label: {
                                 OptionTileView(imageName: genre.assetName,
                                                title: genre.title,
@@ -137,10 +136,11 @@ struct SelectionsView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
+                .opacity(isSelected ? 1 : 0.5)
             
             Text(title)
                 .font(.caption)
-                .foregroundStyle(isSelected ? .primary : .secondary)
+                .foregroundStyle(isSelected ? .white : .gray.opacity(0.5))
                 .multilineTextAlignment(.center)
         }
         .frame(height: 70)
