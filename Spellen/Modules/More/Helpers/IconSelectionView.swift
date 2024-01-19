@@ -60,14 +60,13 @@ struct IconSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading) {
             HStack {
                 MoreHeaderTextView(title: "Change app icon", subtitle: "Select one of the selections below.")
                 Spacer()
                 CloseButton()
             }
-            .padding(.vertical)
-            .padding(.horizontal)
+            .padding()
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
@@ -94,7 +93,6 @@ struct IconSelectionView: View {
                 }
             }
         }
-        .background(Color.black.opacity(0.25))
         .edgesIgnoringSafeArea(.all)
     }
     
@@ -140,15 +138,20 @@ struct MoreHeaderTextView: View {
     var subtitle: String?
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack {
             Text(self.title)
-                .font(.system(.title3).bold())
-                .foregroundColor(.primary)
+                .font(.headline)
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.leading)
+                .hSpacing(.leading)
+            
             
             if let subtitle {
                 Text(subtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.leading)
+                    .hSpacing(.leading)
             }
         }
     }

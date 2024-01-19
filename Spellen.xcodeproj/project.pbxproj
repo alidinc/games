@@ -52,7 +52,6 @@
 		DA4B1BE92B43A71700EA3E8F /* SupportEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BE52B43A71700EA3E8F /* SupportEmail.swift */; };
 		DA4B1BEA2B43A71700EA3E8F /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BE62B43A71700EA3E8F /* MailView.swift */; };
 		DA4B1BEC2B43A7B100EA3E8F /* Bundle+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BEB2B43A7B100EA3E8F /* Bundle+Ext.swift */; };
-		DA4B1BEF2B43AA5100EA3E8F /* MadeWithLoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BED2B43AA5100EA3E8F /* MadeWithLoveView.swift */; };
 		DA4B1BF02B43AA5100EA3E8F /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BEE2B43AA5100EA3E8F /* AboutView.swift */; };
 		DA4B1BF22B43C7B000EA3E8F /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF12B43C7B000EA3E8F /* Notification+Name.swift */; };
 		DA4B1BF42B43C86200EA3E8F /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF32B43C86200EA3E8F /* Bag.swift */; };
@@ -154,7 +153,6 @@
 		DA4B1BE52B43A71700EA3E8F /* SupportEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportEmail.swift; sourceTree = "<group>"; };
 		DA4B1BE62B43A71700EA3E8F /* MailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		DA4B1BEB2B43A7B100EA3E8F /* Bundle+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Ext.swift"; sourceTree = "<group>"; };
-		DA4B1BED2B43AA5100EA3E8F /* MadeWithLoveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MadeWithLoveView.swift; sourceTree = "<group>"; };
 		DA4B1BEE2B43AA5100EA3E8F /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		DA4B1BF12B43C7B000EA3E8F /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Name.swift"; sourceTree = "<group>"; };
 		DA4B1BF32B43C86200EA3E8F /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
@@ -368,7 +366,6 @@
 			isa = PBXGroup;
 			children = (
 				DA4B1BEE2B43AA5100EA3E8F /* AboutView.swift */,
-				DA4B1BED2B43AA5100EA3E8F /* MadeWithLoveView.swift */,
 				DAC503C52B344F57004D4B03 /* IconSelectionView.swift */,
 				DA4B1BE62B43A71700EA3E8F /* MailView.swift */,
 				DA78AA312B4D93A3008F018C /* MoreRowView.swift */,
@@ -619,7 +616,6 @@
 				DA5557A62B38764D00D440A4 /* GenresView.swift in Sources */,
 				DA4B1C0A2B44DA6E00EA3E8F /* Rating.swift in Sources */,
 				DAAD3E512B40B485005E8EBA /* SavingButton.swift in Sources */,
-				DA4B1BEF2B43AA5100EA3E8F /* MadeWithLoveView.swift in Sources */,
 				DA4B1BE12B43948200EA3E8F /* LibraryType.swift in Sources */,
 				DA93BE992B35142E0047DD37 /* RatingStarsView.swift in Sources */,
 				DA93BE8C2B34F4230047DD37 /* DetailView.swift in Sources */,

@@ -14,24 +14,24 @@ struct AboutView: View {
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    MoreHeaderTextView(title: "About", subtitle: "You can find more about us here.")
-                    Spacer()
-                    CloseButton { self.dismiss() }
-                }
-                .padding(.vertical)
-                .padding(.horizontal)
-                
-                VStack(alignment: .center) {
-                    CreditsButton
-                    TeamButton
-                    MadeWithLoveView()
-                        .vSpacing(.bottom)
-                }
-                .padding(.horizontal)
+            VStack(alignment: .leading) {
+                Header
+                    
+                CreditsButton
+                TeamButton
+                Spacer()
             }
+            .padding()
         }
+    }
+    
+    private var Header: some View {
+        HStack {
+            MoreHeaderTextView(title: "About", subtitle: "You can find more about us here.")
+            Spacer()
+            CloseButton { self.dismiss() }
+        }
+        .padding(.bottom, 20)
     }
     
     private var TeamButton: some View {
@@ -71,7 +71,7 @@ struct AboutView: View {
         }
         .hSpacing(.leading)
         .padding()
-        .frame(height: 80)
+        .frame(height: 50)
         .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
     }
     
