@@ -32,7 +32,7 @@ struct SavingButton: View {
             ForEach(libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) }), id: \.savingId) { library in
                 Button {
                     vm.saveGameTo(game: game, games: games, library: library, context: context)
-                    gamesVM.filterSegment(games: games, library: library)
+                    gamesVM.filterSegment(savedGames: games, library: library)
                 } label: {
                     HStack {
                         if let icon = library.icon {

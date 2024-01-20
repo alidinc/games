@@ -58,4 +58,48 @@ class SavedGame {
         
         return popularGenreSet.isSubset(of: gameGenreSet)
     }
+    
+    func containsSelections(_ matchingGenres: [PopularGenre], _ matchingPlatforms: [PopularPlatform]) -> Bool {
+        guard let game = self.game,
+              let platforms = game.platforms,
+              let genres = game.genres   else {
+            return false
+        }
+        
+        let matchingPlatforms = matchingPlatforms.filter { platform in
+            return platforms.contains(where: { $0.id == platform.id })
+        }
+        
+        let matchingGenres = matchingGenres.filter { genre in
+            return genres.contains(where: { $0.id == genre.id })
+        }
+        
+        return !matchingPlatforms.isEmpty || !matchingGenres.isEmpty
+    }
+    
+    func containsGenres(_ matchingGenres: [PopularGenre]) -> Bool {
+        guard let game = self.game,
+              let genres = game.genres else {
+            return false
+        }
+        
+        let matchingGenres = matchingGenres.filter { genre in
+            return genres.contains(where: { $0.id == genre.id })
+        }
+        
+        return !matchingGenres.isEmpty
+    }
+    
+    func containsPlatforms(_ matchingPlatforms: [PopularPlatform]) -> Bool {
+        guard let game = self.game,
+              let platforms = game.platforms else {
+            return false
+        }
+        
+        let matchingPlatforms = matchingPlatforms.filter { platform in
+            return platforms.contains(where: { $0.id == platform.id })
+        }
+        
+        return !matchingPlatforms.isEmpty
+    }
 }

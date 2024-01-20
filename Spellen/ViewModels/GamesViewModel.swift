@@ -22,7 +22,7 @@ class GamesViewModel {
     var filterType: FilterType = .search
     
     var savedGames: [SavedGame] = []
-
+    
     var networkGames: [Game] {
         dataFetchPhase.value ?? []
     }
@@ -35,7 +35,7 @@ class GamesViewModel {
     }
     
     var hasFilters: Bool {
-        (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres)) 
+        (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))
         || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
     }
     
@@ -171,6 +171,11 @@ extension GamesViewModel {
         dataType = .network
         filterType = .search
         
+        if fetchTaskToken.genres.isEmpty || fetchTaskToken.platforms.isEmpty {
+            fetchTaskToken.genres = [.allGenres]
+            fetchTaskToken.platforms = [.database]
+        }
+        
         Task {
             await refreshTask()
         }
@@ -184,7 +189,7 @@ extension GamesViewModel {
         filterType = .library
         
         if allSelected {
-            filterSegment(games: savedGames)
+            filterSegment(savedGames: savedGames)
         } else {
             if let library {
                 headerTitle = library.title
@@ -193,7 +198,23 @@ extension GamesViewModel {
                 }
             }
             
-            filterSegment(games: savedGames, library: library)
+            filterSegment(savedGames: savedGames, library: library)
+        }
+    }
+    
+    func onChangeOfDataType(savedGames: [SavedGame], library: Library?, newValue: DataType) {
+        switch newValue {
+        case .network:
+            if fetchTaskToken.genres.isEmpty || fetchTaskToken.platforms.isEmpty {
+                fetchTaskToken.genres = [.allGenres]
+                fetchTaskToken.platforms = [.database]
+            }
+            
+            Task {
+                await refreshTask()
+            }
+        case .library:
+            filterSegment(savedGames: savedGames, library: library)
         }
     }
     
@@ -210,13 +231,14 @@ extension GamesViewModel {
             } else {
                 fetchTaskToken.genres = newValue
             }
+            
+            Task {
+                await refreshTask()
+            }
+            
         case .library:
             fetchTaskToken.genres = newValue
-            filterSegment(games: savedGames, library: library)
-        }
-        
-        Task {
-            await refreshTask()
+            filterSegment(savedGames: savedGames, library: library)
         }
     }
     
@@ -233,45 +255,41 @@ extension GamesViewModel {
             } else {
                 fetchTaskToken.platforms = newValue
             }
+            
+            Task {
+                await refreshTask()
+            }
         case .library:
             fetchTaskToken.platforms = newValue
-            filterSegment(games: savedGames, library: library)
-        }
-        
-        Task {
-            await refreshTask()
+            filterSegment(savedGames: savedGames, library: library)
         }
     }
     
-    func toggleGenre(_ genre: PopularGenre, selectedLibrary: Library?,  games: [SavedGame]) {
+    func toggleGenre(_ genre: PopularGenre, selectedLibrary: Library?,  savedGames: [SavedGame]) {
         switch dataType {
         default:
             if fetchTaskToken.genres.contains(genre) {
                 if let index = fetchTaskToken.genres.firstIndex(of: genre) {
                     fetchTaskToken.genres.remove(at: index)
-                    filterSegment(games: games)
                 }
             } else {
                 fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
                 fetchTaskToken.genres.append(genre)
-                filterSegment(games: games, library: selectedLibrary)
             }
         }
     }
     
-    func togglePlatform(_ platform: PopularPlatform, selectedLibrary: Library?, games: [SavedGame]) {
+    func togglePlatform(_ platform: PopularPlatform, selectedLibrary: Library?, savedGames: [SavedGame]) {
         switch dataType {
         default:
             if fetchTaskToken.platforms.contains(platform) {
                 if let index = fetchTaskToken.platforms.firstIndex(of: platform) {
                     fetchTaskToken.platforms.remove(at: index)
-                    filterSegment(games: games)
                 }
                 
             } else {
                 fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
                 fetchTaskToken.platforms.append(platform)
-                filterSegment(games: games, library: selectedLibrary)
             }
         }
     }
@@ -287,26 +305,49 @@ extension GamesViewModel {
         }
     }
     
-    func filterSegment(games: [SavedGame], library: Library? = nil)  {
+    func filterSegment(savedGames: [SavedGame], library: Library? = nil)  {
         var libraryGames = [SavedGame]()
-        let selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
-        let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
+        var selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
+        var selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
+        
         
         if let library {
-            libraryGames = games.filter({ $0.library == library })
+            libraryGames = savedGames.filter({ $0.library == library })
         } else {
-            libraryGames = games
+            libraryGames = savedGames
         }
         
         if self.searchQuery.isEmpty {
-            self.savedGames = libraryGames
-                .filter({$0.containsPopularGenres(selectedGenres)})
-                .filter({$0.containsPopularPlatforms(selectedPlatforms)})
+            if !selectedGenres.isEmpty {
+                if !selectedPlatforms.isEmpty {
+                    self.savedGames = libraryGames
+                        .filter({ $0.containsGenres(selectedGenres) })
+                        .filter({ $0.containsPlatforms(selectedPlatforms) })
+                } else {
+                    self.savedGames = libraryGames
+                        .filter({ $0.containsGenres(selectedGenres) })
+                }
+            } else if !selectedPlatforms.isEmpty {
+                if !selectedGenres.isEmpty {
+                    self.savedGames = libraryGames
+                        .filter({ $0.containsGenres(selectedGenres) })
+                        .filter({ $0.containsPlatforms(selectedPlatforms) })
+                } else {
+                    self.savedGames = libraryGames
+                        .filter({ $0.containsPlatforms(selectedPlatforms) })
+                }
+            } else {
+                self.savedGames = libraryGames
+            }
         } else {
-            self.savedGames = libraryGames
-                .filter({($0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased())})
-                .filter({$0.containsPopularGenres(selectedGenres)})
-                .filter({$0.containsPopularPlatforms(selectedPlatforms)})
+            if !selectedGenres.isEmpty || !selectedPlatforms.isEmpty {
+                self.savedGames = libraryGames
+                    .filter({( $0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased()) })
+                    .filter({ $0.containsSelections(selectedGenres, selectedPlatforms) })
+            } else {
+                self.savedGames = libraryGames
+                    .filter({( $0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased()) })
+            }
         }
     }
 }

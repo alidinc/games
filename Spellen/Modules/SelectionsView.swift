@@ -106,7 +106,7 @@ struct SelectionsView: View {
                     case .platform:
                         ForEach(platforms) { platform in
                             Button {
-                                vm.togglePlatform(platform, selectedLibrary: library, games: savedGames)
+                                vm.togglePlatform(platform, selectedLibrary: library, savedGames: savedGames)
                             } label: {
                                 OptionTileView(imageName: platform.assetName,
                                                title: platform.title,
@@ -116,7 +116,7 @@ struct SelectionsView: View {
                     case .genre:
                         ForEach(genres) { genre in
                             Button {
-                                vm.toggleGenre(genre, selectedLibrary: library, games: savedGames)
+                                vm.toggleGenre(genre, selectedLibrary: library, savedGames: savedGames)
                             } label: {
                                 OptionTileView(imageName: genre.assetName,
                                                title: genre.title,

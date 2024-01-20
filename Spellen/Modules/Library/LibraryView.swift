@@ -76,7 +76,7 @@ struct LibraryView: View {
             gamesVM.dataType = .library
             gamesVM.filterType = .library
     
-            gamesVM.filterSegment(games: savedGames)
+            gamesVM.filterSegment(savedGames: savedGames)
         } label: {
             HStack {
                 Text("All")

@@ -69,7 +69,7 @@ struct GamesView: View {
                 }
             })
             .onReceive(didRemoteChange, perform: { _ in
-                vm.filterSegment(games: savedGames, library: selectedLibrary)
+                vm.filterSegment(savedGames: savedGames, library: selectedLibrary)
             })
             .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
                 vm.onChangePlatforms(for: savedGames, in: selectedLibrary, newValue: newValue)
@@ -93,7 +93,7 @@ struct GamesView: View {
                         }
                     }
                 case .library:
-                    vm.filterSegment(games: savedGames, library: selectedLibrary)
+                    vm.filterSegment(savedGames: savedGames, library: selectedLibrary)
                 }
             }
         }
