@@ -9,10 +9,10 @@ import Foundation
 
 enum NewsType: String, CaseIterable {
     
-    case ign
+    case all
     case nintendo
     case xbox
-    case all
+    case ign
     
     var id: String {
         switch self {

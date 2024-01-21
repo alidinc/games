@@ -29,7 +29,16 @@ struct NewsView: View {
                 await vm.fetchNews()
             }
             .onChange(of: vm.newsType) { oldValue, newValue in
-                
+                switch newValue {
+                case .all:
+                    vm.allNews = vm.nintendo + vm.xbox + vm.ign
+                case .ign:
+                    vm.allNews = vm.ign
+                case .nintendo:
+                    vm.allNews = vm.nintendo
+                case .xbox:
+                    vm.allNews = vm.xbox
+                }
             }
         }
     }
@@ -38,7 +47,7 @@ struct NewsView: View {
     var LoadingView: some View {
         switch preferences.networkStatus {
         case .available:
-            if vm.news.isEmpty {
+            if vm.allNews.isEmpty {
                 ZStack {
                     ProgressView("Please wait, \nwhile we are getting ready! ☺️")
                         .font(.subheadline)
@@ -104,7 +113,7 @@ struct NewsView: View {
     
     var GameNewsListView: some View {
         List {
-            ForEach(groupedAndSortedItems(rssFeedItems: vm.news), id: \.0) { section, items in
+            ForEach(groupedAndSortedItems(rssFeedItems: vm.allNews), id: \.0) { section, items in
                 Section {
                     ForEach(items, id: \.guid?.value) { item in
                         Button {

@@ -14,7 +14,7 @@ class NewsViewModel {
     
     private var bag = Bag()
     
-    var news: [RSSFeedItem] = []
+    var allNews: [RSSFeedItem] = []
     
     var ign: [RSSFeedItem] = []
     var nintendo: [RSSFeedItem] = []
@@ -22,53 +22,49 @@ class NewsViewModel {
     
     var newsType: NewsType = .all
     
-    func fetchNews() async {
-        switch newsType {
-        case .ign:
-            fetch(type: .ign)
-        case .nintendo:
-            fetch(type: .nintendo)
-        case .xbox:
-            fetch(type: .xbox)
-        case .all:
-            print("All News")
-        }
+    init() {
+       
     }
     
-    
-    func fetch(type: NewsType) {
-        guard let url = URL(string: type.urlString) else {
-            return
-        }
-        
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map(\.data)
-            .sink { _ in
-        
-            } receiveValue: { response in
-                let parser = FeedParser(data: response)
-                parser.parseAsync { result in
-                    switch result {
-                    case .success(let result):
-                        if let items = result.rssFeed?.items {
-                            DispatchQueue.main.async {
-                                switch type {
-                                case .ign:
-                                    self.ign = items
-                                case .nintendo:
-                                    self.nintendo = items
-                                case .xbox:
-                                    self.xbox = items
-                                case .all:
-                                    self.news = self.ign + self.nintendo + self.xbox
+    func fetchNews() async {
+        for type in [NewsType.ign, NewsType.nintendo, NewsType.xbox] {
+            guard let url = URL(string: type.urlString) else {
+                return
+            }
+            
+            URLSession.shared.dataTaskPublisher(for: url)
+                .map(\.data)
+                .sink { _ in
+                   
+                } receiveValue: { response in
+                    let parser = FeedParser(data: response)
+                    parser.parseAsync { result in
+                        switch result {
+                        case .success(let result):
+                            if let items = result.rssFeed?.items {
+                                DispatchQueue.main.async {
+                                    switch type {
+                                    case .ign:
+                                        self.ign = items
+                                        self.allNews.append(contentsOf: items)
+                                    case .nintendo:
+                                        self.nintendo = items
+                                        self.allNews.append(contentsOf: items)
+                                    case .xbox:
+                                        self.xbox = items
+                                        self.allNews.append(contentsOf: items)
+                                    case .all:
+                                        break
+                                    }
                                 }
                             }
+                        case .failure(let failure):
+                            print(failure.localizedDescription)
                         }
-                    case .failure(let failure):
-                        print(failure.localizedDescription)
                     }
                 }
-            }
-            .store(in: &bag)
+                .store(in: &bag)
+        }
+        
     }
 }

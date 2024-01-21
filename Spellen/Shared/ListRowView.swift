@@ -59,40 +59,7 @@ struct ListRowView: View {
                                 .multilineTextAlignment(.leading)
                         }
                         
-                        if let firstReleaseDate = game.firstReleaseDate {
-                            VStack(alignment: .leading, spacing: 4) {
-                                HStack {
-                                    Image(systemName: "calendar")
-                                        .resizable()
-                                        .frame(width: 10, height: 10)
-                                        .foregroundStyle(.secondary)
-                                        .font(.subheadline)
-                                    
-                                    Text("\(firstReleaseDate.numberToDateString())")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
-                                .hSpacing(.leading)
-                            }
-                        }
-                        
-                        if let releaseDates = game.releaseDates,
-                            let lastReleasedDate = releaseDates.max(),
-                            let lastDate = lastReleasedDate.date,
-                            let lastPlatform = lastReleasedDate.platform,
-                            Int(Date.now.timeIntervalSince1970) < lastDate {
-                            
-                            let lastOnePlatformName = PopularPlatform(rawValue: lastPlatform)
-                            let platforms = releaseDates.filter({ Int(Date.now.timeIntervalSince1970) < $0.date ?? 0 })
-                            let platformNames = platforms.compactMap({ PopularPlatform(rawValue: $0.platform ?? 0)?.title }).joined(separator: ", ")
-                            
-                            
-                            if let lastOnePlatformName {
-                                Text("Upcoming: \(lastDate.numberToDateString()) for \(lastOnePlatformName.title)")
-                                    .foregroundStyle(.secondary)
-                                    .font(.caption)
-                            }
-                        }
+                        DatesView(game: game)
                         
                         Text(game.availablePlatforms)
                             .foregroundStyle(.secondary)
@@ -148,40 +115,7 @@ struct ListRowView: View {
                             .multilineTextAlignment(.leading)
                     }
                     
-                    if let firstReleaseDate = game.firstReleaseDate {
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack {
-                                Image(systemName: "calendar")
-                                    .resizable()
-                                    .frame(width: 10, height: 10)
-                                    .foregroundStyle(.secondary)
-                                    .font(.subheadline)
-                                
-                                Text("\(firstReleaseDate.numberToDateString())")
-                                    .foregroundStyle(.secondary)
-                                    .font(.caption)
-                            }
-                            .hSpacing(.leading)
-                        }
-                    }
-                    
-                    if let releaseDates = game.releaseDates,
-                        let lastReleasedDate = releaseDates.max(),
-                        let lastDate = lastReleasedDate.date,
-                        let lastPlatform = lastReleasedDate.platform,
-                        Int(Date.now.timeIntervalSince1970) < lastDate {
-                        
-                        let lastOnePlatformName = PopularPlatform(rawValue: lastPlatform)
-                        let platforms = releaseDates.filter({ Int(Date.now.timeIntervalSince1970) < $0.date ?? 0 })
-                        let platformNames = platforms.compactMap({ PopularPlatform(rawValue: $0.platform ?? 0)?.title }).joined(separator: ", ")
-                        
-                        
-                        if let lastOnePlatformName {
-                            Text("Upcoming: \(lastDate.numberToDateString()) for \(lastOnePlatformName.title)")
-                                .foregroundStyle(.secondary)
-                                .font(.caption)
-                        }
-                    }
+                    DatesView(game: game)
                     
                     Text(game.availablePlatforms)
                         .foregroundStyle(.secondary)
@@ -216,6 +150,43 @@ struct ListRowView: View {
             .frame(maxHeight: .infinity)
             .shadow(radius: 4)
         }
+    }
+    
+    func areAllValuesSame<T: Equatable>(in array: [T]) -> Bool {
+        guard let firstValue = array.first else {
+            return true  // Empty array, technically all values are the same
+        }
+        
+        return array.allSatisfy { $0 == firstValue }
+    }
+    
+    @ViewBuilder
+    private func DatesView(game: Game) -> some View {
+        let now = Int(Date.now.timeIntervalSince1970)
+        if let releaseDates = game.releaseDates {
+            
+            let dates = releaseDates.compactMap { $0.date }
+            let datesAreSame = areAllValuesSame(in: dates)
+            let datesInTheFutureOnly = !dates.compactMap({$0 > now }).isEmpty && dates.compactMap({$0 < now}).isEmpty
+            let datesInThePastOnly = !dates.compactMap({$0 < now}).isEmpty && dates.compactMap({$0 > now}).isEmpty
+            
+            if let firstReleaseDate = game.firstReleaseDate {
+                DateEntryView(date: firstReleaseDate.numberToDateString(), imageName: "calendar")
+            }
+        }
+    }
+    
+    private func DateEntryView(date: String, imageName: String) -> some View {
+        HStack {
+            Image(systemName: imageName)
+                .font(.system(size: 10))
+                .foregroundStyle(.secondary)
+            
+            Text(date)
+                .foregroundStyle(.secondary)
+                .font(.caption)
+        }
+        .hSpacing(.leading)
     }
 }
 
