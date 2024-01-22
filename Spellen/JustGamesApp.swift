@@ -10,10 +10,17 @@ import SwiftUI
 @main
 struct SpellenApp: App {
     
+    @AppStorage("isFirstTime") private var isFirstTime: Bool = true
+    
     var body: some Scene {
         WindowGroup {
-            OnboardingView()
-                .preferredColorScheme(.dark)
+            if isFirstTime {
+                IntroView()
+                    .preferredColorScheme(.dark)
+            } else {
+                ContentView()
+                    .preferredColorScheme(.dark)
+            }
         }
         .modelContainer(for: [Library.self, SavedGame.self])
     }

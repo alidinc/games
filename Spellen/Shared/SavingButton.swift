@@ -16,7 +16,7 @@ struct SavingButton: View {
     var padding: CGFloat
     
     @AppStorage("appTint") var appTint: Color = .white
-    @Environment(SavingViewModel.self) private var vm: SavingViewModel
+    @Environment(SwiftDataActor.self) private var vm: SwiftDataActor
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
@@ -57,7 +57,9 @@ struct SavingButton: View {
             
             if vm.savedAlready(game: game, games: games) {
                 Button(role: .destructive) {
-                    vm.deleteFromAll(game: game, in: games, context: context)
+                    Task {
+                        await vm.deleteFromAll(game: game, in: games, context: context)
+                    }
                 } label: {
                     Label("Delete", systemImage: "trash.fill")
                 }
@@ -65,11 +67,8 @@ struct SavingButton: View {
                 Divider()
             }
         } label: {
-            let libraryName = getLibrary()?.icon
-            let alreadySavedName = (getLibrary() != nil ? libraryName! : "bookmark")
-            
             SFImage(
-                name: vm.savedAlready(game: game, games: games) ? alreadySavedName  : "bookmark",
+                name: libraryName(),
                 opacity: opacity,
                 padding: padding,
                 color: appTint
@@ -77,7 +76,11 @@ struct SavingButton: View {
         }
     }
     
-    func getLibrary() -> Library? {
-        games.first(where: { $0.game?.id == game.id })?.library
+    func libraryName() -> String {
+        if let library = games.first(where: { $0.game?.id == game.id })?.library, let icon = library.icon {
+            return icon
+        }
+        
+        return "bookmark"
     }
 }

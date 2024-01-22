@@ -1,27 +1,19 @@
 //
-//  OnboardingView.swift
-//  GameLob
+//  IntroView.swift
+//  Spellen
 //
-//  Created by alidinc on 16/01/2024.
+//  Created by alidinc on 22/01/2024.
 //
 
 import SwiftUI
 
-struct OnboardingView: View {
+struct IntroView: View {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     @AppStorage("appTint") var appTint: Color = .white
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
     
     var body: some View {
-        if isFirstTime {
-            IntroView
-        } else {
-            ContentView()
-        }
-    }
-    
-    private var IntroView: some View {
         VStack(spacing: 15) {
             
             Image(selectedAppIcon.title.lowercased())

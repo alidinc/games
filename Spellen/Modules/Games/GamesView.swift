@@ -13,7 +13,7 @@ struct GamesView: View {
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
     
-    @Environment(Preferences.self) private var preferences
+    @Environment(Admin.self) private var preferences
     @Environment(NetworkMonitor.self) private var network
     
     @State var vm: GamesViewModel

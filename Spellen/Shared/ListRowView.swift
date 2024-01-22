@@ -20,7 +20,7 @@ struct ListRowView: View {
     var savedGame: SavedGame?
     
     @State var vm = GameDetailViewModel()
-    @Environment(Preferences.self) private var preferences
+    @Environment(Admin.self) private var preferences
     
     init(game: Game? = nil, savedGame: SavedGame? = nil) {
         self.savedGame = savedGame

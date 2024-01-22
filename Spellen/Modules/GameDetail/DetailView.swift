@@ -12,7 +12,7 @@ struct DetailView: View {
     var game: Game?
     var savedGame: SavedGame?
     
-    @Environment(Preferences.self) private var preferences
+    @Environment(Admin.self) private var preferences
     
     init(game: Game? = nil, savedGame: SavedGame? = nil) {
         self.savedGame = savedGame

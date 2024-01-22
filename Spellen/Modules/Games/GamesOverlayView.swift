@@ -13,7 +13,7 @@ struct GamesOverlayView: View {
     var filterType: FilterType
      
     @Environment(GamesViewModel.self) private var vm
-    @Environment(Preferences.self) private var preferences
+    @Environment(Admin.self) private var preferences
     
     var body: some View {
         switch dataType {

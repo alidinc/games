@@ -16,7 +16,7 @@ struct NewsView: View {
     @State var selectedItem: RSSFeedItem?
     
     @AppStorage("appTint") var appTint: Color = .white
-    @Environment(Preferences.self) private var preferences: Preferences
+    @Environment(Admin.self) private var preferences: Admin
     
     var body: some View {
         NavigationStack {

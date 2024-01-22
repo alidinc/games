@@ -12,7 +12,7 @@ struct SavedCollectionView: View {
     
     var games: [SavedGame]
     @AppStorage("viewType") var viewType: ViewType = .list
-    @Environment(Preferences.self) private var preferences: Preferences
+    @Environment(Admin.self) private var preferences: Admin
     
     var body: some View {
         switch viewType {

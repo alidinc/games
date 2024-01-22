@@ -11,7 +11,7 @@ import Connectivity
 import Observation
 
 @Observable
-class Preferences {
+class Admin {
     
     var networkStatus: NetworkStatus = .unavailable
     var connectivityListener: AnyCancellable?
