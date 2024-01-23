@@ -22,10 +22,6 @@ class NewsViewModel {
     
     var newsType: NewsType = .all
     
-    init() {
-       
-    }
-    
     func fetchNews() async {
         for type in [NewsType.ign, NewsType.nintendo, NewsType.xbox] {
             guard let url = URL(string: type.urlString) else {

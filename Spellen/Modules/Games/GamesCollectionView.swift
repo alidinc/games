@@ -23,7 +23,7 @@ struct GamesCollectionView: View {
     
     private var ListView: some View {
         List {
-            ForEach(vm.networkGames, id: \.id) { game in
+            ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                 ListRowView(game: game)
                     .navigationLink({
                         DetailView(game: game)
@@ -36,7 +36,7 @@ struct GamesCollectionView: View {
                             await vm.fetchNextSetOfGames()
                         }
                     }
-                    .if(vm.networkGames.last == game) { view in
+                    .if(vm.dataFetchPhase.value?.last == game) { view in
                         view
                             .padding(.bottom, 100)
                             .overlay(alignment: .bottom) {
@@ -57,7 +57,7 @@ struct GamesCollectionView: View {
     private var GridView: some View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
-                ForEach(vm.networkGames, id: \.id) { game in
+                ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {
                         NavigationLink {
                             DetailView(game: game)

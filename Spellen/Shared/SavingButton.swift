@@ -25,11 +25,12 @@ struct SavingButton: View {
     
     var body: some View {
         Menu {
-            if !(libraries.filter({$0.savingId != Constants.allGamesLibraryID })).isEmpty {
+            let libraries = libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) })
+            if !libraries.isEmpty {
                 Label("Add to : ", systemImage: "arrow.turn.right.down")
             }
             
-            ForEach(libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) }), id: \.savingId) { library in
+            ForEach(libraries, id: \.savingId) { library in
                 Button {
                     vm.saveGameTo(game: game, games: games, library: library, context: context)
                     gamesVM.filterSegment(savedGames: games, library: library)

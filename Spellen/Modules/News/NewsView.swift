@@ -15,6 +15,8 @@ struct NewsView: View {
     @State var presentLink = false
     @State var selectedItem: RSSFeedItem?
     
+    @State var updateList = ""
+    
     @AppStorage("appTint") var appTint: Color = .white
     @Environment(Admin.self) private var preferences: Admin
     
@@ -25,21 +27,33 @@ struct NewsView: View {
                 GameNewsListView
             }
             .background(.gray.opacity(0.15))
-            .task {
+            .task(id: vm.newsType, priority: .background, {
                 await vm.fetchNews()
-            }
-            .onChange(of: vm.newsType) { oldValue, newValue in
-                switch newValue {
-                case .all:
-                    vm.allNews = vm.nintendo + vm.xbox + vm.ign
-                case .ign:
-                    vm.allNews = vm.ign
-                case .nintendo:
-                    vm.allNews = vm.nintendo
-                case .xbox:
-                    vm.allNews = vm.xbox
+            })
+            .sheet(item: $selectedItem, content: { item in
+                if let urlString = item.link, let url = URL(string: urlString) {
+                    SFSafariView(url: url)
+                        .background(.gray.opacity(0.15))
+                        .navigationTitle(item.title ?? "")
+                        .ignoresSafeArea()
                 }
+            })
+            .onChange(of: vm.newsType) { oldValue, newValue in
+                updateList = newValue.title
             }
+        }
+    }
+    
+    var items: [RSSFeedItem] {
+        switch vm.newsType {
+        case .all:
+            return vm.allNews
+        case .nintendo:
+            return vm.nintendo
+        case .xbox:
+            return vm.xbox
+        case .ign:
+            return vm.ign
         }
     }
     
@@ -113,22 +127,14 @@ struct NewsView: View {
     
     var GameNewsListView: some View {
         List {
-            ForEach(groupedAndSortedItems(rssFeedItems: vm.allNews), id: \.0) { section, items in
+            ForEach(groupedAndSortedItems, id: \.0) { section, items in
                 Section {
-                    ForEach(items, id: \.guid?.value) { item in
+                    ForEach(items, id: \.link) { item in
                         Button {
                             selectedItem = item
                         } label: {
                             NewsView(item: item)
                         }
-                        .sheet(item: $selectedItem, content: { item in
-                            if let urlString = item.link, let url = URL(string: urlString) {
-                                SFSafariView(url: url)
-                                    .background(.gray.opacity(0.15))
-                                    .navigationTitle(item.title ?? "")
-                                    .ignoresSafeArea()
-                            }
-                        })
                     }
                 } header: {
                     Text(section)
@@ -138,7 +144,7 @@ struct NewsView: View {
                 .listRowSeparator(.hidden)
             }
         }
-        .id(UUID().uuidString)
+        .id(updateList)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
@@ -149,8 +155,8 @@ struct NewsView: View {
     }
     
     
-    private func groupedAndSortedItems(rssFeedItems: [RSSFeedItem]) -> [(String, [RSSFeedItem])] {
-        let groupedItems = Dictionary(grouping: rssFeedItems) { item in
+    private var groupedAndSortedItems:  [(String, [RSSFeedItem])] {
+        let groupedItems = Dictionary(grouping: self.items) { item in
             // Customize the date format based on your needs
             let dateFormatter = DateFormatter()
             //  dateFormatter.dateFormat = "yyyy-MM-dd"

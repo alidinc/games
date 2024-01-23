@@ -23,10 +23,6 @@ class GamesViewModel {
     
     var savedGames: [SavedGame] = []
     
-    var networkGames: [Game] {
-        dataFetchPhase.value ?? []
-    }
-    
     var isFetchingNextPage: Bool {
         if case .fetchingNextPage = dataFetchPhase {
             return true
@@ -71,6 +67,7 @@ extension GamesViewModel {
         }
     }
     
+    @MainActor
     func fetchGames() async {
         if Task.isCancelled { return }
         let category = self.fetchTaskToken.category
@@ -78,17 +75,13 @@ extension GamesViewModel {
         let genres = self.fetchTaskToken.genres
         
         if let cache, let games = await cache.value(forKey: category.rawValue) {
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .success(games)
-            }
+            self.dataFetchPhase = .success(games)
             if Task.isCancelled { return }
             return
         }
         
         self.offset = 0
-        DispatchQueue.main.async {
-            self.dataFetchPhase = .empty
-        }
+        self.dataFetchPhase = .empty
         
         do {
             let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
@@ -98,17 +91,13 @@ extension GamesViewModel {
                                                                               limit: self.limit,
                                                                               offset: self.offset)
             if Task.isCancelled { return }
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .success(response)
-            }
+            self.dataFetchPhase = .success(response)
             if !response.isEmpty, let cache {
                 await cache.setValue(response, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .failure(error)
-            }
+            self.dataFetchPhase = .failure(error)
         }
     }
     
@@ -121,9 +110,7 @@ extension GamesViewModel {
         let games = self.dataFetchPhase.value ?? []
         
         
-        DispatchQueue.main.async {
-            self.dataFetchPhase = .fetchingNextPage(games)
-        }
+        self.dataFetchPhase = .fetchingNextPage(games)
         
         do {
             self.offset += self.limit
@@ -137,27 +124,23 @@ extension GamesViewModel {
             let totalGames = games + response
             if Task.isCancelled { return }
             
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .success(totalGames)
-            }
+            self.dataFetchPhase = .success(totalGames)
             
             if !totalGames.isEmpty, let cache  {
                 await cache.setValue(totalGames, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
-            DispatchQueue.main.async {
-                self.dataFetchPhase = .failure(error)
-            }
+            self.dataFetchPhase = .failure(error)
         }
     }
     
     func hasReachedEnd(of game: Game) -> Bool {
-        guard let lastGame = networkGames.last  else {
+        guard let games = dataFetchPhase.value, let lastGame = games.last  else {
             return false
         }
         
-        return (lastGame.id == game.id) && ((networkGames.count - 1) == networkGames.lastIndex(of: game))
+        return (lastGame.id == game.id) && ((games.count - 1) == games.lastIndex(of: game))
     }
 }
 

@@ -129,7 +129,6 @@ struct LibraryView: View {
     
     private var AllLibrariesView: some View {
         List {
-            let libraries = libraries.filter({ $0.savingId != Constants.allGamesLibraryID })
             ForEach(libraries, id: \.savingId) { library in
                 Button(action: {
                     libraryToEdit = library
