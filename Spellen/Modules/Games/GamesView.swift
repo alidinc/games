@@ -193,14 +193,20 @@ struct GamesView: View {
                     )
                     
                     Text(vm.headerTitle)
-                        .font(.title3.bold())
+                        .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(.primary)
                         .shadow(radius: 10)
                 }
                 
-                Image(systemName: "chevron.down")
-                    .font(.title3.bold())
-                    .foregroundStyle(.primary)
+                SFImage(
+                    name: "chevron.down",
+                    config: .init(
+                        opacity: 0,
+                        padding: 0,
+                        iconSize: 20
+                    )
+                )
+
             }
             .hSpacing(.leading)
         }
@@ -234,16 +240,7 @@ struct GamesView: View {
                     selectedLibrary = library
                     vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
                 } label: {
-                    HStack {
-                        if let icon = library.icon {
-                            Image(systemName: icon)
-                                .imageScale(.medium)
-                        }
-                        
-                        Text(library.title)
-                            .font(.headline)
-                            .foregroundStyle(.primary)
-                    }
+                    Label(library.title, systemImage: library.icon)
                 }
                 .tag(library.savingId)
             }

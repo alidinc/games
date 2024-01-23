@@ -176,9 +176,7 @@ extension GamesViewModel {
         } else {
             if let library {
                 headerTitle = library.title
-                if let icon = library.icon {
-                    headerImageName = icon
-                }
+                headerImageName = library.icon
             }
             
             filterSegment(savedGames: savedGames, library: library)

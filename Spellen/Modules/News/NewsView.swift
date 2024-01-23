@@ -94,17 +94,29 @@ struct NewsView: View {
                 }
             } label: {
                 HStack {
-                    SFImage(name: "newspaper.fill", config: .init(opacity: 0, radius: 0, padding: 0, color: appTint))
+                    SFImage(
+                        name: "newspaper.fill",
+                        config: .init(
+                            opacity: 0,
+                            radius: 0,
+                            padding: 0,
+                            color: appTint
+                        )
+                    )
                     
                     Text(vm.newsType.title)
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(.primary)
                         .shadow(radius: 10)
                     
-                    Image(systemName: "chevron.down")
-                        .font(.title2)
-                        .bold()
-                        .foregroundStyle(.primary)
+                    SFImage(
+                        name: "chevron.down",
+                        config: .init(
+                            opacity: 0,
+                            padding: 0,
+                            iconSize: 20
+                        )
+                    )
                 }
             }
             

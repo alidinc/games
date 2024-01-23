@@ -13,7 +13,7 @@ import SwiftData
 class Library {
     
     var title: String = ""
-    var icon: String?
+    var icon: String = "bookmark.fill"
     var savingId: String?
     
     @Relationship(deleteRule: .cascade, inverse: \SavedGame.library)

@@ -33,7 +33,7 @@ struct AddLibraryView: View {
             ScrollView {
                 VStack {
                     NameView
-                    IconSelectionView
+                    IconsView(icon: $icon)
                     RemainingLibraryCountView
                 }
                 .vSpacing(.top)
@@ -70,50 +70,7 @@ struct AddLibraryView: View {
             .padding(.horizontal)
             .autocorrectionDisabled()
     }
-    
-    private var IconSelectionView: some View {
-        DisclosureGroup {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(), GridItem(), GridItem(), GridItem(), GridItem()], content: {
-                    ForEach(SFModels.allSymbols, id: \.self) { symbol in
-                        Button(action: {
-                            icon = symbol
-                        }, label: {
-                            Image(systemName: symbol)
-                                .padding()
-                                .imageScale(.medium)
-                                .overlay {
-                                    if symbol == icon {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .strokeBorder(appTint, lineWidth: 2)
-                                    }
-                                }
-                        })
-                    }
-                })
-                .padding(.horizontal)
-            }
-            .frame(height: 175)
-        } label: {
-            HStack {
-                Text("Selected icon")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                
-                Spacer()
-                
-                if !icon.isEmpty {
-                    SFImage(name: icon)
-                } else {
-                    SFImage(name: "star")
-                }
-            }
-            .padding(.vertical, 4)
-        }
-        .padding(.horizontal)
-        .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-        .padding(.horizontal)
-    }
+
     
     private var RemainingLibraryCountView: some View {
         Section {

@@ -36,10 +36,8 @@ struct SavingButton: View {
                     gamesVM.filterSegment(savedGames: games, library: library)
                 } label: {
                     HStack {
-                        if let icon = library.icon {
-                            Image(systemName: icon)
-                                .imageScale(.medium)
-                        }
+                        Image(systemName: library.icon)
+                            .imageScale(.medium)
                         
                         Text(library.title)
                             .font(.headline)
@@ -78,8 +76,8 @@ struct SavingButton: View {
     }
     
     func libraryName() -> String {
-        if let library = games.first(where: { $0.game?.id == game.id })?.library, let icon = library.icon {
-            return icon
+        if let library = games.first(where: { $0.game?.id == game.id })?.library {
+            return library.icon
         }
         
         return "bookmark"

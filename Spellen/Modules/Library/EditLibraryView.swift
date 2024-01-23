@@ -25,7 +25,7 @@ struct EditLibraryView: View {
             ScrollView {
                 VStack {
                     NameView
-                    IconSelectionView
+                    IconsView(icon: $library.icon)
                 }
                 .vSpacing(.top)
             }
@@ -90,9 +90,7 @@ struct EditLibraryView: View {
                 
                 Spacer()
                 
-                if let icon = library.icon {
-                    SFImage(name: icon, config: .init(opacity: 0.5))
-                }
+                SFImage(name: library.icon, config: .init(opacity: 0.5))
                 
             }
             .padding(.vertical, 4)

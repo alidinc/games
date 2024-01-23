@@ -26,14 +26,6 @@ struct GenresView: View {
                         }
                     }
                 }
-                .mask(alignment: .trailing, {
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.clear, Color.black]),
-                        startPoint: .trailing,
-                        endPoint: .center
-                    )
-                    .opacity(genres.count > 4 ? 1 : 0)
-                })
             }
         }
     }
