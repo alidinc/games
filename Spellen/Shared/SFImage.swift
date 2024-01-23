@@ -24,6 +24,7 @@ struct SFImage: View {
             .frame(width: config.size, height: config.size)
             .padding(config.padding)
             .font(.system(size: config.iconSize))
+            .bold(config.isBold)
             .foregroundStyle(config.color)
             .background(Color.black.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
     }
@@ -36,6 +37,7 @@ struct SFConfig {
     let color: Color
     let size: CGFloat
     let iconSize: CGFloat
+    let isBold: Bool
     
     init(
         opacity: CGFloat = 0.5,
@@ -43,7 +45,8 @@ struct SFConfig {
         padding: CGFloat = 10,
         color: Color = .primary,
         size: CGFloat = 24,
-        iconSize: CGFloat = 20
+        iconSize: CGFloat = 20,
+        isBold: Bool = false
     ) {
         self.opacity = opacity
         self.radius = radius
@@ -51,5 +54,6 @@ struct SFConfig {
         self.color = color
         self.size = size
         self.iconSize = iconSize
+        self.isBold = isBold
     }
 }

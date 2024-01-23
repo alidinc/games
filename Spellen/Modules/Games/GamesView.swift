@@ -10,6 +10,7 @@ import SwiftUI
 
 struct GamesView: View {
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
     
@@ -18,12 +19,10 @@ struct GamesView: View {
     @State var vm: GamesViewModel
 
     @State private var showLibraries = false
-    @State private var showAddLibrary = false
     @State private var showSelectionOptions = false
     @State private var selectedSegment: SelectionOption = .genre
     @State private var gameToAddForNewLibrary: Game?
     @State private var receivedLibrary: Library?
-    @State private var selectedLibrary: Library?
     
     @Query(animation: .easeInOut) private var savedGames: [SavedGame]
     @Query(animation: .easeInOut) private var savedLibraries: [Library]
@@ -45,6 +44,7 @@ struct GamesView: View {
             .task(id: vm.fetchTaskToken) {
                 await vm.fetchGames()
             }
+            .sensoryFeedback(.impact(flexibility: .solid, intensity: 0.5), trigger: hapticsEnabled && (showLibraries || showSelectionOptions))
             .sheet(isPresented: $showLibraries, content: {
                 LibraryView()
                     .presentationDetents([.medium])
@@ -54,7 +54,7 @@ struct GamesView: View {
                     .presentationDetents([.fraction(0.7)])
             })
             .sheet(isPresented: $showSelectionOptions, content: {
-                SelectionsView(dataType: vm.dataType, library: selectedLibrary, selectedOption: $selectedSegment, vm: $vm)
+                SelectionsView()
                     .presentationDetents([.medium, .large])
             })
             .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
@@ -68,32 +68,16 @@ struct GamesView: View {
                 }
             })
             .onReceive(didRemoteChange, perform: { _ in
-                vm.filterSegment(savedGames: savedGames, library: selectedLibrary)
+                vm.filterSegment(savedGames: savedGames)
             })
             .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
-                vm.onChangePlatforms(for: savedGames, in: selectedLibrary, newValue: newValue)
+                vm.onChangePlatforms(for: savedGames, newValue: newValue)
             })
             .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
-                vm.onChangeGenres(for: savedGames, in: selectedLibrary, newValue: newValue)
+                vm.onChangeGenres(for: savedGames, newValue: newValue)
             })
             .onChange(of: vm.searchQuery) { _, newValue in
-                vm.filterType = .search
-                
-                switch vm.dataType {
-                case .network:
-                    Task {
-                        if !newValue.isEmpty {
-                            try await Task.sleep(seconds: 0.5)
-                            vm.fetchTaskToken.category = .database
-                            await vm.refreshTask()
-                        } else {
-                            await vm.refreshTask()
-                            dismissKeyboard()
-                        }
-                    }
-                case .library:
-                    vm.filterSegment(savedGames: savedGames, library: selectedLibrary)
-                }
+                vm.onChangeQuery(for: savedGames, newValue: newValue)
             }
         }
     }
@@ -161,6 +145,10 @@ struct GamesView: View {
         if vm.hasFilters {
             Button(action: {
                 vm.removeFilters()
+                
+                if hapticsEnabled {
+                    HapticsManager.shared.vibrateForSelection()
+                }
             }, label: {
                 SFImage(name: "xmark.circle.fill",
                         config: .init(
@@ -180,35 +168,7 @@ struct GamesView: View {
             LibraryPicker
             
         } label: {
-            HStack(alignment: .center, spacing: 4) {
-                HStack(spacing: 8) {
-                    SFImage(
-                        name: vm.headerImageName,
-                        config: .init(
-                            opacity: 0,
-                            radius: 0,
-                            padding: 0,
-                            color: appTint
-                        )
-                    )
-                    
-                    Text(vm.headerTitle)
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundStyle(.primary)
-                        .shadow(radius: 10)
-                }
-                
-                SFImage(
-                    name: "chevron.down",
-                    config: .init(
-                        opacity: 0,
-                        padding: 0,
-                        iconSize: 20
-                    )
-                )
-
-            }
-            .hSpacing(.leading)
+            PickerHeaderView(title: vm.headerTitle, imageName: vm.headerImageName)
         }
     }
     
@@ -217,6 +177,9 @@ struct GamesView: View {
             ForEach(Category.allCases, id: \.id) { category in
                 Button {
                     vm.categorySelected(for: category)
+                    if hapticsEnabled {
+                        HapticsManager.shared.vibrateForSelection()
+                    }
                 } label: {
                     Label(category.title, systemImage: category.systemImage).tag(category)
                 }
@@ -229,16 +192,24 @@ struct GamesView: View {
     private var LibraryPicker: some View {
         Menu {
             Button {
-                selectedLibrary = nil
+                vm.selectedLibrary = nil
                 vm.librarySelectionTapped(allSelected: true, in: savedGames)
+                
+                if hapticsEnabled {
+                    HapticsManager.shared.vibrateForSelection()
+                }
             } label: {
                 Label("All games", systemImage: "bookmark")
             }
             
             ForEach(savedLibraries, id: \.savingId) { library in
                 Button {
-                    selectedLibrary = library
+                    vm.selectedLibrary = library
                     vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
+                    
+                    if hapticsEnabled {
+                        HapticsManager.shared.vibrateForSelection()
+                    }
                 } label: {
                     Label(library.title, systemImage: library.icon)
                 }

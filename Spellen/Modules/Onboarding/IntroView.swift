@@ -13,6 +13,8 @@ struct IntroView: View {
     @AppStorage("appTint") var appTint: Color = .white
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
     
+    @State private var animating = false
+    
     var body: some View {
         VStack(spacing: 15) {
             
@@ -32,13 +34,13 @@ struct IntroView: View {
             /// Points view
             VStack(alignment: .leading, spacing: 25) {
                 PointView(
-                    symbol: "info",
+                    symbol: "folder.fill",
                     title: "Information",
-                    subtitle: "Effortlessly curate and access your gaming collection."
+                    subtitle: "Effortlessly curate and access your games."
                 )
                 
                 PointView(
-                    symbol: "list.bullet",
+                    symbol: "wand.and.stars",
                     title: "Visually stunning",
                     subtitle: "Say goodbye to scattered game lists."
                 )
@@ -67,17 +69,22 @@ struct IntroView: View {
             })
         }
         .padding(15)
-        .background(Color.black.gradient)
+        .background(
+            LinearGradient(colors: [.clear, .gray.opacity(0.5)], startPoint: .bottom, endPoint: .top)
+        )
+        .onAppear {
+            animating = true
+        }
     }
     
     /// Point view
     @ViewBuilder
     func PointView(symbol: String, title: String, subtitle: String) -> some View {
-        HStack(spacing: 20) {
+        HStack(alignment: .top, spacing: 20) {
             Image(systemName: symbol)
                 .font(.largeTitle)
-                .foregroundStyle(appTint.gradient)
                 .frame(width: 45)
+                .symbolEffect(.pulse, options: .repeating, isActive: animating)
             
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
@@ -85,7 +92,9 @@ struct IntroView: View {
                     .fontWeight(.semibold)
                 
                 Text(subtitle)
+                    .font(.subheadline)
                     .foregroundStyle(.gray)
+                    .multilineTextAlignment(.leading)
             }
         }
     }

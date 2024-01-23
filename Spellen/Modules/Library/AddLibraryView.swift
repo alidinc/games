@@ -34,15 +34,17 @@ struct AddLibraryView: View {
                 VStack {
                     NameView
                     IconsView(icon: $icon)
-                    RemainingLibraryCountView
                 }
                 .vSpacing(.top)
             }
             .navigationTitle("Add library")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
-                AddButton
-                    .safeAreaPadding(.bottom)
+                VStack {
+                    RemainingLibraryCountView
+                    AddButton
+                }
+                .safeAreaPadding(.bottom)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

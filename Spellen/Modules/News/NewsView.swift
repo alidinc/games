@@ -17,7 +17,9 @@ struct NewsView: View {
     
     @State var updateList = ""
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .white
+    
     @Environment(Admin.self) private var preferences: Admin
     
     var body: some View {
@@ -40,6 +42,9 @@ struct NewsView: View {
             })
             .onChange(of: vm.newsType) { oldValue, newValue in
                 updateList = newValue.title
+                if hapticsEnabled {
+                    HapticsManager.shared.vibrateForSelection()
+                }
             }
         }
     }
@@ -93,31 +98,7 @@ struct NewsView: View {
                     }
                 }
             } label: {
-                HStack {
-                    SFImage(
-                        name: "newspaper.fill",
-                        config: .init(
-                            opacity: 0,
-                            radius: 0,
-                            padding: 0,
-                            color: appTint
-                        )
-                    )
-                    
-                    Text(vm.newsType.title)
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundStyle(.primary)
-                        .shadow(radius: 10)
-                    
-                    SFImage(
-                        name: "chevron.down",
-                        config: .init(
-                            opacity: 0,
-                            padding: 0,
-                            iconSize: 20
-                        )
-                    )
-                }
+                PickerHeaderView(title: vm.newsType.title, imageName: "newspaper.fill")
             }
             
             Spacer()

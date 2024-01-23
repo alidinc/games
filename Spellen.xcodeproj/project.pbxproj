@@ -105,6 +105,8 @@
 		DAC503C22B344C70004D4B03 /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C12B344C70004D4B03 /* MoreView.swift */; };
 		DAC503C42B344CF7004D4B03 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C32B344CF7004D4B03 /* Color+Extension.swift */; };
 		DAC503C62B344F57004D4B03 /* IconSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C52B344F57004D4B03 /* IconSelectionView.swift */; };
+		DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084222B6051C600D87112 /* ViewTypeSelections.swift */; };
+		DAD084252B6059A800D87112 /* PickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084242B6059A800D87112 /* PickerHeaderView.swift */; };
 		DAD265962B5FDF7B00ABE41F /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD265952B5FDF7B00ABE41F /* SwiftDataManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -204,6 +206,8 @@
 		DAC503C12B344C70004D4B03 /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
 		DAC503C32B344CF7004D4B03 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		DAC503C52B344F57004D4B03 /* IconSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionView.swift; sourceTree = "<group>"; };
+		DAD084222B6051C600D87112 /* ViewTypeSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeSelections.swift; sourceTree = "<group>"; };
+		DAD084242B6059A800D87112 /* PickerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerHeaderView.swift; sourceTree = "<group>"; };
 		DAD265952B5FDF7B00ABE41F /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -244,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				DA44660F2B499DB700361071 /* Info.plist */,
+				DA43CE322B30B65500DAE0B6 /* Constants.swift */,
 				DA44660E2B495CF400361071 /* Spellen.entitlements */,
 				DA43CE2C2B30B62600DAE0B6 /* Models */,
 				DAAD3E552B40D121005E8EBA /* Shared */,
@@ -333,7 +338,6 @@
 			children = (
 				DA43CE602B30B6CD00DAE0B6 /* DataStore.swift */,
 				DA43CE302B30B65500DAE0B6 /* Blur.swift */,
-				DA43CE322B30B65500DAE0B6 /* Constants.swift */,
 				DA43CE332B30B65500DAE0B6 /* AsyncImageView.swift */,
 				DA0C208B2B3E9F97000E2D6E /* CacheAsyncImage.swift */,
 				DA43CE6C2B30B6F200DAE0B6 /* Cache.swift */,
@@ -371,6 +375,7 @@
 				DAC503C52B344F57004D4B03 /* IconSelectionView.swift */,
 				DA4B1BE62B43A71700EA3E8F /* MailView.swift */,
 				DA78AA312B4D93A3008F018C /* MoreRowView.swift */,
+				DAD084222B6051C600D87112 /* ViewTypeSelections.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -437,6 +442,7 @@
 				DA772C902B4DA94600DD064A /* SegmentedView.swift */,
 				DAAD3E502B40B485005E8EBA /* SavingButton.swift */,
 				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
+				DAD084242B6059A800D87112 /* PickerHeaderView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -586,6 +592,7 @@
 				DA43CE382B30B65500DAE0B6 /* Constants.swift in Sources */,
 				DA43CE4C2B30B66B00DAE0B6 /* APICalypse.swift in Sources */,
 				DA207A1C2B602D86001F8923 /* AllLibrariesView.swift in Sources */,
+				DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */,
 				DAAD3E582B40D89B005E8EBA /* ViewTypeButton.swift in Sources */,
 				DA72D2DC2B54B1D900A235C2 /* Binding+Extension.swift in Sources */,
 				DAC503BD2B34457A004D4B03 /* Task+Extension.swift in Sources */,
@@ -656,6 +663,7 @@
 				DA0C208A2B3E637D000E2D6E /* GameModesView.swift in Sources */,
 				DA43CE5B2B30B69100DAE0B6 /* GamesView.swift in Sources */,
 				DA4B1BF82B43CD7E00EA3E8F /* Admin.swift in Sources */,
+				DAD084252B6059A800D87112 /* PickerHeaderView.swift in Sources */,
 				DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */,
 				DA43CE702B30B6F200DAE0B6 /* KeysTracker.swift in Sources */,
 				DA43CE4B2B30B66B00DAE0B6 /* AccessToken.swift in Sources */,

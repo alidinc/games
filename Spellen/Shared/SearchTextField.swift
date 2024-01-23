@@ -16,7 +16,7 @@ struct SearchTextField: View {
     var body: some View {
         HStack(spacing: 0) {
             TextField(prompt, text: $searchQuery)
-                .frame(height: 24)
+                .frame(height: 30)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
                 .font(.subheadline)

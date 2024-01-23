@@ -14,6 +14,13 @@ struct Constants {
     static var ButtonSize: CGFloat = 24
     static let allGamesLibraryID = "FC6AAA3D-5EEC-4852-847B-39982C11CD14"
     
+    struct Alert {
+        static let deleteLibraryAlertTitle = "Are you sure to delete this library?"
+        static let undoAlertTitle = "You won't be able to undo this action."
+        static let delete = "Delete"
+        static let cancel = "Cancel"
+    }
+    
     struct URLs {
         static var IGDB: URL {
             return URL(string: "https://www.igdb.com/")!

@@ -31,7 +31,11 @@ struct IconsView: View {
                     LazyVGrid(columns: [GridItem(), GridItem(), GridItem(), GridItem(), GridItem()], content: {
                         ForEach(symbols, id: \.self) { symbol in
                             Button(action: {
-                                icon = symbol
+                                if symbol == icon {
+                                    icon = "bookmark.fill"
+                                } else {
+                                    icon = symbol
+                                }
                             }, label: {
                                 Image(systemName: symbol)
                                     .padding()
@@ -46,7 +50,7 @@ struct IconsView: View {
                         }
                     })
                 }
-                .frame(height: 175)
+                .frame(height: 150)
             }
         } label: {
             HStack {
@@ -57,9 +61,9 @@ struct IconsView: View {
                 Spacer()
                 
                 if !icon.isEmpty {
-                    SFImage(name: icon)
+                    SFImage(name: icon, config: .init(color: appTint))
                 } else {
-                    SFImage(name: "star")
+                    SFImage(name: "bookmark.fill", config: .init(color: .white.opacity(0.25)))
                 }
             }
             .padding(.vertical, 4)

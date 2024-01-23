@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ViewType: String, CaseIterable, RawRepresentable {
+enum ViewType: String, CaseIterable, RawRepresentable, Identifiable {
     case list
     case grid
     
@@ -17,6 +17,13 @@ enum ViewType: String, CaseIterable, RawRepresentable {
             return "rectangle.grid.1x2.fill"
         case .grid:
             return "rectangle.grid.3x2.fill"
+        }
+    }
+    
+    var id: String {
+        switch self {
+        default:
+           return UUID().uuidString
         }
     }
 }

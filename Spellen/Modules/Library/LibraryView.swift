@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LibraryView: View {
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .white
     
     @Environment(\.dismiss) private var dismiss
@@ -35,6 +36,7 @@ struct LibraryView: View {
                                            systemImage: "externaldrive.fill.badge.exclamationmark")
                 }
             })
+            .sensoryFeedback(.impact(flexibility: .solid, intensity: 0.5), trigger: hapticsEnabled && showAddLibrary)
             .sheet(isPresented: $showAddLibrary, content: {
                 AddLibraryView()
                     .presentationDetents([.fraction(0.7)])

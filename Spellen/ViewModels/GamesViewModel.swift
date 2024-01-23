@@ -8,6 +8,11 @@
 import SwiftUI
 import Observation
 
+actor HeaderHandler {
+    var headerTitle = ""
+    var headerImageName = ""
+}
+
 @Observable
 class GamesViewModel {
     
@@ -20,8 +25,12 @@ class GamesViewModel {
     var searchPlaceholder = "Search in network"
     var dataType: DataType = .network
     var filterType: FilterType = .search
-    
     var savedGames: [SavedGame] = []
+    var selectedLibrary: Library?
+    
+    private var cache: DiskCache<[Game]>?
+    private var limit = 21
+    private var offset = 0
     
     var isFetchingNextPage: Bool {
         if case .fetchingNextPage = dataFetchPhase {
@@ -35,9 +44,7 @@ class GamesViewModel {
         || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
     }
     
-    private var cache: DiskCache<[Game]>?
-    private var limit = 21
-    private var offset = 0
+    
     
     init() {
         self.cache = DiskCache<[Game]>(filename: "GamesCache",
@@ -179,7 +186,7 @@ extension GamesViewModel {
                 headerImageName = library.icon
             }
             
-            filterSegment(savedGames: savedGames, library: library)
+            filterSegment(savedGames: savedGames)
         }
     }
     
@@ -195,13 +202,34 @@ extension GamesViewModel {
                 await refreshTask()
             }
         case .library:
-            filterSegment(savedGames: savedGames, library: library)
+            filterSegment(savedGames: savedGames)
+        }
+    }
+    
+    func onChangeQuery(
+        for games: [SavedGame],
+        newValue: String
+    ) {
+        filterType = .search
+        
+        switch dataType {
+        case .network:
+            Task {
+                if !newValue.isEmpty {
+                    try await Task.sleep(seconds: 0.5)
+                    fetchTaskToken.category = .database
+                    await refreshTask()
+                } else {
+                    await refreshTask()
+                }
+            }
+        case .library:
+            filterSegment(savedGames: games)
         }
     }
     
     func onChangeGenres(
         for savedGames: [SavedGame],
-        in library: Library?,
         newValue: [PopularGenre]
     ) {
         filterType = .genre
@@ -219,13 +247,12 @@ extension GamesViewModel {
             
         case .library:
             fetchTaskToken.genres = newValue
-            filterSegment(savedGames: savedGames, library: library)
+            filterSegment(savedGames: savedGames)
         }
     }
     
     func onChangePlatforms(
         for savedGames: [SavedGame],
-        in library: Library?,
         newValue: [PopularPlatform]
     ) {
         filterType = .platform
@@ -242,7 +269,7 @@ extension GamesViewModel {
             }
         case .library:
             fetchTaskToken.platforms = newValue
-            filterSegment(savedGames: savedGames, library: library)
+            filterSegment(savedGames: savedGames)
         }
     }
     
@@ -286,13 +313,12 @@ extension GamesViewModel {
         }
     }
     
-    func filterSegment(savedGames: [SavedGame], library: Library? = nil)  {
+    func filterSegment(savedGames: [SavedGame])  {
         var libraryGames = [SavedGame]()
         let selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
         let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
         
-        
-        if let library {
+        if let library = selectedLibrary {
             libraryGames = savedGames.filter({ $0.library == library })
         } else {
             libraryGames = savedGames

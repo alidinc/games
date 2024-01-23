@@ -5,6 +5,7 @@
 //  Created by Ali Dinç on 13/01/2024.
 //
 
+import SwiftData
 import SwiftUI
 
 struct GamesOverlayView: View {

@@ -22,11 +22,11 @@ enum SelectionOption: String, CaseIterable, Identifiable {
 
 struct SelectionsView: View {
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .white
-    var dataType: DataType
-    var library: Library?
-    @Binding var selectedOption: SelectionOption
-    @Binding var vm: GamesViewModel
+    
+    @Environment(GamesViewModel.self) private var vm: GamesViewModel
+    @State var selectedOption: SelectionOption = .genre
     @Namespace private var animation
     
     @Query private var savedGames: [SavedGame]
@@ -72,6 +72,7 @@ struct SelectionsView: View {
             
             ClearFiltersButton
                 .animation(.bouncy, value: vm.hasFilters)
+                .padding(.trailing)
             
             CloseButton()
         }
@@ -80,16 +81,28 @@ struct SelectionsView: View {
     
     @ViewBuilder
     private var ClearFiltersButton: some View {
-        if vm.hasFilters {
-            Button {
+        Button {
+            if vm.hasFilters {
                 vm.removeFilters()
-            } label: {
-                Text("Remove Filters")
-                    .font(.caption.bold())
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 6)
-                    .foregroundStyle(.black)
-                    .background(.white.opacity(0.75), in: .capsule)
+            }
+            
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
+            }
+        } label: {
+            SFImage(name: "slider.horizontal.3",
+                    config: .init(
+                        padding: 10,
+                        color: vm.hasFilters ? appTint : .secondary
+                    ))
+            .overlay {
+                SFImage(name: "xmark.circle.fill",
+                        config: .init(
+                            opacity: 0,
+                            padding: 0,
+                            color: vm.hasFilters ? appTint : .clear
+                        ))
+                .offset(x: 18, y: -18)
             }
         }
     }
@@ -106,7 +119,10 @@ struct SelectionsView: View {
                     case .platform:
                         ForEach(platforms) { platform in
                             Button {
-                                vm.togglePlatform(platform, selectedLibrary: library, savedGames: savedGames)
+                                if hapticsEnabled {
+                                    HapticsManager.shared.vibrateForSelection()
+                                }
+                                vm.togglePlatform(platform, selectedLibrary: vm.selectedLibrary, savedGames: savedGames)
                             } label: {
                                 OptionTileView(imageName: platform.assetName,
                                                title: platform.title,
@@ -116,7 +132,10 @@ struct SelectionsView: View {
                     case .genre:
                         ForEach(genres) { genre in
                             Button {
-                                vm.toggleGenre(genre, selectedLibrary: library, savedGames: savedGames)
+                                if hapticsEnabled {
+                                    HapticsManager.shared.vibrateForSelection()
+                                }
+                                vm.toggleGenre(genre, selectedLibrary: vm.selectedLibrary, savedGames: savedGames)
                             } label: {
                                 OptionTileView(imageName: genre.assetName,
                                                title: genre.title,

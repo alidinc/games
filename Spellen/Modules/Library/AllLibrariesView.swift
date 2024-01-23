@@ -10,8 +10,11 @@ import SwiftUI
 
 struct AllLibrariesView: View {
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
+    
     @Query(animation: .easeInOut) var libraries: [Library]
-    @Query var savedGames: [SavedGame]
+    @Query(animation: .easeInOut) var savedGames: [SavedGame]
+    
     @Environment(\.modelContext) private var context
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(SavingViewModel.self) private var savingVM: SavingViewModel
@@ -25,45 +28,31 @@ struct AllLibrariesView: View {
                 Button(action: {
                     gamesVM.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
                 }, label: {
-                    HStack {
-                        Image(systemName: library.icon)
-                            .imageScale(.medium)
-                        
-                        Text(library.title)
-                            .font(.headline)
-                            .foregroundStyle(.primary)
-                        
-                        Spacer()
-                        
-                        if let savedGames = library.savedGames {
-                            Text("\(savedGames.count) games")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
+                    LibraryView(library)
                 })
                 .contentShape(.rect)
                 .padding()
                 .hSpacing(.leading)
                 .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
+                .sensoryFeedback(.impact(flexibility: .solid, intensity: 0.5), trigger: hapticsEnabled && libraryToEdit != nil)
                 .sheet(item: $libraryToEdit, content: { library in
                     EditLibraryView(library: library)
                         .presentationDetents([.fraction(0.7)])
                 })
-                .alert("Are you sure to delete this library?", isPresented: $showAlertToDeleteLibrary, actions: {
+                .alert(Constants.Alert.deleteLibraryAlertTitle, isPresented: $showAlertToDeleteLibrary, actions: {
                     Button(role: .destructive) {
                         savingVM.delete(library: library, context: context)
                     } label: {
-                        Text("Delete")
+                        Text(Constants.Alert.delete)
                     }
                     
                     Button(role: .cancel) {
                         
                     } label: {
-                        Text("Cancel")
+                        Text(Constants.Alert.cancel)
                     }
                 }, message: {
-                    Text("You won't be able to undo this action.")
+                    Text(Constants.Alert.undoAlertTitle)
                 })
                 .swipeActions(allowsFullSwipe: true) {
                     Button(role: .destructive) {
@@ -76,6 +65,7 @@ struct AllLibrariesView: View {
                     
                     Button(role: .destructive) {
                         libraryToEdit = library
+                        NotificationCenter.default.post(name: .libraryValuesChanged, object: library)
                     } label: {
                         Label("Edit", systemImage: "pencil")
                     }
@@ -88,5 +78,25 @@ struct AllLibrariesView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+    }
+    
+    
+    private func LibraryView(_ library: Library) -> some View {
+        HStack {
+            Image(systemName: library.icon)
+                .imageScale(.medium)
+            
+            Text(library.title)
+                .font(.headline)
+                .foregroundStyle(.primary)
+            
+            Spacer()
+            
+            if let savedGames = library.savedGames {
+                Text("\(savedGames.count) games")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+        }
     }
 }

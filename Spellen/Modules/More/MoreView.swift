@@ -10,9 +10,10 @@ import SwiftUI
 
 struct MoreView: View {
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .white
-    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
     @AppStorage("viewType") private var viewType: ViewType = .list
+    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
     
     @Environment(\.openURL) var openURL
     @State private var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
@@ -24,12 +25,13 @@ struct MoreView: View {
     @State private var showIcons = false
     @State private var showSendEmail = false
     @State private var showAppStore = false
+    @State private var showStyleSelections = false
     @State private var showAlertNoDefaulEmailFound = false
     
     var body: some View {
         NavigationStack {
             Form {
-                AppearanceSection
+                SettingsSection
                 FeedbackSection
                 AboutSection
             }
@@ -90,6 +92,10 @@ struct MoreView: View {
                 AboutView()
                     .presentationDetents([.medium])
             })
+            .sheet(isPresented: $showStyleSelections) {
+                ViewTypeSelections()
+                    .presentationDetents([.medium])
+            }
         }
     }
     
@@ -105,53 +111,15 @@ struct MoreView: View {
         .padding(.vertical, 10)
     }
     
-    private var AppearanceSection: some View {
-        Section("Appearance") {
-            Button {
-                self.showIcons.toggle()
-            } label: {
-                HStack {
-                    MoreRowView(imageName: "apps.iphone", text: " Icon")
-                    Spacer()
-                    Text(selectedAppIcon.title)
-                        .foregroundStyle(.gray)
-                        .font(.subheadline)
-                }
-            }
-            
-            
-            Menu {
-                Section("View type") {
-                    Button {
-                        viewType = .list
-                    } label: {
-                        Image(systemName: "rectangle.grid.1x2.fill")
-                        Text("List")
-                    }
-                    
-                    Button {
-                        viewType = .grid
-                    } label: {
-                        Image(systemName: "rectangle.grid.3x2.fill")
-                        Text("Grid")
-                    }
-                }
-                
-            } label: {
-                HStack {
-                    MoreRowView(imageName: "rectangle.grid.1x2.fill", text: "View style")
-                    Spacer()
-                    
-                    Text(viewType.rawValue.capitalized)
-                        .foregroundStyle(.gray)
-                        .font(.subheadline)
-                }
-                
-            }
-            
+    private var SettingsSection: some View {
+        Section("Settings") {
+            ShowIconsSection
+            ViewTypeSection
             ColorPicker(selection: $appTint, supportsOpacity: false, label: {
                 MoreRowView(imageName: "swatchpalette.fill", text: "Tint color")
             })
+            
+            HapticsSection
 
         }
     }
@@ -187,6 +155,53 @@ struct MoreView: View {
                 self.showAbout.toggle()
             } label: {
                 MoreRowView(imageName: "info.circle.fill", text: "About")
+            }
+        }
+    }
+    
+    private var ShowIconsSection: some View {
+        Button {
+            self.showIcons.toggle()
+        } label: {
+            HStack {
+                MoreRowView(imageName: "apps.iphone", text: " App icon")
+                Spacer()
+                Text(selectedAppIcon.title)
+                    .foregroundStyle(.gray)
+                    .font(.subheadline)
+            }
+        }
+    }
+    
+    private var ViewTypeSection: some View {
+        Button {
+            showStyleSelections = true
+        } label: {
+            HStack {
+                MoreRowView(imageName: "rectangle.grid.1x2.fill", text: "View style")
+                Spacer()
+                
+                Text(viewType.rawValue.capitalized)
+                    .foregroundStyle(.gray)
+                    .font(.subheadline)
+            }
+        }
+    }
+    
+    private var HapticsSection: some View {
+        Button {
+            hapticsEnabled.toggle()
+            if hapticsEnabled {
+                HapticsManager.shared.vibrate(type: .success)
+            }
+        } label: {
+            HStack {
+                MoreRowView(imageName: "hand.tap.fill", text: "Haptics")
+                Spacer()
+                Text(hapticsEnabled ? "Enabled" : "Disabled")
+                    .foregroundStyle(.gray)
+                    .font(.subheadline)
+                    .animation(.easeInOut, value: hapticsEnabled)
             }
         }
     }
