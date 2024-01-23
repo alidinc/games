@@ -11,6 +11,11 @@ import SwiftUI
 struct SpellenApp: App {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
+    @AppStorage("appTint") var appTint: Color = .white
+    @State private var activeTab: Tab = .discover
+    @State private var preferences = Admin()
+    @State private var gamesViewModel = GamesViewModel()
+    @State private var savingViewModel = SavingViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -18,8 +23,24 @@ struct SpellenApp: App {
                 IntroView()
                     .preferredColorScheme(.dark)
             } else {
-                ContentView()
-                    .preferredColorScheme(.dark)
+                TabView(selection: $activeTab) {
+                    GamesView(vm: gamesViewModel)
+                        .tag(Tab.discover)
+                        .tabItem { Tab.discover.tabContent }
+                    
+                    NewsView()
+                        .tag(Tab.news)
+                        .tabItem { Tab.news.tabContent }
+                    
+                    MoreView()
+                        .tag(Tab.more)
+                        .tabItem { Tab.more.tabContent }
+                }
+                .tint(appTint)
+                .environment(preferences)
+                .environment(gamesViewModel)
+                .environment(savingViewModel)
+                .preferredColorScheme(.dark)
             }
         }
         .modelContainer(for: [Library.self, SavedGame.self])

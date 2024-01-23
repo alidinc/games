@@ -10,7 +10,7 @@ import Observation
 import SwiftData
 
 @Observable
-class SwiftDataActor {
+class SavingViewModel {
     
     private var bag = Bag()
     
@@ -42,11 +42,9 @@ class SwiftDataActor {
         context.insert(savedGame)
     }
     
-    func deleteFromAll(game: Game, in games: [SavedGame], context: ModelContext) async {
-        Task(priority: .background) {
-            if let gameToDelete = games.first(where: { $0.game?.id == game.id }) {
-                context.delete(gameToDelete)
-            }
+    func deleteFromAll(game: Game, in games: [SavedGame], context: ModelContext) {
+        if let gameToDelete = games.first(where: { $0.game?.id == game.id }) {
+            context.delete(gameToDelete)
         }
     }
     
@@ -80,9 +78,7 @@ class SwiftDataActor {
     func saveGameTo(game: Game, games: [SavedGame], library: Library, context: ModelContext) {
         guard savedAlreadyLibrarySpecific(game, for: library, games: games) else {
             
-            Task {
-                await deleteFromAll(game: game, in: games, context: context)
-            }
+            deleteFromAll(game: game, in: games, context: context)
             add(game: game, library: library, context: context)
             NotificationCenter.default.post(name: .addedToLibrary, object: library)
             

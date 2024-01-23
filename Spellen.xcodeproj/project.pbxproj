@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		DA0998062B5E87790081BD13 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0998052B5E87790081BD13 /* Tab.swift */; };
 		DA0998082B5E87A70081BD13 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0998072B5E87A70081BD13 /* IntroView.swift */; };
-		DA09980A2B5E882C0081BD13 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0998092B5E882C0081BD13 /* ContentView.swift */; };
 		DA0C20822B38F81F000E2D6E /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C20812B38F81F000E2D6E /* SummaryView.swift */; };
 		DA0C208A2B3E637D000E2D6E /* GameModesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C20892B3E637D000E2D6E /* GameModesView.swift */; };
 		DA0C208C2B3E9F97000E2D6E /* CacheAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA0C208B2B3E9F97000E2D6E /* CacheAsyncImage.swift */; };
@@ -59,7 +58,7 @@
 		DA4B1BF22B43C7B000EA3E8F /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF12B43C7B000EA3E8F /* Notification+Name.swift */; };
 		DA4B1BF42B43C86200EA3E8F /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF32B43C86200EA3E8F /* Bag.swift */; };
 		DA4B1BF82B43CD7E00EA3E8F /* Admin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF72B43CD7E00EA3E8F /* Admin.swift */; };
-		DA4B1BFB2B44568000EA3E8F /* SwiftDataActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BFA2B44568000EA3E8F /* SwiftDataActor.swift */; };
+		DA4B1BFB2B44568000EA3E8F /* SavingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */; };
 		DA4B1C002B4460CF00EA3E8F /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = DA4B1BFF2B4460CF00EA3E8F /* Connectivity */; };
 		DA4B1C022B448E2A00EA3E8F /* SavedGameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C012B448E2A00EA3E8F /* SavedGameDetailView.swift */; };
 		DA4B1C042B44A32F00EA3E8F /* GamesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C032B44A32F00EA3E8F /* GamesCollectionView.swift */; };
@@ -109,7 +108,6 @@
 /* Begin PBXFileReference section */
 		DA0998052B5E87790081BD13 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		DA0998072B5E87A70081BD13 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
-		DA0998092B5E882C0081BD13 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DA0C20812B38F81F000E2D6E /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		DA0C20892B3E637D000E2D6E /* GameModesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModesView.swift; sourceTree = "<group>"; };
 		DA0C208B2B3E9F97000E2D6E /* CacheAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheAsyncImage.swift; sourceTree = "<group>"; };
@@ -161,7 +159,7 @@
 		DA4B1BF12B43C7B000EA3E8F /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Name.swift"; sourceTree = "<group>"; };
 		DA4B1BF32B43C86200EA3E8F /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		DA4B1BF72B43CD7E00EA3E8F /* Admin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Admin.swift; sourceTree = "<group>"; };
-		DA4B1BFA2B44568000EA3E8F /* SwiftDataActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataActor.swift; sourceTree = "<group>"; };
+		DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingViewModel.swift; sourceTree = "<group>"; };
 		DA4B1C012B448E2A00EA3E8F /* SavedGameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGameDetailView.swift; sourceTree = "<group>"; };
 		DA4B1C032B44A32F00EA3E8F /* GamesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesCollectionView.swift; sourceTree = "<group>"; };
 		DA4B1C052B44AF4500EA3E8F /* SavedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCollectionView.swift; sourceTree = "<group>"; };
@@ -392,7 +390,6 @@
 		DA65DB102B574D4800DBA824 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				DA0998092B5E882C0081BD13 /* ContentView.swift */,
 				DA0998072B5E87A70081BD13 /* IntroView.swift */,
 			);
 			path = Onboarding;
@@ -474,7 +471,7 @@
 			children = (
 				DA43CE3E2B30B65E00DAE0B6 /* GamesViewModel.swift */,
 				DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */,
-				DA4B1BFA2B44568000EA3E8F /* SwiftDataActor.swift */,
+				DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */,
 				DA4466142B49DEB000361071 /* NewsViewModel.swift */,
 			);
 			path = ViewModels;
@@ -585,7 +582,7 @@
 				DA4B1BF22B43C7B000EA3E8F /* Notification+Name.swift in Sources */,
 				DA93BE8E2B34F47A0047DD37 /* SocialsView.swift in Sources */,
 				DAC503BF2B344827004D4B03 /* CloseButton.swift in Sources */,
-				DA4B1BFB2B44568000EA3E8F /* SwiftDataActor.swift in Sources */,
+				DA4B1BFB2B44568000EA3E8F /* SavingViewModel.swift in Sources */,
 				DA93BE8A2B34EAC40047DD37 /* SimilarGamesView.swift in Sources */,
 				DA43CE672B30B6CD00DAE0B6 /* HapticsManager.swift in Sources */,
 				DA0C20822B38F81F000E2D6E /* SummaryView.swift in Sources */,
@@ -648,7 +645,6 @@
 				DA43CE5B2B30B69100DAE0B6 /* GamesView.swift in Sources */,
 				DA4B1BF82B43CD7E00EA3E8F /* Admin.swift in Sources */,
 				DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */,
-				DA09980A2B5E882C0081BD13 /* ContentView.swift in Sources */,
 				DA43CE702B30B6F200DAE0B6 /* KeysTracker.swift in Sources */,
 				DA43CE4B2B30B66B00DAE0B6 /* AccessToken.swift in Sources */,
 				DA44660D2B48747100361071 /* GradientMask.swift in Sources */,

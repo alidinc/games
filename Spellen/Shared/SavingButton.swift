@@ -16,7 +16,7 @@ struct SavingButton: View {
     var padding: CGFloat
     
     @AppStorage("appTint") var appTint: Color = .white
-    @Environment(SwiftDataActor.self) private var vm: SwiftDataActor
+    @Environment(SavingViewModel.self) private var vm: SavingViewModel
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
@@ -57,9 +57,7 @@ struct SavingButton: View {
             
             if vm.savedAlready(game: game, games: games) {
                 Button(role: .destructive) {
-                    Task {
-                        await vm.deleteFromAll(game: game, in: games, context: context)
-                    }
+                    vm.deleteFromAll(game: game, in: games, context: context)
                 } label: {
                     Label("Delete", systemImage: "trash.fill")
                 }

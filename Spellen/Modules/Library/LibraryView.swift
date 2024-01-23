@@ -51,7 +51,7 @@ struct LibraryView: View {
             .alert("Are you sure to delete this library?", isPresented: $showAlertToDeleteLibrary, actions: {
                 Button(role: .destructive) {
                     if let libraryToDelete {
-                        vm.delete(library: libraryToDelete, in: context)
+                        vm.delete(library: libraryToDelete, context: context)
                     }
                 } label: {
                     Text("Delete")
