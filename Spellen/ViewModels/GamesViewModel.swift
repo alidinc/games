@@ -307,8 +307,8 @@ extension GamesViewModel {
     
     func filterSegment(savedGames: [SavedGame], library: Library? = nil)  {
         var libraryGames = [SavedGame]()
-        var selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
-        var selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
+        let selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
+        let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
         
         
         if let library {

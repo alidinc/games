@@ -103,6 +103,7 @@
 		DAC503C22B344C70004D4B03 /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C12B344C70004D4B03 /* MoreView.swift */; };
 		DAC503C42B344CF7004D4B03 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C32B344CF7004D4B03 /* Color+Extension.swift */; };
 		DAC503C62B344F57004D4B03 /* IconSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C52B344F57004D4B03 /* IconSelectionView.swift */; };
+		DAD265962B5FDF7B00ABE41F /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD265952B5FDF7B00ABE41F /* SwiftDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -199,6 +200,7 @@
 		DAC503C12B344C70004D4B03 /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
 		DAC503C32B344CF7004D4B03 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		DAC503C52B344F57004D4B03 /* IconSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionView.swift; sourceTree = "<group>"; };
+		DAD265952B5FDF7B00ABE41F /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -470,6 +472,7 @@
 			isa = PBXGroup;
 			children = (
 				DA43CE3E2B30B65E00DAE0B6 /* GamesViewModel.swift */,
+				DAD265952B5FDF7B00ABE41F /* SwiftDataManager.swift */,
 				DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */,
 				DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */,
 				DA4466142B49DEB000361071 /* NewsViewModel.swift */,
@@ -622,6 +625,7 @@
 				DA43CE692B30B6CD00DAE0B6 /* PagingData.swift in Sources */,
 				DA4B1C062B44AF4500EA3E8F /* SavedCollectionView.swift in Sources */,
 				DA4B1C082B44CB9400EA3E8F /* SavedGame.swift in Sources */,
+				DAD265962B5FDF7B00ABE41F /* SwiftDataManager.swift in Sources */,
 				DA43CE1D2B30B61500DAE0B6 /* JustGamesApp.swift in Sources */,
 				DA72F14C2B591930003C4FE0 /* CapsuleView.swift in Sources */,
 				DA4B1C042B44A32F00EA3E8F /* GamesCollectionView.swift in Sources */,
