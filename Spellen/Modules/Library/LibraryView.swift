@@ -104,7 +104,7 @@ struct LibraryView: View {
                     .multilineTextAlignment(.leading)
                     .hSpacing(.leading)
                 
-                Text("Tap to edit a library or swipe for more.")
+                Text("Tap to view a library or swipe for more.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.leading)
@@ -131,7 +131,8 @@ struct LibraryView: View {
         List {
             ForEach(libraries, id: \.savingId) { library in
                 Button(action: {
-                    libraryToEdit = library
+               //     libraryToEdit = library
+                    gamesVM.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
                 }, label: {
                     HStack {
                         if let icon = library.icon {

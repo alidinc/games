@@ -9,20 +9,36 @@ import SwiftUI
 
 struct CapsuleView: View {
     
-    var title: String
-    var imageName: String
+    var title: String?
+    var imageType: ImageType = .asset
+    var imageName: String?
     
     var body: some View {
-        HStack {
-            Image(imageName)
-                .resizable()
-                .frame(width: 16, height: 16)
+        VStack {
+            if let imageName {
+                switch imageType {
+                case .sf:
+                    Image(systemName: imageName)
+                        .font(.system(size: 20))
+                case .asset:
+                    Image(imageName)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
+            }
             
-            Text(title)
-                .font(.caption)
+            if let title {
+                Text(title)
+                    .font(.caption2)
+                    .multilineTextAlignment(.center)
+            }
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal, 10)
-        .background(Color.randomDarkColor.gradient, in: .capsule)
+        .padding(6)
+    
     }
+}
+
+enum ImageType {
+    case sf
+    case asset
 }

@@ -374,15 +374,15 @@
 		DA5557AB2B38927400D440A4 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				DA93BE892B34EAC40047DD37 /* SimilarGamesView.swift */,
+				DA72F14B2B591930003C4FE0 /* CapsuleView.swift */,
 				DA93BE8D2B34F47A0047DD37 /* SocialsView.swift */,
 				DA5557A52B38764D00D440A4 /* GenresView.swift */,
-				DA72F14B2B591930003C4FE0 /* CapsuleView.swift */,
 				DA93BE9A2B351D270047DD37 /* PlatformsView.swift */,
 				DA0C20892B3E637D000E2D6E /* GameModesView.swift */,
 				DA93BE962B34F71B0047DD37 /* ImagesView.swift */,
 				DA5557A72B38769F00D440A4 /* RatingView.swift */,
 				DA93BE982B35142E0047DD37 /* RatingStarsView.swift */,
+				DA93BE892B34EAC40047DD37 /* SimilarGamesView.swift */,
 				DA5557B12B38E57F00D440A4 /* VideosView.swift */,
 				DA0C20812B38F81F000E2D6E /* SummaryView.swift */,
 			);

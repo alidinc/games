@@ -21,7 +21,7 @@ struct GameDetailView: View {
                     .gradientMask(color: .gray)
                 
                 VStack(alignment: .leading, spacing: 25) {
-                    VStack(alignment: .leading, spacing: 0) {
+                    VStack(alignment: .leading, spacing: 2) {
                         if let name = game.name {
                             HStack {
                                 Text(name)
@@ -38,22 +38,13 @@ struct GameDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    GenresView(game: game)
-                        .padding(.leading)
-                    
                     SummaryView(game: game)
                     
-                    PlatformsView(game: game)
-                        .padding(.leading)
-                    
-                    GameModesView(game: game)
-                        .padding(.leading)
+                    DetailsView
                     
                     VideosView(game: game)
                         .padding(.leading)
                     
-                    SocialsView(game: game)
-                        .padding(.leading)
                     
                     if !vm.gamesFromIds.isEmpty {
                         SimilarGamesView(similarGames: vm.gamesFromIds)
@@ -72,5 +63,23 @@ struct GameDetailView: View {
         .background(.gray.opacity(0.15))
         .ignoresSafeArea(edges: .top)
         .toolbarRole(.editor)
+    }
+    
+    
+    private var DetailsView: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                GenresView(game: game)
+                PlatformsView(game: game)
+            }
+            
+            HStack {
+                GameModesView(game: game)
+                SocialsView(game: game)
+            }
+        }
+        .padding()
+        .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .padding(.horizontal)
     }
 }

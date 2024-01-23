@@ -24,7 +24,7 @@ struct MoreRowView: View {
             
             VStack(alignment: .leading) {
                 Text(self.text)
-                    .font(.subheadline.bold())
+                    .font(.headline.bold())
                     .foregroundColor(.white)
                 
                 if let subtitle {

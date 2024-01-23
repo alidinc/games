@@ -170,45 +170,46 @@ struct NewsView: View {
     
     @ViewBuilder
     func NewsView(item: RSSFeedItem) -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 12) {
             if let media = item.media, let mediaContents = media.mediaContents,
                let content = mediaContents.first, let attributes = content.attributes, let urlString = attributes.url {
                 AsyncImageView(with: urlString, type: .news)
             }
             
-            if let title = item.title {
-                Text(title)
-                    .font(.headline.bold())
-                    .padding(.top, 4)
-                    .hSpacing(.leading)
-            }
-            
-            if let description = item.description, let desc = description.htmlToString() {
-                Text(desc)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(4, reservesSpace: true)
-            }
-            
-            if let author = item.author {
-                Text(author)
-                    .font(.caption)
-                    .foregroundStyle(appTint)
-                    .hSpacing(.trailing)
-            } else if let dublin = item.dublinCore, let author = dublin.dcCreator {
-                HStack(alignment: .bottom) {
-                    if let date = item.pubDate {
-                        Text(date.asString(style: .medium))
-                            .foregroundStyle(.gray.opacity(0.5))
-                    }
-                    
-                    Spacer()
-                    
-                    Text("by \(author)")
-                        .foregroundStyle(appTint.opacity(0.5))
+            VStack(alignment: .leading) {
+                if let title = item.title {
+                    Text(title)
+                        .font(.headline.bold())
+                        .hSpacing(.leading)
                 }
-                .font(.caption)
-                .padding(.top)
+                
+                if let description = item.description, let desc = description.htmlToString() {
+                    Text(desc)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(4, reservesSpace: true)
+                }
+                
+                if let author = item.author {
+                    Text(author)
+                        .font(.caption)
+                        .foregroundStyle(appTint)
+                        .hSpacing(.trailing)
+                } else if let dublin = item.dublinCore, let author = dublin.dcCreator {
+                    HStack(alignment: .bottom) {
+                        if let date = item.pubDate {
+                            Text(date.asString(style: .medium))
+                                .foregroundStyle(.gray.opacity(0.5))
+                        }
+                        
+                        Spacer()
+                        
+                        Text("by \(author)")
+                            .foregroundStyle(appTint.opacity(0.5))
+                    }
+                    .font(.caption)
+                    .padding(.top)
+                }
             }
         }
         .padding(12)

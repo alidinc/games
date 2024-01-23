@@ -165,13 +165,13 @@ extension GamesViewModel {
     }
     
     func librarySelectionTapped(allSelected: Bool, for library: Library? = nil, in savedGames: [SavedGame]) {
-        headerTitle = "All games"
-        headerImageName =  "bookmark"
         searchPlaceholder = "Search in library"
         dataType = .library
         filterType = .library
         
         if allSelected {
+            headerTitle = "All games"
+            headerImageName =  "bookmark"
             filterSegment(savedGames: savedGames)
         } else {
             if let library {

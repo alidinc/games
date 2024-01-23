@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NetworkManager {
+actor NetworkManager {
     
     static let shared = NetworkManager()
     private let session = URLSession.shared

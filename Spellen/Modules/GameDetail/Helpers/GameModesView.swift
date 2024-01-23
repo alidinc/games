@@ -20,21 +20,14 @@ struct GameModesView: View {
                     .font(.caption2)
                     .foregroundColor(.secondary)
                 
+                
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(gameModes, id: \.id) { mode in
                             if let id = mode.id, let availableMode = AvailableMode(rawValue: id) {
-                                HStack {
-                                    Image(systemName: availableMode.imageName)
-                                        .imageScale(.small)
-                                    
-                                    Text(availableMode.title)
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .padding(10)
-                                .foregroundStyle(.secondary)
-                                .background(.ultraThinMaterial, in: .capsule)
+                                CapsuleView(
+                                            imageType: .sf, 
+                                            imageName: availableMode.imageName)
                             }
                         }
                     }

@@ -27,20 +27,9 @@ struct SocialsView: View {
                                let platform = PlatformWebsite(rawValue: category) {
                                 Link(destination: websiteURL) {
                                     if platform == .official {
-                                        Image(systemName: platform.imageName)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 24, height: 24)
-                                            .padding()
-                                            .foregroundStyle(.white)
-                                            .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
+                                        CapsuleView(imageType: .sf, imageName: platform.imageName)
                                     } else {
-                                        Image(platform.imageName)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 24, height: 24)
-                                            .padding()
-                                            .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
+                                        CapsuleView(imageType: .asset, imageName: platform.imageName)
                                     }
                                 }
                             }

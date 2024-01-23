@@ -19,54 +19,22 @@ struct PlatformsView: View {
                     .font(.caption2)
                     .foregroundColor(.secondary)
                 
+                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(platforms, id: \.self) { platform in
                             if let id = platform.id, let popularPlatform = PopularPlatform(rawValue: id) {
-                                VStack(alignment: .center, spacing: 8) {
-                                    Image(popularPlatform.assetName)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 24, height: 24)
-                                        
-                                    
-                                    if let releaseDates = game.releaseDates {
-                                        if let platformDate = releaseDates.first(where: { $0.platform == platform.id }),
-                                           let timeIntervalDate = platformDate.date {
-                                            Text(timeIntervalDate.numberToYear())
-                                                .font(.caption2)
-                                                .foregroundStyle(.secondary)
-                                        } else {
-                                            Text("N/A")
-                                                .font(.caption2)
-                                                .foregroundStyle(.secondary)
-                                        }
+                                if let releaseDates = game.releaseDates,
+                                   let platformDate = releaseDates.first(where: { $0.platform == platform.id }) {
+                                    if let timeIntervalDate = platformDate.date {
+                                        CapsuleView(imageName: popularPlatform.assetName)
+                                    } else {
+                                        CapsuleView(title: "N/A")
                                     }
                                 }
-                                .padding(10)
-                                .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
                             } else {
                                 if let name = platform.name {
-                                    VStack(alignment: .center, spacing: 8) {
-                                        Text(name)
-                                            .font(.caption2)
-                                            .foregroundStyle(.secondary)
-                                        
-                                        if let releaseDates = game.releaseDates {
-                                            if let platformDate = releaseDates.first(where: { $0.platform == platform.id }),
-                                               let timeIntervalDate = platformDate.date {
-                                                Text(timeIntervalDate.numberToYear())
-                                                    .font(.caption2)
-                                                    .foregroundStyle(.secondary)
-                                            } else {
-                                                Text("N/A")
-                                                    .font(.caption2)
-                                                    .foregroundStyle(.secondary)
-                                            }
-                                        }
-                                    }
-                                    .padding()
-                                    .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
+                                    CapsuleView(title: name)
                                 }
                             }
                         }
