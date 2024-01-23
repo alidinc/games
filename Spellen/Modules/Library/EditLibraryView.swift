@@ -91,7 +91,7 @@ struct EditLibraryView: View {
                 Spacer()
                 
                 if let icon = library.icon {
-                    SFImage(name: icon, opacity: 0.5)
+                    SFImage(name: icon, config: .init(opacity: 0.5))
                 }
                 
             }

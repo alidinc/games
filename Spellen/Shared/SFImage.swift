@@ -10,33 +10,42 @@ import SwiftUI
 struct SFImage: View {
     
     var name: String
-    var opacity: CGFloat
-    var radius: CGFloat
-    var padding: CGFloat
-    var color: Color
+    var config: SFConfig
     
-    init(
-        name: String,
-        opacity: CGFloat = 0.5,
-        radius: CGFloat = 8,
-        padding: CGFloat = 10,
-        color: Color = .primary
-    ) {
+    init(name: String, config: SFConfig = .init()) {
         self.name = name
-        self.opacity = opacity
-        self.radius = radius
-        self.padding = padding
-        self.color = color
+        self.config = config
     }
     
     var body: some View {
         Image(systemName: name)
-            .symbolEffect(.bounce, value: color)
+            .symbolEffect(.bounce, value: config.color)
             .symbolEffect(.bounce, value: name)
-            .imageScale(.medium)
-            .frame(width: 24, height: 24)
-            .padding(padding)
-            .foregroundStyle(color)
-            .background(Color.black.opacity(opacity), in: .rect(cornerRadius: radius))
+            .padding(config.padding)
+            .font(.system(size: config.size))
+            .foregroundStyle(config.color)
+            .background(Color.black.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
+    }
+}
+
+struct SFConfig {
+    let opacity: CGFloat
+    let radius: CGFloat
+    let padding: CGFloat
+    let color: Color
+    let size: CGFloat
+    
+    init(
+        opacity: CGFloat = 0.5,
+        radius: CGFloat = 8,
+        padding: CGFloat = 10,
+        color: Color = .primary,
+        size: CGFloat = 24
+    ) {
+        self.opacity = opacity
+        self.radius = radius
+        self.padding = padding
+        self.color = color
+        self.size = size
     }
 }

@@ -35,7 +35,7 @@ struct SearchTextField: View {
                             .foregroundColor(.secondary)
                         }
                         
-                        SFImage(name: "magnifyingglass", opacity: 0)
+                        SFImage(name: "magnifyingglass", config: .init(opacity: 0))
                     }
                 }
         }

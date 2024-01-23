@@ -136,7 +136,7 @@ struct GamesView: View {
         Button {
             showLibraries = true
         } label: {
-            SFImage(name: "tray.full.fill", padding: 10, color: .secondary)
+            SFImage(name: "tray.full.fill", config: .init(padding: 10, color: .secondary))
         }
     }
     
@@ -145,8 +145,10 @@ struct GamesView: View {
             showSelectionOptions = true
         }, label: {
             SFImage(name: "slider.horizontal.3",
-                    padding: 10,
-                    color: vm.hasFilters ? appTint : .secondary)
+                    config: .init(
+                        padding: 10,
+                        color: vm.hasFilters ? appTint : .secondary
+                    ))
             .overlay {
                 ClearFiltersButton
             }
@@ -161,10 +163,11 @@ struct GamesView: View {
                 vm.removeFilters()
             }, label: {
                 SFImage(name: "xmark.circle.fill",
-                        opacity: 0,
-                        padding: 0,
-                        color: vm.hasFilters ? appTint : .clear)
-                
+                        config: .init(
+                            opacity: 0,
+                            padding: 0,
+                            color: vm.hasFilters ? appTint : .clear
+                        ))
             })
             .offset(x: 18, y: -18)
         }
@@ -181,10 +184,12 @@ struct GamesView: View {
                 HStack(spacing: 8) {
                     SFImage(
                         name: vm.headerImageName,
-                        opacity: 0,
-                        radius: 0,
-                        padding: 0,
-                        color: appTint
+                        config: .init(
+                            opacity: 0,
+                            radius: 0,
+                            padding: 0,
+                            color: appTint
+                        )
                     )
                     
                     Text(vm.headerTitle)

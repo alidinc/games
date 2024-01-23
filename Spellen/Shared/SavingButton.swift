@@ -67,9 +67,11 @@ struct SavingButton: View {
         } label: {
             SFImage(
                 name: libraryName(),
-                opacity: opacity,
-                padding: padding,
-                color: appTint
+                config: .init(
+                    opacity: opacity,
+                    padding: padding,
+                    color: appTint
+                )
             )
         }
     }

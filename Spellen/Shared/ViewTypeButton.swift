@@ -31,7 +31,7 @@ struct ViewTypeButton: View {
             }
             
         } label: {
-            SFImage(name: viewType.imageName, padding: 6, color: appTint)
+            SFImage(name: viewType.imageName, config: .init(padding: 6, color: appTint))
         } primaryAction: {
             viewType = viewType == .grid ? .list : .grid
         }
