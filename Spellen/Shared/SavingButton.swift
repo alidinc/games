@@ -13,7 +13,6 @@ struct SavingButton: View {
     
     var game: Game
     var opacity: CGFloat
-    var padding: CGFloat
     
     @AppStorage("appTint") var appTint: Color = .white
     @Environment(SavingViewModel.self) private var savingVM: SavingViewModel
@@ -33,7 +32,6 @@ struct SavingButton: View {
             ForEach(libraries, id: \.savingId) { library in
                 Button {
                     savingVM.saveGameTo(game: game, games: games, library: library, context: context)
-                    gamesVM.filterSegment(savedGames: games)
                 } label: {
                     HStack {
                         Image(systemName: library.icon)
@@ -68,7 +66,6 @@ struct SavingButton: View {
                 name: libraryName(),
                 config: .init(
                     opacity: opacity,
-                    padding: padding,
                     color: appTint
                 )
             )

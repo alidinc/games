@@ -70,22 +70,9 @@ struct ListRowView: View {
                         Spacer()
                         
                         HStack(alignment: .bottom) {
-                            HStack {
-                                Image(systemName: game.ratingImageName)
-                                    .resizable()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundStyle(game.ratingColor)
-                                
-                                Text(game.ratingText)
-                                    .font(.caption)
-                                    .fixedSize()
-                                    .foregroundStyle(game.ratingColor)
-                            }
-                            
+                            RatingView(game: game)
                             Spacer()
-                            
-                            
-                            SavingButton(game: game, opacity: 0.2, padding: 8)
+                            SavingButton(game: game, opacity: 0.2)
                         }
                     }
                 }
@@ -126,22 +113,9 @@ struct ListRowView: View {
                     Spacer()
                     
                     HStack(alignment: .bottom) {
-                        HStack {
-                            Image(systemName: game.ratingImageName)
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                                .foregroundStyle(game.ratingColor)
-                            
-                            Text(game.ratingText)
-                                .font(.caption)
-                                .fixedSize()
-                                .foregroundStyle(game.ratingColor)
-                        }
-                        
+                        RatingView(game: game)
                         Spacer()
-                        
-                        
-                        SavingButton(game: game, opacity: 0.2, padding: 8)
+                        SavingButton(game: game, opacity: 0.2)
                     }
                 }
             }
@@ -187,6 +161,75 @@ struct ListRowView: View {
                 .font(.caption)
         }
         .hSpacing(.leading)
+    }
+    
+    private func RatingView(game: Game) -> some View {
+        HStack {
+            Image(systemName: ratingImageName(game: game))
+                .resizable()
+                .frame(width: 16, height: 16)
+                .foregroundStyle(ratingColor(game: game))
+            
+            Text(ratingText(game: game))
+                .font(.caption)
+                .fixedSize()
+                .foregroundStyle(ratingColor(game: game))
+        }
+    }
+    
+    func ratingText(game: Game) -> String {
+        guard let rating = game.totalRating else {
+            return Rating.NotReviewed.rawValue
+        }
+        
+        switch Int(rating) {
+        case 0...40:
+            return Rating.Skip.rawValue
+        case 40...50:
+            return Rating.Meh.rawValue
+        case 50...80:
+            return Rating.Good.rawValue
+        case 80...100:
+            return Rating.Exceptional.rawValue
+        default:
+            return Rating.NotReviewed.rawValue
+        }
+    }
+    
+    func ratingColor(game: Game) -> Color {
+        guard let rating = game.totalRating else {
+            return Color.gray
+        }
+        switch Int(rating) {
+        case 0...40:
+            return Color.red
+        case 40...50:
+            return Color.orange
+        case 50...80:
+            return Color.blue
+        case 80...100:
+            return Color.green
+        default:
+            return Color.gray
+        }
+    }
+    
+    func ratingImageName(game: Game) -> String {
+        guard let rating = game.totalRating else {
+            return "dot.squareshape.fill"
+        }
+        switch Int(rating) {
+        case 0...40:
+            return  "arrowtriangle.down.square.fill"
+        case 40...50:
+            return  "minus.square.fill"
+        case 50...80:
+            return  "arrowtriangle.up.square"
+        case 80...100:
+            return  "star.square.fill"
+        default:
+            return "dot.squareshape.fill"
+        }
     }
 }
 

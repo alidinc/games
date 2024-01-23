@@ -28,7 +28,8 @@ class GamesViewModel {
     var savedGames: [SavedGame] = []
     var selectedLibrary: Library?
     
-    private var cache: DiskCache<[Game]>?
+    private var cache = DiskCache<[Game]>(filename: "GamesCache",
+                                          expirationInterval: 24 * 60 * 60 * 60)
     private var limit = 21
     private var offset = 0
     
@@ -47,9 +48,6 @@ class GamesViewModel {
     
     
     init() {
-        self.cache = DiskCache<[Game]>(filename: "GamesCache",
-                                       expirationInterval: 24 * 60 * 60 * 60)
-        
         self.fetchTaskToken = FetchTaskToken(
             category: .topRated,
             platforms: [.database],
@@ -62,6 +60,7 @@ class GamesViewModel {
     }
 }
 
+// MARK: - Networking
 extension GamesViewModel {
     
     @MainActor
@@ -69,9 +68,7 @@ extension GamesViewModel {
         self.offset = 0
         self.dataFetchPhase = .empty
         self.fetchTaskToken.token = Date()
-        if let cache = self.cache {
-            await cache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
-        }
+        await self.cache.removeValue(forKey: self.fetchTaskToken.category.rawValue)
     }
     
     @MainActor
@@ -81,7 +78,7 @@ extension GamesViewModel {
         let platforms = self.fetchTaskToken.platforms
         let genres = self.fetchTaskToken.genres
         
-        if let cache, let games = await cache.value(forKey: category.rawValue) {
+        if  let games = await cache.value(forKey: category.rawValue) {
             self.dataFetchPhase = .success(games)
             if Task.isCancelled { return }
             return
@@ -99,8 +96,8 @@ extension GamesViewModel {
                                                                               offset: self.offset)
             if Task.isCancelled { return }
             self.dataFetchPhase = .success(response)
-            if !response.isEmpty, let cache {
-                await cache.setValue(response, forKey: category.rawValue)
+            if !response.isEmpty {
+                await self.cache.setValue(response, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
@@ -133,8 +130,8 @@ extension GamesViewModel {
             
             self.dataFetchPhase = .success(totalGames)
             
-            if !totalGames.isEmpty, let cache  {
-                await cache.setValue(totalGames, forKey: category.rawValue)
+            if !totalGames.isEmpty {
+                await self.cache.setValue(totalGames, forKey: category.rawValue)
             }
         } catch {
             if Task.isCancelled { return }
@@ -151,6 +148,7 @@ extension GamesViewModel {
     }
 }
 
+// MARK: - Filtering
 extension GamesViewModel {
     
     func categorySelected(for category: Category) {
@@ -181,6 +179,8 @@ extension GamesViewModel {
             headerImageName =  "bookmark"
             filterSegment(savedGames: savedGames)
         } else {
+            self.selectedLibrary = library
+            
             if let library {
                 headerTitle = library.title
                 headerImageName = library.icon

@@ -50,7 +50,7 @@ struct IconsView: View {
                         }
                     })
                 }
-                .frame(height: 150)
+                .frame(height: 175)
             }
         } label: {
             HStack {

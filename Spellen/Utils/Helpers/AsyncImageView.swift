@@ -14,6 +14,7 @@ enum AsyncImageType: String, CaseIterable {
     case grid
     case card
     case news
+    case gridNews
     case detail
     
     var width: CGFloat {
@@ -28,6 +29,8 @@ enum AsyncImageType: String, CaseIterable {
             return UIScreen.main.bounds.size.width
         case .detail:
             return UIScreen.main.bounds.size.width
+        case .gridNews:
+            return UIScreen.main.bounds.size.width / 3.3
         }
     }
     
@@ -37,6 +40,8 @@ enum AsyncImageType: String, CaseIterable {
             return 160
         case .news:
             return 200
+        case .gridNews:
+            return self.width * 1.32
         case .grid:
             return self.width * 1.32
         case .card:
@@ -57,7 +62,7 @@ enum AsyncImageType: String, CaseIterable {
     
     func urlString(string: String) -> URL? {
         switch self {
-        case .news:
+        case .news, .gridNews:
             return URL(string: string)
         default:
             return URL(string: "https:\(string.replacingOccurrences(of: "t_thumb", with: "t_\(self.downloadQuality)"))")

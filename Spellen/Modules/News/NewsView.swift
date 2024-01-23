@@ -19,6 +19,7 @@ struct NewsView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("viewType") var viewType: ViewType = .list
     
     @Environment(Admin.self) private var preferences: Admin
     
@@ -26,7 +27,7 @@ struct NewsView: View {
         NavigationStack {
             VStack {
                 HeaderView
-                GameNewsListView
+                ViewSwitcher
             }
             .background(.gray.opacity(0.15))
             .task(id: vm.newsType, priority: .background, {
@@ -118,15 +119,86 @@ struct NewsView: View {
         .padding(.top)
     }
     
-    var GameNewsListView: some View {
+    @ViewBuilder
+    var ViewSwitcher: some View {
+        switch viewType {
+        case .list:
+            NewsListView
+        case .grid:
+            NewsGridView
+        }
+    }
+    
+    var NewsGridView: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(vm.groupedAndSortedItems(items: self.items), id: \.0) {
+                    section,
+                    items in
+                    Section {
+                        LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
+                            ForEach(items, id: \.link) { item in
+                                Button {
+                                    selectedItem = item
+                                } label: {
+                                    if let media = item.media,
+                                       let mediaContents = media.mediaContents,
+                                       let content = mediaContents.first,
+                                       let attributes = content.attributes,
+                                       let urlString = attributes.url {
+                                        AsyncImageView(with: urlString, type: .gridNews)
+                                            .overlay(alignment: .bottomTrailing) {
+                                                if let selectedItem,
+                                                   let link = selectedItem.link,
+                                                   let url = URL(string: link),
+                                                   let host = url.host(), host == "nintendolife.com" {
+                                                    Image(.switch)
+                                                        .resizable()
+                                                        .frame(width: 20, height: 20)
+                                                        .background(
+                                                            .ultraThinMaterial,
+                                                            in: .rect(
+                                                                topLeadingRadius: 4,
+                                                                bottomLeadingRadius: 0,
+                                                                bottomTrailingRadius: 0,
+                                                                topTrailingRadius: 0,
+                                                                style: .continuous
+                                                            )
+                                                        )
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                    } header: {
+                        Text(section)
+                            .font(.headline.bold())
+                            .foregroundStyle(.gray)
+                            .hSpacing(.leading)
+                    }
+                }
+            }
+            .padding(.top, 10)
+            .padding(.horizontal, 10)
+        }
+        .id(updateList)
+        .scrollContentBackground(.hidden)
+        .scrollIndicators(.hidden)
+        .listStyle(.plain)
+    }
+    
+    var NewsListView: some View {
         List {
-            ForEach(groupedAndSortedItems, id: \.0) { section, items in
+            ForEach(vm.groupedAndSortedItems(items: self.items), id: \.0) { section, items in
                 Section {
                     ForEach(items, id: \.link) { item in
                         Button {
                             selectedItem = item
                         } label: {
-                            NewsView(item: item)
+                            NewsItemView(item: item)
                         }
                     }
                 } header: {
@@ -139,79 +211,12 @@ struct NewsView: View {
         }
         .id(updateList)
         .scrollContentBackground(.hidden)
-        .scrollIndicators(.hidden)
         .listStyle(.plain)
         .padding(.bottom, 5)
         .overlay {
             LoadingView
         }
     }
-    
-    
-    private var groupedAndSortedItems:  [(String, [RSSFeedItem])] {
-        let groupedItems = Dictionary(grouping: self.items) { item in
-            // Customize the date format based on your needs
-            let dateFormatter = DateFormatter()
-            //  dateFormatter.dateFormat = "yyyy-MM-dd"
-            dateFormatter.dateStyle = .medium
-            return dateFormatter.string(from: item.pubDate ?? Date())
-        }
-        
-        return groupedItems.sorted(by: { $0.0 > $1.0 })
-    }
-    
-    
-    @ViewBuilder
-    func NewsView(item: RSSFeedItem) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            if let media = item.media, let mediaContents = media.mediaContents,
-               let content = mediaContents.first, let attributes = content.attributes, let urlString = attributes.url {
-                AsyncImageView(with: urlString, type: .news)
-            }
-            
-            VStack(alignment: .leading) {
-                if let title = item.title {
-                    Text(title)
-                        .font(.headline.bold())
-                        .hSpacing(.leading)
-                }
-                
-                if let description = item.description, let desc = description.htmlToString() {
-                    Text(desc)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(4, reservesSpace: true)
-                }
-                
-                if let author = item.author {
-                    Text(author)
-                        .font(.caption)
-                        .foregroundStyle(appTint)
-                        .hSpacing(.trailing)
-                } else if let dublin = item.dublinCore, let author = dublin.dcCreator {
-                    HStack(alignment: .bottom) {
-                        if let date = item.pubDate {
-                            Text(date.asString(style: .medium))
-                                .foregroundStyle(.gray.opacity(0.5))
-                        }
-                        
-                        Spacer()
-                        
-                        Text("by \(author)")
-                            .foregroundStyle(appTint.opacity(0.5))
-                    }
-                    .font(.caption)
-                    .padding(.top)
-                }
-            }
-        }
-        .padding(12)
-        .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
-        .shadow(radius: 4)
-        .frame(maxHeight: .infinity)
-    }
 }
 
-extension RSSFeedItem: Identifiable {
-    
-}
+extension RSSFeedItem: Identifiable {}

@@ -17,7 +17,7 @@ struct GamesView: View {
     @Environment(Admin.self) private var preferences
     
     @State var vm: GamesViewModel
-
+    
     @State private var showLibraries = false
     @State private var showSelectionOptions = false
     @State private var selectedSegment: SelectionOption = .genre

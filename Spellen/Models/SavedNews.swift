@@ -1,16 +1,16 @@
 //
-//  Library.swift
-//  JustGames
+//  SavedNews.swift
+//  Spellen
 //
-//  Created by Ali Dinç on 11/01/2024.
+//  Created by alidinc on 23/01/2024.
 //
 
 import Foundation
 import SwiftData
 
-
+// MARK: - SavedNews
 @Model
-class Library {
+class SavedNews {
     
     var title: String = ""
     var icon: String = "bookmark.fill"

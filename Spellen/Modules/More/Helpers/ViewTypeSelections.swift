@@ -27,6 +27,7 @@ struct ViewTypeSelections: View {
                     ForEach(ViewType.allCases, id: \.id) { type in
                         Button {
                             self.viewType = type
+                            dismiss()
                         } label: {
                             MoreRowView(imageName: type.imageName, text: type.rawValue.capitalized)
                                 .padding(16)

@@ -115,12 +115,10 @@ struct MoreView: View {
         Section("Settings") {
             ShowIconsSection
             ViewTypeSection
+            HapticsSection
             ColorPicker(selection: $appTint, supportsOpacity: false, label: {
                 MoreRowView(imageName: "swatchpalette.fill", text: "Tint color")
             })
-            
-            HapticsSection
-
         }
     }
     

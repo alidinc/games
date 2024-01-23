@@ -35,7 +35,7 @@ struct SavedGameDetailView: View {
                                     
                                     Spacer()
                                     
-                                    SavingButton(game: game, opacity: 1, padding: 8)
+                                    SavingButton(game: game, opacity: 1)
                                 }
                             }
                             

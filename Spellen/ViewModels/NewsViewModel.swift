@@ -15,12 +15,23 @@ class NewsViewModel {
     private var bag = Bag()
     
     var allNews: [RSSFeedItem] = []
-    
     var ign: [RSSFeedItem] = []
     var nintendo: [RSSFeedItem] = []
     var xbox: [RSSFeedItem] = []
     
     var newsType: NewsType = .all
+    
+    func groupedAndSortedItems(items: [RSSFeedItem]) -> [(String, [RSSFeedItem])] {
+        let groupedItems = Dictionary(grouping: items) { item in
+            // Customize the date format based on your needs
+            let dateFormatter = DateFormatter()
+            //  dateFormatter.dateFormat = "yyyy-MM-dd"
+            dateFormatter.dateStyle = .medium
+            return dateFormatter.string(from: item.pubDate ?? Date())
+        }
+        
+        return groupedItems.sorted(by: { $0.0 > $1.0 })
+    }
     
     func fetchNews() async {
         for type in [NewsType.ign, NewsType.nintendo, NewsType.xbox] {

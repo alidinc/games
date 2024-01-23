@@ -55,7 +55,7 @@ struct GamesCollectionView: View {
     }
     
     private var GridView: some View {
-        ScrollView(showsIndicators: false) {
+        ScrollView {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                 ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {
@@ -73,6 +73,7 @@ struct GamesCollectionView: View {
                 }
             }
             .scrollContentBackground(.hidden)
+            .scrollIndicators(.hidden)
             .if(vm.isFetchingNextPage) { view in
                 view
                     .padding(.bottom, 100)

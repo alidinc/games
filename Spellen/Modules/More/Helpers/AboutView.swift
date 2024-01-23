@@ -16,7 +16,6 @@ struct AboutView: View {
         NavigationView {
             VStack(alignment: .leading) {
                 Header
-                    
                 CreditsButton
                 TeamButton
                 Spacer()

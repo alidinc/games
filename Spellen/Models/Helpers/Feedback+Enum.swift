@@ -26,7 +26,7 @@ enum Feedback: Int, CaseIterable, Equatable, Hashable {
         case .rate:
             return "Rate us"
         case .share:
-            return "Tell a friend"
+            return "Share"
         }
     }
     

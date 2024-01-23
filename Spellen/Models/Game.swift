@@ -8,7 +8,6 @@
 import SwiftData
 import SwiftUI
 
-// MARK: - Game
 struct Game: Codable, Identifiable, Hashable {
     
     let id: Int?
@@ -47,61 +46,6 @@ struct Game: Codable, Identifiable, Hashable {
         }
         
         return platforms.compactMap({$0.name}).joined(separator: ", ")
-    }
-    
-    var ratingText: String {
-        guard let rating = self.totalRating else {
-            return Rating.NotReviewed.rawValue
-        }
-        
-        switch Int(rating) {
-        case 0...40:
-            return Rating.Skip.rawValue
-        case 40...50:
-            return Rating.Meh.rawValue
-        case 50...80:
-            return Rating.Good.rawValue
-        case 80...100:
-            return Rating.Exceptional.rawValue
-        default:
-            return Rating.NotReviewed.rawValue
-        }
-    }
-    
-    var ratingColor: Color {
-        guard let rating = self.totalRating else {
-            return Color.gray
-        }
-        switch Int(rating) {
-        case 0...40:
-            return Color.red
-        case 40...50:
-            return Color.orange
-        case 50...80:
-            return Color.blue
-        case 80...100:
-            return Color.green
-        default:
-            return Color.gray
-        }
-    }
-    
-    var ratingImageName: String {
-        guard let rating = self.totalRating else {
-            return "dot.squareshape.fill"
-        }
-        switch Int(rating) {
-        case 0...40:
-            return  "arrowtriangle.down.square.fill"
-        case 40...50:
-            return  "minus.square.fill"
-        case 50...80:
-            return  "arrowtriangle.up.square"
-        case 80...100:
-            return  "star.square.fill"
-        default:
-            return "dot.squareshape.fill"
-        }
     }
 }
 
