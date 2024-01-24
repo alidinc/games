@@ -92,6 +92,7 @@ struct SelectionsView: View {
         } label: {
             SFImage(name: "slider.horizontal.3",
                     config: .init(
+                        opacity: vm.hasFilters ? 1 : 0,
                         padding: 10,
                         color: vm.hasFilters ? appTint : .secondary
                     ))
