@@ -17,15 +17,6 @@
         "revision" : "68493a33d862c33c9a9f67ec729b3b7df1b20ade",
         "version" : "9.1.2"
       }
-    },
-    {
-      "identity" : "shuffleit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/dscyrescotti/ShuffleIt.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "e0e70737c1f32f72aec305036484b737ef9d0467"
-      }
     }
   ],
   "version" : 2

@@ -119,8 +119,7 @@ struct AddLibraryView: View {
         
         if let game {
             Task {
-                await dataManager.setLibrary(library: library)
-                await dataManager.toggle(game: game)
+                await dataManager.toggle(game: game, for: library)
             }
         }
         dismiss()

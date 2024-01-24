@@ -72,10 +72,6 @@
 		DA5557AA2B38922300D440A4 /* GameDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */; };
 		DA5557B22B38E57F00D440A4 /* VideosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557B12B38E57F00D440A4 /* VideosView.swift */; };
 		DA65DB162B574D8A00DBA824 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */; };
-		DA65DB192B57558E00DBA824 /* CarouselStack in Frameworks */ = {isa = PBXBuildFile; productRef = DA65DB182B57558E00DBA824 /* CarouselStack */; };
-		DA65DB1B2B57558E00DBA824 /* ShuffleDeck in Frameworks */ = {isa = PBXBuildFile; productRef = DA65DB1A2B57558E00DBA824 /* ShuffleDeck */; };
-		DA65DB1D2B57558E00DBA824 /* ShuffleIt in Frameworks */ = {isa = PBXBuildFile; productRef = DA65DB1C2B57558E00DBA824 /* ShuffleIt */; };
-		DA65DB1F2B57558E00DBA824 /* ShuffleStack in Frameworks */ = {isa = PBXBuildFile; productRef = DA65DB1E2B57558E00DBA824 /* ShuffleStack */; };
 		DA6C25872B520CC500791432 /* GamesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C25862B520CC500791432 /* GamesOverlayView.swift */; };
 		DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */; };
 		DA72D2D72B5462AA00A235C2 /* AddLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D62B5462AA00A235C2 /* AddLibraryView.swift */; };
@@ -85,6 +81,7 @@
 		DA78AA2E2B4D7DB2008F018C /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA78AA2D2B4D7DB2008F018C /* SafariView.swift */; };
 		DA78AA302B4D7F4A008F018C /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA78AA2F2B4D7F49008F018C /* String+Extension.swift */; };
 		DA78AA322B4D93A3008F018C /* MoreRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA78AA312B4D93A3008F018C /* MoreRowView.swift */; };
+		DA79C8BB2B61802800837DB3 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8BA2B61802800837DB3 /* News.swift */; };
 		DA8AF74E2B4FF93900C459DA /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AF74D2B4FF93900C459DA /* LibraryView.swift */; };
 		DA8AF7502B4FF9C700C459DA /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AF74F2B4FF9C700C459DA /* Library.swift */; };
 		DA93BE8A2B34EAC40047DD37 /* SimilarGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE892B34EAC40047DD37 /* SimilarGamesView.swift */; };
@@ -187,6 +184,7 @@
 		DA78AA2D2B4D7DB2008F018C /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		DA78AA2F2B4D7F49008F018C /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		DA78AA312B4D93A3008F018C /* MoreRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreRowView.swift; sourceTree = "<group>"; };
+		DA79C8BA2B61802800837DB3 /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		DA8AF74D2B4FF93900C459DA /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DA8AF74F2B4FF9C700C459DA /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		DA93BE892B34EAC40047DD37 /* SimilarGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarGamesView.swift; sourceTree = "<group>"; };
@@ -218,12 +216,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA65DB1D2B57558E00DBA824 /* ShuffleIt in Frameworks */,
 				DA4B1C002B4460CF00EA3E8F /* Connectivity in Frameworks */,
 				DA4466122B49DE5000361071 /* FeedKit in Frameworks */,
-				DA65DB192B57558E00DBA824 /* CarouselStack in Frameworks */,
-				DA65DB1B2B57558E00DBA824 /* ShuffleDeck in Frameworks */,
-				DA65DB1F2B57558E00DBA824 /* ShuffleStack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +283,7 @@
 				DA43CE4A2B30B66B00DAE0B6 /* Game.swift */,
 				DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */,
 				DA8AF74F2B4FF9C700C459DA /* Library.swift */,
+				DA79C8BA2B61802800837DB3 /* News.swift */,
 				DAD084282B607B1000D87112 /* SavedNews.swift */,
 			);
 			path = Models;
@@ -298,9 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				DA65DB102B574D4800DBA824 /* Onboarding */,
-				DA72D2D82B54A2BD00A235C2 /* Library */,
 				DA43CE2F2B30B63C00DAE0B6 /* Games */,
-				DA93BE8F2B34F4D10047DD37 /* GameDetail */,
 				DA4466162B49E43300361071 /* News */,
 				DAC503C02B344C60004D4B03 /* More */,
 			);
@@ -310,6 +303,8 @@
 		DA43CE2F2B30B63C00DAE0B6 /* Games */ = {
 			isa = PBXGroup;
 			children = (
+				DA72D2D82B54A2BD00A235C2 /* Library */,
+				DA93BE8F2B34F4D10047DD37 /* GameDetail */,
 				DA43CE592B30B69100DAE0B6 /* GamesView.swift */,
 				DA6C25862B520CC500791432 /* GamesOverlayView.swift */,
 				DA4B1C032B44A32F00EA3E8F /* GamesCollectionView.swift */,
@@ -514,10 +509,6 @@
 			packageProductDependencies = (
 				DA4B1BFF2B4460CF00EA3E8F /* Connectivity */,
 				DA4466112B49DE5000361071 /* FeedKit */,
-				DA65DB182B57558E00DBA824 /* CarouselStack */,
-				DA65DB1A2B57558E00DBA824 /* ShuffleDeck */,
-				DA65DB1C2B57558E00DBA824 /* ShuffleIt */,
-				DA65DB1E2B57558E00DBA824 /* ShuffleStack */,
 			);
 			productName = Cards;
 			productReference = DA43CE192B30B61500DAE0B6 /* Speeltuin.app */;
@@ -550,7 +541,6 @@
 			packageReferences = (
 				DA4B1BFE2B4460CF00EA3E8F /* XCRemoteSwiftPackageReference "connectivity" */,
 				DA4466102B49DE5000361071 /* XCRemoteSwiftPackageReference "FeedKit" */,
-				DA65DB172B57558E00DBA824 /* XCRemoteSwiftPackageReference "ShuffleIt" */,
 			);
 			productRefGroup = DA43CE1A2B30B61500DAE0B6 /* Products */;
 			projectDirPath = "";
@@ -641,6 +631,7 @@
 				DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */,
 				DA93BE992B35142E0047DD37 /* RatingStarsView.swift in Sources */,
 				DA93BE8C2B34F4230047DD37 /* DetailView.swift in Sources */,
+				DA79C8BB2B61802800837DB3 /* News.swift in Sources */,
 				DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */,
 				DA43CE692B30B6CD00DAE0B6 /* PagingData.swift in Sources */,
 				DA4B1C062B44AF4500EA3E8F /* SavedCollectionView.swift in Sources */,
@@ -829,7 +820,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -867,7 +858,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -913,14 +904,6 @@
 				minimumVersion = 6.1.1;
 			};
 		};
-		DA65DB172B57558E00DBA824 /* XCRemoteSwiftPackageReference "ShuffleIt" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dscyrescotti/ShuffleIt.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -933,26 +916,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DA4B1BFE2B4460CF00EA3E8F /* XCRemoteSwiftPackageReference "connectivity" */;
 			productName = Connectivity;
-		};
-		DA65DB182B57558E00DBA824 /* CarouselStack */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DA65DB172B57558E00DBA824 /* XCRemoteSwiftPackageReference "ShuffleIt" */;
-			productName = CarouselStack;
-		};
-		DA65DB1A2B57558E00DBA824 /* ShuffleDeck */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DA65DB172B57558E00DBA824 /* XCRemoteSwiftPackageReference "ShuffleIt" */;
-			productName = ShuffleDeck;
-		};
-		DA65DB1C2B57558E00DBA824 /* ShuffleIt */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DA65DB172B57558E00DBA824 /* XCRemoteSwiftPackageReference "ShuffleIt" */;
-			productName = ShuffleIt;
-		};
-		DA65DB1E2B57558E00DBA824 /* ShuffleStack */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DA65DB172B57558E00DBA824 /* XCRemoteSwiftPackageReference "ShuffleIt" */;
-			productName = ShuffleStack;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -23,6 +23,7 @@ struct SavingButton: View {
     
     var body: some View {
         Menu {
+            let dataManager = SwiftDataManager(modelContainer: context.container)
             let libraries = libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) })
             if !libraries.isEmpty {
                 Label("Add to : ", systemImage: "arrow.turn.right.down")
@@ -30,10 +31,8 @@ struct SavingButton: View {
             
             ForEach(libraries, id: \.savingId) { library in
                 Button {
-                    let dataManager = SwiftDataManager(modelContainer: context.container)
                     Task {
-                        await dataManager.setLibrary(library: library)
-                        await dataManager.toggle(game: game)
+                        await dataManager.toggle(game: game, for: library)
                     }
                 } label: {
                     HStack {
@@ -57,12 +56,13 @@ struct SavingButton: View {
             .tint(appTint)
             
             if games.compactMap({$0.game}).contains(game), let savedGame = games.first(where: {$0.game?.id == game.id }) {
-                Button(action: {
-                    context.delete(savedGame)
-                }, label: {
+                Button(role: .destructive) {
+                    Task {
+                        await dataManager.delete(game: game)
+                    }
+                } label: {
                     Label("Delete", systemImage: "trash.fill")
-                })
-                .tint(.red)
+                }
             }
 
         } label: {
