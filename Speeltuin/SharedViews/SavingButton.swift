@@ -32,7 +32,8 @@ struct SavingButton: View {
                 Button {
                     let dataManager = SwiftDataManager(modelContainer: context.container)
                     Task {
-                        await dataManager.toggle(game: game, games: games, library: library, context: context)
+                        await dataManager.setLibrary(library: library)
+                        await dataManager.toggle(game: game)
                     }
                 } label: {
                     HStack {
@@ -53,16 +54,17 @@ struct SavingButton: View {
             }, label: {
                 Label("New library", systemImage: "plus")
             })
+            .tint(appTint)
             
-//            if savingVM.savedAlready(game: game, games: games) {
-//                Button(role: .destructive) {
-//                    savingVM.deleteFromAll(game: game, in: games, context: context)
-//                } label: {
-//                    Label("Delete", systemImage: "trash.fill")
-//                }
-//                
-//                Divider()
-//            }
+            if games.compactMap({$0.game}).contains(game), let savedGame = games.first(where: {$0.game?.id == game.id }) {
+                Button(action: {
+                    context.delete(savedGame)
+                }, label: {
+                    Label("Delete", systemImage: "trash.fill")
+                })
+                .tint(.red)
+            }
+
         } label: {
             SFImage(
                 name: libraryName(),

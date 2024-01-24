@@ -13,10 +13,28 @@ import SwiftData
 actor SwiftDataManager {
     
     private var bag = Bag()
+    var library: Library?
     
-    func add(game: Game, library: Library) {
+    var fetchSavedGames: [SavedGame] {
+        do {
+            return try modelContext.fetch(FetchDescriptor<SavedGame>())
+        } catch {
+            return []
+        }
+    }
+    
+    func setLibrary(library: Library) {
+        self.library = library
+    }
+    
+    // MARK: - SavedGame
+    
+    func add(game: Game) {
         let savedGame = SavedGame()
-        savedGame.library = library
+        
+        if let library {
+            savedGame.library = library
+        }
         
         do {
             savedGame.gameData = try JSONEncoder().encode(game)
@@ -41,22 +59,16 @@ actor SwiftDataManager {
         modelContext.insert(savedGame)
     }
     
-    func deleteFromAll(game: Game, in games: [SavedGame], context: ModelContext) {
-        if let gameToDelete = games.first(where: { $0.game?.id == game.id }) {
-            context.delete(gameToDelete)
+    func deleteFromAll(game: Game) {
+        if let gameToDelete = fetchSavedGames.first(where: { $0.game?.id == game.id }) {
+            modelContext.delete(gameToDelete)
         }
     }
     
-    func delete(game: Game, in games: [SavedGame], for library: Library, context: ModelContext) {
-        if let gameToDelete = games.first(where: { $0.game?.id == game.id && $0.library == library }) {
-            context.delete(gameToDelete)
-        }
-    }
+    // MARK: - Toggle
     
-    // MARK: - Save to "library" specific
-    
-    func savedAlreadyLibrarySpecific(_ game: Game, for library: Library, games: [SavedGame]) -> Bool {
-        games.first { savedGame in
+    func savedAlreadyLibrarySpecific(_ game: Game) -> Bool {
+        fetchSavedGames.first { savedGame in
             guard let id = game.id,
                   let savedGameGame = savedGame.game,
                   let savedGameId = savedGameGame.id,
@@ -68,29 +80,19 @@ actor SwiftDataManager {
         } != nil
     }
     
-    func toggle(game: Game, games: [SavedGame], library: Library, context: ModelContext) {
-        guard savedAlreadyLibrarySpecific(game, for: library, games: games) else {
+    func toggle(game: Game) {
+        guard savedAlreadyLibrarySpecific(game) else {
             
-            deleteFromAll(game: game, in: games, context: context)
-            add(game: game, library: library)
-            NotificationCenter.default.post(name: .addedToLibrary, object: library)
+            deleteFromAll(game: game)
+            add(game: game)
+            
+            if let library {
+                NotificationCenter.default.post(name: .addedToLibrary, object: library)
+            }
             
             return
         }
         
-        delete(game: game, in: games, for: library, context: context)
-    }
-    
-    // MARK: - Delete library
-    
-    func delete(library: Library, context: ModelContext) {
-        context.delete(library)
-    }
-    
-    func addLibrary(library: Library, game: Game? = nil, savedGames: [SavedGame], context: ModelContext) {
-        context.insert(library)
-        if let game {
-            toggle(game: game, games: savedGames, library: library, context: context)
-        }
+        deleteFromAll(game: game)
     }
 }

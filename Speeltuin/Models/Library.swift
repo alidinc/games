@@ -10,7 +10,7 @@ import SwiftData
 
 
 @Model
-class Library {
+final class Library {
     
     var title: String = ""
     var icon: String = "bookmark.fill"

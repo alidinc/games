@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+@MainActor
 struct ScreenSize { // Answer to OP's question
     
     static let SCREEN_WIDTH         = UIScreen.main.bounds.size.width
@@ -17,6 +18,7 @@ struct ScreenSize { // Answer to OP's question
     
 }
 
+@MainActor
 struct DeviceType { //Use this to check what is the device kind you're working with
     
     static let IS_IPHONE_4_OR_LESS  = UIDevice.current.userInterfaceIdiom == .phone && ScreenSize.SCREEN_MAX_LENGTH < 568.0
@@ -30,7 +32,7 @@ struct DeviceType { //Use this to check what is the device kind you're working w
     static let isSmallScreen = IS_IPHONE_SE || IS_IPHONE_7 || IS_IPHONE_4_OR_LESS
 }
 
-
+@MainActor
 struct iOSVersion { //Get current device's iOS version
     
     static let SYS_VERSION_FLOAT  = (UIDevice.current.systemVersion as NSString).floatValue

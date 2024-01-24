@@ -25,52 +25,52 @@ actor NetworkManager {
         return URL(string: tokenURL)!
     }
     
-    private func getToken(from url: URL) async throws -> AccessToken {
+    private nonisolated func getToken(from url: URL) async throws -> AccessToken {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
         let (data, response) = try await self.session.data(for: request)
         guard let response = response as? HTTPURLResponse else {
-            throw self.generateError(description: "Bad Response")
+            throw await self.generateError(description: "Bad Response")
         }
         
         switch response.statusCode {
         case (200...299), (400...499):
             return try JSONDecoder().decode(AccessToken.self, from: data)
         default:
-            throw self.generateError(description: "A server error occured.")
+            throw await self.generateError(description: "A server error occured.")
         }
     }
     
-    private func fetchREST<T: Codable>(with urlString: String) async throws -> [T] {
+    private nonisolated func fetchREST<T: Codable>(with urlString: String) async throws -> [T] {
         guard let url = URL(string: urlString) else {
-            throw self.generateError(description: "Invalid URL")
+            throw await self.generateError(description: "Invalid URL")
         }
         
         let request = URLRequest(url: url)
         let (data, response) = try await self.session.data(for: request)
         
         guard let response = response as? HTTPURLResponse else {
-            throw self.generateError(description: "Bad Response")
+            throw await self.generateError(description: "Bad Response")
         }
         
         switch response.statusCode {
         case (200...299), (400...499):
             return try JSONDecoder().decode([T].self, from: data)
         default:
-            throw self.generateError(description: "A server error occured.")
+            throw await self.generateError(description: "A server error occured.")
         }
     }
     
-    private func fetch<T: Codable>(with urlString: String, with apiCalypse: APICalypse) async throws -> [T] {
+    private nonisolated func fetch<T: Codable>(with urlString: String, with apiCalypse: APICalypse) async throws -> [T] {
         var tokenResult = try await self.getToken(from: self.generateAccessTokenURL())
         guard tokenResult.expiryInSeconds > 10 else {
             tokenResult = try await self.getToken(from: self.generateAccessTokenURL())
-            throw self.generateError(description: "Token expired")
+            throw await self.generateError(description: "Token expired")
         }
         
         guard let url = URL(string: urlString) else {
-            throw self.generateError(description: "Invalid URL")
+            throw await self.generateError(description: "Invalid URL")
         }
         
         var requestHeader = URLRequest(url: url)
@@ -83,28 +83,28 @@ actor NetworkManager {
         let (data, response) = try await self.session.data(for: requestHeader)
         
         guard let response = response as? HTTPURLResponse else {
-            throw self.generateError(description: "Bad Response")
+            throw await self.generateError(description: "Bad Response")
         }
         
         switch response.statusCode {
         case (200...299), (400...499):
-            self.showNetworkResponse(data: data)
+            await self.showNetworkResponse(data: data)
             return try JSONDecoder().decode([T].self, from: data)
         default:
-            throw self.generateError(description: "A server error occured.")
+            throw await self.generateError(description: "A server error occured.")
         }
     }
     
     // MARK: - Public
     
-    func fetchDatabase() async throws -> [MultiQueryCountModel] {
+    nonisolated func fetchDatabase() async throws -> [MultiQueryCountModel] {
         let apicalypse = APICalypse(type: .multi)
             .multiQuery(name: "games/count")
             .fields(fields: "*")
         return try await self.fetch(with: Constants.IGDBAPI.MultiQueryURL, with: apicalypse)
     }
     
-    func fetchMulti(query: String? = nil,
+    nonisolated func fetchMulti(query: String? = nil,
                     with category: Category,
                     platforms: [PopularPlatform],
                     genres: [PopularGenre],
@@ -128,7 +128,7 @@ actor NetworkManager {
     }
     
     
-    func fetchDetailedGames(query: String? = nil,
+    nonisolated  func fetchDetailedGames(query: String? = nil,
                             with category: Category,
                             platforms: [PopularPlatform],
                             genres: [PopularGenre],
@@ -151,7 +151,7 @@ actor NetworkManager {
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
     }
     
-    func fetchGames(ids: [Int]) async throws -> [Game] {
+    nonisolated func fetchGames(ids: [Int]) async throws -> [Game] {
         let apicalypse = APICalypse(type: .standard)
             .fields(fields: Constants.IGDBAPI.DetailFields)
             .where(query: "id=(\(ids.compactMap({String($0)}).joined(separator: ",")))")
@@ -159,7 +159,7 @@ actor NetworkManager {
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
     }
     
-    func showNetworkResponse(data : Data){
+     func showNetworkResponse(data : Data){
         do {
             if let jsonResult = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                 print(jsonResult)

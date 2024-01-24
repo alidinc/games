@@ -113,13 +113,14 @@ struct AddLibraryView: View {
         }
         
         let library = Library(title: name, icon: icon)
-        context.insert(library)
-        
         let dataManager = SwiftDataManager(modelContainer: context.container)
+        
+        context.insert(library)
         
         if let game {
             Task {
-                await dataManager.toggle(game: game, games: savedGames, library: library, context: context)
+                await dataManager.setLibrary(library: library)
+                await dataManager.toggle(game: game)
             }
         }
         dismiss()

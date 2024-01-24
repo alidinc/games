@@ -140,9 +140,9 @@ struct ListRowView: View {
         if let releaseDates = game.releaseDates {
             
             let dates = releaseDates.compactMap { $0.date }
-            let datesAreSame = areAllValuesSame(in: dates)
-            let datesInTheFutureOnly = !dates.compactMap({$0 > now }).isEmpty && dates.compactMap({$0 < now}).isEmpty
-            let datesInThePastOnly = !dates.compactMap({$0 < now}).isEmpty && dates.compactMap({$0 > now}).isEmpty
+            let _ = areAllValuesSame(in: dates)
+            let _ = !dates.compactMap({$0 > now }).isEmpty && dates.compactMap({$0 < now}).isEmpty
+            let _ = !dates.compactMap({$0 < now}).isEmpty && dates.compactMap({$0 > now}).isEmpty
             
             if let firstReleaseDate = game.firstReleaseDate {
                 DateEntryView(date: firstReleaseDate.numberToDateString(), imageName: "calendar")

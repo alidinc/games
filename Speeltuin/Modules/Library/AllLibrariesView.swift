@@ -19,6 +19,7 @@ struct AllLibrariesView: View {
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     
     @State private var libraryToEdit: Library?
+    @State private var libraryToDelete: Library?
     @State private var showAlertToDeleteLibrary = false
     
     var body: some View {
@@ -29,7 +30,6 @@ struct AllLibrariesView: View {
                 }, label: {
                     LibraryView(library)
                 })
-                .contentShape(.rect)
                 .padding()
                 .hSpacing(.leading)
                 .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
@@ -38,26 +38,9 @@ struct AllLibrariesView: View {
                     EditLibraryView(library: library)
                         .presentationDetents([.fraction(0.7)])
                 })
-                .alert(Constants.Alert.deleteLibraryAlertTitle, isPresented: $showAlertToDeleteLibrary, actions: {
-                    Button(role: .destructive) {
-                        let dataManager = SwiftDataManager(modelContainer: context.container)
-                        Task {
-                            await dataManager.delete(library: library, context: context)
-                        }
-                    } label: {
-                        Text(Constants.Alert.delete)
-                    }
-                    
-                    Button(role: .cancel) {
-                        
-                    } label: {
-                        Text(Constants.Alert.cancel)
-                    }
-                }, message: {
-                    Text(Constants.Alert.undoAlertTitle)
-                })
                 .swipeActions(allowsFullSwipe: true) {
                     Button(role: .destructive) {
+                        libraryToDelete = library
                         showAlertToDeleteLibrary = true
                     } label: {
                         Label("Delete", systemImage: "trash.fill")
@@ -79,6 +62,23 @@ struct AllLibrariesView: View {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
+        .alert(Constants.Alert.deleteLibraryAlertTitle, isPresented: $showAlertToDeleteLibrary, actions: {
+            Button(role: .destructive) {
+                if let libraryToDelete, libraries.contains(libraryToDelete) {
+                    context.delete(libraryToDelete)
+                }
+            } label: {
+                Text(Constants.Alert.delete)
+            }
+            
+            Button(role: .cancel) {
+                
+            } label: {
+                Text(Constants.Alert.cancel)
+            }
+        }, message: {
+            Text(Constants.Alert.undoAlertTitle)
+        })
     }
     
     
