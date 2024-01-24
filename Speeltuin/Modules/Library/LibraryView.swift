@@ -52,6 +52,7 @@ struct LibraryView: View {
             gamesVM.dataType = .library
             gamesVM.filterType = .library
     
+            gamesVM.selectedLibrary = nil
             gamesVM.filterSegment(savedGames: savedGames)
         } label: {
             HStack {

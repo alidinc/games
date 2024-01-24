@@ -24,11 +24,11 @@ struct IntroView: View {
                 .scaledToFit()
                 .padding(.top, 50)
                 .hSpacing(.leading)
+                .padding(.horizontal, 15)
             
             Text("Speeltuin: \nYour iOS hub for organising and saving games in personalised libraries.")
                 .font(.title.bold())
                 .multilineTextAlignment(.leading)
-                .padding(.top, 20)
                 .padding(.bottom, 35)
             
             /// Points view

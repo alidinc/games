@@ -26,7 +26,7 @@ struct PlatformsView: View {
                             if let id = platform.id, let popularPlatform = PopularPlatform(rawValue: id) {
                                 if let releaseDates = game.releaseDates,
                                    let platformDate = releaseDates.first(where: { $0.platform == platform.id }) {
-                                    if let timeIntervalDate = platformDate.date {
+                                    if let _ = platformDate.date {
                                         CapsuleView(imageName: popularPlatform.assetName)
                                     } else {
                                         CapsuleView(title: "N/A")

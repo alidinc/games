@@ -194,8 +194,7 @@ extension GamesViewModel {
         switch newValue {
         case .network:
             if fetchTaskToken.genres.isEmpty || fetchTaskToken.platforms.isEmpty {
-                fetchTaskToken.genres = [.allGenres]
-                fetchTaskToken.platforms = [.database]
+                
             }
             
             Task {

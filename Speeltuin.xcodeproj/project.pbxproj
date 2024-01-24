@@ -60,7 +60,7 @@
 		DA4B1BF22B43C7B000EA3E8F /* Notification+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF12B43C7B000EA3E8F /* Notification+Name.swift */; };
 		DA4B1BF42B43C86200EA3E8F /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF32B43C86200EA3E8F /* Bag.swift */; };
 		DA4B1BF82B43CD7E00EA3E8F /* Admin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BF72B43CD7E00EA3E8F /* Admin.swift */; };
-		DA4B1BFB2B44568000EA3E8F /* SavingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */; };
+		DA4B1BFB2B44568000EA3E8F /* SwiftDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1BFA2B44568000EA3E8F /* SwiftDataManager.swift */; };
 		DA4B1C002B4460CF00EA3E8F /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = DA4B1BFF2B4460CF00EA3E8F /* Connectivity */; };
 		DA4B1C022B448E2A00EA3E8F /* SavedGameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C012B448E2A00EA3E8F /* SavedGameDetailView.swift */; };
 		DA4B1C042B44A32F00EA3E8F /* GamesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C032B44A32F00EA3E8F /* GamesCollectionView.swift */; };
@@ -167,7 +167,7 @@
 		DA4B1BF12B43C7B000EA3E8F /* Notification+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Name.swift"; sourceTree = "<group>"; };
 		DA4B1BF32B43C86200EA3E8F /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = "<group>"; };
 		DA4B1BF72B43CD7E00EA3E8F /* Admin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Admin.swift; sourceTree = "<group>"; };
-		DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingViewModel.swift; sourceTree = "<group>"; };
+		DA4B1BFA2B44568000EA3E8F /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 		DA4B1C012B448E2A00EA3E8F /* SavedGameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGameDetailView.swift; sourceTree = "<group>"; };
 		DA4B1C032B44A32F00EA3E8F /* GamesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesCollectionView.swift; sourceTree = "<group>"; };
 		DA4B1C052B44AF4500EA3E8F /* SavedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCollectionView.swift; sourceTree = "<group>"; };
@@ -253,7 +253,7 @@
 				DA43CE322B30B65500DAE0B6 /* Constants.swift */,
 				DA44660E2B495CF400361071 /* Speeltuin.entitlements */,
 				DA43CE2C2B30B62600DAE0B6 /* Models */,
-				DAAD3E552B40D121005E8EBA /* Shared */,
+				DAAD3E552B40D121005E8EBA /* SharedViews */,
 				DAFAEB1D2B474B68008E1090 /* ViewModels */,
 				DA43CE2D2B30B62B00DAE0B6 /* Modules */,
 				DA43CE2B2B30B62000DAE0B6 /* Utils */,
@@ -358,6 +358,7 @@
 				DA4B1BF72B43CD7E00EA3E8F /* Admin.swift */,
 				DA43CE632B30B6CD00DAE0B6 /* NetworkManager.swift */,
 				DA43CE6E2B30B6F200DAE0B6 /* CacheManager.swift */,
+				DA4B1BFA2B44568000EA3E8F /* SwiftDataManager.swift */,
 				DA43CE622B30B6CD00DAE0B6 /* HapticsManager.swift */,
 			);
 			path = Managers;
@@ -433,7 +434,7 @@
 			path = GameDetail;
 			sourceTree = "<group>";
 		};
-		DAAD3E552B40D121005E8EBA /* Shared */ = {
+		DAAD3E552B40D121005E8EBA /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
 				DAC503BE2B344827004D4B03 /* CloseButton.swift */,
@@ -448,7 +449,7 @@
 				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
 				DAD084242B6059A800D87112 /* PickerHeaderView.swift */,
 			);
-			path = Shared;
+			path = SharedViews;
 			sourceTree = "<group>";
 		};
 		DAB92B022B40B26A00375F20 /* Helpers */ = {
@@ -489,7 +490,6 @@
 			children = (
 				DA43CE3E2B30B65E00DAE0B6 /* GamesViewModel.swift */,
 				DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */,
-				DA4B1BFA2B44568000EA3E8F /* SavingViewModel.swift */,
 				DA4466142B49DEB000361071 /* NewsViewModel.swift */,
 			);
 			path = ViewModels;
@@ -602,7 +602,7 @@
 				DA4B1BF22B43C7B000EA3E8F /* Notification+Name.swift in Sources */,
 				DA93BE8E2B34F47A0047DD37 /* SocialsView.swift in Sources */,
 				DAC503BF2B344827004D4B03 /* CloseButton.swift in Sources */,
-				DA4B1BFB2B44568000EA3E8F /* SavingViewModel.swift in Sources */,
+				DA4B1BFB2B44568000EA3E8F /* SwiftDataManager.swift in Sources */,
 				DA93BE8A2B34EAC40047DD37 /* SimilarGamesView.swift in Sources */,
 				DA43CE672B30B6CD00DAE0B6 /* HapticsManager.swift in Sources */,
 				DA0C20822B38F81F000E2D6E /* SummaryView.swift in Sources */,
@@ -829,7 +829,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -867,7 +867,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

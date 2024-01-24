@@ -67,7 +67,6 @@ struct AllLibrariesView: View {
                     
                     Button(role: .destructive) {
                         libraryToEdit = library
-                        NotificationCenter.default.post(name: .libraryValuesChanged, object: library)
                     } label: {
                         Label("Edit", systemImage: "pencil")
                     }
