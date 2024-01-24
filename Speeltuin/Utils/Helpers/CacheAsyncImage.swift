@@ -27,7 +27,7 @@ struct CacheAsyncImage<Content>: View where Content: View {
     }
     
     var body: some View {
-        if let cached = ImageCache[url] {
+        if let cached = ImageCache[url.absoluteString] {
             content(.success(cached))
         } else {
             AsyncImage(
@@ -40,23 +40,38 @@ struct CacheAsyncImage<Content>: View where Content: View {
         }
     }
     
-    func cacheAndRender(phase: AsyncImagePhase) -> some View{
-        if case .success (let image) = phase {
-            ImageCache[url] = image
+    func cacheAndRender(phase: AsyncImagePhase) -> some View {
+        if case .success(let image) = phase {
+            // Wrap UIImage in a class to store in NSCache
+            ImageCache[url.absoluteString] = image
         }
         return content(phase)
     }
 }
 
 fileprivate class ImageCache {
-    static private var cache: [URL: Image] = [:]
-    static subscript(url: URL) -> Image? {
+    static let sharedCache = NSCache<NSString, ImageWrapper>()
+    
+    static subscript(key: String) -> Image? {
         get {
-            ImageCache.cache[url]
+            // Access the cache safely
+            return ImageCache.sharedCache.object(forKey: key as NSString)?.image
         }
         set {
-            ImageCache.cache[url] = newValue
+            // Access the cache safely
+            if let newValue = newValue {
+                ImageCache.sharedCache.setObject(ImageWrapper(image: newValue), forKey: key as NSString)
+            } else {
+                ImageCache.sharedCache.removeObject(forKey: key as NSString)
+            }
         }
     }
 }
 
+class ImageWrapper {
+    let image: Image
+    
+    init(image: Image) {
+        self.image = image
+    }
+}

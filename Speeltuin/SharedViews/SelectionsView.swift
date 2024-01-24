@@ -160,12 +160,13 @@ struct SelectionsView: View {
             
             Text(title)
                 .font(.caption)
-                .foregroundStyle(isSelected ? .white : .gray.opacity(0.5))
+                .foregroundStyle(isSelected ? .white : .white.opacity(0.45))
                 .multilineTextAlignment(.center)
         }
         .frame(height: 70)
         .hSpacing(.center)
         .vSpacing(.center)
+        .animation(.interactiveSpring(), value: isSelected)
         .padding(10)
         .background(Color.black.opacity(0.5), in: .rect(cornerRadius: 10))
         .overlay {

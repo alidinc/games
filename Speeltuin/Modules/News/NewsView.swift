@@ -21,13 +21,14 @@ struct NewsView: View {
     @AppStorage("appTint") var appTint: Color = .white
     @AppStorage("viewType") var viewType: ViewType = .list
     
-    @Environment(Admin.self) private var preferences: Admin
+    @Environment(Admin.self) private var admin: Admin
     
     var body: some View {
         NavigationStack {
             VStack {
                 HeaderView
                 ViewSwitcher
+                    
             }
             .background(.gray.opacity(0.15))
             .task(id: vm.newsType, priority: .background, {
@@ -42,7 +43,7 @@ struct NewsView: View {
                 }
             })
             .onChange(of: vm.newsType) { oldValue, newValue in
-                updateList = true
+                updateList.toggle()
                 if hapticsEnabled {
                     HapticsManager.shared.vibrateForSelection()
                 }
@@ -51,21 +52,26 @@ struct NewsView: View {
     }
     
     var items: [RSSFeedItem] {
-        switch vm.newsType {
-        case .all:
-            return vm.allNews
-        case .nintendo:
-            return vm.nintendo
-        case .xbox:
-            return vm.xbox
-        case .ign:
-            return vm.ign
+        switch admin.networkStatus {
+        case .available:
+            switch vm.newsType {
+            case .all:
+                return vm.allNews
+            case .nintendo:
+                return vm.nintendo
+            case .xbox:
+                return vm.xbox
+            case .ign:
+                return vm.ign
+            }
+        case .unavailable:
+            return []
         }
     }
     
     @ViewBuilder
     var LoadingView: some View {
-        switch preferences.networkStatus {
+        switch admin.networkStatus {
         case .available:
             if vm.allNews.isEmpty {
                 ZStack {
@@ -144,7 +150,25 @@ struct NewsView: View {
                                        let content = mediaContents.first,
                                        let attributes = content.attributes,
                                        let urlString = attributes.url {
-                                        AsyncImageView(with: urlString, type: .gridNews)
+                                        
+                                        
+                                        if let title = item.title {
+                                            ZStack(alignment: .bottom) {
+                                                AsyncImageView(with: urlString, type: .gridNews)
+                                                
+                                                
+                                                LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
+                                                    .clipShape(.rect(cornerRadius: 5))
+                                                
+                                                Text(title)
+                                                    .font(.system(size: 10, weight: .semibold))
+                                                    .multilineTextAlignment(.leading)
+                                                    .lineLimit(3)
+                                                    .padding(.horizontal, 4)
+                                                    .padding(.bottom, 6)
+                                            }
+                                            .clipShape(.rect(cornerRadius: 5))
+                                        }
                                     }
                                 }
                             }
@@ -166,6 +190,10 @@ struct NewsView: View {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
+        .padding(.bottom, 5)
+        .overlay {
+            LoadingView
+        }
     }
     
     var NewsListView: some View {
