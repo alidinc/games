@@ -17,7 +17,6 @@ struct AddLibraryView: View {
     @State private var name = ""
     @State private var icon = ""
     
-    @Environment(SavingViewModel.self) private var vm: SavingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
@@ -115,8 +114,13 @@ struct AddLibraryView: View {
         
         let library = Library(title: name, icon: icon)
         context.insert(library)
+        
+        let dataManager = SwiftDataManager(modelContainer: context.container)
+        
         if let game {
-            vm.saveGameTo(game: game, games: savedGames, library: library, context: context)
+            Task {
+                await dataManager.toggle(game: game, games: savedGames, library: library, context: context)
+            }
         }
         dismiss()
     }

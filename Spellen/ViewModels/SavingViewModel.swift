@@ -1,5 +1,5 @@
 //
-//  SavingViewModel.swift
+//  SwiftDataManager.swift
 //  JustGames
 //
 //  Created by Ali Dinç on 02/01/2024.
@@ -9,37 +9,36 @@ import SwiftUI
 import Observation
 import SwiftData
 
-@Observable
-class SavingViewModel {
+@ModelActor
+actor SwiftDataManager {
     
     private var bag = Bag()
     
-    func add(game: Game, library: Library, context: ModelContext) {
+    func add(game: Game, library: Library) {
         let savedGame = SavedGame()
         savedGame.library = library
         
-        Task(priority: .background) {
-            do {
-                savedGame.gameData = try JSONEncoder().encode(game)
-            } catch {
-                print("Error")
-            }
-            
-            if let cover = game.cover,
-               let urlString = cover.url,
-               let url = URL(string: "https:\(urlString.replacingOccurrences(of: "t_thumb", with: "t_1080p"))") {
-                
-                URLSession.shared.dataTaskPublisher(for: url)
-                    .map(\.data)
-                    .sink { _ in
-                    
-                    } receiveValue: { data in
-                        savedGame.imageData = data
-                    }
-                    .store(in: &bag)
-            }
+        do {
+            savedGame.gameData = try JSONEncoder().encode(game)
+        } catch {
+            print("Error")
         }
-        context.insert(savedGame)
+        
+        if let cover = game.cover,
+           let urlString = cover.url,
+           let url = URL(string: "https:\(urlString.replacingOccurrences(of: "t_thumb", with: "t_1080p"))") {
+            
+            URLSession.shared.dataTaskPublisher(for: url)
+                .map(\.data)
+                .sink { _ in
+                
+                } receiveValue: { data in
+                    savedGame.imageData = data
+                }
+                .store(in: &bag)
+        }
+        
+        modelContext.insert(savedGame)
     }
     
     func deleteFromAll(game: Game, in games: [SavedGame], context: ModelContext) {
@@ -52,12 +51,6 @@ class SavingViewModel {
         if let gameToDelete = games.first(where: { $0.game?.id == game.id && $0.library == library }) {
             context.delete(gameToDelete)
         }
-    }
-   
-    // MARK: - Saved already -not library specific
-    
-    func savedAlready(game: Game, games: [SavedGame]) -> Bool {
-        return games.first(where: { $0.game?.id == game.id }) != nil
     }
     
     // MARK: - Save to "library" specific
@@ -75,11 +68,11 @@ class SavingViewModel {
         } != nil
     }
     
-    func saveGameTo(game: Game, games: [SavedGame], library: Library, context: ModelContext) {
+    func toggle(game: Game, games: [SavedGame], library: Library, context: ModelContext) {
         guard savedAlreadyLibrarySpecific(game, for: library, games: games) else {
             
             deleteFromAll(game: game, in: games, context: context)
-            add(game: game, library: library, context: context)
+            add(game: game, library: library)
             NotificationCenter.default.post(name: .addedToLibrary, object: library)
             
             return
@@ -94,11 +87,10 @@ class SavingViewModel {
         context.delete(library)
     }
     
-    func addLibrary(name: String, icon: String, game: Game? = nil, savedGames: [SavedGame], context: ModelContext) {
-        let library = Library(title: name, icon: icon)
+    func addLibrary(library: Library, game: Game? = nil, savedGames: [SavedGame], context: ModelContext) {
         context.insert(library)
         if let game {
-            saveGameTo(game: game, games: savedGames, library: library, context: context)
+            toggle(game: game, games: savedGames, library: library, context: context)
         }
     }
 }

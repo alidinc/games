@@ -12,12 +12,13 @@ struct EditLibraryView: View {
     
     @AppStorage("appTint") var appTint: Color = .white
     @Bindable var library: Library
+    
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
-    @Environment(SavingViewModel.self) private var vm: SavingViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
     @Query var libraries: [Library]
+    @Query var games: [SavedGame]
     @State private var showMaxLibraryAlert = false
     
     var body: some View {
@@ -60,6 +61,9 @@ struct EditLibraryView: View {
     
     private var UpdateButton: some View {
         Button {
+            if library == gamesVM.selectedLibrary {
+                gamesVM.librarySelectionTapped(allSelected: false, for: library, in: games)
+            }
             dismiss()
         } label: {
             HStack {

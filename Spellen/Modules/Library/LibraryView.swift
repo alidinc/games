@@ -15,7 +15,7 @@ struct LibraryView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-    @Environment(SavingViewModel.self) private var vm: SavingViewModel
+   
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     
     @State private var showAddLibrary = false

@@ -17,7 +17,6 @@ struct AllLibrariesView: View {
     
     @Environment(\.modelContext) private var context
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
-    @Environment(SavingViewModel.self) private var savingVM: SavingViewModel
     
     @State private var libraryToEdit: Library?
     @State private var showAlertToDeleteLibrary = false
@@ -41,7 +40,10 @@ struct AllLibrariesView: View {
                 })
                 .alert(Constants.Alert.deleteLibraryAlertTitle, isPresented: $showAlertToDeleteLibrary, actions: {
                     Button(role: .destructive) {
-                        savingVM.delete(library: library, context: context)
+                        let dataManager = SwiftDataManager(modelContainer: context.container)
+                        Task {
+                            await dataManager.delete(library: library, context: context)
+                        }
                     } label: {
                         Text(Constants.Alert.delete)
                     }

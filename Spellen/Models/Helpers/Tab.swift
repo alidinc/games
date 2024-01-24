@@ -8,14 +8,14 @@
 import SwiftUI
 
 enum Tab: String {
-    case discover = "Games"
+    case games = "Games"
     case more = "More"
     case news = "News"
     
     @ViewBuilder
     var tabContent: some View {
         switch self {
-        case .discover:
+        case .games:
             Image(systemName: "gamecontroller.fill")
             Text(self.rawValue)
         case .more:

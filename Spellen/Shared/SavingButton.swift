@@ -15,7 +15,6 @@ struct SavingButton: View {
     var opacity: CGFloat
     
     @AppStorage("appTint") var appTint: Color = .white
-    @Environment(SavingViewModel.self) private var savingVM: SavingViewModel
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
@@ -31,7 +30,10 @@ struct SavingButton: View {
             
             ForEach(libraries, id: \.savingId) { library in
                 Button {
-                    savingVM.saveGameTo(game: game, games: games, library: library, context: context)
+                    let dataManager = SwiftDataManager(modelContainer: context.container)
+                    Task {
+                        await dataManager.toggle(game: game, games: games, library: library, context: context)
+                    }
                 } label: {
                     HStack {
                         Image(systemName: library.icon)
@@ -52,15 +54,15 @@ struct SavingButton: View {
                 Label("New library", systemImage: "plus")
             })
             
-            if savingVM.savedAlready(game: game, games: games) {
-                Button(role: .destructive) {
-                    savingVM.deleteFromAll(game: game, in: games, context: context)
-                } label: {
-                    Label("Delete", systemImage: "trash.fill")
-                }
-                
-                Divider()
-            }
+//            if savingVM.savedAlready(game: game, games: games) {
+//                Button(role: .destructive) {
+//                    savingVM.deleteFromAll(game: game, in: games, context: context)
+//                } label: {
+//                    Label("Delete", systemImage: "trash.fill")
+//                }
+//                
+//                Divider()
+//            }
         } label: {
             SFImage(
                 name: libraryName(),
