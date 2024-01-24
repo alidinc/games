@@ -372,9 +372,9 @@
 			isa = PBXGroup;
 			children = (
 				DA4B1BEE2B43AA5100EA3E8F /* AboutView.swift */,
-				DAC503C52B344F57004D4B03 /* IconSelectionView.swift */,
 				DA4B1BE62B43A71700EA3E8F /* MailView.swift */,
 				DA78AA312B4D93A3008F018C /* MoreRowView.swift */,
+				DAC503C52B344F57004D4B03 /* IconSelectionView.swift */,
 				DAD084222B6051C600D87112 /* ViewTypeSelections.swift */,
 			);
 			path = Helpers;
@@ -791,7 +791,7 @@
 		DA43CE282B30B61500DAE0B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon7 AppIcon2 AppIcon1 AppIcon8  AppIcon9";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Speeltuin/Speeltuin.entitlements;
@@ -829,7 +829,7 @@
 		DA43CE292B30B61500DAE0B6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon7 AppIcon2 AppIcon1 AppIcon8  AppIcon9";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Speeltuin/Speeltuin.entitlements;

@@ -16,6 +16,9 @@ enum DeviceAppIcon: Int, Identifiable, CaseIterable {
     case gold
     case ocean
     case forest
+    case threeD
+    case garden
+    case sunburn
     
     var title: String {
         switch self {
@@ -33,6 +36,12 @@ enum DeviceAppIcon: Int, Identifiable, CaseIterable {
             return "Gold"
         case .ocean:
             return "Ocean"
+        case .threeD:
+            return "3D"
+        case .garden:
+            return "Garden"
+        case .sunburn:
+            return "Sunburn"
         }
     }
     
@@ -55,7 +64,7 @@ enum DeviceAppIcon: Int, Identifiable, CaseIterable {
 
 struct IconSelectionView: View {
     
-    private let customIcons: [DeviceAppIcon] = [.system, .space, .sunset, .forest, .indigo, .gold, .ocean]
+    private let customIcons: [DeviceAppIcon] = [.threeD, .garden, .sunburn, .system, .space, .sunset, .forest, .indigo, .gold, .ocean]
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
     @Environment(\.dismiss) private var dismiss
     
@@ -79,6 +88,8 @@ struct IconSelectionView: View {
                                     .resizable()
                                     .frame(width: 40, height: 40)
                                     .scaledToFit()
+                                    .clipShape(.rect(cornerRadius: 10))
+                                
                                 Text(icon.title)
                                     .foregroundStyle(.primary)
                                 Spacer()
@@ -92,6 +103,7 @@ struct IconSelectionView: View {
                     .padding(.horizontal)
                 }
             }
+            .padding(.bottom, 50)
         }
         .edgesIgnoringSafeArea(.all)
     }

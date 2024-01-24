@@ -86,7 +86,7 @@ struct MoreView: View {
             })
             .sheet(isPresented: $showIcons, content: {
                 IconSelectionView()
-                    .presentationDetents([.medium])
+                    .presentationDetents([.medium, .large])
             })
             .sheet(isPresented: $showAbout, content: {
                 AboutView()

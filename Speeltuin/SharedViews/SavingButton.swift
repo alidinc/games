@@ -55,7 +55,7 @@ struct SavingButton: View {
             })
             .tint(appTint)
             
-            if games.compactMap({$0.game}).contains(game), let savedGame = games.first(where: {$0.game?.id == game.id }) {
+            if games.compactMap({$0.game}).contains(game) {
                 Button(role: .destructive) {
                     Task {
                         await dataManager.delete(game: game)
