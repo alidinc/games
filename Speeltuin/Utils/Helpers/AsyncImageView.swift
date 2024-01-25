@@ -22,7 +22,7 @@ enum AsyncImageType: String, CaseIterable {
         case .list:
             return 120
         case .news:
-            return UIScreen.main.bounds.size.width / 1.15
+            return 120
         case .grid:
             return UIScreen.main.bounds.size.width / 3.3
         case .card:
@@ -39,7 +39,7 @@ enum AsyncImageType: String, CaseIterable {
         case .list:
             return 160
         case .news:
-            return 200
+            return 160
         case .gridNews:
             return self.width * 1.32
         case .grid:

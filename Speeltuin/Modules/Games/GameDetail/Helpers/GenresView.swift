@@ -26,7 +26,10 @@ struct GenresView: View {
                         }
                     }
                 }
+                .fadeOutSides(side: .trailing)
+                .frame(maxWidth: .infinity)
             }
+            .hSpacing(.leading)
         }
     }
 }

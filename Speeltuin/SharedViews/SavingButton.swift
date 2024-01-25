@@ -15,6 +15,7 @@ struct SavingButton: View {
     var opacity: CGFloat
     
     @AppStorage("appTint") var appTint: Color = .white
+   
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
@@ -35,14 +36,7 @@ struct SavingButton: View {
                         await dataManager.toggle(game: game, for: library)
                     }
                 } label: {
-                    HStack {
-                        Image(systemName: library.icon)
-                            .imageScale(.medium)
-                        
-                        Text(library.title)
-                            .font(.headline)
-                            .foregroundStyle(.primary)
-                    }
+                    Label(library.title, systemImage: library.icon)
                 }
             }
             
@@ -77,7 +71,7 @@ struct SavingButton: View {
     }
     
     func libraryName() -> String {
-        if let library = games.first(where: { $0.game?.id == game.id })?.library {
+        if let library = self.games.first(where: { $0.game?.id == game.id })?.library {
             return library.icon
         }
         

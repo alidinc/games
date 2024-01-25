@@ -196,10 +196,9 @@ struct MoreView: View {
             HStack {
                 MoreRowView(imageName: "hand.tap.fill", text: "Haptics")
                 Spacer()
-                Text(hapticsEnabled ? "Enabled" : "Disabled")
-                    .foregroundStyle(.gray)
-                    .font(.subheadline)
-                    .animation(.easeInOut, value: hapticsEnabled)
+                Toggle(isOn: $hapticsEnabled, label: {
+                })
+                .tint(.green)
             }
         }
     }

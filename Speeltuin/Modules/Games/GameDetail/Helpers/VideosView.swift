@@ -26,11 +26,7 @@ struct VideosView: View {
     
     var body: some View {
         if !self.videoURLs.isEmpty {
-            VStack(alignment: .leading) {
-                Text("Videos")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                
+            DisclosureGroup {
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(self.videoURLs, id: \.self) { id in
@@ -39,9 +35,16 @@ struct VideosView: View {
                         .frame(width: 300, height: 170)
                         .clipShape(.rect(cornerRadius: 8))
                     }
-                    .padding(.bottom)
                 }
+                .padding(.vertical)
+            } label: {
+                Text("Videos")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
             }
+            .padding()
+            .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+            .padding(.horizontal)
         }
     }
 }

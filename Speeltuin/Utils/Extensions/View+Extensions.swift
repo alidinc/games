@@ -120,3 +120,122 @@ extension View {
         UIPasteboard.general.setValue(text, forPasteboardType: "public.plain-text")
     }
 }
+
+enum FadingSide {
+    case leading
+    case trailing
+    case bottom
+    case top
+    case horizontal
+    case vertical
+}
+
+extension View {
+    
+    @ViewBuilder
+    func fadeOutSides(length: CGFloat = 20, side: FadingSide) -> some View {
+        switch side {
+        case .leading:
+             mask(
+                HStack(spacing: 0) {
+                    // Left gradient
+                    LinearGradient(gradient: Gradient(
+                        colors: [Color.black.opacity(0), Color.black]),
+                                   startPoint: .leading, endPoint: .trailing
+                    )
+                    .frame(height: length)
+                    
+                    // Middle
+                    Rectangle().fill(Color.black)
+                }
+            )
+        case .trailing:
+             mask(
+                HStack(spacing: 0) {
+                    
+                    // Middle
+                    Rectangle().fill(Color.black)
+                    
+                    // Right gradient
+                    LinearGradient(gradient: Gradient(
+                        colors: [Color.black, Color.black.opacity(0)]),
+                                   startPoint: .leading, endPoint: .trailing
+                    )
+                    .frame(width: length)
+                }
+            )
+        case .bottom:
+             mask(
+                VStack(spacing: 0) {
+                    Rectangle().fill(Color.black)
+                    // Bottom gradient
+                    LinearGradient(gradient:
+                                    Gradient(
+                                        colors: [Color.black.opacity(0), Color.black]),
+                                   startPoint: .bottom, endPoint: .top
+                    )
+                    .frame(height: length)
+                }
+            )
+        case .top:
+             mask(
+                VStack(spacing: 0) {
+                    
+                    // Top gradient
+                    LinearGradient(gradient:
+                                    Gradient(
+                                        colors: [Color.black.opacity(0), Color.black]),
+                                   startPoint: .top, endPoint: .bottom
+                    )
+                    .frame(height: length)
+                    
+                    Rectangle().fill(Color.black)
+                }
+            )
+        case .horizontal:
+             mask(
+                HStack(spacing: 0) {
+                    
+                    // Left gradient
+                    LinearGradient(gradient: Gradient(
+                        colors: [Color.black.opacity(0), Color.black]),
+                                   startPoint: .leading, endPoint: .trailing
+                    )
+                    .frame(height: length)
+                    
+                    // Middle
+                    Rectangle().fill(Color.black)
+                    
+                    // Right gradient
+                    LinearGradient(gradient: Gradient(
+                        colors: [Color.black, Color.black.opacity(0)]),
+                                   startPoint: .leading, endPoint: .trailing
+                    )
+                    .frame(width: length)
+                }
+            )
+        case .vertical:
+             mask(
+                VStack(spacing: 0) {
+                    // Top gradient
+                    LinearGradient(gradient:
+                                    Gradient(
+                                        colors: [Color.black.opacity(0), Color.black]),
+                                   startPoint: .top, endPoint: .bottom
+                    )
+                    .frame(height: length)
+                    
+                    Rectangle().fill(Color.black)
+                    // Bottom gradient
+                    LinearGradient(gradient:
+                                    Gradient(
+                                        colors: [Color.black.opacity(0), Color.black]),
+                                   startPoint: .top, endPoint: .bottom
+                    )
+                    .frame(height: length)
+                }
+            )
+        }
+    }
+}
+

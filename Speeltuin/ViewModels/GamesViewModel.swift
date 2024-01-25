@@ -49,7 +49,7 @@ class GamesViewModel {
     
     init() {
         self.fetchTaskToken = FetchTaskToken(
-            category: .topRated,
+            category: .database,
             platforms: [.database],
             genres: [.allGenres],
             token: .now
@@ -176,7 +176,7 @@ extension GamesViewModel {
         
         if allSelected {
             headerTitle = "All games"
-            headerImageName =  "bookmark"
+            headerImageName =  "bookmark.fill"
             filterSegment(savedGames: savedGames)
         } else {
             self.selectedLibrary = library
@@ -193,10 +193,6 @@ extension GamesViewModel {
     func onChangeOfDataType(savedGames: [SavedGame], library: Library?, newValue: DataType) {
         switch newValue {
         case .network:
-            if fetchTaskToken.genres.isEmpty || fetchTaskToken.platforms.isEmpty {
-                
-            }
-            
             Task {
                 await refreshTask()
             }
@@ -216,7 +212,6 @@ extension GamesViewModel {
             Task {
                 if !newValue.isEmpty {
                     try await Task.sleep(seconds: 0.5)
-                    fetchTaskToken.category = .database
                     await refreshTask()
                 } else {
                     await refreshTask()

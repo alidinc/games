@@ -26,7 +26,7 @@ struct SelectionsView: View {
     @AppStorage("appTint") var appTint: Color = .white
     
     @Environment(GamesViewModel.self) private var vm: GamesViewModel
-    @State var selectedOption: SelectionOption = .genre
+    @State var selectedOption: SelectionOption = .platform
     @Namespace private var animation
     
     @Query private var savedGames: [SavedGame]
@@ -92,19 +92,10 @@ struct SelectionsView: View {
         } label: {
             SFImage(name: "slider.horizontal.3",
                     config: .init(
-                        opacity: vm.hasFilters ? 1 : 0,
-                        padding: 10,
+                        opacity: 0,
+                        padding: 0,
                         color: vm.hasFilters ? appTint : .secondary
                     ))
-            .overlay {
-                SFImage(name: "xmark.circle.fill",
-                        config: .init(
-                            opacity: 0,
-                            padding: 0,
-                            color: vm.hasFilters ? appTint : .clear
-                        ))
-                .offset(x: 18, y: -18)
-            }
         }
     }
     

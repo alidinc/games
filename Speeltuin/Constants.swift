@@ -21,6 +21,10 @@ struct Constants {
         static let cancel = "Cancel"
     }
     
+    struct Size {
+        static let maxWidthForDetails: CGFloat = 150
+    }
+    
     struct URLs {
         static var IGDB: URL {
             return URL(string: "https://www.igdb.com/")!

@@ -30,10 +30,12 @@ struct SimilarGamesView: View {
                         }
                     }
                 }
-                
-                .padding(.bottom, 15)
+                .padding(.top)
                 .frame(maxWidth: .infinity)
             }
         }
+        .padding()
+        .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .padding(.horizontal)
     }
 }

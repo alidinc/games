@@ -14,7 +14,7 @@ enum NetworkStatus {
     case unavailable
 }
 
-struct ListRowView: View {
+struct GameListItemView: View {
     
     var game: Game?
     var savedGame: SavedGame?

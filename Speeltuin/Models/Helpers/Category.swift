@@ -56,7 +56,7 @@ enum Category: String, CaseIterable {
         case .upcoming:
             return "Upcoming"
         case .database:
-            return "All database"
+            return "All games"
         }
     }
     
@@ -67,7 +67,7 @@ enum Category: String, CaseIterable {
         case .newReleases:
             return "calendar"
         case .upcoming:
-            return "calendar"
+            return "clock.fill"
         case .database:
             return "globe"
         }

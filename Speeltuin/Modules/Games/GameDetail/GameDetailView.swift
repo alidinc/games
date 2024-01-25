@@ -15,10 +15,10 @@ struct GameDetailView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 30) {
                 ImagesView(game: game)
                     .ignoresSafeArea()
-                    .gradientMask(color: .gray)
+                    .fadeOutSides(length: 100, side: .bottom)
                 
                 VStack(alignment: .leading, spacing: 25) {
                     VStack(alignment: .leading, spacing: 2) {
@@ -43,12 +43,9 @@ struct GameDetailView: View {
                     DetailsView
                     
                     VideosView(game: game)
-                        .padding(.leading)
-                    
                     
                     if !vm.gamesFromIds.isEmpty {
                         SimilarGamesView(similarGames: vm.gamesFromIds)
-                            .padding(.leading)
                     }
                 }
                 .hSpacing(.leading)
@@ -59,9 +56,10 @@ struct GameDetailView: View {
                 }
             }
         }
-        .padding(.bottom, 10)
+        .padding(.bottom, 5)
         .background(.gray.opacity(0.15))
         .ignoresSafeArea(edges: .top)
+        .scrollIndicators(.hidden)
         .toolbarRole(.editor)
     }
     

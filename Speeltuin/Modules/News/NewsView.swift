@@ -142,35 +142,9 @@ struct NewsView: View {
                     Section {
                         LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                             ForEach(items, id: \.link) { item in
-                                Button {
+                                NewsGridItemView(onSelect: {
                                     self.selectedItem = item
-                                } label: {
-                                    if let media = item.media,
-                                       let mediaContents = media.mediaContents,
-                                       let content = mediaContents.first,
-                                       let attributes = content.attributes,
-                                       let urlString = attributes.url {
-                                        
-                                        
-                                        if let title = item.title {
-                                            ZStack(alignment: .bottom) {
-                                                AsyncImageView(with: urlString, type: .gridNews)
-                                                
-                                                
-                                                LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
-                                                    .clipShape(.rect(cornerRadius: 5))
-                                                
-                                                Text(title)
-                                                    .font(.system(size: 10, weight: .semibold))
-                                                    .multilineTextAlignment(.leading)
-                                                    .lineLimit(3)
-                                                    .padding(.horizontal, 4)
-                                                    .padding(.bottom, 6)
-                                            }
-                                            .clipShape(.rect(cornerRadius: 5))
-                                        }
-                                    }
-                                }
+                                }, item: item)
                             }
                         }
                         .listRowBackground(Color.clear)
@@ -197,28 +171,31 @@ struct NewsView: View {
     }
     
     var NewsListView: some View {
-        List {
-            ForEach(vm.groupedAndSortedItems(items: self.items), id: \.0) { section, items in
-                Section {
-                    ForEach(items, id: \.link) { item in
-                        Button {
-                            selectedItem = item
-                        } label: {
-                            NewsItemView(item: item)
+        ScrollView {
+            LazyVStack {
+                ForEach(vm.groupedAndSortedItems(items: self.items), id: \.0) { section, items in
+                    Section {
+                        ForEach(items, id: \.link) { item in
+                            Button {
+                                selectedItem = item
+                            } label: {
+                                NewsListItemView(item: item)
+                            }
                         }
+                    } header: {
+                        Text(section)
+                            .font(.headline.bold())
+                            .foregroundStyle(.gray)
+                            .hSpacing(.leading)
                     }
-                } header: {
-                    Text(section)
-                        .font(.headline)
                 }
-                .listRowBackground(Color.clear)
-                .listRowSeparator(.hidden)
             }
         }
         .id(updateList)
         .scrollContentBackground(.hidden)
-        .listStyle(.plain)
+        .scrollIndicators(.hidden)
         .padding(.bottom, 5)
+        .padding(.horizontal, 10)
         .overlay {
             LoadingView
         }

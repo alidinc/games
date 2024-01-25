@@ -32,7 +32,10 @@ struct GameModesView: View {
                         }
                     }
                 }
+                .fadeOutSides(side: .trailing)
+                .frame(maxWidth: .infinity)
             }
+            .hSpacing(.leading)
         }
     }
 }

@@ -19,7 +19,6 @@ struct SFImage: View {
     
     var body: some View {
         Image(systemName: name)
-            .symbolEffect(.bounce, value: config.color)
             .symbolEffect(.bounce, value: name)
             .frame(width: config.size, height: config.size)
             .padding(config.padding)

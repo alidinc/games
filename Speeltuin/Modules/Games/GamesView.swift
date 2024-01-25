@@ -20,7 +20,6 @@ struct GamesView: View {
     
     @State private var showLibraries = false
     @State private var showSelectionOptions = false
-    @State private var selectedSegment: SelectionOption = .genre
     @State private var gameToAddForNewLibrary: Game?
     @State private var receivedLibrary: Library?
     
@@ -185,7 +184,7 @@ struct GamesView: View {
                 }
             }
         } label: {
-            Label("Network", systemImage: "globe")
+            Label("Internet", systemImage: "sparkle.magnifyingglass")
         }
     }
     
@@ -199,7 +198,7 @@ struct GamesView: View {
                     HapticsManager.shared.vibrateForSelection()
                 }
             } label: {
-                Label("All games", systemImage: "bookmark")
+                Label("All games", systemImage: "bookmark.fill")
             }
             
             ForEach(savedLibraries, id: \.savingId) { library in

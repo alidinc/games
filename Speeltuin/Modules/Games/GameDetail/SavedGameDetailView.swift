@@ -21,7 +21,7 @@ struct SavedGameDetailView: View {
                         .frame(width: UIScreen.main.bounds.size.width,
                                height: UIScreen.main.bounds.size.height * 0.6)
                         .ignoresSafeArea(edges: .top)
-                        .gradientMask(color:  .gray)
+                        .fadeOutSides(length: 100, side: .bottom)
                 }
                 
                 if let game = savedGame.game {
@@ -43,26 +43,37 @@ struct SavedGameDetailView: View {
                         }
                         .padding(.horizontal)
                         
-                        GenresView(game: game)
-                            .padding(.leading)
-                        
                         SummaryView(game: game)
                         
-                        PlatformsView(game: game)
-                            .padding(.leading)
-                        
-                        GameModesView(game: game)
-                            .padding(.leading)
+                        DetailsView(game: game)
                     }
                     .hSpacing(.leading)
                 }
                 
             }
         }
-        .padding(.bottom, 10)
+        .padding(.bottom, 5)
         .background(.gray.opacity(0.15))
         .ignoresSafeArea(edges: savedGame.imageData != nil ? .top : .leading)
+        .scrollIndicators(.hidden)
         .toolbarBackground(.hidden, for: .navigationBar)
+    }
+    
+    private func DetailsView(game: Game) -> some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                GenresView(game: game)
+                PlatformsView(game: game)
+            }
+            
+            HStack {
+                GameModesView(game: game)
+                SocialsView(game: game)
+            }
+        }
+        .padding()
+        .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .padding(.horizontal)
     }
 }
 

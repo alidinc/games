@@ -24,7 +24,7 @@ struct GamesCollectionView: View {
     private var ListView: some View {
         List {
             ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
-                ListRowView(game: game)
+                GameListItemView(game: game)
                     .navigationLink({
                         DetailView(game: game)
                     })

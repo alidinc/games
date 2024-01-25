@@ -29,7 +29,7 @@ struct SavedCollectionView: View {
                 if let game = savedGame.game {
                     switch preferences.networkStatus {
                     case .available:
-                        ListRowView(game: game)
+                        GameListItemView(game: game)
                             .navigationLink({
                                 DetailView(game: game)
                             })
@@ -37,7 +37,7 @@ struct SavedCollectionView: View {
                             .listRowBackground(Color.clear)
                             .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
                     case .unavailable:
-                        ListRowView(savedGame: savedGame)
+                        GameListItemView(savedGame: savedGame)
                             .navigationLink {
                                 DetailView(savedGame: savedGame)
                             }
