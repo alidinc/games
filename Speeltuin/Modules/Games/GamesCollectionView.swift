@@ -55,7 +55,7 @@ struct GamesCollectionView: View {
     }
     
     private var GridView: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false)  {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                 ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {

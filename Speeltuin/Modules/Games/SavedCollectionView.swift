@@ -70,11 +70,13 @@ struct SavedCollectionView: View {
                             NavigationLink(destination: {
                                 DetailView(savedGame: savedGame)
                             }, label: {
+                                let width = UIScreen.main.bounds.size.width / 3.3
+                                let height = width * 1.32
                                 Image(uiImage: uiImage)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .shadow(color: .white.opacity(0.7), radius: 10)
-                                    .frame(width: 120, height: 160)
+                                    .frame(width: width, height: height)
                                     .clipShape(.rect(cornerRadius: 5))
                             })
                         }

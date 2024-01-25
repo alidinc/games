@@ -27,19 +27,17 @@ struct NewsListItemView: View {
                     Text(title)
                         .foregroundStyle(.white)
                         .font(.headline)
-                        .hSpacing(.leading)
                         .multilineTextAlignment(.leading)
                 }
                 
                 if let description = item.description, let desc = description.htmlToString() {
                     Text(desc)
-                        .foregroundStyle(.gray)
                         .font(.caption)
-                        .lineLimit(5, reservesSpace: true)
-                        .multilineTextAlignment(.leading)
+                        .foregroundStyle(.gray)
+                        .lineLimit(4, reservesSpace: true)
                 }
             }
-            .hSpacing(.top)
+            .vSpacing(.top)
         }
         .padding(12)
         .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))

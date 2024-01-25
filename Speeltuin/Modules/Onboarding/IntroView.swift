@@ -22,11 +22,9 @@ struct IntroView: View {
                 .resizable()
                 .frame(width: 70, height: 70)
                 .scaledToFit()
-                .padding(.top, 50)
                 .hSpacing(.leading)
-                .padding(.horizontal, 15)
-            
-            Text("Speeltuin: \nYour iOS hub for organising and saving games in personalised libraries.")
+               
+            Text("Speeltuin: \nYour hub for organising and saving games in personalised libraries.")
                 .font(.title.bold())
                 .multilineTextAlignment(.leading)
                 .padding(.bottom, 35)
@@ -68,7 +66,8 @@ struct IntroView: View {
                     .contentShape(.rect)
             })
         }
-        .padding(15)
+        .padding(.horizontal, 20)
+        .padding(.top, 100)
         .background(
             LinearGradient(colors: [.clear, .gray.opacity(0.5)], startPoint: .bottom, endPoint: .top)
         )

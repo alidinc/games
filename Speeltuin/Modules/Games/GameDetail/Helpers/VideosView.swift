@@ -36,7 +36,7 @@ struct VideosView: View {
                         .clipShape(.rect(cornerRadius: 8))
                     }
                 }
-                .padding(.vertical)
+                .padding(.top)
             } label: {
                 Text("Videos")
                     .font(.caption2)

@@ -46,7 +46,16 @@ struct GameDetailView: View {
                     
                     if !vm.gamesFromIds.isEmpty {
                         SimilarGamesView(similarGames: vm.gamesFromIds)
+                    } else {
+                        ProgressView {
+                            Label("Fetching some similar games...", systemImage: "magnifyingglass")
+                        }
+                        .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+                        .padding(.horizontal)
+                        .hSpacing(.center)
                     }
+                    
+                    Spacer(minLength: 20)
                 }
                 .hSpacing(.leading)
                 .task {

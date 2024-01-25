@@ -8,11 +8,6 @@
 import SwiftUI
 import Observation
 
-actor HeaderHandler {
-    var headerTitle = ""
-    var headerImageName = ""
-}
-
 @Observable
 class GamesViewModel {
     
@@ -44,8 +39,6 @@ class GamesViewModel {
         (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))
         || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
     }
-    
-    
     
     init() {
         self.fetchTaskToken = FetchTaskToken(
@@ -308,46 +301,48 @@ extension GamesViewModel {
     }
     
     func filterSegment(savedGames: [SavedGame])  {
-        var libraryGames = [SavedGame]()
-        let selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
-        let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
-        
-        if let library = selectedLibrary {
-            libraryGames = savedGames.filter({ $0.library == library })
-        } else {
-            libraryGames = savedGames
-        }
-        
-        if self.searchQuery.isEmpty {
-            if !selectedGenres.isEmpty {
-                if !selectedPlatforms.isEmpty {
-                    self.savedGames = libraryGames
-                        .filter({ $0.containsGenres(selectedGenres) })
-                        .filter({ $0.containsPlatforms(selectedPlatforms) })
-                } else {
-                    self.savedGames = libraryGames
-                        .filter({ $0.containsGenres(selectedGenres) })
-                }
-            } else if !selectedPlatforms.isEmpty {
-                if !selectedGenres.isEmpty {
-                    self.savedGames = libraryGames
-                        .filter({ $0.containsGenres(selectedGenres) })
-                        .filter({ $0.containsPlatforms(selectedPlatforms) })
-                } else {
-                    self.savedGames = libraryGames
-                        .filter({ $0.containsPlatforms(selectedPlatforms) })
-                }
+        withAnimation {
+            var libraryGames = [SavedGame]()
+            let selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
+            let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
+            
+            if let library = selectedLibrary {
+                libraryGames = savedGames.filter({ $0.library == library })
             } else {
-                self.savedGames = libraryGames
+                libraryGames = savedGames
             }
-        } else {
-            if !selectedGenres.isEmpty || !selectedPlatforms.isEmpty {
-                self.savedGames = libraryGames
-                    .filter({( $0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased()) })
-                    .filter({ $0.containsSelections(selectedGenres, selectedPlatforms) })
+            
+            if self.searchQuery.isEmpty {
+                if !selectedGenres.isEmpty {
+                    if !selectedPlatforms.isEmpty {
+                        self.savedGames = libraryGames
+                            .filter({ $0.containsGenres(selectedGenres) })
+                            .filter({ $0.containsPlatforms(selectedPlatforms) })
+                    } else {
+                        self.savedGames = libraryGames
+                            .filter({ $0.containsGenres(selectedGenres) })
+                    }
+                } else if !selectedPlatforms.isEmpty {
+                    if !selectedGenres.isEmpty {
+                        self.savedGames = libraryGames
+                            .filter({ $0.containsGenres(selectedGenres) })
+                            .filter({ $0.containsPlatforms(selectedPlatforms) })
+                    } else {
+                        self.savedGames = libraryGames
+                            .filter({ $0.containsPlatforms(selectedPlatforms) })
+                    }
+                } else {
+                    self.savedGames = libraryGames
+                }
             } else {
-                self.savedGames = libraryGames
-                    .filter({( $0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased()) })
+                if !selectedGenres.isEmpty || !selectedPlatforms.isEmpty {
+                    self.savedGames = libraryGames
+                        .filter({( $0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased()) })
+                        .filter({ $0.containsSelections(selectedGenres, selectedPlatforms) })
+                } else {
+                    self.savedGames = libraryGames
+                        .filter({( $0.game?.name ?? "").lowercased().contains(self.searchQuery.lowercased()) })
+                }
             }
         }
     }

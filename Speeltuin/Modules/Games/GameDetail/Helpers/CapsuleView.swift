@@ -19,7 +19,9 @@ struct CapsuleView: View {
                 switch imageType {
                 case .sf:
                     Image(systemName: imageName)
-                        .font(.system(size: 20))
+                        .font(.system(size: 18))
+                        .foregroundStyle(.white)
+                    
                 case .asset:
                     Image(imageName)
                         .resizable()

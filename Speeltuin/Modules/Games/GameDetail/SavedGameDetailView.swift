@@ -46,6 +46,8 @@ struct SavedGameDetailView: View {
                         SummaryView(game: game)
                         
                         DetailsView(game: game)
+                        
+                        Spacer(minLength: 20)
                     }
                     .hSpacing(.leading)
                 }

@@ -153,6 +153,7 @@ struct NewsView: View {
                         Text(section)
                             .font(.headline.bold())
                             .foregroundStyle(.gray)
+                            .padding(.leading, 10)
                             .hSpacing(.leading)
                     }
                 }
@@ -171,31 +172,34 @@ struct NewsView: View {
     }
     
     var NewsListView: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(vm.groupedAndSortedItems(items: self.items), id: \.0) { section, items in
-                    Section {
-                        ForEach(items, id: \.link) { item in
-                            Button {
-                                selectedItem = item
-                            } label: {
-                                NewsListItemView(item: item)
-                            }
+        List {
+            ForEach(vm.groupedAndSortedItems(items: self.items), id: \.0) { section, items in
+                VStack(alignment: .leading) {
+                    Text(section)
+                        .font(.headline.bold())
+                        .foregroundStyle(.gray)
+                        .padding(.leading, 10)
+                        .hSpacing(.leading)
+                    
+                    ForEach(items, id: \.link) { item in
+                        Button {
+                            selectedItem = item
+                        } label: {
+                            NewsListItemView(item: item)
                         }
-                    } header: {
-                        Text(section)
-                            .font(.headline.bold())
-                            .foregroundStyle(.gray)
-                            .hSpacing(.leading)
                     }
                 }
             }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
         }
         .id(updateList)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .padding(.bottom, 5)
         .padding(.horizontal, 10)
+        .listStyle(.plain)
         .overlay {
             LoadingView
         }
