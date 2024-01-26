@@ -57,6 +57,7 @@ struct IconSelectionView: View {
     
     private let customIcons: [DeviceAppIcon] = [.system, .space, .sunset, .forest, .indigo, .gold, .ocean]
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
+    @AppStorage("appTint") var appTint: Color = .white
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -84,14 +85,18 @@ struct IconSelectionView: View {
                                 Text(icon.title)
                                     .foregroundStyle(.primary)
                                 Spacer()
-                                CheckboxView(isSelected: self.selectedAppIcon == icon)
                             }
-                            .tag(icon)
                         }
+                        .padding()
+                        .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                        .overlay {
+                            if selectedAppIcon == icon {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(appTint, lineWidth: 2)
+                            }
+                        }
+                        .padding(.horizontal)
                     }
-                    .padding()
-                    .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
-                    .padding(.horizontal)
                 }
             }
             .padding(.bottom, 50)
@@ -124,11 +129,13 @@ import SwiftUI
 
 struct CheckboxView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     let isSelected: Bool
 
     var body: some View {
         Image(systemName: self.isSelected ? "checkmark.square.fill" : "square.fill")
-            .foregroundColor(self.isSelected ? .white : .black.opacity(0.5))
+            .foregroundColor(self.isSelected ? (colorScheme == .dark ? .white : .black) : .black.opacity(0.5))
     }
 }
 

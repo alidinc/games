@@ -9,15 +9,12 @@ import SwiftData
 import SwiftUI
 
 struct GamesOverlayView: View {
-    
-    var dataType: DataType
-    var filterType: FilterType
      
     @Environment(GamesViewModel.self) private var vm
     @Environment(Admin.self) private var preferences
     
     var body: some View {
-        switch dataType {
+        switch vm.dataType {
         case .network:
             switch preferences.networkStatus {
             case .available:
@@ -26,7 +23,7 @@ struct GamesOverlayView: View {
                     ZStack {
                         ProgressView("Please wait, \nwhile we are getting ready! ☺️")
                             .font(.subheadline)
-                            .tint(.white)
+                            .tint(.gray)
                             .multilineTextAlignment(.center)
                             .controlSize(.large)
                     }
@@ -58,7 +55,7 @@ struct GamesOverlayView: View {
             }
         case .library:
             if vm.savedGames.isEmpty {
-                switch filterType {
+                switch vm.filterType {
                 case .search:
                     ContentUnavailableView.search(text: vm.searchQuery)
                 case .library:

@@ -95,7 +95,8 @@ struct LibraryView: View {
                     .fill(Color(.secondarySystemBackground))
                     .frame(width: 30, height: 30)
                     .overlay {
-                        SFImage(name: "plus", config: .init(opacity: 0, color: .secondary))
+                        Image(systemName: "plus")
+                            .foregroundStyle(.gray)
                     }
             }
             

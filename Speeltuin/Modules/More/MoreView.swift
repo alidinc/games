@@ -14,6 +14,7 @@ struct MoreView: View {
     @AppStorage("appTint") var appTint: Color = .white
     @AppStorage("viewType") private var viewType: ViewType = .list
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
+    @AppStorage("colorScheme") private var scheme: SchemeType = .system
     
     @Environment(\.openURL) var openURL
     @State private var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
@@ -26,6 +27,7 @@ struct MoreView: View {
     @State private var showSendEmail = false
     @State private var showAppStore = false
     @State private var showStyleSelections = false
+    @State private var showColorSchemeSelections = false
     @State private var showAlertNoDefaulEmailFound = false
     
     var body: some View {
@@ -69,7 +71,7 @@ struct MoreView: View {
                 } label: {
                     Text("Copy our support email here.")
                 }
-            
+                
                 Button {} label: {
                     Text("OK")
                 }
@@ -96,6 +98,10 @@ struct MoreView: View {
                 ViewTypeSelections()
                     .presentationDetents([.medium])
             }
+            .sheet(isPresented: $showColorSchemeSelections, content: {
+                ColorSchemeSelections()
+                    .presentationDetents([.medium])
+            })
         }
     }
     
@@ -116,6 +122,7 @@ struct MoreView: View {
             ShowIconsSection
             ViewTypeSection
             HapticsSection
+            DarkModeSection
             ColorPicker(selection: $appTint, supportsOpacity: false, label: {
                 MoreRowView(imageName: "swatchpalette.fill", text: "Tint color")
             })
@@ -130,7 +137,7 @@ struct MoreView: View {
                     Button(action: {
                         showAppStore = true
                     }, label: {
-                       MoreRowView(imageName: feedback.imageName, text: feedback.title)
+                        MoreRowView(imageName: feedback.imageName, text: feedback.title)
                     })
                 case .email:
                     Button(action: {
@@ -165,8 +172,8 @@ struct MoreView: View {
                 MoreRowView(imageName: "apps.iphone", text: " App icon")
                 Spacer()
                 Text(selectedAppIcon.title)
-                    .foregroundStyle(.gray)
-                    .font(.subheadline)
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .font(.headline)
             }
         }
     }
@@ -180,8 +187,8 @@ struct MoreView: View {
                 Spacer()
                 
                 Text(viewType.rawValue.capitalized)
-                    .foregroundStyle(.gray)
-                    .font(.subheadline)
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .font(.headline)
             }
         }
     }
@@ -201,6 +208,20 @@ struct MoreView: View {
                 .tint(.green)
             }
         }
+    }
+    
+    private var DarkModeSection: some View {
+        Button(action: {
+            showColorSchemeSelections = true
+        }, label: {
+            HStack {
+                MoreRowView(imageName: "circle.lefthalf.filled", text: "Dark mode")
+                Spacer()
+                Text(scheme.title)
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .font(.headline)
+            }
+        })
     }
     
     func rateApp() {

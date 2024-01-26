@@ -13,6 +13,7 @@ struct NewsListItemView: View {
     var item: RSSFeedItem
 
     @AppStorage("appTint") var appTint: Color = .white
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -25,7 +26,7 @@ struct NewsListItemView: View {
             VStack(alignment: .leading, spacing: 6) {
                 if let title = item.title {
                     Text(title)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                         .font(.headline)
                         .multilineTextAlignment(.leading)
                 }
@@ -37,11 +38,10 @@ struct NewsListItemView: View {
                         .lineLimit(4, reservesSpace: true)
                 }
             }
-            .vSpacing(.top)
         }
         .padding(12)
-        .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
-        .frame(maxHeight: .infinity)
+        .frame(width: UIScreen.main.bounds.size.width - 20)
+        .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
         .shadow(radius: 4)
     }
 }

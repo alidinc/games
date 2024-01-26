@@ -54,6 +54,8 @@ struct EditLibraryView: View {
             .frame(height: 24, alignment: .leading)
             .padding()
             .clipShape(.rect(cornerRadius: 8))
+            .font(.headline)
+            .foregroundStyle(.gray)
             .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
             .padding(.horizontal)
             .autocorrectionDisabled()

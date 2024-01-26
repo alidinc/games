@@ -21,6 +21,7 @@ struct GameListItemView: View {
     
     @State var vm = GameDetailViewModel()
     @Environment(Admin.self) private var preferences
+    @Environment(\.colorScheme) var colorScheme
     
     init(game: Game? = nil, savedGame: SavedGame? = nil) {
         self.savedGame = savedGame
@@ -78,8 +79,8 @@ struct GameListItemView: View {
                 }
             }
             .padding(12)
-            .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
-            .frame(maxHeight: .infinity)
+            .frame(width: UIScreen.main.bounds.size.width - 20)
+            .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
             .shadow(radius: 4)
         }
     }
@@ -120,8 +121,8 @@ struct GameListItemView: View {
                 }
             }
             .padding(12)
-            .background(.gray.opacity(0.15), in: .rect(cornerRadius: 20))
-            .frame(maxHeight: .infinity)
+            .frame(width: UIScreen.main.bounds.size.width - 20)
+            .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
             .shadow(radius: 4)
         }
     }

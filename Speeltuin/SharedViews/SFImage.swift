@@ -12,6 +12,8 @@ struct SFImage: View {
     var name: String
     var config: SFConfig
     
+    @Environment(\.colorScheme) var colorScheme
+
     init(name: String, config: SFConfig = .init()) {
         self.name = name
         self.config = config
@@ -25,7 +27,7 @@ struct SFImage: View {
             .font(.system(size: config.iconSize))
             .bold(config.isBold)
             .foregroundStyle(config.color)
-            .background(Color.black.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
+            .background(colorScheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5), in: .rect(cornerRadius: config.radius))
     }
 }
 

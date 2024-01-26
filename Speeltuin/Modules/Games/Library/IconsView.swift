@@ -55,18 +55,24 @@ struct IconsView: View {
         } label: {
             HStack {
                 Text("Selected icon")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.headline)
+                    .foregroundStyle(.gray)
                 
                 Spacer()
                 
                 if !icon.isEmpty {
-                    SFImage(name: icon, config: .init(color: appTint))
+                    Image(systemName: icon)
+                        .foregroundStyle(appTint)
+                        .font(.headline)
+                        .bold()
                 } else {
-                    SFImage(name: "bookmark.fill", config: .init(color: .white.opacity(0.25)))
+                    Image(systemName: "bookmark.fill")
+                        .foregroundStyle(.primary.opacity(0.5))
+                        .font(.headline)
+                        .bold()
                 }
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, 12)
         }
         .padding(.horizontal)
         .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))

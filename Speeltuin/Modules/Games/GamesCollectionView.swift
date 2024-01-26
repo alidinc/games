@@ -25,17 +25,14 @@ struct GamesCollectionView: View {
         List {
             ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                 GameListItemView(game: game)
-                    .navigationLink({
-                        DetailView(game: game)
-                    })
-                    .listRowSeparator(.hidden)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
                     .task {
                         if self.vm.hasReachedEnd(of: game) {
                             await vm.fetchNextSetOfGames()
                         }
                     }
+                    .navigationLink({
+                        DetailView(game: game)
+                    })
                     .if(vm.dataFetchPhase.value?.last == game) { view in
                         view
                             .padding(.bottom, 100)
@@ -49,9 +46,13 @@ struct GamesCollectionView: View {
                             }
                     }
             }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)
+        .scrollContentBackground(.hidden)
     }
     
     private var GridView: some View {
@@ -72,8 +73,9 @@ struct GamesCollectionView: View {
                     }
                 }
             }
-            .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
+            .scrollContentBackground(.hidden)
+            .padding(.horizontal, 10)
             .if(vm.isFetchingNextPage) { view in
                 view
                     .padding(.bottom, 100)

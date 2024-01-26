@@ -12,6 +12,7 @@ struct SearchTextField: View {
     @Binding var searchQuery: String
     @Binding var prompt: String
     @AppStorage("appTint") var appTint: Color = .white
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack(spacing: 0) {
@@ -20,7 +21,7 @@ struct SearchTextField: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
                 .font(.subheadline)
-                .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
+                .background(colorScheme == .dark ? .quaternary : .tertiary, in: .rect(cornerRadius: 8))
                 .autocorrectionDisabled()
                 .overlay(alignment: .trailing) {
                     HStack {
@@ -35,7 +36,11 @@ struct SearchTextField: View {
                             .foregroundColor(.secondary)
                         }
                         
-                        SFImage(name: "magnifyingglass", config: .init(opacity: 0))
+                        Image(systemName: "magnifyingglass")
+                            .imageScale(.medium)
+                            .font(.headline)
+                            .padding(.trailing, 8)
+                            .foregroundStyle(.primary)
                     }
                 }
         }

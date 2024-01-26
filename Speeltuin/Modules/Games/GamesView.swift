@@ -35,7 +35,12 @@ struct GamesView: View {
         NavigationStack {
             VStack {
                 Header
+                SearchTextField(searchQuery: $vm.searchQuery,
+                                prompt: $vm.searchPlaceholder)
+                    .padding(.horizontal, 10)
+                
                 ViewSwitcher
+                    .overlay { GamesOverlayView() }
             }
             .background(.gray.opacity(0.15))
             .toolbarBackground(.hidden, for: .tabBar)
@@ -81,25 +86,14 @@ struct GamesView: View {
         }
     }
     
+    @ViewBuilder
     private var ViewSwitcher: some View {
-        ZStack {
-            VStack(spacing: 10) {
-                SearchTextField(searchQuery: $vm.searchQuery, prompt: $vm.searchPlaceholder)
-                
-                switch vm.dataType {
-                case .network:
-                    GamesCollectionView()
-                case .library:
-                    SavedCollectionView(games: vm.savedGames)
-                }
-            }
-            .padding(.top, 10)
-            .padding(.horizontal, 10)
-            .overlay {
-                GamesOverlayView(dataType: vm.dataType, filterType: vm.filterType)
-            }
+        switch vm.dataType {
+        case .network:
+            GamesCollectionView()
+        case .library:
+            SavedCollectionView()
         }
-        .padding(.bottom, 5)
     }
     
     private var Header: some View {
@@ -149,12 +143,8 @@ struct GamesView: View {
                     HapticsManager.shared.vibrateForSelection()
                 }
             }, label: {
-                SFImage(name: "xmark.circle.fill",
-                        config: .init(
-                            opacity: 0,
-                            padding: 0,
-                            color: vm.hasFilters ? appTint : .clear
-                        ))
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(vm.hasFilters ? appTint : .clear)
             })
             .offset(x: 18, y: -18)
         }

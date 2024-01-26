@@ -83,6 +83,7 @@
 		DA79C8BB2B61802800837DB3 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8BA2B61802800837DB3 /* News.swift */; };
 		DA79C8BD2B61D26900837DB3 /* UIKitTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8BC2B61D26900837DB3 /* UIKitTabView.swift */; };
 		DA79C8BF2B62699500837DB3 /* NewsGridItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8BE2B62699500837DB3 /* NewsGridItemView.swift */; };
+		DA79C8C12B63100400837DB3 /* ColorSchemeSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8C02B63100400837DB3 /* ColorSchemeSelections.swift */; };
 		DA8AF74E2B4FF93900C459DA /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AF74D2B4FF93900C459DA /* LibraryView.swift */; };
 		DA8AF7502B4FF9C700C459DA /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AF74F2B4FF9C700C459DA /* Library.swift */; };
 		DA93BE8A2B34EAC40047DD37 /* SimilarGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE892B34EAC40047DD37 /* SimilarGamesView.swift */; };
@@ -187,6 +188,7 @@
 		DA79C8BA2B61802800837DB3 /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		DA79C8BC2B61D26900837DB3 /* UIKitTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTabView.swift; sourceTree = "<group>"; };
 		DA79C8BE2B62699500837DB3 /* NewsGridItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsGridItemView.swift; sourceTree = "<group>"; };
+		DA79C8C02B63100400837DB3 /* ColorSchemeSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeSelections.swift; sourceTree = "<group>"; };
 		DA8AF74D2B4FF93900C459DA /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DA8AF74F2B4FF9C700C459DA /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		DA93BE892B34EAC40047DD37 /* SimilarGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarGamesView.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 				DA78AA312B4D93A3008F018C /* MoreRowView.swift */,
 				DAC503C52B344F57004D4B03 /* IconSelectionView.swift */,
 				DAD084222B6051C600D87112 /* ViewTypeSelections.swift */,
+				DA79C8C02B63100400837DB3 /* ColorSchemeSelections.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -436,17 +439,17 @@
 		DAAD3E552B40D121005E8EBA /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
-				DA79C8BC2B61D26900837DB3 /* UIKitTabView.swift */,
 				DAC503BE2B344827004D4B03 /* CloseButton.swift */,
-				DAAD3E522B40BD32005E8EBA /* SFImage.swift */,
-				DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */,
-				DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */,
 				DA44660C2B48747100361071 /* GradientMask.swift */,
 				DA78AA2D2B4D7DB2008F018C /* SafariView.swift */,
+				DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */,
+				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
 				DA772C902B4DA94600DD064A /* SegmentedView.swift */,
 				DAAD3E502B40B485005E8EBA /* SavingButton.swift */,
-				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
+				DAAD3E522B40BD32005E8EBA /* SFImage.swift */,
 				DAD084242B6059A800D87112 /* PickerHeaderView.swift */,
+				DA79C8BC2B61D26900837DB3 /* UIKitTabView.swift */,
+				DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -658,6 +661,7 @@
 				DA72D2D72B5462AA00A235C2 /* AddLibraryView.swift in Sources */,
 				DA78AA302B4D7F4A008F018C /* String+Extension.swift in Sources */,
 				DA8AF7502B4FF9C700C459DA /* Library.swift in Sources */,
+				DA79C8C12B63100400837DB3 /* ColorSchemeSelections.swift in Sources */,
 				DA0C208A2B3E637D000E2D6E /* GameModesView.swift in Sources */,
 				DA43CE5B2B30B69100DAE0B6 /* GamesView.swift in Sources */,
 				DA4B1BF82B43CD7E00EA3E8F /* Admin.swift in Sources */,

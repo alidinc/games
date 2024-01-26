@@ -25,10 +25,12 @@ struct MoreRowView: View {
             VStack(alignment: .leading) {
                 Text(self.text)
                     .font(.headline.bold())
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 
                 if let subtitle {
-                    Text(subtitle).font(.subheadline).foregroundStyle(.secondary)
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
                 }
             }
             Spacer()

@@ -12,6 +12,7 @@ struct SpeeltuinApp: App {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("colorScheme") private var scheme: SchemeType = .system
     
     @Environment(\.dismiss) var dismiss
     
@@ -32,7 +33,7 @@ struct SpeeltuinApp: App {
                 .tint(appTint)
                 .environment(preferences)
                 .environment(gamesViewModel)
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(setColorScheme())
             }
         }
         .modelContainer(
@@ -43,5 +44,17 @@ struct SpeeltuinApp: App {
             ],
             inMemory: false
         )
+    }
+    
+    
+    func setColorScheme() -> ColorScheme? {
+        switch self.scheme {
+        case .system:
+            return nil
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        }
     }
 }

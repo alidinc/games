@@ -10,9 +10,9 @@ import SwiftUI
 
 struct SavedCollectionView: View {
     
-    var games: [SavedGame]
     @AppStorage("viewType") var viewType: ViewType = .list
     @Environment(Admin.self) private var preferences: Admin
+    @Environment(GamesViewModel.self) private var vm
     
     var body: some View {
         switch viewType {
@@ -25,7 +25,7 @@ struct SavedCollectionView: View {
     
     private var ListView: some View {
         List {
-            ForEach(games, id: \.id) { savedGame in
+            ForEach(vm.savedGames, id: \.id) { savedGame in
                 if let game = savedGame.game {
                     switch preferences.networkStatus {
                     case .available:
@@ -55,7 +55,7 @@ struct SavedCollectionView: View {
     private var GridView: some View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
-                ForEach(games, id: \.id) { savedGame in
+                ForEach(vm.savedGames, id: \.id) { savedGame in
                     switch preferences.networkStatus {
                     case .available:
                         if let game = savedGame.game, let cover = game.cover, let url = cover.url {

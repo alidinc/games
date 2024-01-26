@@ -17,15 +17,8 @@ struct PickerHeaderView: View {
     var body: some View {
         HStack(alignment: .center, spacing: 4) {
             HStack {
-                SFImage(
-                    name: imageName,
-                    config: .init(
-                        opacity: 0,
-                        radius: 0,
-                        padding: 0,
-                        color: appTint
-                    )
-                )
+                Image(systemName: imageName)
+                    .foregroundStyle(appTint)
                 
                 Text(title)
                     .font(.system(size: 24, weight: .semibold))
@@ -33,16 +26,9 @@ struct PickerHeaderView: View {
                     .shadow(radius: 10)
             }
             
-            SFImage(
-                name: "chevron.down",
-                config: .init(
-                    opacity: 0,
-                    padding: 0,
-                    color: appTint,
-                    iconSize: 20,
-                    isBold: true
-                )
-            )
+            Image(systemName: "chevron.down")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(appTint)
         }
         .hSpacing(.leading)
     }

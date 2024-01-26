@@ -14,7 +14,6 @@ struct NewsView: View {
     @State var vm = NewsViewModel()
     @State var presentLink = false
     @State var selectedItem: RSSFeedItem?
-    
     @State var updateList = false
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
@@ -26,9 +25,8 @@ struct NewsView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                HeaderView
+                Header
                 ViewSwitcher
-                    
             }
             .background(.gray.opacity(0.15))
             .task(id: vm.newsType, priority: .background, {
@@ -96,29 +94,11 @@ struct NewsView: View {
         }
     }
     
-    var HeaderView: some View {
+    var Header: some View {
         HStack {
-            Menu {
-                Picker("", selection: $vm.newsType) {
-                    ForEach(NewsType.allCases, id: \.id) { news in
-                        Text(news.title).tag(news)
-                    }
-                }
-            } label: {
-                PickerHeaderView(title: vm.newsType.title, imageName: "newspaper.fill")
-            }
-            
+            NewsSourcePicker
             Spacer()
-            
-            VStack(alignment: .trailing) {
-                Text("Today")
-                    .font(.headline.bold())
-                    .foregroundStyle(.primary)
-                
-                Text(Date.now.asString(style: .medium))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
+            TodayView
         }
         .foregroundStyle(appTint)
         .padding(.horizontal)
@@ -132,6 +112,30 @@ struct NewsView: View {
             NewsListView
         case .grid:
             NewsGridView
+        }
+    }
+    
+    var NewsSourcePicker: some View {
+        Menu {
+            Picker("", selection: $vm.newsType) {
+                ForEach(NewsType.allCases, id: \.id) { news in
+                    Text(news.title).tag(news)
+                }
+            }
+        } label: {
+            PickerHeaderView(title: vm.newsType.title, imageName: "newspaper.fill")
+        }
+    }
+    
+    var TodayView: some View {
+        VStack(alignment: .trailing) {
+            Text("Today")
+                .font(.headline.bold())
+                .foregroundStyle(.primary)
+            
+            Text(Date.now.asString(style: .medium))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
         }
     }
     
@@ -188,17 +192,18 @@ struct NewsView: View {
                             NewsListItemView(item: item)
                         }
                     }
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
                 }
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
-            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
         }
         .id(updateList)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .padding(.bottom, 5)
-        .padding(.horizontal, 10)
         .listStyle(.plain)
         .overlay {
             LoadingView

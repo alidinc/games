@@ -116,11 +116,13 @@ struct ImagePlaceholder: View {
     
     var type: AsyncImageType
     
+    @Environment(\.colorScheme) var colorScheme
     @State var radius: CGFloat = 5
     
     var body: some View {
         Image(systemName: "photo")
             .font(.largeTitle)
+            .foregroundStyle(colorScheme == .dark ? .gray.opacity(0.5) : .black.opacity(0.5))
             .hSpacing(.center)
             .vSpacing(.center)
             .background(Color.black.opacity(0.25), in: .rect(cornerRadius: 8))

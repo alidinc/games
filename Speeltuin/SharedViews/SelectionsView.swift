@@ -48,7 +48,7 @@ struct SelectionsView: View {
     private var Header: some View {
         HStack {
             VStack {
-                Text("Select your \(selectedOption.rawValue)")
+                Text("Select your \(selectedOption.rawValue)s")
                     .font(.headline)
                     .foregroundStyle(.primary)
                     .multilineTextAlignment(.leading)
@@ -90,12 +90,8 @@ struct SelectionsView: View {
                 HapticsManager.shared.vibrateForSelection()
             }
         } label: {
-            SFImage(name: "slider.horizontal.3",
-                    config: .init(
-                        opacity: 0,
-                        padding: 0,
-                        color: vm.hasFilters ? appTint : .secondary
-                    ))
+            Image(systemName: "slider.horizontal.3")
+                .foregroundStyle(vm.hasFilters ? appTint : .secondary)
         }
     }
     

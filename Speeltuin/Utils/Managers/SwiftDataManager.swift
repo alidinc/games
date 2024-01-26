@@ -36,7 +36,7 @@ actor SwiftDataManager {
         
         if let cover = game.cover,
            let urlString = cover.url,
-           let url = URL(string: "https:\(urlString.replacingOccurrences(of: "t_thumb", with: "t_1080p"))") {
+           let url = URL(string: "https:\(urlString.replacingOccurrences(of: "t_thumb", with: "t_720p"))") {
             
             URLSession.shared.dataTaskPublisher(for: url)
                 .map(\.data)
