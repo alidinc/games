@@ -1,5 +1,5 @@
 //
-//  PreferencesViewModel.swift
+//  Admin.swift
 //  Speeltuin
 //
 //  Created by Ali Dinç on 02/01/2024.

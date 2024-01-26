@@ -11,6 +11,7 @@ import SwiftUI
 
 struct SegmentedView<SegmentItem: Hashable, SegmentContent: View>: View {
     
+    var fillColor: Color
     @Binding var selectedSegment: SegmentItem
     var segments: [SegmentItem]
     var segmentContent: (SegmentItem) -> SegmentContent
@@ -20,6 +21,7 @@ struct SegmentedView<SegmentItem: Hashable, SegmentContent: View>: View {
         HStack(spacing: 0) {
             ForEach(segments, id: \.self) { segment in
                 SegmentItemView(
+                    fillColor: fillColor,
                     segment: segment,
                     selectedSegment: $selectedSegment,
                     animation: animation
@@ -35,8 +37,7 @@ struct SegmentedView<SegmentItem: Hashable, SegmentContent: View>: View {
 
 private struct SegmentItemView<SegmentItem: Hashable, SegmentContent: View>: View {
     
-    @AppStorage("appTint") var appTint: Color = .white
-    
+    var fillColor: Color
     let segment: SegmentItem
     @Binding var selectedSegment: SegmentItem
     let animation: Namespace.ID
@@ -52,7 +53,7 @@ private struct SegmentItemView<SegmentItem: Hashable, SegmentContent: View>: Vie
             .background {
                 if selectedSegment == segment {
                     Capsule()
-                        .fill(appTint)
+                        .fill(fillColor)
                         .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                 }
             }

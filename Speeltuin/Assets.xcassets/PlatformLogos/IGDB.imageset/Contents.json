@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "igdb-logo-C79928BB48-seeklogo.com.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "icewind_logo.png",
       "idiom" : "universal"
     }

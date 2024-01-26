@@ -16,13 +16,12 @@ struct IntroView: View {
     @State private var animating = false
     
     var body: some View {
-        VStack(spacing: 15) {
+        VStack(alignment: .leading, spacing: 15) {
             
             Image(selectedAppIcon.title.lowercased())
                 .resizable()
                 .frame(width: 70, height: 70)
                 .scaledToFit()
-                .hSpacing(.leading)
                
             Text("Speeltuin: \nYour hub for organising and saving games in personalised libraries.")
                 .font(.title.bold())
@@ -50,10 +49,19 @@ struct IntroView: View {
                 )
             }
             .frame(maxWidth: .infinity, alignment: .bottom)
-            .padding(.horizontal, 15)
             
-            Spacer(minLength: 10)
+            Spacer()
             
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 80)
+        .background(
+            LinearGradient(colors: [.clear, .gray.opacity(0.5)], startPoint: .bottom, endPoint: .top)
+        )
+        .onAppear {
+            animating = true
+        }
+        .safeAreaInset(edge: .bottom) {
             Button(action: {
                 isFirstTime = false
             }, label: {
@@ -65,14 +73,7 @@ struct IntroView: View {
                     .background(appTint.gradient, in: .rect(cornerRadius: 12))
                     .contentShape(.rect)
             })
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 100)
-        .background(
-            LinearGradient(colors: [.clear, .gray.opacity(0.5)], startPoint: .bottom, endPoint: .top)
-        )
-        .onAppear {
-            animating = true
+            .padding(.horizontal, 20)
         }
     }
     

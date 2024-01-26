@@ -23,7 +23,7 @@ enum SelectionOption: String, CaseIterable, Identifiable {
 struct SelectionsView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint")        var appTint: Color = .white
     
     @Environment(GamesViewModel.self) private var vm: GamesViewModel
     @State var selectedOption: SelectionOption = .platform
@@ -35,7 +35,8 @@ struct SelectionsView: View {
     var body: some View {
         VStack(spacing: 0) {
             Header
-            SegmentedView(selectedSegment: $selectedOption,
+            SegmentedView(fillColor: appTint,
+                          selectedSegment: $selectedOption,
                           segments: SelectionOption.allCases,
                           segmentContent: { item in
                 Text(item.rawValue.capitalized)

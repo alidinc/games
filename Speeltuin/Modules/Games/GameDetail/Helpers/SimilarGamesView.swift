@@ -12,6 +12,7 @@ struct SimilarGamesView: View {
     var similarGames: [Game]
     
     @State private var isExpanded = true
+    @Environment(\.colorScheme) var colorScheme
     
     @ViewBuilder
     var body: some View {
@@ -32,7 +33,7 @@ struct SimilarGamesView: View {
                     }
                 }
                 .padding(.top)
-                .fadeOutSides(length: 100, side: .trailing)
+                .fadeOutSides(side: .trailing)
             },
             label: {
                 Text("Similar games")
@@ -41,7 +42,7 @@ struct SimilarGamesView: View {
             }
         )
         .padding()
-        .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         .padding(.horizontal)
         .onTapGesture {
             isExpanded.toggle()

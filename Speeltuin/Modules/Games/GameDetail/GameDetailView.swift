@@ -13,6 +13,8 @@ struct GameDetailView: View {
     
     @State var vm = GameDetailViewModel()
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 30) {
@@ -65,7 +67,7 @@ struct GameDetailView: View {
                 }
             }
         }
-        .padding(.bottom, 5)
+        .padding(.bottom, 1)
         .background(.gray.opacity(0.15))
         .ignoresSafeArea(edges: .top)
         .scrollIndicators(.hidden)
@@ -86,7 +88,7 @@ struct GameDetailView: View {
             }
         }
         .padding()
-        .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         .padding(.horizontal)
     }
 }

@@ -20,7 +20,7 @@ struct CapsuleView: View {
                 case .sf:
                     Image(systemName: imageName)
                         .font(.system(size: 18))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.primary)
                     
                 case .asset:
                     Image(imageName)

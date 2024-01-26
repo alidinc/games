@@ -12,6 +12,8 @@ struct VideosView: View {
     
     var game: Game
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var videoURLs: [String] {
         var urls = [String]()
         guard let videos = self.game.videos?.compactMap({$0.videoID ?? ""}) else {
@@ -43,7 +45,7 @@ struct VideosView: View {
                     .foregroundColor(.secondary)
             }
             .padding()
-            .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+            .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
             .padding(.horizontal)
         }
     }

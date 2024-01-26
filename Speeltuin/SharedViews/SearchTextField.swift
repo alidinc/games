@@ -10,8 +10,8 @@ import SwiftUI
 struct SearchTextField: View {
     
     @Binding var searchQuery: String
-    @Binding var prompt: String
-    @AppStorage("appTint") var appTint: Color = .white
+    var prompt: String
+    
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {

@@ -11,12 +11,12 @@ import SwiftUI
 struct GamesOverlayView: View {
      
     @Environment(GamesViewModel.self) private var vm
-    @Environment(Admin.self) private var preferences
+    @Environment(Admin.self) private var admin
     
     var body: some View {
         switch vm.dataType {
         case .network:
-            switch preferences.networkStatus {
+            switch admin.networkStatus {
             case .available:
                 switch vm.dataFetchPhase {
                 case .empty:

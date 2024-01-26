@@ -48,7 +48,7 @@ struct ColorSchemeSelections: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                MoreHeaderTextView(title: "Color mode", subtitle: "Select a mode you like.")
+                MoreHeaderTextView(title: "Color scheme", subtitle: "This will affect the system color scheme.")
                 Spacer()
                 CloseButton { self.dismiss() }
             }

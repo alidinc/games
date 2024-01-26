@@ -60,7 +60,7 @@ extension MoreView {
             showColorSchemeSelections = true
         }, label: {
             HStack {
-                MoreRowView(imageName: "circle.lefthalf.filled", text: "Dark mode")
+                MoreRowView(imageName: "circle.lefthalf.filled", text: "Color scheme")
                 Spacer()
                 Text(scheme.title)
                     .foregroundStyle(.gray.opacity(0.5))

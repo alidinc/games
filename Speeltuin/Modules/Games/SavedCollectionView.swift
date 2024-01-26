@@ -11,7 +11,7 @@ import SwiftUI
 struct SavedCollectionView: View {
     
     @AppStorage("viewType") var viewType: ViewType = .list
-    @Environment(Admin.self) private var preferences: Admin
+    @Environment(Admin.self) private var admin: Admin
     @Environment(GamesViewModel.self) private var vm
     
     var body: some View {
@@ -27,7 +27,7 @@ struct SavedCollectionView: View {
         List {
             ForEach(vm.savedGames, id: \.id) { savedGame in
                 if let game = savedGame.game {
-                    switch preferences.networkStatus {
+                    switch admin.networkStatus {
                     case .available:
                         GameListItemView(game: game)
                             .navigationLink({
@@ -35,7 +35,7 @@ struct SavedCollectionView: View {
                             })
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
-                            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
                     case .unavailable:
                         GameListItemView(savedGame: savedGame)
                             .navigationLink {
@@ -43,7 +43,7 @@ struct SavedCollectionView: View {
                             }
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
-                            .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
                     }
                 }
             }
@@ -56,7 +56,7 @@ struct SavedCollectionView: View {
         ScrollView(showsIndicators: false) {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                 ForEach(vm.savedGames, id: \.id) { savedGame in
-                    switch preferences.networkStatus {
+                    switch admin.networkStatus {
                     case .available:
                         if let game = savedGame.game, let cover = game.cover, let url = cover.url {
                             NavigationLink {

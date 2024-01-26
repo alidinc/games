@@ -31,6 +31,7 @@ struct AddLibraryView: View {
         NavigationStack {
             ScrollView {
                 VStack {
+                    RemainingLibraryCountView
                     NameView
                     IconsView(icon: $icon)
                 }
@@ -39,10 +40,7 @@ struct AddLibraryView: View {
             .navigationTitle("Add library")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
-                VStack {
-                    RemainingLibraryCountView
-                    AddButton
-                }
+                AddButton
                 .safeAreaPadding(.bottom)
             }
             .toolbar {

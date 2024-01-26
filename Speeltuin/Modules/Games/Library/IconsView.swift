@@ -25,7 +25,7 @@ struct IconsView: View {
     var body: some View {
         DisclosureGroup {
             VStack {
-                SearchTextField(searchQuery: $query, prompt: .constant("Search a symbol"))
+                SearchTextField(searchQuery: $query, prompt: "Search a symbol")
                 
                 ScrollView {
                     LazyVGrid(columns: [GridItem(), GridItem(), GridItem(), GridItem(), GridItem()], content: {
@@ -50,7 +50,7 @@ struct IconsView: View {
                         }
                     })
                 }
-                .frame(height: 175)
+                .frame(height: 200)
             }
         } label: {
             HStack {

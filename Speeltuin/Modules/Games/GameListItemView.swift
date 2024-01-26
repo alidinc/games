@@ -20,7 +20,7 @@ struct GameListItemView: View {
     var savedGame: SavedGame?
     
     @State var vm = GameDetailViewModel()
-    @Environment(Admin.self) private var preferences
+    @Environment(Admin.self) private var admin
     @Environment(\.colorScheme) var colorScheme
     
     init(game: Game? = nil, savedGame: SavedGame? = nil) {
@@ -29,7 +29,7 @@ struct GameListItemView: View {
     }
     
     var body: some View {
-        switch preferences.networkStatus {
+        switch admin.networkStatus {
         case .unavailable:
             LocalView
         case .available:

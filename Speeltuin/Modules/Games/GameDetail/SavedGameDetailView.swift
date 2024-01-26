@@ -11,6 +11,8 @@ struct SavedGameDetailView: View {
     
     var savedGame: SavedGame
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -54,7 +56,7 @@ struct SavedGameDetailView: View {
                 
             }
         }
-        .padding(.bottom, 5)
+        .padding(.bottom, 1)
         .background(.gray.opacity(0.15))
         .ignoresSafeArea(edges: savedGame.imageData != nil ? .top : .leading)
         .scrollIndicators(.hidden)
@@ -74,7 +76,7 @@ struct SavedGameDetailView: View {
             }
         }
         .padding()
-        .background(.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         .padding(.horizontal)
     }
 }

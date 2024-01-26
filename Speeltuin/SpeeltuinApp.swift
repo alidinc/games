@@ -11,7 +11,7 @@ import SwiftUI
 struct SpeeltuinApp: App {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint")     private var appTint: Color = .white
     @AppStorage("colorScheme") private var scheme: SchemeType = .system
     
     @Environment(\.dismiss) var dismiss
@@ -26,9 +26,15 @@ struct SpeeltuinApp: App {
                     .preferredColorScheme(.dark)
             } else {
                 UIKitTabView([
-                    UIKitTabView.Tab(view: GamesView(vm: gamesViewModel), barItem: UITabBarItem(title: "Games", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)),
-                    UIKitTabView.Tab(view: NewsView(), barItem: UITabBarItem(title: "News", image: UIImage(systemName: "newspaper.fill"), tag: 1)),
-                    UIKitTabView.Tab(view: MoreView(), barItem: UITabBarItem(title: "More", image: UIImage(systemName: "ellipsis.circle.fill"), tag: 1)),
+                    UIKitTabView.Tab(view: 
+                                        GamesView(vm: gamesViewModel), 
+                                        barItem: UITabBarItem(title: "Games", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)),
+                    UIKitTabView.Tab(view:
+                                        NewsView(),
+                                        barItem: UITabBarItem(title: "News", image: UIImage(systemName: "newspaper.fill"), tag: 1)),
+                    UIKitTabView.Tab(view: 
+                                        MoreView(), 
+                                        barItem: UITabBarItem(title: "More", image: UIImage(systemName: "ellipsis.circle.fill"), tag: 1)),
                 ])
                 .tint(appTint)
                 .environment(preferences)
@@ -45,7 +51,6 @@ struct SpeeltuinApp: App {
             inMemory: false
         )
     }
-    
     
     func setColorScheme() -> ColorScheme? {
         switch self.scheme {

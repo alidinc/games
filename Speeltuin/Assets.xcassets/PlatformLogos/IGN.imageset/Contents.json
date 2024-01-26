@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "output-onlinepngtools.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "344-3445721_ign-logo-png-white.png",
       "idiom" : "universal"
     }

@@ -28,6 +28,7 @@ struct NewsView: View {
                 Header
                 ViewSwitcher
             }
+            .padding(.bottom, 1)
             .background(.gray.opacity(0.15))
             .task(id: vm.newsType, priority: .background, {
                 await vm.fetchNews()
@@ -169,7 +170,6 @@ struct NewsView: View {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
-        .padding(.bottom, 5)
         .overlay {
             LoadingView
         }
@@ -203,7 +203,6 @@ struct NewsView: View {
         .id(updateList)
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
-        .padding(.bottom, 5)
         .listStyle(.plain)
         .overlay {
             LoadingView

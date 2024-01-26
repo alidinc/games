@@ -14,8 +14,6 @@ struct GamesView: View {
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .white
     
-    @Environment(Admin.self) private var preferences
-    
     @State var vm: GamesViewModel
     
     @State private var showLibraries = false
@@ -36,12 +34,14 @@ struct GamesView: View {
             VStack {
                 Header
                 SearchTextField(searchQuery: $vm.searchQuery,
-                                prompt: $vm.searchPlaceholder)
+                                prompt: vm.searchPlaceholder)
+                
                     .padding(.horizontal, 10)
                 
                 ViewSwitcher
                     .overlay { GamesOverlayView() }
             }
+            .padding(.bottom, 1)
             .background(.gray.opacity(0.15))
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
@@ -81,6 +81,7 @@ struct GamesView: View {
                 vm.onChangeGenres(for: savedGames, newValue: newValue)
             })
             .onChange(of: vm.searchQuery) { _, newValue in
+                
                 vm.onChangeQuery(for: savedGames, newValue: newValue)
             }
         }

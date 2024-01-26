@@ -36,6 +36,7 @@ struct MoreView: View {
                 FeedbackSection
                 AboutSection
             }
+            .padding(.bottom, 1)
             .scrollContentBackground(.hidden)
             .background(.gray.opacity(0.15))
             .confirmationDialog("Rate us", isPresented: $showAppStore, titleVisibility: .visible, actions: {

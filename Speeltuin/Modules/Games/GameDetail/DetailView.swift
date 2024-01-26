@@ -12,7 +12,7 @@ struct DetailView: View {
     var game: Game?
     var savedGame: SavedGame?
     
-    @Environment(Admin.self) private var preferences
+    @Environment(Admin.self) private var admin
     
     init(game: Game? = nil, savedGame: SavedGame? = nil) {
         self.savedGame = savedGame
@@ -20,7 +20,7 @@ struct DetailView: View {
     }
     
     var body: some View {
-        switch preferences.networkStatus {
+        switch admin.networkStatus {
         case .unavailable:
             if let savedGame {
                 SavedGameDetailView(savedGame: savedGame)

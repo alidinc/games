@@ -11,6 +11,7 @@ struct AboutView: View {
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.openURL) var openURL
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         NavigationView {
@@ -40,7 +41,7 @@ struct AboutView: View {
         } label: {
             MoreRowView(imageName: "person.fill", text: "Team")
                 .padding(16)
-                .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         }
     }
     
@@ -50,28 +51,8 @@ struct AboutView: View {
         } label: {
             MoreRowView(imageName: "network", text: "Credits")
                 .padding(16)
-                .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         }
-    }
-    
-    private func CreditPlatformView(text: String, logoName: String) -> some View {
-        HStack(spacing: 0) {
-            Text(text)
-                .font(.subheadline.bold())
-                .foregroundColor(.secondary)
-            
-            Spacer()
-            
-            Image(logoName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 100)
-                .hSpacing(.trailing)
-        }
-        .hSpacing(.leading)
-        .padding()
-        .frame(height: 50)
-        .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
     }
     
     private var TeamView: some View {
@@ -101,13 +82,33 @@ struct AboutView: View {
         }
     }
     
+    private func CreditPlatformView(text: String, logoName: String) -> some View {
+        HStack(spacing: 0) {
+            Text(text)
+                .font(.subheadline.bold())
+                .foregroundColor(.secondary)
+            
+            Spacer()
+            
+            Image(logoName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80, height: 80)
+                .hSpacing(.trailing)
+        }
+        .hSpacing(.leading)
+        .padding()
+        .frame(height: 80)
+        .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
+    }
+    
     @ViewBuilder
     private func TeamMemberView(with urlString: String, name: String, subtitle: String) -> some View {
         if let url = URL(string: urlString) {
             Link(destination: url) {
                 MoreRowView(imageName: "person.fill", text: name, subtitle: subtitle)
                     .padding(16)
-                    .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                    .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
                     .overlay(alignment: .trailing) {
                         Image(systemName: "info")
                             .resizable()
