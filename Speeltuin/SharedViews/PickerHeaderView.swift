@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PickerHeaderView: View {
     
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     
     var title: String
     var imageName: String

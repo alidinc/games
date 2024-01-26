@@ -12,7 +12,7 @@ struct GamesView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("viewType") var viewType: ViewType = .list
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     
     @State var vm: GamesViewModel
     

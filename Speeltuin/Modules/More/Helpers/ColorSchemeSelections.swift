@@ -41,7 +41,7 @@ enum SchemeType: Int, Identifiable, CaseIterable {
 struct ColorSchemeSelections: View {
 
     @AppStorage("colorScheme") private var scheme: SchemeType = .system
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     

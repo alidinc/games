@@ -10,7 +10,7 @@ import SwiftUI
 struct IntroView: View {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color =  .blue
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
     
     @State private var animating = false

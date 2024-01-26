@@ -11,6 +11,7 @@ import UIKit
 struct UIKitTabView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
+    @State private var tabBarId = ""
     
     var viewControllers: [UIHostingController<AnyView>]
 
@@ -25,6 +26,11 @@ struct UIKitTabView: View {
     var body: some View {
         TabBarController(controllers: viewControllers)
             .edgesIgnoringSafeArea(.all)
+            .id(tabBarId)
+            .onChange(of: hapticsEnabled) { oldValue, newValue in
+                tabBarId = UUID().uuidString
+                
+            }
     }
 
     struct Tab {

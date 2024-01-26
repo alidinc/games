@@ -23,7 +23,7 @@ enum SelectionOption: String, CaseIterable, Identifiable {
 struct SelectionsView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("appTint")        var appTint: Color = .white
+    @AppStorage("appTint")        var appTint: Color = .blue
     
     @Environment(GamesViewModel.self) private var vm: GamesViewModel
     @State var selectedOption: SelectionOption = .platform

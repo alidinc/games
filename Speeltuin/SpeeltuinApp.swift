@@ -11,7 +11,7 @@ import SwiftUI
 struct SpeeltuinApp: App {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
-    @AppStorage("appTint")     private var appTint: Color = .white
+    @AppStorage("appTint")     private var appTint: Color = .blue
     @AppStorage("colorScheme") private var scheme: SchemeType = .system
     
     @Environment(\.dismiss) var dismiss

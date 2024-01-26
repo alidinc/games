@@ -57,7 +57,7 @@ struct IconSelectionView: View {
     
     private let customIcons: [DeviceAppIcon] = [.system, .space, .sunset, .forest, .indigo, .gold, .ocean]
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {

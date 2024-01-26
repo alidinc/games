@@ -45,7 +45,7 @@ struct GameListItemView: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .shadow(color: .white.opacity(0.7), radius: 10)
+                        .shadow(color: colorScheme == .dark ? .white.opacity(0.7) : .clear, radius: 10)
                         .frame(width: 120, height: 160)
                         .clipShape(.rect(cornerRadius: 5))
                 }
@@ -81,7 +81,7 @@ struct GameListItemView: View {
             .padding(12)
             .frame(width: UIScreen.main.bounds.size.width - 20)
             .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
-            .shadow(radius: 4)
+            .shadow(radius: colorScheme == .dark ? 4 : 2)
         }
     }
     
@@ -91,7 +91,7 @@ struct GameListItemView: View {
             HStack(alignment: .top, spacing: 10) {
                 if let cover = game.cover, let url = cover.url {
                     AsyncImageView(with: url, type: .list)
-                        .shadow(radius: 4)
+                        .shadow(radius: colorScheme == .dark ? 4 : 0)
                 }
                 
                 VStack(alignment: .leading, spacing: 6) {
@@ -123,7 +123,7 @@ struct GameListItemView: View {
             .padding(12)
             .frame(width: UIScreen.main.bounds.size.width - 20)
             .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
-            .shadow(radius: 4)
+            .shadow(radius: colorScheme == .dark ? 4 : 2)
         }
     }
     

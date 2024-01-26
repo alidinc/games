@@ -10,7 +10,8 @@ import SwiftUI
 
 struct MoreRowView: View {
     
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
+    @Environment(\.colorScheme) var colorScheme
     
     @State var imageName: String
     @State var text: String

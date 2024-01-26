@@ -11,7 +11,7 @@ import SwiftUI
 struct LibraryView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context

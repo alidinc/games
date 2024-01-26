@@ -12,7 +12,7 @@ struct IconsView: View {
     @Binding var icon: String
     
     @State private var query = ""
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     
     var symbols: [String] {
         if self.query.isEmpty {

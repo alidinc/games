@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EditLibraryView: View {
     
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     @Bindable var library: Library
     
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel

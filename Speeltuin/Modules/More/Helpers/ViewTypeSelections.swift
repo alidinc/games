@@ -10,7 +10,7 @@ import SwiftUI
 struct ViewTypeSelections: View {
     
     @AppStorage("viewType") private var viewType: ViewType = .list
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) var dismiss
     
     var body: some View {

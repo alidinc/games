@@ -12,7 +12,7 @@ struct NewsListItemView: View {
     
     var item: RSSFeedItem
 
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -42,6 +42,6 @@ struct NewsListItemView: View {
         .padding(12)
         .frame(width: UIScreen.main.bounds.size.width - 20)
         .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
-        .shadow(radius: 4)
+        .shadow(radius: colorScheme == .dark ? 4 : 2)
     }
 }

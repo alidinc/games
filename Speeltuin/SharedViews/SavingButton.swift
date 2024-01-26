@@ -14,7 +14,7 @@ struct SavingButton: View {
     var game: Game
     var opacity: CGFloat
     
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
    
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context

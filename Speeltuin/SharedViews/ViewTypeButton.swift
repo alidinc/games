@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ViewTypeButton: View {
     
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color =  .blue
     @AppStorage("viewType") var viewType: ViewType = .list
     
     var body: some View {

@@ -11,8 +11,9 @@ import SwiftUI
 struct NewsGridItemView: View {
     
     var onSelect: () -> Void
-    
     var item: RSSFeedItem
+    
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         Button {

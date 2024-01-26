@@ -10,7 +10,7 @@ import SwiftUI
 
 struct AddLibraryView: View {
     
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     
     var game: Game?
    

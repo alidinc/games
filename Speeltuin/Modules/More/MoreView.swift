@@ -11,7 +11,7 @@ import SwiftUI
 struct MoreView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("appTint") var appTint: Color = .white
+    @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("selectedIcon") var selectedAppIcon: DeviceAppIcon = .system
     @AppStorage("colorScheme") var scheme: SchemeType = .system
