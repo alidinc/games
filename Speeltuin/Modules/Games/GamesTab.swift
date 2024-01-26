@@ -49,7 +49,6 @@ extension GamesTab {
             ViewSwitcher
         }
         .padding(.bottom, 1)
-        .padding(.horizontal, 20)
         .background(.gray.opacity(0.15))
         .toolbarBackground(.hidden, for: .tabBar)
         .toolbarBackground(.hidden, for: .navigationBar)

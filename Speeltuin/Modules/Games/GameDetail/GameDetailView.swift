@@ -13,6 +13,7 @@ struct GameDetailView: View {
     var savedGame: SavedGame?
     
     @State var vm = GameDetailViewModel()
+    @Environment(GamesViewModel.self) private var gamesVM
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
@@ -57,13 +58,9 @@ struct GameDetailView: View {
         }
         .padding(.bottom, 1)
         .background(.gray.opacity(0.15))
+        .ignoresSafeArea(edges: game != nil ? .top : .leading)
         .ignoresSafeArea(edges: savedGame?.imageData != nil ? .top : .leading)
         .scrollIndicators(.hidden)
-        .onReselect {
-            withAnimation {
-                dismiss()
-            }
-        }
     }
     
     private func Header(game: Game) -> some View {
@@ -121,6 +118,6 @@ struct GameDetailView: View {
             }
         }
         .padding()
-        .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
+        .background(colorScheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5), in: .rect(cornerRadius: 10))
     }
 }

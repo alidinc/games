@@ -83,6 +83,7 @@ struct GamesLocalView: View {
             }
             .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
+            .padding(.horizontal, 10)
         }
     }
 }

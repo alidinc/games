@@ -18,6 +18,7 @@ struct SpeeltuinApp: App {
     
     @State private var preferences = Admin()
     @State private var gamesViewModel = GamesViewModel()
+    @State private var newsViewModel = NewsViewModel()
     
     @State private var activeTab: Tab = .games
     
@@ -27,22 +28,21 @@ struct SpeeltuinApp: App {
                 IntroView()
                     .preferredColorScheme(.dark)
             } else {
-                NavigableTabView {
-                    NavigableTabViewItem(tabSelection: .games, imageName: "gamecontroller.fill") {
-                        GamesTab(vm: gamesViewModel)
-                    }
-                    
-                    NavigableTabViewItem(tabSelection: .news, imageName: "newspaper.fill") {
-                        NewsTab()
-                    }
-                    
-                    NavigableTabViewItem(tabSelection: .more, imageName: "ellipsis.circle.fill") {
-                        MoreTab()
-                    }
-                }
+                UIKitTabView([
+                    UIKitTabView.Tab(view:
+                                        GamesTab(vm: gamesViewModel),
+                                     barItem: UITabBarItem(title: "Games", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)),
+                    UIKitTabView.Tab(view:
+                                        NewsTab(vm: newsViewModel),
+                                     barItem: UITabBarItem(title: "News", image: UIImage(systemName: "newspaper.fill"), tag: 1)),
+                    UIKitTabView.Tab(view:
+                                        MoreTab(),
+                                     barItem: UITabBarItem(title: "More", image: UIImage(systemName: "ellipsis.circle.fill"), tag: 1)),
+                ])
                 .tint(appTint)
                 .environment(preferences)
                 .environment(gamesViewModel)
+                .environment(newsViewModel)
                 .preferredColorScheme(setColorScheme())
             }
         }

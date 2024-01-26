@@ -37,6 +37,10 @@ class GamesViewModel {
         
         headerTitle = fetchTaskToken.category.title
         headerImageName = fetchTaskToken.category.systemImage
+        
+        Task {
+            await self.fetchGames()
+        }
     }
 }
 

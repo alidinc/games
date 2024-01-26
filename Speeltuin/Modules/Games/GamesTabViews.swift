@@ -28,9 +28,11 @@ extension GamesTab {
                 FiltersButton
                 LibraryButton
             }
+            .padding(.horizontal, 20)
             
             SearchTextField(searchQuery: $vm.searchQuery,
                             prompt: vm.searchPlaceholder)
+            .padding(.horizontal, 10)
             
         }
         .padding(.top)

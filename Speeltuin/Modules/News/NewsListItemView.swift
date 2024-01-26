@@ -29,6 +29,7 @@ struct NewsListItemView: View {
                         .foregroundStyle(.primary)
                         .font(.headline)
                         .multilineTextAlignment(.leading)
+                        .lineLimit(3, reservesSpace: true)
                 }
                 
                 if let description = item.description, let desc = description.htmlToString() {
@@ -38,6 +39,8 @@ struct NewsListItemView: View {
                         .lineLimit(4, reservesSpace: true)
                 }
             }
+            
+            Spacer()
         }
         .padding(12)
         .frame(width: UIScreen.main.bounds.size.width - 20)

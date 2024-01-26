@@ -21,9 +21,9 @@ enum Category: String, CaseIterable {
         case .newReleases:
             return "first_release_date > \(threeMonthsBackIntervalString) & first_release_date < \(todayIntervalString) & cover.url != n"
         case .upcoming:
-            return " cover.url != n & first_release_date > \(threeMonthsBackIntervalString)"
+            return "cover.url != n & first_release_date > \(threeMonthsBackIntervalString)"
         case .database:
-            return "cover.url != n"
+            return "cover.url != n & genres.name != n & name != n & platforms != n & total_rating != n & first_release_date != n"
         }
     }
     
@@ -40,9 +40,7 @@ enum Category: String, CaseIterable {
     
     var sortBy: Sort {
         switch self {
-        case .topRated, .newReleases, .database:
-            return .DESCENDING
-        case .upcoming:
+        default:
             return .DESCENDING
         }
     }

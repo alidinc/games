@@ -45,7 +45,7 @@ struct VideosView: View {
                     .foregroundColor(.secondary)
             }
             .padding()
-            .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
+            .background(colorScheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5), in: .rect(cornerRadius: 10))
         }
     }
 }

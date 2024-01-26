@@ -24,6 +24,12 @@ class NewsViewModel {
     
     var newsType: NewsType = .all
     
+    init() {
+        Task {
+            await self.fetchNews()
+        }
+    }
+    
     func groupedAndSortedItems(items: [RSSFeedItem]) -> [(String, [RSSFeedItem])] {
         let groupedItems = Dictionary(grouping: items) { item in
             // Customize the date format based on your needs

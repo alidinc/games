@@ -11,7 +11,6 @@ import SafariServices
 
 struct NewsTab: View {
     
-    @State var vm = NewsViewModel()
     @State var presentLink = false
     @State var selectedItem: RSSFeedItem?
     @State var updateList = false
@@ -21,6 +20,7 @@ struct NewsTab: View {
     @AppStorage("viewType") var viewType: ViewType = .list
     
     @Environment(Admin.self) private var admin: Admin
+    @State var vm: NewsViewModel
     
     var body: some View {
         NavigationStack {
@@ -30,9 +30,6 @@ struct NewsTab: View {
             }
             .padding(.bottom, 1)
             .background(.gray.opacity(0.15))
-            .task(id: vm.newsType, priority: .background, {
-                await vm.fetchNews()
-            })
             .sheet(item: $selectedItem, content: { item in
                 if let urlString = item.link, let url = URL(string: urlString) {
                     SFSafariView(url: url)
