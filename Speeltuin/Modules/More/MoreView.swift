@@ -12,23 +12,22 @@ struct MoreView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .white
-    @AppStorage("viewType") private var viewType: ViewType = .list
-    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
-    @AppStorage("colorScheme") private var scheme: SchemeType = .system
-    
+    @AppStorage("viewType") var viewType: ViewType = .list
+    @AppStorage("selectedIcon") var selectedAppIcon: DeviceAppIcon = .system
+    @AppStorage("colorScheme") var scheme: SchemeType = .system
     @Environment(\.openURL) var openURL
-    @State private var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
+    @State var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
                                             subject: "Support Email",
                                             messageHeader: "Please describe your issue below.")
     
-    @State private var showMailApp = false
-    @State private var showAbout = false
-    @State private var showIcons = false
-    @State private var showSendEmail = false
-    @State private var showAppStore = false
-    @State private var showStyleSelections = false
-    @State private var showColorSchemeSelections = false
-    @State private var showAlertNoDefaulEmailFound = false
+    @State var showMailApp = false
+    @State var showAbout = false
+    @State var showIcons = false
+    @State var showSendEmail = false
+    @State var showAppStore = false
+    @State var showStyleSelections = false
+    @State var showColorSchemeSelections = false
+    @State var showAlertNoDefaulEmailFound = false
     
     var body: some View {
         NavigationStack {
@@ -47,23 +46,7 @@ struct MoreView: View {
                 }
             })
             .confirmationDialog("Send an email", isPresented: $showSendEmail, titleVisibility: .visible, actions: {
-                Button {
-                    self.email.send(openURL: self.openURL) { didSend in
-                        showAlertNoDefaulEmailFound = !didSend
-                    }
-                } label: {
-                    Text("Default email app")
-                }
                 
-                if MailView.canSendMail {
-                    Button {
-                        self.showMailApp = true
-                    } label: {
-                        Text("iOS email app")
-                    }
-                } else {
-                    
-                }
             })
             .alert("No default email app found", isPresented: $showAlertNoDefaulEmailFound, actions: {
                 Button {
@@ -115,113 +98,6 @@ struct MoreView: View {
         }
         .padding(.horizontal)
         .padding(.vertical, 10)
-    }
-    
-    private var SettingsSection: some View {
-        Section("Settings") {
-            ShowIconsSection
-            ViewTypeSection
-            HapticsSection
-            DarkModeSection
-            ColorPicker(selection: $appTint, supportsOpacity: false, label: {
-                MoreRowView(imageName: "swatchpalette.fill", text: "Tint color")
-            })
-        }
-    }
-    
-    private var FeedbackSection: some View {
-        Section("Feedback") {
-            ForEach(Feedback.allCases, id: \.id) { feedback in
-                switch feedback {
-                case .rate:
-                    Button(action: {
-                        showAppStore = true
-                    }, label: {
-                        MoreRowView(imageName: feedback.imageName, text: feedback.title)
-                    })
-                case .email:
-                    Button(action: {
-                        showSendEmail = true
-                    }, label: {
-                        MoreRowView(imageName: feedback.imageName, text: feedback.title)
-                    })
-                case .share:
-                    ShareLink(item: Constants.AppStoreURL) {
-                        MoreRowView(imageName: feedback.imageName, text: feedback.title)
-                    }
-                }
-            }
-        }
-    }
-    
-    private var AboutSection: some View {
-        Section("About") {
-            Button {
-                self.showAbout.toggle()
-            } label: {
-                MoreRowView(imageName: "info.circle.fill", text: "About")
-            }
-        }
-    }
-    
-    private var ShowIconsSection: some View {
-        Button {
-            self.showIcons.toggle()
-        } label: {
-            HStack {
-                MoreRowView(imageName: "apps.iphone", text: " App icon")
-                Spacer()
-                Text(selectedAppIcon.title)
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .font(.headline)
-            }
-        }
-    }
-    
-    private var ViewTypeSection: some View {
-        Button {
-            showStyleSelections = true
-        } label: {
-            HStack {
-                MoreRowView(imageName: "rectangle.grid.1x2.fill", text: "View style")
-                Spacer()
-                
-                Text(viewType.rawValue.capitalized)
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .font(.headline)
-            }
-        }
-    }
-    
-    private var HapticsSection: some View {
-        Button {
-            hapticsEnabled.toggle()
-            if hapticsEnabled {
-                HapticsManager.shared.vibrate(type: .success)
-            }
-        } label: {
-            HStack {
-                MoreRowView(imageName: "hand.tap.fill", text: "Haptics")
-                Spacer()
-                Toggle(isOn: $hapticsEnabled, label: {
-                })
-                .tint(.green)
-            }
-        }
-    }
-    
-    private var DarkModeSection: some View {
-        Button(action: {
-            showColorSchemeSelections = true
-        }, label: {
-            HStack {
-                MoreRowView(imageName: "circle.lefthalf.filled", text: "Dark mode")
-                Spacer()
-                Text(scheme.title)
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .font(.headline)
-            }
-        })
     }
     
     func rateApp() {
