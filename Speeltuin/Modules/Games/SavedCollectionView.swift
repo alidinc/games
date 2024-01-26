@@ -33,27 +33,25 @@ struct SavedCollectionView: View {
                             .navigationLink({
                                 DetailView(game: game)
                             })
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Color.clear)
-                            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
                     case .unavailable:
                         GameListItemView(savedGame: savedGame)
                             .navigationLink {
                                 DetailView(savedGame: savedGame)
                             }
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Color.clear)
-                            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
                     }
                 }
             }
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
         }
         .listStyle(.plain)
         .scrollIndicators(.hidden)
+        .scrollContentBackground(.hidden)
     }
     
     private var GridView: some View {
-        ScrollView(showsIndicators: false) {
+        ScrollView {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
                 ForEach(vm.savedGames, id: \.id) { savedGame in
                     switch admin.networkStatus {
@@ -83,7 +81,9 @@ struct SavedCollectionView: View {
                     }
                 }
             }
+            .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
+            .padding(.horizontal, 10)
         }
     }
 }
