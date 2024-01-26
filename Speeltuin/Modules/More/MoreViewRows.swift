@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension MoreView {
+extension MoreTab {
     
     var SelectAppIconRow: some View {
         Button {

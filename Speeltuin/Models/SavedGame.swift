@@ -37,28 +37,6 @@ class SavedGame {
         self.date = date
     }
     
-    func containsPopularPlatforms(_ popularPlatforms: [PopularPlatform]) -> Bool {
-        guard let game, let gamePlatforms = game.platforms else {
-            return false
-        }
-        
-        let gamePlatformSet = Set(gamePlatforms.map { $0.popularPlatform })
-        let popularPlatformSet = Set(popularPlatforms)
-        
-        return popularPlatformSet.isSubset(of: gamePlatformSet)
-    }
-    
-    func containsPopularGenres(_ popularGenres: [PopularGenre]) -> Bool {
-        guard let game, let gameGenres = game.genres else {
-            return false
-        }
-        
-        let gameGenreSet = Set(gameGenres.map { $0.popularGenre })
-        let popularGenreSet = Set(popularGenres)
-        
-        return popularGenreSet.isSubset(of: gameGenreSet)
-    }
-    
     func containsSelections(_ matchingGenres: [PopularGenre], _ matchingPlatforms: [PopularPlatform]) -> Bool {
         guard let game = self.game,
               let platforms = game.platforms,

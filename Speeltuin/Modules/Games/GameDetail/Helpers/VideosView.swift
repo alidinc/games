@@ -46,7 +46,6 @@ struct VideosView: View {
             }
             .padding()
             .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-            .padding(.horizontal)
         }
     }
 }

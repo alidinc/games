@@ -11,9 +11,11 @@ import Observation
 @Observable
 class GamesViewModel {
     
+    var showDetails = false
+    var limit = 21
+    var offset = 0
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
-    
     var headerTitle = ""
     var headerImageName = ""
     var searchQuery = ""
@@ -22,23 +24,8 @@ class GamesViewModel {
     var filterType: FilterType = .search
     var savedGames: [SavedGame] = []
     var selectedLibrary: Library?
-    
-    private var cache = DiskCache<[Game]>(filename: "GamesCache",
-                                          expirationInterval: 24 * 60 * 60 * 60)
-    private var limit = 21
-    private var offset = 0
-    
-    var isFetchingNextPage: Bool {
-        if case .fetchingNextPage = dataFetchPhase {
-            return true
-        }
-        return false
-    }
-    
-    var hasFilters: Bool {
-        (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))
-        || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
-    }
+    var cache = DiskCache<[Game]>(filename: "GamesCache",
+                                  expirationInterval: 24 * 60 * 60 * 60)
     
     init() {
         self.fetchTaskToken = FetchTaskToken(
@@ -55,6 +42,18 @@ class GamesViewModel {
 
 // MARK: - Networking
 extension GamesViewModel {
+    
+    var isFetchingNextPage: Bool {
+        if case .fetchingNextPage = dataFetchPhase {
+            return true
+        }
+        return false
+    }
+    
+    var hasFilters: Bool {
+        (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))
+        || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
+    }
     
     @MainActor
     func refreshTask() async {
@@ -81,12 +80,15 @@ extension GamesViewModel {
         self.dataFetchPhase = .empty
         
         do {
-            let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
-                                                                              with: category,
-                                                                              platforms: platforms,
-                                                                              genres: genres,
-                                                                              limit: self.limit,
-                                                                              offset: self.offset)
+            let response = try await NetworkManager.shared
+                .fetchDetailedGames(
+                    query: searchQuery.lowercased(),
+                    with: category,
+                    platforms: platforms,
+                    genres: genres,
+                    limit: self.limit,
+                    offset: self.offset
+                )
             if Task.isCancelled { return }
             self.dataFetchPhase = .success(response)
             if !response.isEmpty {
@@ -111,12 +113,15 @@ extension GamesViewModel {
         
         do {
             self.offset += self.limit
-            let response = try await NetworkManager.shared.fetchDetailedGames(query: searchQuery.lowercased(),
-                                                                              with: category,
-                                                                              platforms: platforms,
-                                                                              genres: genres,
-                                                                              limit: self.limit,
-                                                                              offset: self.offset)
+            let response = try await NetworkManager.shared
+                .fetchDetailedGames(
+                    query: searchQuery.lowercased(),
+                    with: category,
+                    platforms: platforms,
+                    genres: genres,
+                    limit: self.limit,
+                    offset: self.offset
+                )
             
             let totalGames = games + response
             if Task.isCancelled { return }

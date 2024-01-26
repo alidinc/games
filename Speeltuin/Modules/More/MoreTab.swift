@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-
-struct MoreView: View {
+struct MoreTab: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
@@ -17,8 +16,8 @@ struct MoreView: View {
     @AppStorage("colorScheme") var scheme: SchemeType = .system
     @Environment(\.openURL) var openURL
     @State var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
-                                            subject: "Support Email",
-                                            messageHeader: "Please describe your issue below.")
+                                    subject: "Support Email",
+                                    messageHeader: "Please describe your issue below.")
     
     @State var showMailApp = false
     @State var showAbout = false
@@ -47,7 +46,23 @@ struct MoreView: View {
                 }
             })
             .confirmationDialog("Send an email", isPresented: $showSendEmail, titleVisibility: .visible, actions: {
+                Button {
+                    self.email.send(openURL: self.openURL) { didSend in
+                        showAlertNoDefaulEmailFound = !didSend
+                    }
+                } label: {
+                    Text("Default email app")
+                }
                 
+                if MailView.canSendMail {
+                    Button {
+                        self.showMailApp = true
+                    } label: {
+                        Text("iOS email app")
+                    }
+                } else {
+                    
+                }
             })
             .alert("No default email app found", isPresented: $showAlertNoDefaulEmailFound, actions: {
                 Button {

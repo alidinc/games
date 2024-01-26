@@ -70,7 +70,7 @@ extension TabBarController {
         func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
             if shouldSelectIndex == tabBarController.selectedIndex {
                 if let navVC = tabBarController.viewControllers![shouldSelectIndex].nearestNavigationController {
-                    if (!(navVC.popViewController(animated: true) != nil)) {
+                    if (!(navVC.popToRootViewController(animated: true) != nil)) {
                         navVC.viewControllers.first!.scrollToTop()
                     }
                 }

@@ -9,7 +9,7 @@ import FeedKit
 import SwiftUI
 import SafariServices
 
-struct NewsView: View {
+struct NewsTab: View {
     
     @State var vm = NewsViewModel()
     @State var presentLink = false
@@ -69,7 +69,7 @@ struct NewsView: View {
     }
     
     @ViewBuilder
-    var LoadingView: some View {
+    var Overlay: some View {
         switch admin.networkStatus {
         case .available:
             if vm.allNews.isEmpty {
@@ -111,8 +111,10 @@ struct NewsView: View {
         switch viewType {
         case .list:
             NewsListView
+                .overlay { Overlay }
         case .grid:
             NewsGridView
+                .overlay { Overlay }
         }
     }
     
@@ -170,9 +172,6 @@ struct NewsView: View {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
-        .overlay {
-            LoadingView
-        }
     }
     
     var NewsListView: some View {
@@ -204,9 +203,6 @@ struct NewsView: View {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
-        .overlay {
-            LoadingView
-        }
     }
 }
 

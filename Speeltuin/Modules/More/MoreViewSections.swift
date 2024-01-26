@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension MoreView {
+extension MoreTab {
     var SettingsSection: some View {
         Section("Settings") {
             SelectAppIconRow

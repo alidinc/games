@@ -23,7 +23,7 @@ struct SimilarGamesView: View {
                     HStack {
                         ForEach(similarGames, id: \.id) { game in
                             NavigationLink {
-                                DetailView(game: game)
+                                GameDetailView(game: game)
                             } label: {
                                 if let cover = game.cover, let url = cover.url {
                                     AsyncImageView(with: url, type: .grid)
@@ -43,7 +43,6 @@ struct SimilarGamesView: View {
         )
         .padding()
         .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-        .padding(.horizontal)
         .onTapGesture {
             isExpanded.toggle()
         }

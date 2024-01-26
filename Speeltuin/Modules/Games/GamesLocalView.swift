@@ -8,7 +8,7 @@
 import SwiftData
 import SwiftUI
 
-struct SavedCollectionView: View {
+struct GamesLocalView: View {
     
     @AppStorage("viewType") var viewType: ViewType = .list
     @Environment(Admin.self) private var admin: Admin
@@ -31,12 +31,12 @@ struct SavedCollectionView: View {
                     case .available:
                         GameListItemView(game: game)
                             .navigationLink({
-                                DetailView(game: game)
+                                GameDetailView(savedGame: savedGame)
                             })
                     case .unavailable:
                         GameListItemView(savedGame: savedGame)
                             .navigationLink {
-                                DetailView(savedGame: savedGame)
+                                GameDetailView(savedGame: savedGame)
                             }
                     }
                 }
@@ -58,7 +58,7 @@ struct SavedCollectionView: View {
                     case .available:
                         if let game = savedGame.game, let cover = game.cover, let url = cover.url {
                             NavigationLink {
-                                DetailView(game: game)
+                                GameDetailView(savedGame: savedGame)
                             } label: {
                                 AsyncImageView(with: url, type: .grid)
                             }
@@ -66,7 +66,7 @@ struct SavedCollectionView: View {
                     case .unavailable:
                         if let imageData = savedGame.imageData, let uiImage = UIImage(data: imageData)  {
                             NavigationLink(destination: {
-                                DetailView(savedGame: savedGame)
+                                GameDetailView(savedGame: savedGame)
                             }, label: {
                                 let width = UIScreen.main.bounds.size.width / 3.3
                                 let height = width * 1.32
@@ -83,7 +83,6 @@ struct SavedCollectionView: View {
             }
             .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
-            .padding(.horizontal, 10)
         }
     }
 }

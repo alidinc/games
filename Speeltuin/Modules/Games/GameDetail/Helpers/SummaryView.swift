@@ -22,7 +22,6 @@ struct SummaryView: View {
                     .foregroundStyle(.blue)
             }
             .font(.subheadline)
-            .padding(.horizontal)
             .onTapGesture {
                 withAnimation {
                     showMore.toggle()
