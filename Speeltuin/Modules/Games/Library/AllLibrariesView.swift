@@ -16,6 +16,7 @@ struct AllLibrariesView: View {
     @Query(animation: .easeInOut) var savedGames: [SavedGame]
     
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) var dismiss
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     
     @State private var libraryToEdit: Library?
@@ -27,13 +28,16 @@ struct AllLibrariesView: View {
             ForEach(libraries, id: \.savingId) { library in
                 Button(action: {
                     gamesVM.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
+                    if hapticsEnabled {
+                        HapticsManager.shared.vibrateForSelection()
+                    }
+                    dismiss()
                 }, label: {
                     LibraryView(library)
                 })
                 .padding()
                 .hSpacing(.leading)
                 .background(.ultraThinMaterial, in: .rect(cornerRadius: 10))
-                .sensoryFeedback(.impact(flexibility: .solid, intensity: 0.5), trigger: hapticsEnabled && libraryToEdit != nil)
                 .sheet(item: $libraryToEdit, content: { library in
                     EditLibraryView(library: library)
                         .presentationDetents([.fraction(0.7)])
@@ -50,6 +54,9 @@ struct AllLibrariesView: View {
                     
                     Button(role: .destructive) {
                         libraryToEdit = library
+                        if hapticsEnabled {
+                            HapticsManager.shared.vibrateForSelection()
+                        }
                     } label: {
                         Label("Edit", systemImage: "pencil")
                     }

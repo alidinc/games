@@ -15,7 +15,7 @@ struct SavingButton: View {
     var opacity: CGFloat
     
     @AppStorage("appTint") var appTint: Color = .blue
-   
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
@@ -67,6 +67,11 @@ struct SavingButton: View {
                     color: appTint
                 )
             )
+            .onChange(of: libraryName()) { oldValue, newValue in
+                if hapticsEnabled {
+                    HapticsManager.shared.vibrateForSelection()
+                }
+            }
         }
     }
     

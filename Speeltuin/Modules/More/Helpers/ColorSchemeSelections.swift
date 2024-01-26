@@ -28,7 +28,7 @@ enum SchemeType: Int, Identifiable, CaseIterable {
     var imageName: String {
         switch self {
         case .system:
-            return "circle.lefthalf.filled"
+            return "moon.fill"
         case .light:
             return "circle.lefthalf.filled.righthalf.striped.horizontal"
         case .dark:
@@ -42,6 +42,7 @@ struct ColorSchemeSelections: View {
 
     @AppStorage("colorScheme") private var scheme: SchemeType = .system
     @AppStorage("appTint") var appTint: Color = .blue
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     

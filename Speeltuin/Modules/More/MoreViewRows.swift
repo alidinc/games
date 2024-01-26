@@ -14,7 +14,7 @@ extension MoreTab {
             self.showIcons.toggle()
         } label: {
             HStack {
-                MoreRowView(imageName: "bolt.square.fill", text: " App icon")
+                MoreRowView(imageName: "bolt.square.fill", text: " App Icon")
                 Spacer()
                 Text(selectedAppIcon.title)
                     .foregroundStyle(.gray.opacity(0.5))
@@ -28,7 +28,7 @@ extension MoreTab {
             showStyleSelections = true
         } label: {
             HStack {
-                MoreRowView(imageName: "rectangle.grid.1x2.fill", text: "View style")
+                MoreRowView(imageName: "rectangle.grid.1x2.fill", text: "View Style")
                 Spacer()
                 
                 Text(viewType.rawValue.capitalized)
@@ -60,7 +60,7 @@ extension MoreTab {
             showColorSchemeSelections = true
         }, label: {
             HStack {
-                MoreRowView(imageName: "circle.lefthalf.filled", text: "Color scheme")
+                MoreRowView(imageName: "moon.fill", text: "Color Scheme")
                 Spacer()
                 Text(scheme.title)
                     .foregroundStyle(.gray.opacity(0.5))

@@ -56,6 +56,7 @@ enum DeviceAppIcon: Int, Identifiable, CaseIterable {
 struct IconSelectionView: View {
     
     private let customIcons: [DeviceAppIcon] = [.system, .space, .sunset, .forest, .indigo, .gold, .ocean]
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
     @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) private var dismiss
@@ -100,6 +101,7 @@ struct IconSelectionView: View {
                 }
             }
             .padding(.bottom, 50)
+            
         }
         .edgesIgnoringSafeArea(.all)
     }

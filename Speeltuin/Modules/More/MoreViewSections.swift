@@ -15,7 +15,7 @@ extension MoreTab {
             HapticsRow
             ColorSchemeRow
             ColorPicker(selection: $appTint, supportsOpacity: false, label: {
-                MoreRowView(imageName: "swatchpalette.fill", text: "Tint color")
+                MoreRowView(imageName: "swatchpalette.fill", text: "Tint Color")
             })
         }
     }

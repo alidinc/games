@@ -24,6 +24,7 @@ struct SelectionsView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint")        var appTint: Color = .blue
+    @AppStorage("colorScheme") var scheme: SchemeType = .system
     
     @Environment(GamesViewModel.self) private var vm: GamesViewModel
     @State var selectedOption: SelectionOption = .platform
@@ -35,7 +36,7 @@ struct SelectionsView: View {
     var body: some View {
         VStack(spacing: 0) {
             Header
-            SegmentedView(fillColor: appTint,
+            SegmentedView(
                           selectedSegment: $selectedOption,
                           segments: SelectionOption.allCases,
                           segmentContent: { item in
@@ -93,6 +94,7 @@ struct SelectionsView: View {
         } label: {
             Image(systemName: "slider.horizontal.3")
                 .foregroundStyle(vm.hasFilters ? appTint : .secondary)
+                .font(.title3)
         }
     }
     
@@ -148,7 +150,7 @@ struct SelectionsView: View {
             
             Text(title)
                 .font(.caption)
-                .foregroundStyle(isSelected ? .white : .white.opacity(0.45))
+                .foregroundStyle(isSelected ? Color(uiColor: .label) : .gray)
                 .multilineTextAlignment(.center)
         }
         .frame(height: 70)
@@ -156,7 +158,7 @@ struct SelectionsView: View {
         .vSpacing(.center)
         .animation(.interactiveSpring(), value: isSelected)
         .padding(10)
-        .background(Color.black.opacity(0.5), in: .rect(cornerRadius: 10))
+        .background(Color.selectedSegment, in: .rect(cornerRadius: 10))
         .overlay {
             if isSelected {
                 RoundedRectangle(cornerRadius: 10)

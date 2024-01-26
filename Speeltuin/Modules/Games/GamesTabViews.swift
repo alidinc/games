@@ -25,8 +25,13 @@ extension GamesTab {
             HStack {
                 MultiPicker
                 Spacer()
-                FiltersButton
-                LibraryButton
+                HStack(spacing: 4) {
+                    FiltersButton
+                    if vm.hasFilters {
+                        ClearFiltersButton
+                    }
+                    LibraryButton
+                }
             }
             .padding(.horizontal, 20)
             
@@ -41,23 +46,27 @@ extension GamesTab {
     var LibraryButton: some View {
         Button {
             showLibraries = true
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
+            }
         } label: {
-            SFImage(name: "tray.full.fill", config: .init(padding: 10, color: .secondary))
+            SFImage(name: "tray.full.fill", config: .init(opacity: 0.5, padding: 10, color: .secondary))
         }
     }
     
     var FiltersButton: some View {
         Button(action: {
             showSelectionOptions = true
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
+            }
         }, label: {
             SFImage(name: "slider.horizontal.3",
                     config: .init(
+                        opacity: 0.5,
                         padding: 10,
                         color: vm.hasFilters ? appTint : .secondary
                     ))
-            .overlay {
-                ClearFiltersButton
-            }
         })
         .animation(.bouncy, value: vm.hasFilters)
     }
@@ -72,10 +81,13 @@ extension GamesTab {
                     HapticsManager.shared.vibrateForSelection()
                 }
             }, label: {
-                Image(systemName: "xmark.circle.fill")
-                    .foregroundStyle(vm.hasFilters ? appTint : .clear)
+                SFImage(name: "slider.horizontal.2.gobackward",
+                        config: .init(
+                            opacity: 0.5,
+                            padding: 10,
+                            color: vm.hasFilters ? appTint : .clear
+                        ))
             })
-            .offset(x: 18, y: -18)
         }
     }
     

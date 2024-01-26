@@ -27,7 +27,7 @@ struct SFImage: View {
             .font(.system(size: config.iconSize))
             .bold(config.isBold)
             .foregroundStyle(config.color)
-            .background(colorScheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5), in: .rect(cornerRadius: config.radius))
+            .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
     }
 }
 

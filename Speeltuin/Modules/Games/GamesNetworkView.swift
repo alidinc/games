@@ -26,17 +26,9 @@ struct GamesNetworkView: View {
         List {
             ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                 GameListItemView(game: game)
-                    .onAppear {
-                        vm.showDetails = true
-                    }
-                    .if(vm.showDetails, transform: { view in
-                        view
-                            .navigationLink({
-                                GameDetailView(game: game)
-                            })
+                    .navigationLink({
+                        GameDetailView(game: game)
                     })
-                    
-                    .id(vm.dataFetchPhase.value?.first)
                     .task {
                         if self.vm.hasReachedEnd(of: game) {
                             await vm.fetchNextSetOfGames()

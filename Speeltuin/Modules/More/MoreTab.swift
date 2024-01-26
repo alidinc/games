@@ -101,6 +101,26 @@ struct MoreTab: View {
                 ColorSchemeSelections()
                     .presentationDetents([.medium])
             })
+            .onChange(of: appTint) { oldValue, newValue in
+                if hapticsEnabled && newValue != oldValue {
+                    HapticsManager.shared.vibrateForSelection()
+                }
+            }
+            .onChange(of: selectedAppIcon) { oldValue, newValue in
+                if hapticsEnabled && newValue != oldValue {
+                    HapticsManager.shared.vibrateForSelection()
+                }
+            }
+            .onChange(of: viewType) { oldValue, newValue in
+                if hapticsEnabled && newValue != oldValue {
+                    HapticsManager.shared.vibrateForSelection()
+                }
+            }
+            .onChange(of: scheme) { oldValue, newValue in
+                if hapticsEnabled && newValue != oldValue {
+                    HapticsManager.shared.vibrateForSelection()
+                }
+            }
         }
     }
     

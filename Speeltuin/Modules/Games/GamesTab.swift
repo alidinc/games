@@ -28,8 +28,6 @@ struct GamesTab: View {
             MainStack
         }
         .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
-        .sensoryFeedback(.impact(flexibility: .solid, intensity: 0.5),
-                         trigger: hapticsEnabled && (showLibraries || showSelectionOptions))
         .sheet(isPresented: $showLibraries, content: {
             LibraryView().presentationDetents([.medium])
         })
@@ -64,6 +62,9 @@ extension GamesTab {
         })
         .onReceive(didRemoteChange, perform: { _ in
             vm.filterSegment(savedGames: savedGames)
+            if vm.savedGames.isEmpty {
+                vm.dataType = .library
+            }
         })
         .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
             vm.onChangePlatforms(for: savedGames, newValue: newValue)

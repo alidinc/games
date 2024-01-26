@@ -12,14 +12,11 @@ struct LibraryView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
-    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
-   
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     
     @State private var showAddLibrary = false
-    
     @Query var savedGames: [SavedGame]
     @Query var libraries: [Library]
     
@@ -36,7 +33,6 @@ struct LibraryView: View {
                                            systemImage: "externaldrive.fill.badge.exclamationmark")
                 }
             })
-            .sensoryFeedback(.impact(flexibility: .solid, intensity: 0.5), trigger: hapticsEnabled && showAddLibrary)
             .sheet(isPresented: $showAddLibrary, content: {
                 AddLibraryView()
                     .presentationDetents([.fraction(0.7)])
@@ -51,9 +47,13 @@ struct LibraryView: View {
             gamesVM.searchPlaceholder = "Search in library"
             gamesVM.dataType = .library
             gamesVM.filterType = .library
-    
             gamesVM.selectedLibrary = nil
             gamesVM.filterSegment(savedGames: savedGames)
+            
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
+            }
+            dismiss()
         } label: {
             HStack {
                 Text("All")
@@ -90,6 +90,9 @@ struct LibraryView: View {
             
             Button {
                 showAddLibrary = true
+                if hapticsEnabled {
+                    HapticsManager.shared.vibrateForSelection()
+                }
             } label: {
                 Circle()
                     .fill(Color(.secondarySystemBackground))
