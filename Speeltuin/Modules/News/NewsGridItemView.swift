@@ -35,11 +35,12 @@ struct NewsGridItemView: View {
                             .clipShape(.rect(cornerRadius: 5))
                         
                         Text(title)
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.system(size: 12, weight: .semibold))
                             .multilineTextAlignment(.leading)
                             .lineLimit(4)
                             .padding(.horizontal, 4)
                             .padding(.bottom, 6)
+                            .foregroundStyle(.white)
                     }
                     .clipShape(.rect(cornerRadius: 5))
                 }

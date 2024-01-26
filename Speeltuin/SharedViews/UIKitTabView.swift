@@ -10,9 +10,6 @@ import UIKit
 
 struct UIKitTabView: View {
     
-    @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @State private var tabBarId = ""
-    
     var viewControllers: [UIHostingController<AnyView>]
 
     init(_ tabs: [Tab]) {
@@ -26,11 +23,6 @@ struct UIKitTabView: View {
     var body: some View {
         TabBarController(controllers: viewControllers)
             .edgesIgnoringSafeArea(.all)
-            .id(tabBarId)
-            .onChange(of: hapticsEnabled) { oldValue, newValue in
-                tabBarId = UUID().uuidString
-                
-            }
     }
 
     struct Tab {
@@ -46,8 +38,6 @@ struct UIKitTabView: View {
 
 
 struct TabBarController: UIViewControllerRepresentable {
-    
-    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     
     var controllers: [UIViewController]
 
@@ -74,9 +64,6 @@ extension TabBarController {
         
         func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
             shouldSelectIndex = tabBarController.selectedIndex
-            if parent.hapticsEnabled {
-                HapticsManager.shared.vibrateForSelection()
-            }
             return true
         }
 
@@ -85,9 +72,6 @@ extension TabBarController {
                 if let navVC = tabBarController.viewControllers![shouldSelectIndex].nearestNavigationController {
                     if (!(navVC.popViewController(animated: true) != nil)) {
                         navVC.viewControllers.first!.scrollToTop()
-                        if parent.hapticsEnabled {
-                            HapticsManager.shared.vibrate(for: .success)
-                        }
                     }
                 }
             }
