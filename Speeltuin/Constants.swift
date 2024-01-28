@@ -16,6 +16,7 @@ struct Constants {
     
     struct Alert {
         static let deleteLibraryAlertTitle = "Are you sure to delete this library?"
+        static let deleteAllLibrariesAlertTitle = "Are you sure to delete all of your libraries?"
         static let undoAlertTitle = "You won't be able to undo this action."
         static let delete = "Delete"
         static let cancel = "Cancel"

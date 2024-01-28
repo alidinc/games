@@ -55,7 +55,7 @@ struct EditLibraryView: View {
             .padding()
             .clipShape(.rect(cornerRadius: 8))
             .font(.headline)
-            .foregroundStyle(.gray)
+            .foregroundStyle(Color(uiColor: .label))
             .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
             .padding(.horizontal)
             .autocorrectionDisabled()

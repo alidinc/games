@@ -24,7 +24,6 @@ struct LibraryView: View {
         NavigationStack {
             VStack {
                 Header
-                TotalGames
                 AllLibrariesView()
             }
             .overlay(content: {
@@ -34,41 +33,8 @@ struct LibraryView: View {
                 }
             })
             .sheet(isPresented: $showAddLibrary, content: {
-                AddLibraryView()
-                    .presentationDetents([.fraction(0.7)])
+                AddLibraryView().presentationDetents([.medium, .large])
             })
-        }
-    }
-    
-    private var TotalGames: some View {
-        Button {
-            gamesVM.headerTitle = "All games"
-            gamesVM.headerImageName =  "bookmark"
-            gamesVM.searchPlaceholder = "Search in library"
-            gamesVM.dataType = .library
-            gamesVM.filterType = .library
-            gamesVM.selectedLibrary = nil
-            gamesVM.filterSegment(savedGames: savedGames)
-            
-            if hapticsEnabled {
-                HapticsManager.shared.vibrateForSelection()
-            }
-            dismiss()
-        } label: {
-            HStack {
-                Text("All")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                
-                Spacer()
-                
-                Text("\(savedGames.count) games")
-                    .font(.subheadline.bold())
-                    .foregroundStyle(.secondary)
-            }
-            .padding(10)
-            .background(.black.opacity(0.25), in: .rect(cornerRadius: 10))
-            .padding(.horizontal, 20)
         }
     }
     

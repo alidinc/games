@@ -84,7 +84,8 @@ struct IconSelectionView: View {
                                     .clipShape(.rect(cornerRadius: 10))
                                 
                                 Text(icon.title)
-                                    .foregroundStyle(.primary)
+                                    .foregroundStyle(Color(uiColor: .label))
+                                
                                 Spacer()
                             }
                         }

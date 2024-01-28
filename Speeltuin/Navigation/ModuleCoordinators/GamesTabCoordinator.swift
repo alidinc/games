@@ -13,6 +13,5 @@ class GamesTabCoordinator: ParentCoordinator {
     
     override init() {
         super.init()
-        let rootView = GamesTab(vm: vm)
     }
 }

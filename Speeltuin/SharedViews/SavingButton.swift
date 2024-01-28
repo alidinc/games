@@ -25,7 +25,7 @@ struct SavingButton: View {
     var body: some View {
         Menu {
             let dataManager = SwiftDataManager(modelContainer: context.container)
-            let libraries = libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) })
+            let libraries = libraries.filter({ !($0.savedGames.compactMap({$0.game}).contains(game)) })
             if !libraries.isEmpty {
                 Label("Add to : ", systemImage: "arrow.turn.right.down")
             }
@@ -70,6 +70,12 @@ struct SavingButton: View {
             .onChange(of: libraryName()) { oldValue, newValue in
                 if hapticsEnabled {
                     HapticsManager.shared.vibrateForSelection()
+                }
+                
+                gamesVM.filterSegment(savedGames: games)
+                
+                if gamesVM.savedGames.isEmpty {
+                    gamesVM.dataType = .library
                 }
             }
         }

@@ -67,7 +67,7 @@ struct AddLibraryView: View {
             .padding()
             .clipShape(.rect(cornerRadius: 8))
             .font(.headline)
-            .foregroundStyle(.gray)
+            .foregroundStyle(Color(uiColor: .label))
             .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
             .padding(.horizontal)
             .autocorrectionDisabled()
@@ -123,6 +123,7 @@ struct AddLibraryView: View {
                 await dataManager.toggle(game: game, for: library)
             }
         }
+        
         dismiss()
     }
 }

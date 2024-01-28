@@ -32,7 +32,7 @@ struct GamesTab: View {
             LibraryView().presentationDetents([.medium])
         })
         .sheet(item: $gameToAddForNewLibrary, content: { game in
-            AddLibraryView(game: game).presentationDetents([.fraction(0.7)])
+            AddLibraryView(game: game).presentationDetents([.medium, .large])
         })
         .sheet(isPresented: $showSelectionOptions, content: {
             SelectionsView().presentationDetents([.medium, .large])
@@ -62,9 +62,6 @@ extension GamesTab {
         })
         .onReceive(didRemoteChange, perform: { _ in
             vm.filterSegment(savedGames: savedGames)
-            if vm.savedGames.isEmpty {
-                vm.dataType = .library
-            }
         })
         .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
             vm.onChangePlatforms(for: savedGames, newValue: newValue)
