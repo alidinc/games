@@ -106,11 +106,28 @@ fileprivate struct NavigationLinkModifier<Destination: View>: ViewModifier {
     }
 }
 
+struct DismissingKeyboard: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .onTapGesture {
+                let keyWindow = UIApplication.shared.connectedScenes
+                        .filter({$0.activationState == .foregroundActive})
+                        .map({$0 as? UIWindowScene})
+                        .compactMap({$0})
+                        .first?.windows
+                        .filter({$0.isKeyWindow}).first
+                keyWindow?.endEditing(true)
+        }
+    }
+}
 
 extension View {
-    @MainActor
     func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
+    func dismissingKeyboard() -> some View {
+        modifier(DismissingKeyboard())
     }
 }
 

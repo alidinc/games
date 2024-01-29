@@ -13,6 +13,8 @@ struct GamesNetworkView: View {
     
     @AppStorage("viewType") var viewType: ViewType = .list
     
+    let dataManager: SwiftDataManager
+    
     var body: some View {
         switch viewType {
         case .list:
@@ -25,9 +27,9 @@ struct GamesNetworkView: View {
     private var ListView: some View {
         List {
             ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
-                GameListItemView(game: game)
+                GameListItemView(game: game, dataManager: dataManager)
                     .navigationLink({
-                        GameDetailView(game: game)
+                        GameDetailView(game: game, dataManager: dataManager)
                     })
                     .task {
                         if self.vm.hasReachedEnd(of: game) {
@@ -58,7 +60,7 @@ struct GamesNetworkView: View {
                 ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {
                         NavigationLink {
-                            GameDetailView(game: game)
+                            GameDetailView(game: game, dataManager: dataManager)
                         } label: {
                             AsyncImageView(with: url, type: .grid)
                                 .task {

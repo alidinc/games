@@ -5,6 +5,7 @@
 //  Created by Ali Dinç on 18/12/2023.
 //
 
+import SwiftData
 import SwiftUI
 
 @main
@@ -14,46 +15,58 @@ struct SpeeltuinApp: App {
     @AppStorage("appTint")     private var appTint: Color = .blue
     @AppStorage("colorScheme") private var scheme: SchemeType = .system
     
-    @Environment(\.dismiss) var dismiss
-    
     @State private var preferences = Admin()
     @State private var gamesViewModel = GamesViewModel()
     @State private var newsViewModel = NewsViewModel()
     
-    @State private var activeTab: Tab = .games
+    private var dataManager: SwiftDataManager
+    
+    var modelContainer: ModelContainer = {
+        let schema = Schema([
+            Library.self,
+            SavedNews.self
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
+    
+    init() {
+        self.dataManager = SwiftDataManager(container: modelContainer)
+    }
     
     var body: some Scene {
         WindowGroup {
             if isFirstTime {
                 IntroView()
-                    .preferredColorScheme(.dark)
             } else {
-                UIKitTabView([
-                    UIKitTabView.Tab(view:
-                                        GamesTab(vm: gamesViewModel),
-                                     barItem: UITabBarItem(title: "Games", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)),
-                    UIKitTabView.Tab(view:
-                                        NewsTab(vm: newsViewModel),
-                                     barItem: UITabBarItem(title: "News", image: UIImage(systemName: "newspaper.fill"), tag: 1)),
-                    UIKitTabView.Tab(view:
-                                        MoreTab(),
-                                     barItem: UITabBarItem(title: "More", image: UIImage(systemName: "ellipsis.circle.fill"), tag: 1)),
-                ])
-                .tint(appTint)
-                .environment(preferences)
-                .environment(gamesViewModel)
-                .environment(newsViewModel)
-                .preferredColorScheme(setColorScheme())
+                TabView
             }
         }
-        .modelContainer(
-            for: [
-                Library.self,
-                SavedGame.self,
-                SavedNews.self
-            ],
-            inMemory: false
-        )
+        .modelContainer(modelContainer)
+    }
+    
+    private var TabView: some View {
+        UIKitTabView([
+            UIKitTabView.Tab(view:
+                                GamesTab(vm: gamesViewModel, dataManager: dataManager),
+                             barItem: UITabBarItem(title: "Games", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)),
+            UIKitTabView.Tab(view:
+                                NewsTab(vm: newsViewModel),
+                             barItem: UITabBarItem(title: "News", image: UIImage(systemName: "newspaper.fill"), tag: 1)),
+            UIKitTabView.Tab(view:
+                                MoreTab(),
+                             barItem: UITabBarItem(title: "More", image: UIImage(systemName: "ellipsis.circle.fill"), tag: 1)),
+        ])
+        .tint(appTint)
+        .environment(preferences)
+        .environment(gamesViewModel)
+        .environment(newsViewModel)
+        .preferredColorScheme(setColorScheme())
     }
     
     func setColorScheme() -> ColorScheme? {

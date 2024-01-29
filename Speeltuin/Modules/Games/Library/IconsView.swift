@@ -10,9 +10,11 @@ import SwiftUI
 struct IconsView: View {
     
     @Binding var icon: String
-    
     @State private var query = ""
     @AppStorage("appTint") var appTint: Color = .blue
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
+    
+    @State private var isExpanded = false
     
     var symbols: [String] {
         if self.query.isEmpty {
@@ -23,7 +25,7 @@ struct IconsView: View {
     }
     
     var body: some View {
-        DisclosureGroup {
+        DisclosureGroup(isExpanded: $isExpanded) {
             VStack {
                 SearchTextField(searchQuery: $query, prompt: "Search a symbol")
                 
@@ -35,6 +37,22 @@ struct IconsView: View {
                                     icon = "bookmark.fill"
                                 } else {
                                     icon = symbol
+                                    
+                                    Task {
+                                        do {
+                                            try await Task.sleep(seconds: 0.05)
+                                            
+                                            withAnimation(.snappy) {
+                                                isExpanded = false
+                                            }
+                                            
+                                            if hapticsEnabled {
+                                                HapticsManager.shared.vibrateForSelection()
+                                            }
+                                        } catch {
+                                            
+                                        }
+                                    }
                                 }
                             }, label: {
                                 Image(systemName: symbol)
@@ -53,29 +71,39 @@ struct IconsView: View {
                 .frame(height: 200)
             }
         } label: {
-            HStack {
-                Text("Selected icon")
-                    .font(.headline)
-                    .foregroundStyle(.gray)
-                
-                Spacer()
-                
-                if !icon.isEmpty {
-                    Image(systemName: icon)
-                        .foregroundStyle(appTint)
-                        .font(.headline)
-                        .bold()
-                } else {
-                    Image(systemName: "bookmark.fill")
-                        .foregroundStyle(.primary.opacity(0.5))
-                        .font(.headline)
-                        .bold()
-                }
-            }
-            .padding(.vertical, 12)
+            DisclosureLabel
         }
         .padding(.horizontal)
         .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
         .padding(.horizontal)
+    }
+    
+    private var DisclosureLabel: some View {
+        HStack {
+            Text("Selected icon")
+                .font(.headline)
+                .foregroundStyle(.gray)
+            
+            Spacer()
+            
+            if !icon.isEmpty {
+                Image(systemName: icon)
+                    .foregroundStyle(appTint)
+                    .font(.headline)
+                    .bold()
+            } else {
+                Image(systemName: "bookmark.fill")
+                    .foregroundStyle(.primary.opacity(0.5))
+                    .font(.headline)
+                    .bold()
+            }
+        }
+        .padding(.vertical, 12)
+    }
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

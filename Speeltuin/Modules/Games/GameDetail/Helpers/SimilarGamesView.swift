@@ -10,9 +10,11 @@ import SwiftUI
 struct SimilarGamesView: View {
     
     var similarGames: [Game]
+    let dataManager: SwiftDataManager
     
     @State private var isExpanded = true
     @Environment(\.colorScheme) var colorScheme
+    
     
     @ViewBuilder
     var body: some View {
@@ -23,7 +25,7 @@ struct SimilarGamesView: View {
                     HStack {
                         ForEach(similarGames, id: \.id) { game in
                             NavigationLink {
-                                GameDetailView(game: game)
+                                GameDetailView(game: game, dataManager: dataManager)
                             } label: {
                                 if let cover = game.cover, let url = cover.url {
                                     AsyncImageView(with: url, type: .grid)

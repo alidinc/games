@@ -14,6 +14,8 @@ struct GamesLocalView: View {
     @Environment(Admin.self) private var admin: Admin
     @Environment(GamesViewModel.self) private var vm
     
+    let dataManager: SwiftDataManager
+    
     var body: some View {
         switch viewType {
         case .list:
@@ -29,14 +31,14 @@ struct GamesLocalView: View {
                 if let game = savedGame.game {
                     switch admin.networkStatus {
                     case .available:
-                        GameListItemView(game: game)
+                        GameListItemView(game: game, dataManager: dataManager)
                             .navigationLink({
-                                GameDetailView(savedGame: savedGame)
+                                GameDetailView(savedGame: savedGame, dataManager: dataManager)
                             })
                     case .unavailable:
-                        GameListItemView(savedGame: savedGame)
+                        GameListItemView(savedGame: savedGame, dataManager: dataManager)
                             .navigationLink {
-                                GameDetailView(savedGame: savedGame)
+                                GameDetailView(savedGame: savedGame, dataManager: dataManager)
                             }
                     }
                 }
@@ -58,7 +60,7 @@ struct GamesLocalView: View {
                     case .available:
                         if let game = savedGame.game, let cover = game.cover, let url = cover.url {
                             NavigationLink {
-                                GameDetailView(savedGame: savedGame)
+                                GameDetailView(savedGame: savedGame, dataManager: dataManager)
                             } label: {
                                 AsyncImageView(with: url, type: .grid)
                             }
@@ -66,7 +68,7 @@ struct GamesLocalView: View {
                     case .unavailable:
                         if let imageData = savedGame.imageData, let uiImage = UIImage(data: imageData)  {
                             NavigationLink(destination: {
-                                GameDetailView(savedGame: savedGame)
+                                GameDetailView(savedGame: savedGame, dataManager: dataManager)
                             }, label: {
                                 let width = UIScreen.main.bounds.size.width / 3.3
                                 let height = width * 1.32

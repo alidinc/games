@@ -13,6 +13,7 @@ struct AddLibraryView: View {
     @AppStorage("appTint") var appTint: Color = .blue
     
     var game: Game?
+    let dataManager: SwiftDataManager
    
     @State private var name = ""
     @State private var icon = ""
@@ -33,14 +34,17 @@ struct AddLibraryView: View {
                 VStack {
                     RemainingLibraryCountView
                     NameView
-                    IconsView(icon: $icon)
+                   
                 }
                 .vSpacing(.top)
             }
             .navigationTitle("Add library")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
-                AddButton
+                VStack {
+                    IconsView(icon: $icon)
+                    AddButton
+                }
                 .safeAreaPadding(.bottom)
             }
             .toolbar {
@@ -116,7 +120,12 @@ struct AddLibraryView: View {
         Task {
             let dataManager = SwiftDataManager(modelContainer: context.container)
             let library = Library(title: name, icon: icon)
-            await dataManager.toggle(game: game, for: library)
+            
+            await dataManager.addLibrary(library: library)
+        
+            if let game {
+                await dataManager.toggle(game: game, for: library)
+            }
         }
         
         dismiss()

@@ -20,6 +20,8 @@ struct LibraryView: View {
     @Query var savedGames: [SwiftGame]
     @Query var libraries: [Library]
     
+    let dataManager: SwiftDataManager
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -33,7 +35,8 @@ struct LibraryView: View {
                 }
             })
             .sheet(isPresented: $showAddLibrary, content: {
-                AddLibraryView().presentationDetents([.medium, .large])
+                AddLibraryView(dataManager: dataManager)
+                    .presentationDetents([.medium, .large])
             })
         }
     }
@@ -55,10 +58,22 @@ struct LibraryView: View {
             }
             
             Button {
-                showAddLibrary = true
+                dismiss()
+                
                 if hapticsEnabled {
                     HapticsManager.shared.vibrateForSelection()
                 }
+                
+                Task {
+                    do {
+                        try await Task.sleep(seconds: 0.05)
+                        
+                        NotificationCenter.default.post(name: .newLibraryButtonTapped, object: nil)
+                    } catch {
+                        
+                    }
+                }
+                
             } label: {
                 Circle()
                     .fill(Color(.secondarySystemBackground))

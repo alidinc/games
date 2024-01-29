@@ -11,6 +11,7 @@ struct GameDetailView: View {
     
     var game: Game?
     var savedGame: SwiftGame?
+    let dataManager: SwiftDataManager
     
     @State var vm = GameDetailViewModel()
     @Environment(GamesViewModel.self) private var gamesVM
@@ -18,11 +19,13 @@ struct GameDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
     
-    init(game: Game) {
+    init(game: Game, dataManager: SwiftDataManager) {
         self.game = game
+        self.dataManager = dataManager
     }
     
-    init(savedGame: SwiftGame) {
+    init(savedGame: SwiftGame, dataManager: SwiftDataManager) {
+        self.dataManager = dataManager
         if let game = savedGame.game {
             self.game = game
             self.savedGame = savedGame
@@ -42,7 +45,7 @@ struct GameDetailView: View {
                         VideosView(game: game)
                         
                         if !vm.gamesFromIds.isEmpty {
-                            SimilarGamesView(similarGames: vm.gamesFromIds)
+                            SimilarGamesView(similarGames: vm.gamesFromIds, dataManager: dataManager)
                         }
                         
                         Spacer(minLength: 20)
@@ -58,8 +61,7 @@ struct GameDetailView: View {
         }
         .padding(.bottom, 1)
         .background(.gray.opacity(0.15))
-        .ignoresSafeArea(edges: game != nil ? .top : .leading)
-        .ignoresSafeArea(edges: savedGame?.imageData != nil ? .top : .leading)
+        .ignoresSafeArea(edges: (savedGame?.imageData != nil) || (game != nil) ? .top : .leading)
         .scrollIndicators(.hidden)
     }
     
@@ -73,7 +75,7 @@ struct GameDetailView: View {
                     
                     Spacer()
                     
-                    SavingButton(game: game, opacity: 0.5)
+                    SavingButton(game: game, opacity: 0.5, dataManager: dataManager)
                 }
             }
             

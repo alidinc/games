@@ -20,12 +20,13 @@ struct SavingButton: View {
     @Environment(\.modelContext) private var context
     
     @Query var games: [SwiftGame]
+    let dataManager: SwiftDataManager
+    
     @Query var libraries: [Library]
     
     var body: some View {
         Menu {
             let libraries = libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) })
-
             if !libraries.isEmpty {
                 Label("Add to : ", systemImage: "arrow.turn.right.down")
             }
@@ -33,7 +34,6 @@ struct SavingButton: View {
             ForEach(libraries, id: \.savingId) { library in
                 Button {
                     Task {
-                        let dataManager = SwiftDataManager(modelContainer: context.container)
                         await dataManager.toggle(game: game, for: library)
                     }
                 } label: {
@@ -53,7 +53,6 @@ struct SavingButton: View {
             if games.compactMap({$0.game}).contains(game) {
                 Button(role: .destructive) {
                     Task {
-                        let dataManager = SwiftDataManager(modelContainer: context.container)
                         await dataManager.delete(game: game)
                     }
                 } label: {

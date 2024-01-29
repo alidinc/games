@@ -11,7 +11,6 @@ struct SearchTextField: View {
     
     @Binding var searchQuery: String
     var prompt: String
-    
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {

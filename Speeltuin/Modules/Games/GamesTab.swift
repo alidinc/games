@@ -22,6 +22,9 @@ struct GamesTab: View {
     @State var showSelectionOptions = false
     @State var gameToAddForNewLibrary: Game?
     @State var receivedLibrary: Library?
+    @State var showAddLibraryWithNoGame = false
+    
+    let dataManager: SwiftDataManager
     
     var body: some View {
         NavigationStack {
@@ -29,10 +32,13 @@ struct GamesTab: View {
         }
         .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
         .sheet(isPresented: $showLibraries, content: {
-            LibraryView().presentationDetents([.medium])
+            LibraryView(dataManager: dataManager).presentationDetents([.medium])
         })
+        .sheet(isPresented: $showAddLibraryWithNoGame) {
+            AddLibraryView(dataManager: dataManager).presentationDetents([.medium, .large])
+        }
         .sheet(item: $gameToAddForNewLibrary, content: { game in
-            AddLibraryView(game: game).presentationDetents([.medium, .large])
+            AddLibraryView(game: game, dataManager: dataManager).presentationDetents([.medium, .large])
         })
         .sheet(isPresented: $showSelectionOptions, content: {
             SelectionsView().presentationDetents([.medium, .large])
@@ -53,6 +59,10 @@ extension GamesTab {
         .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
             if let game = notification.object as? Game {
                 gameToAddForNewLibrary = game
+            } else {
+                withAnimation {
+                    showAddLibraryWithNoGame = true
+                }
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: .addedToLibrary), perform: { notification in
