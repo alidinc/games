@@ -1,5 +1,5 @@
 //
-//  SavedCollectionView.swift
+//  SPGamesCollectionView.swift
 //  Speeltuin
 //
 //  Created by Ali Dinç on 02/01/2024.
@@ -8,7 +8,7 @@
 import SwiftData
 import SwiftUI
 
-struct GamesLocalView: View {
+struct SPGamesCollectionView: View {
     
     @AppStorage("viewType") var viewType: ViewType = .list
     @Environment(Admin.self) private var admin: Admin
@@ -31,12 +31,12 @@ struct GamesLocalView: View {
                 if let game = savedGame.game {
                     switch admin.networkStatus {
                     case .available:
-                        GameListItemView(game: game, dataManager: dataManager)
+                        ListItemView(game: game, dataManager: dataManager)
                             .navigationLink({
                                 GameDetailView(savedGame: savedGame, dataManager: dataManager)
                             })
                     case .unavailable:
-                        GameListItemView(savedGame: savedGame, dataManager: dataManager)
+                        ListItemView(savedGame: savedGame, dataManager: dataManager)
                             .navigationLink {
                                 GameDetailView(savedGame: savedGame, dataManager: dataManager)
                             }

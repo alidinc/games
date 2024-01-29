@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GamesNetworkView: View {
+struct GamesCollectionView: View {
     
     @Environment(GamesViewModel.self) private var vm
     @AppStorage("viewType") var viewType: ViewType = .list
@@ -26,7 +26,7 @@ struct GamesNetworkView: View {
     private var ListView: some View {
         List {
             ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
-                GameListItemView(game: game, dataManager: dataManager)
+                ListItemView(game: game, dataManager: dataManager)
                     .navigationLink({
                         GameDetailView(game: game, dataManager: dataManager)
                     })

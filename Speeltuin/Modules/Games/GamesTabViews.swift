@@ -12,10 +12,10 @@ extension GamesTab {
     var ViewSwitcher: some View {
         switch vm.dataType {
         case .network:
-            GamesNetworkView(dataManager: dataManager)
+            GamesCollectionView(dataManager: dataManager)
                 .overlay { GamesOverlayView() }
         case .library:
-            GamesLocalView(dataManager: dataManager)
+            SPGamesCollectionView(dataManager: dataManager)
                 .overlay { GamesOverlayView() }
         }
     }
