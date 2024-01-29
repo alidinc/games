@@ -14,17 +14,17 @@ struct GamesTab: View {
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .blue
-    @Query(animation: .easeInOut) var savedGames: [SwiftGame]
-    @Query(animation: .easeInOut) var savedLibraries: [Library]
+    @Query(animation: .easeInOut) var savedGames: [SPGame]
+    @Query(animation: .easeInOut) var savedLibraries: [SPLibrary]
    
     @State var vm: GamesViewModel
     @State var showLibraries = false
     @State var showSelectionOptions = false
     @State var gameToAddForNewLibrary: Game?
-    @State var receivedLibrary: Library?
+    @State var receivedLibrary: SPLibrary?
     @State var showAddLibraryWithNoGame = false
     
-    let dataManager: SwiftDataManager
+    let dataManager: SPDataManager
     
     var body: some View {
         NavigationStack {
@@ -66,7 +66,7 @@ extension GamesTab {
             }
         })
         .onReceive(NotificationCenter.default.publisher(for: .addedToLibrary), perform: { notification in
-            if let library = notification.object as? Library {
+            if let library = notification.object as? SPLibrary {
                 receivedLibrary = library
             }
         })

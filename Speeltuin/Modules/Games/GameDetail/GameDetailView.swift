@@ -10,8 +10,8 @@ import SwiftUI
 struct GameDetailView: View {
     
     var game: Game?
-    var savedGame: SwiftGame?
-    let dataManager: SwiftDataManager
+    var savedGame: SPGame?
+    let dataManager: SPDataManager
     
     @State var vm = GameDetailViewModel()
     @Environment(GamesViewModel.self) private var gamesVM
@@ -19,12 +19,12 @@ struct GameDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
     
-    init(game: Game, dataManager: SwiftDataManager) {
+    init(game: Game, dataManager: SPDataManager) {
         self.game = game
         self.dataManager = dataManager
     }
     
-    init(savedGame: SwiftGame, dataManager: SwiftDataManager) {
+    init(savedGame: SPGame, dataManager: SPDataManager) {
         self.dataManager = dataManager
         if let game = savedGame.game {
             self.game = game

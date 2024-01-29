@@ -13,16 +13,16 @@ struct SavingButton: View {
     
     var game: Game
     var opacity: CGFloat
+    let dataManager: SPDataManager
     
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
-    @Query var games: [SwiftGame]
-    let dataManager: SwiftDataManager
-    
-    @Query var libraries: [Library]
+    @State private var libraryName: String?
+    @Query var games: [SPGame]
+    @Query var libraries: [SPLibrary]
     
     var body: some View {
         Menu {
@@ -61,32 +61,30 @@ struct SavingButton: View {
             }
 
         } label: {
-            SFImage(
-                name: libraryName(),
-                config: .init(
-                    opacity: opacity,
-                    color: appTint
-                )
-            )
-            .onChange(of: libraryName()) { oldValue, newValue in
-                if hapticsEnabled {
-                    HapticsManager.shared.vibrateForSelection()
-                }
-                
-                gamesVM.filterSegment(savedGames: games)
-                
-                if gamesVM.savedGames.isEmpty {
-                    gamesVM.dataType = .library
-                }
+            if let libraryName {
+                Image(systemName: libraryName)
             }
+        }
+        .task(id: libraryName, priority: .high) {
+            getLibraryName()
+        }
+        .onChange(of: libraryName) { oldValue, newValue in
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
+            }
+            
+            gamesVM.filterSegment(savedGames: games)
         }
     }
     
-    func libraryName() -> String {
-        if let library = self.games.first(where: { $0.game?.id == game.id })?.library {
-            return library.icon
+    @MainActor
+    func getLibraryName() {
+        Task {
+            if let library = await self.dataManager.fetchSavedGames.first(where: { $0.game?.id == game.id })?.library {
+                self.libraryName = library.icon
+            } else {
+                self.libraryName = "bookmark"
+            }
         }
-        
-        return "bookmark"
     }
 }

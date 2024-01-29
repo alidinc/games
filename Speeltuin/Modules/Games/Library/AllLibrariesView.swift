@@ -12,15 +12,15 @@ struct AllLibrariesView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     
-    @Query(animation: .easeInOut) var libraries: [Library]
-    @Query(animation: .easeInOut) var savedGames: [SwiftGame]
+    @Query(animation: .easeInOut) var libraries: [SPLibrary]
+    @Query(animation: .easeInOut) var savedGames: [SPGame]
     
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) var dismiss
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     
-    @State private var libraryToEdit: Library?
-    @State private var libraryToDelete: Library?
+    @State private var libraryToEdit: SPLibrary?
+    @State private var libraryToDelete: SPLibrary?
     @State private var showAlertToDeleteLibrary = false
     @State private var showAlertToDeleteAllLibraries = false
     
@@ -151,7 +151,7 @@ struct AllLibrariesView: View {
         }
     }
     
-    private func LibraryView(_ library: Library) -> some View {
+    private func LibraryView(_ library: SPLibrary) -> some View {
         HStack {
             Image(systemName: library.icon)
                 .imageScale(.medium)

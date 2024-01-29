@@ -8,12 +8,11 @@
 import SwiftData
 import SwiftUI
 
-
 @Model
-class SwiftGame {
+class SPGame {
     
     var date: Date?
-    var library: Library?
+    var library: SPLibrary?
     
     @Attribute(.externalStorage)
     var gameData: Data?
@@ -36,7 +35,9 @@ class SwiftGame {
     init(date: Date = .now) {
         self.date = date
     }
-    
+}
+
+extension SPGame {
     func containsSelections(_ matchingGenres: [PopularGenre], _ matchingPlatforms: [PopularPlatform]) -> Bool {
         guard let game = self.game,
               let platforms = game.platforms,

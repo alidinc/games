@@ -10,7 +10,7 @@ import SwiftUI
 struct SimilarGamesView: View {
     
     var similarGames: [Game]
-    let dataManager: SwiftDataManager
+    let dataManager: SPDataManager
     
     @State private var isExpanded = true
     @Environment(\.colorScheme) var colorScheme

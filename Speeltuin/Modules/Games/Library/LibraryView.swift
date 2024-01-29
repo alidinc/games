@@ -17,10 +17,10 @@ struct LibraryView: View {
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     
     @State private var showAddLibrary = false
-    @Query var savedGames: [SwiftGame]
-    @Query var libraries: [Library]
+    @Query var savedGames: [SPGame]
+    @Query var libraries: [SPLibrary]
     
-    let dataManager: SwiftDataManager
+    let dataManager: SPDataManager
     
     var body: some View {
         NavigationStack {

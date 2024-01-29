@@ -11,14 +11,14 @@ import SwiftUI
 struct EditLibraryView: View {
     
     @AppStorage("appTint") var appTint: Color = .blue
-    @Bindable var library: Library
+    @Bindable var library: SPLibrary
     
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
-    @Query var libraries: [Library]
-    @Query var games: [SwiftGame]
+    @Query var libraries: [SPLibrary]
+    @Query var games: [SPGame]
     @State private var showMaxLibraryAlert = false
     
     var body: some View {

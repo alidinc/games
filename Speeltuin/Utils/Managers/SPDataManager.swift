@@ -10,7 +10,7 @@ import Observation
 import SwiftData
 
 @ModelActor
-actor SwiftDataManager {
+actor SPDataManager {
     
     private var bag = Bag()
     
@@ -19,9 +19,9 @@ actor SwiftDataManager {
         modelExecutor = DefaultSerialModelExecutor(modelContext: ModelContext(container))
     }
     
-    var fetchSavedGames: [SwiftGame] {
+    var fetchSavedGames: [SPGame] {
         do {
-            return try modelContext.fetch(FetchDescriptor<SwiftGame>())
+            return try modelContext.fetch(FetchDescriptor<SPGame>())
         } catch {
             return []
         }
@@ -37,8 +37,8 @@ actor SwiftDataManager {
     
     // MARK: - SavedGame
     
-    func add(game: Game, for library: Library) {
-        let savedGame = SwiftGame()
+    func add(game: Game, for library: SPLibrary) {
+        let savedGame = SPGame()
         savedGame.library = library
         
         if let cover = game.cover,
@@ -74,14 +74,14 @@ actor SwiftDataManager {
         }
     }
     
-    func addLibrary(library: Library) {
+    func addLibrary(library: SPLibrary) {
         modelContext.insert(library)
         save()
     }
     
     // MARK: - Toggle
     
-    private func savedAlready(_ game: Game, for library: Library) -> Bool {
+    private func savedAlready(_ game: Game, for library: SPLibrary) -> Bool {
         fetchSavedGames.first { savedGame in
             guard let id = game.id,
                   let savedGameGame = savedGame.game,
@@ -94,7 +94,7 @@ actor SwiftDataManager {
         } != nil
     }
     
-    func toggle(game: Game, for library: Library) {
+    func toggle(game: Game, for library: SPLibrary) {
         guard savedAlready(game, for: library) else {
             
             delete(game: game)

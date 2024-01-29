@@ -14,7 +14,7 @@ struct GamesLocalView: View {
     @Environment(Admin.self) private var admin: Admin
     @Environment(GamesViewModel.self) private var vm
     
-    let dataManager: SwiftDataManager
+    let dataManager: SPDataManager
     
     var body: some View {
         switch viewType {

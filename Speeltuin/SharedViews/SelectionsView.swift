@@ -30,8 +30,8 @@ struct SelectionsView: View {
     @State var selectedOption: SelectionOption = .platform
     @Namespace private var animation
     
-    @Query private var savedGames: [SwiftGame]
-    @Query private var savedLibraries: [Library]
+    @Query private var savedGames: [SPGame]
+    @Query private var savedLibraries: [SPLibrary]
     
     var body: some View {
         VStack(spacing: 0) {

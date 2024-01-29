@@ -19,12 +19,12 @@ struct SpeeltuinApp: App {
     @State private var gamesViewModel = GamesViewModel()
     @State private var newsViewModel = NewsViewModel()
     
-    private var dataManager: SwiftDataManager
+    private var dataManager: SPDataManager
     
     var modelContainer: ModelContainer = {
         let schema = Schema([
-            Library.self,
-            SavedNews.self
+            SPLibrary.self,
+            SPNews.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         
@@ -36,7 +36,7 @@ struct SpeeltuinApp: App {
     }()
     
     init() {
-        self.dataManager = SwiftDataManager(container: modelContainer)
+        self.dataManager = SPDataManager(container: modelContainer)
     }
     
     var body: some Scene {

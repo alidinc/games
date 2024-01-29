@@ -13,7 +13,7 @@ struct GamesNetworkView: View {
     
     @AppStorage("viewType") var viewType: ViewType = .list
     
-    let dataManager: SwiftDataManager
+    let dataManager: SPDataManager
     
     var body: some View {
         switch viewType {

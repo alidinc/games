@@ -13,7 +13,7 @@ struct AddLibraryView: View {
     @AppStorage("appTint") var appTint: Color = .blue
     
     var game: Game?
-    let dataManager: SwiftDataManager
+    let dataManager: SPDataManager
    
     @State private var name = ""
     @State private var icon = ""
@@ -21,8 +21,8 @@ struct AddLibraryView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
-    @Query var savedGames: [SwiftGame]
-    @Query var libraries: [Library]
+    @Query var savedGames: [SPGame]
+    @Query var libraries: [SPLibrary]
     
     @State private var iconsExpanded = false
     @State private var showEmptyNameAlert = false
@@ -118,9 +118,8 @@ struct AddLibraryView: View {
         }
         
         Task {
-            let dataManager = SwiftDataManager(modelContainer: context.container)
-            let library = Library(title: name, icon: icon)
-            
+            let dataManager = SPDataManager(modelContainer: context.container)
+            let library = SPLibrary(title: name, icon: icon)
             await dataManager.addLibrary(library: library)
         
             if let game {

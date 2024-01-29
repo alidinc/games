@@ -9,25 +9,39 @@ import SwiftUI
 
 struct SFImage: View {
     
-    var name: String
+    @Binding var updatingName: String?
+    var name: String? = nil
     var config: SFConfig
     
     @Environment(\.colorScheme) var colorScheme
 
-    init(name: String, config: SFConfig = .init()) {
+    init(updatingName: Binding<String?> = .constant(nil), name: String? = nil, config: SFConfig = .init()) {
+        self._updatingName = updatingName
         self.name = name
         self.config = config
     }
     
     var body: some View {
-        Image(systemName: name)
-            .symbolEffect(.bounce, value: name)
-            .frame(width: config.size, height: config.size)
-            .padding(config.padding)
-            .font(.system(size: config.iconSize))
-            .bold(config.isBold)
-            .foregroundStyle(config.color)
-            .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
+        if let name {
+            Image(systemName: name)
+                .symbolEffect(.bounce, value: name)
+                .frame(width: config.size, height: config.size)
+                .padding(config.padding)
+                .font(.system(size: config.iconSize))
+                .bold(config.isBold)
+                .foregroundStyle(config.color)
+                .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
+        } else if let updatingName {
+            Image(systemName: updatingName)
+                .symbolEffect(.bounce, value: updatingName)
+                .frame(width: config.size, height: config.size)
+                .padding(config.padding)
+                .font(.system(size: config.iconSize))
+                .bold(config.isBold)
+                .foregroundStyle(config.color)
+                .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
+        }
+        
     }
 }
 
