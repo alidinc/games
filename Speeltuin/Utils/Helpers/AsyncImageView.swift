@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum AsyncImageType: String, CaseIterable {
-
+    
     case list
     case grid
     case card
@@ -74,12 +74,10 @@ struct AsyncImageView: View {
     
     @State var type: AsyncImageType
     @State var urlString: String?
-    @State var radius: CGFloat = 5
     
-    init(with urlString: String, type: AsyncImageType, radius: CGFloat = 5) {
+    init(with urlString: String, type: AsyncImageType) {
         self.urlString = urlString
         self.type = type
-        self.radius = radius
     }
     
     var body: some View {
@@ -93,6 +91,7 @@ struct AsyncImageView: View {
                             ProgressView()
                         }
                         .frame(width: self.type.width, height: self.type.height)
+                        .clipShape(.rect(cornerRadius: 5))
                         
                     case .success(let image):
                         image
@@ -100,9 +99,9 @@ struct AsyncImageView: View {
                             .aspectRatio(contentMode: .fill)
                             .shadow(color: .white.opacity(0.7), radius: 10)
                             .frame(width: self.type.width, height: self.type.height)
-                            .clipShape(.rect(cornerRadius: self.radius))
+                            .clipShape(.rect(cornerRadius: 5))
                     default:
-                        ImagePlaceholder(type: self.type, radius: self.radius)
+                        ImagePlaceholder(type: self.type)
                     }
                 }
             }
@@ -117,15 +116,17 @@ struct ImagePlaceholder: View {
     var type: AsyncImageType
     
     @Environment(\.colorScheme) var colorScheme
-    @State var radius: CGFloat = 5
     
     var body: some View {
-        Image(systemName: "photo")
-            .font(.largeTitle)
-            .foregroundStyle(colorScheme == .dark ? .gray.opacity(0.5) : .black.opacity(0.5))
-            .hSpacing(.center)
-            .vSpacing(.center)
-            .background(Color.black.opacity(0.25), in: .rect(cornerRadius: 8))
-            .frame(width: type.width, height: type.height)
+        ZStack {
+            Color.black.opacity(0.25)
+            Image(systemName: "photo")
+                .font(.largeTitle)
+                .foregroundStyle(colorScheme == .dark ? .gray.opacity(0.5) : .black.opacity(0.5))
+                .hSpacing(.center)
+                .vSpacing(.center)
+        }
+        .frame(width: type.width, height: type.height)
+        .clipShape(.rect(cornerRadius: 5))
     }
 }

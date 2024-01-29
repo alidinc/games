@@ -140,7 +140,7 @@ extension GamesTab {
                 Label("All games", systemImage: "bookmark.fill")
             }
             
-            ForEach(savedLibraries, id: \.savingId) { library in
+            ForEach(savedLibraries, id: \.persistentModelID) { library in
                 Button {
                     vm.selectedLibrary = library
                     vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
