@@ -16,18 +16,16 @@ final class Library {
     var icon: String = "bookmark.fill"
     var savingId: String?
     
-    @Relationship(deleteRule: .cascade, inverse: \SavedGame.library)
-    var savedGames: [SavedGame] = []
+    @Relationship(deleteRule: .cascade, inverse: \SwiftGame.library)
+    var savedGames: [SwiftGame]? = []
     
     init(
         id: String = UUID().uuidString,
         title: String = "",
-        icon: String = "bookmark.fill",
-        savedGames: [SavedGame] = []
+        icon: String = "bookmark.fill"
     ) {
         self.savingId = id
         self.title = title
         self.icon = icon
-        self.savedGames = savedGames
     }
 }

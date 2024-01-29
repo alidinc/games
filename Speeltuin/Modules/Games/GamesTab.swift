@@ -14,7 +14,7 @@ struct GamesTab: View {
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .blue
-    @Query(animation: .easeInOut) var savedGames: [SavedGame]
+    @Query(animation: .easeInOut) var savedGames: [SwiftGame]
     @Query(animation: .easeInOut) var savedLibraries: [Library]
    
     @State var vm: GamesViewModel

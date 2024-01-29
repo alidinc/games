@@ -10,7 +10,7 @@ import SwiftUI
 struct GameDetailView: View {
     
     var game: Game?
-    var savedGame: SavedGame?
+    var savedGame: SwiftGame?
     
     @State var vm = GameDetailViewModel()
     @Environment(GamesViewModel.self) private var gamesVM
@@ -22,7 +22,7 @@ struct GameDetailView: View {
         self.game = game
     }
     
-    init(savedGame: SavedGame) {
+    init(savedGame: SwiftGame) {
         if let game = savedGame.game {
             self.game = game
             self.savedGame = savedGame

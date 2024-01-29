@@ -18,7 +18,7 @@ struct EditLibraryView: View {
     @Environment(\.modelContext) private var context
     
     @Query var libraries: [Library]
-    @Query var games: [SavedGame]
+    @Query var games: [SwiftGame]
     @State private var showMaxLibraryAlert = false
     
     var body: some View {

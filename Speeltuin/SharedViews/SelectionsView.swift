@@ -30,7 +30,7 @@ struct SelectionsView: View {
     @State var selectedOption: SelectionOption = .platform
     @Namespace private var animation
     
-    @Query private var savedGames: [SavedGame]
+    @Query private var savedGames: [SwiftGame]
     @Query private var savedLibraries: [Library]
     
     var body: some View {

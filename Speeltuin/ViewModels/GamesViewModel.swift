@@ -22,7 +22,7 @@ class GamesViewModel {
     var searchPlaceholder = "Search in network"
     var dataType: DataType = .network
     var filterType: FilterType = .search
-    var savedGames: [SavedGame] = []
+    var savedGames: [SwiftGame] = []
     var selectedLibrary: Library?
     var cache = DiskCache<[Game]>(filename: "GamesCache",
                                   expirationInterval: 24 * 60 * 60 * 60)
@@ -131,9 +131,10 @@ extension GamesViewModel {
                     offset: self.offset
                 )
             
+            
             let totalGames = games + response
             if Task.isCancelled { return }
-            
+    
             self.dataFetchPhase = .success(totalGames)
             
             if !totalGames.isEmpty {
@@ -175,7 +176,7 @@ extension GamesViewModel {
         }
     }
     
-    func librarySelectionTapped(allSelected: Bool, for library: Library? = nil, in savedGames: [SavedGame]) {
+    func librarySelectionTapped(allSelected: Bool, for library: Library? = nil, in savedGames: [SwiftGame]) {
         searchPlaceholder = "Search in library"
         dataType = .library
         filterType = .library
@@ -196,7 +197,7 @@ extension GamesViewModel {
         }
     }
     
-    func onChangeOfDataType(savedGames: [SavedGame], library: Library?, newValue: DataType) {
+    func onChangeOfDataType(savedGames: [SwiftGame], library: Library?, newValue: DataType) {
         switch newValue {
         case .network:
             Task {
@@ -208,7 +209,7 @@ extension GamesViewModel {
     }
     
     func onChangeQuery(
-        for games: [SavedGame],
+        for games: [SwiftGame],
         newValue: String
     ) {
         filterType = .search
@@ -229,7 +230,7 @@ extension GamesViewModel {
     }
     
     func onChangeGenres(
-        for savedGames: [SavedGame],
+        for savedGames: [SwiftGame],
         newValue: [PopularGenre]
     ) {
         filterType = .genre
@@ -252,7 +253,7 @@ extension GamesViewModel {
     }
     
     func onChangePlatforms(
-        for savedGames: [SavedGame],
+        for savedGames: [SwiftGame],
         newValue: [PopularPlatform]
     ) {
         filterType = .platform
@@ -273,7 +274,7 @@ extension GamesViewModel {
         }
     }
     
-    func toggleGenre(_ genre: PopularGenre, selectedLibrary: Library?,  savedGames: [SavedGame]) {
+    func toggleGenre(_ genre: PopularGenre, selectedLibrary: Library?,  savedGames: [SwiftGame]) {
         switch dataType {
         default:
             if fetchTaskToken.genres.contains(genre) {
@@ -287,7 +288,7 @@ extension GamesViewModel {
         }
     }
     
-    func togglePlatform(_ platform: PopularPlatform, selectedLibrary: Library?, savedGames: [SavedGame]) {
+    func togglePlatform(_ platform: PopularPlatform, selectedLibrary: Library?, savedGames: [SwiftGame]) {
         switch dataType {
         default:
             if fetchTaskToken.platforms.contains(platform) {
@@ -313,9 +314,9 @@ extension GamesViewModel {
         }
     }
     
-    func filterSegment(savedGames: [SavedGame])  {
+    func filterSegment(savedGames: [SwiftGame])  {
         withAnimation {
-            var libraryGames = [SavedGame]()
+            var libraryGames = [SwiftGame]()
             let selectedGenres = fetchTaskToken.genres.filter({$0 != PopularGenre.allGenres })
             let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
             

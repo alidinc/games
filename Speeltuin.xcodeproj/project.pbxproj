@@ -63,12 +63,13 @@
 		DA4B1C002B4460CF00EA3E8F /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = DA4B1BFF2B4460CF00EA3E8F /* Connectivity */; };
 		DA4B1C042B44A32F00EA3E8F /* GamesNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C032B44A32F00EA3E8F /* GamesNetworkView.swift */; };
 		DA4B1C062B44AF4500EA3E8F /* GamesLocalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C052B44AF4500EA3E8F /* GamesLocalView.swift */; };
-		DA4B1C082B44CB9400EA3E8F /* SavedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */; };
+		DA4B1C082B44CB9400EA3E8F /* SwiftGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C072B44CB9400EA3E8F /* SwiftGame.swift */; };
 		DA4B1C0A2B44DA6E00EA3E8F /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4B1C092B44DA6E00EA3E8F /* Rating.swift */; };
 		DA5557A62B38764D00D440A4 /* GenresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557A52B38764D00D440A4 /* GenresView.swift */; };
 		DA5557A82B38769F00D440A4 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557A72B38769F00D440A4 /* RatingView.swift */; };
 		DA5557AA2B38922300D440A4 /* GameDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */; };
 		DA5557B22B38E57F00D440A4 /* VideosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557B12B38E57F00D440A4 /* VideosView.swift */; };
+		DA56E6262B677FFC003F1697 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA56E6252B677FFC003F1697 /* UIImage+Extension.swift */; };
 		DA65DB162B574D8A00DBA824 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */; };
 		DA6C25872B520CC500791432 /* GamesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C25862B520CC500791432 /* GamesOverlayView.swift */; };
 		DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */; };
@@ -181,12 +182,13 @@
 		DA4B1BFA2B44568000EA3E8F /* SwiftDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataManager.swift; sourceTree = "<group>"; };
 		DA4B1C032B44A32F00EA3E8F /* GamesNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesNetworkView.swift; sourceTree = "<group>"; };
 		DA4B1C052B44AF4500EA3E8F /* GamesLocalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesLocalView.swift; sourceTree = "<group>"; };
-		DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGame.swift; sourceTree = "<group>"; };
+		DA4B1C072B44CB9400EA3E8F /* SwiftGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftGame.swift; sourceTree = "<group>"; };
 		DA4B1C092B44DA6E00EA3E8F /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		DA5557A52B38764D00D440A4 /* GenresView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresView.swift; sourceTree = "<group>"; };
 		DA5557A72B38769F00D440A4 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		DA5557A92B38922300D440A4 /* GameDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailViewModel.swift; sourceTree = "<group>"; };
 		DA5557B12B38E57F00D440A4 /* VideosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosView.swift; sourceTree = "<group>"; };
+		DA56E6252B677FFC003F1697 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		DA6C25862B520CC500791432 /* GamesOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesOverlayView.swift; sourceTree = "<group>"; };
 		DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryView.swift; sourceTree = "<group>"; };
@@ -311,7 +313,7 @@
 			children = (
 				DAB92B022B40B26A00375F20 /* Helpers */,
 				DA43CE4A2B30B66B00DAE0B6 /* Game.swift */,
-				DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */,
+				DA4B1C072B44CB9400EA3E8F /* SwiftGame.swift */,
 				DA8AF74F2B4FF9C700C459DA /* Library.swift */,
 				DA79C8BA2B61802800837DB3 /* News.swift */,
 				DAD084282B607B1000D87112 /* SavedNews.swift */,
@@ -359,6 +361,7 @@
 				DA78AA2F2B4D7F49008F018C /* String+Extension.swift */,
 				DA72D2DB2B54B1D900A235C2 /* Binding+Extension.swift */,
 				DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */,
+				DA56E6252B677FFC003F1697 /* UIImage+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -738,7 +741,7 @@
 				DA43CE692B30B6CD00DAE0B6 /* PagingData.swift in Sources */,
 				DA4B1C062B44AF4500EA3E8F /* GamesLocalView.swift in Sources */,
 				DA79C8BD2B61D26900837DB3 /* UIKitTabView.swift in Sources */,
-				DA4B1C082B44CB9400EA3E8F /* SavedGame.swift in Sources */,
+				DA4B1C082B44CB9400EA3E8F /* SwiftGame.swift in Sources */,
 				DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */,
 				DA72F14C2B591930003C4FE0 /* CapsuleView.swift in Sources */,
 				DA4B1C042B44A32F00EA3E8F /* GamesNetworkView.swift in Sources */,
@@ -766,6 +769,7 @@
 				DA4B1BF82B43CD7E00EA3E8F /* Admin.swift in Sources */,
 				DAD084252B6059A800D87112 /* PickerHeaderView.swift in Sources */,
 				DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */,
+				DA56E6262B677FFC003F1697 /* UIImage+Extension.swift in Sources */,
 				DA43CE702B30B6F200DAE0B6 /* KeysTracker.swift in Sources */,
 				DA43CE4B2B30B66B00DAE0B6 /* AccessToken.swift in Sources */,
 				DAB6E8312B63FCCA0023E38D /* GamesTabCoordinator.swift in Sources */,

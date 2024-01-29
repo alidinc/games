@@ -17,13 +17,13 @@ enum NetworkStatus {
 struct GameListItemView: View {
     
     var game: Game?
-    var savedGame: SavedGame?
+    var savedGame: SwiftGame?
     
     @State var vm = GameDetailViewModel()
     @Environment(Admin.self) private var admin
     @Environment(\.colorScheme) var colorScheme
     
-    init(game: Game? = nil, savedGame: SavedGame? = nil) {
+    init(game: Game? = nil, savedGame: SwiftGame? = nil) {
         self.savedGame = savedGame
         self.game = game
     }

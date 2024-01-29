@@ -13,7 +13,7 @@ struct AllLibrariesView: View {
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     
     @Query(animation: .easeInOut) var libraries: [Library]
-    @Query(animation: .easeInOut) var savedGames: [SavedGame]
+    @Query(animation: .easeInOut) var savedGames: [SwiftGame]
     
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) var dismiss
@@ -162,9 +162,11 @@ struct AllLibrariesView: View {
             
             Spacer()
             
-            Text("\(library.savedGames.count) games")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+            if let games = library.savedGames {
+                Text("\(games.count) games")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 }

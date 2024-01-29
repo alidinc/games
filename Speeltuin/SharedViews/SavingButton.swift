@@ -19,13 +19,13 @@ struct SavingButton: View {
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     @Environment(\.modelContext) private var context
     
-    @Query var games: [SavedGame]
+    @Query var games: [SwiftGame]
     @Query var libraries: [Library]
     
     var body: some View {
         Menu {
-            let dataManager = SwiftDataManager(modelContainer: context.container)
-            let libraries = libraries.filter({ !($0.savedGames.compactMap({$0.game}).contains(game)) })
+            let libraries = libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) })
+
             if !libraries.isEmpty {
                 Label("Add to : ", systemImage: "arrow.turn.right.down")
             }
@@ -33,6 +33,7 @@ struct SavingButton: View {
             ForEach(libraries, id: \.savingId) { library in
                 Button {
                     Task {
+                        let dataManager = SwiftDataManager(modelContainer: context.container)
                         await dataManager.toggle(game: game, for: library)
                     }
                 } label: {
@@ -52,6 +53,7 @@ struct SavingButton: View {
             if games.compactMap({$0.game}).contains(game) {
                 Button(role: .destructive) {
                     Task {
+                        let dataManager = SwiftDataManager(modelContainer: context.container)
                         await dataManager.delete(game: game)
                     }
                 } label: {

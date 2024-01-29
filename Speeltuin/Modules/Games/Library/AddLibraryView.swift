@@ -20,7 +20,7 @@ struct AddLibraryView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var context
     
-    @Query var savedGames: [SavedGame]
+    @Query var savedGames: [SwiftGame]
     @Query var libraries: [Library]
     
     @State private var iconsExpanded = false
@@ -113,15 +113,10 @@ struct AddLibraryView: View {
             return
         }
         
-        let library = Library(title: name, icon: icon)
-        let dataManager = SwiftDataManager(modelContainer: context.container)
-        
-        context.insert(library)
-        
-        if let game {
-            Task {
-                await dataManager.toggle(game: game, for: library)
-            }
+        Task {
+            let dataManager = SwiftDataManager(modelContainer: context.container)
+            let library = Library(title: name, icon: icon)
+            await dataManager.toggle(game: game, for: library)
         }
         
         dismiss()

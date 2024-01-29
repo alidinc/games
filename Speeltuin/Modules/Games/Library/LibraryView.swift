@@ -17,7 +17,7 @@ struct LibraryView: View {
     @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
     
     @State private var showAddLibrary = false
-    @Query var savedGames: [SavedGame]
+    @Query var savedGames: [SwiftGame]
     @Query var libraries: [Library]
     
     var body: some View {
