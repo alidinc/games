@@ -37,6 +37,7 @@ struct MoreTab: View {
             }
             .padding(.bottom, 1)
             .scrollContentBackground(.hidden)
+            .scrollIndicators(.hidden)
             .background(.gray.opacity(0.15))
             .confirmationDialog("Rate us", isPresented: $showAppStore, titleVisibility: .visible, actions: {
                 Button {

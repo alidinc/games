@@ -16,11 +16,19 @@ struct GamesNetworkView: View {
     let dataManager: SPDataManager
     
     var body: some View {
-        switch viewType {
-        case .list:
-            ListView
-        case .grid:
-            GridView
+        VStack(spacing: 0) {
+            switch viewType {
+            case .list:
+                ListView
+            case .grid:
+                GridView
+            }
+            
+            if vm.isFetchingNextPage {
+                ProgressView()
+                    .controlSize(.large)
+                    .padding()
+            }
         }
     }
     
@@ -44,14 +52,6 @@ struct GamesNetworkView: View {
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .scrollContentBackground(.hidden)
-        .padding(.bottom, vm.isFetchingNextPage ? 75 : 0)
-        .overlay(alignment: .bottom, content: {
-            if vm.isFetchingNextPage {
-                ProgressView()
-                    .controlSize(.large)
-                    .padding(20)
-            }
-        })
     }
     
     private var GridView: some View {
@@ -76,13 +76,5 @@ struct GamesNetworkView: View {
             .scrollContentBackground(.hidden)
             .padding(.horizontal, 10)
         }
-        .padding(.bottom, vm.isFetchingNextPage ? 75 : 0)
-        .overlay(alignment: .bottom, content: {
-            if vm.isFetchingNextPage {
-                ProgressView()
-                    .controlSize(.large)
-                    .padding(20)
-            }
-        })
     }
 }

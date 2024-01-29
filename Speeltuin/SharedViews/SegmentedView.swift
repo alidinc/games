@@ -51,7 +51,7 @@ private struct SegmentItemView<SegmentItem: Hashable, SegmentContent: View>: Vie
             .background {
                 if selectedSegment == segment {
                     Capsule()
-                        .fill(Color.selectedSegment)
+                        .fill(scheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5))
                         .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                 }
             }
