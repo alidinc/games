@@ -33,11 +33,11 @@ enum Feedback: Int, CaseIterable, Equatable, Hashable {
     var imageName: String {
         switch self {
         case .email:
-            return "paperplane.circle.fill"
+            return "paperplane.fill"
         case .rate:
             return "heart.circle.fill"
         case .share:
-            return "square.and.arrow.up.circle.fill"
+            return "square.and.arrow.up.fill"
         }
     }
     

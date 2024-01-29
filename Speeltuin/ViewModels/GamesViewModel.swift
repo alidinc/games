@@ -112,8 +112,12 @@ extension GamesViewModel {
         let genres = self.fetchTaskToken.genres
         let games = self.dataFetchPhase.value ?? []
         
-        
-        self.dataFetchPhase = .fetchingNextPage(games)
+        do {
+            try await Task.sleep(seconds: 0.05)
+            self.dataFetchPhase = .fetchingNextPage(games)
+        } catch {
+            print(error.localizedDescription)
+        }
         
         do {
             self.offset += self.limit

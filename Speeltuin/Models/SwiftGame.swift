@@ -10,7 +10,7 @@ import SwiftUI
 
 
 @Model
-class SavedGame {
+class SwiftGame {
     
     var date: Date?
     var library: Library?

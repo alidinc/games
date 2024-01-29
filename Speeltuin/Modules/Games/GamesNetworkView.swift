@@ -34,18 +34,6 @@ struct GamesNetworkView: View {
                             await vm.fetchNextSetOfGames()
                         }
                     }
-                    .if(vm.dataFetchPhase.value?.last == game) { view in
-                        view
-                            .padding(.bottom, 100)
-                            .overlay(alignment: .bottom) {
-                                ZStack(alignment: .center) {
-                                    ProgressView()
-                                        .controlSize(.large)
-                                }
-                                .hSpacing(.center)
-                                .frame(height: 100)
-                            }
-                    }
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
@@ -54,6 +42,14 @@ struct GamesNetworkView: View {
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .scrollContentBackground(.hidden)
+        .padding(.bottom, vm.isFetchingNextPage ? 75 : 0)
+        .overlay(alignment: .bottom, content: {
+            if vm.isFetchingNextPage {
+                ProgressView()
+                    .controlSize(.large)
+                    .padding(20)
+            }
+        })
     }
     
     private var GridView: some View {
@@ -77,18 +73,14 @@ struct GamesNetworkView: View {
             .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
             .padding(.horizontal, 10)
-            .if(vm.isFetchingNextPage) { view in
-                view
-                    .padding(.bottom, 100)
-                    .overlay(alignment: .bottom) {
-                        ZStack(alignment: .center) {
-                            ProgressView()
-                                .controlSize(.large)
-                        }
-                        .hSpacing(.center)
-                        .frame(height: 100)
-                    }
-            }
         }
+        .padding(.bottom, vm.isFetchingNextPage ? 75 : 0)
+        .overlay(alignment: .bottom, content: {
+            if vm.isFetchingNextPage {
+                ProgressView()
+                    .controlSize(.large)
+                    .padding(20)
+            }
+        })
     }
 }
