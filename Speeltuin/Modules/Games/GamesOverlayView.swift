@@ -13,6 +13,19 @@ struct GamesOverlayView: View {
     @Environment(GamesViewModel.self) private var vm
     @Environment(Admin.self) private var admin
     
+    private var LoadingView: some View {
+        ZStack {
+            ProgressView("Please wait, \nwhile we are getting ready! ☺️")
+                .font(.subheadline)
+                .tint(.gray)
+                .multilineTextAlignment(.center)
+                .controlSize(.large)
+        }
+        .hSpacing(.center)
+        .padding(.horizontal, 50)
+        .ignoresSafeArea()
+    }
+    
     var body: some View {
         switch vm.dataType {
         case .network:
@@ -20,16 +33,7 @@ struct GamesOverlayView: View {
             case .available:
                 switch vm.dataFetchPhase {
                 case .empty:
-                    ZStack {
-                        ProgressView("Please wait, \nwhile we are getting ready! ☺️")
-                            .font(.subheadline)
-                            .tint(.gray)
-                            .multilineTextAlignment(.center)
-                            .controlSize(.large)
-                    }
-                    .hSpacing(.center)
-                    .padding(.horizontal, 50)
-                    .ignoresSafeArea()
+                    ContentUnavailableView.search(text: vm.searchQuery)
                 case .failure:
                     ContentUnavailableView(
                         "No content available",
@@ -38,6 +42,8 @@ struct GamesOverlayView: View {
                             "We are unable to display any content, please enhance your query."
                         )
                     )
+                case .loading:
+                    LoadingView
                 default:
                     Color.clear
                 }

@@ -81,7 +81,7 @@ extension GamesViewModel {
         }
         
         self.offset = 0
-        self.dataFetchPhase = .empty
+        self.dataFetchPhase = .loading
         
         do {
             let response = try await NetworkManager.shared
@@ -94,9 +94,12 @@ extension GamesViewModel {
                     offset: self.offset
                 )
             if Task.isCancelled { return }
-            self.dataFetchPhase = .success(response)
+            
             if !response.isEmpty {
+                self.dataFetchPhase = .success(response)
                 await self.cache.setValue(response, forKey: category.rawValue)
+            } else {
+                self.dataFetchPhase = .empty
             }
         } catch {
             if Task.isCancelled { return }
@@ -133,11 +136,12 @@ extension GamesViewModel {
             
             let totalGames = games + response
             if Task.isCancelled { return }
-    
-            self.dataFetchPhase = .success(totalGames)
             
             if !totalGames.isEmpty {
+                self.dataFetchPhase = .success(totalGames)
                 await self.cache.setValue(totalGames, forKey: category.rawValue)
+            } else {
+                self.dataFetchPhase = .empty
             }
         } catch {
             if Task.isCancelled { return }
@@ -183,15 +187,14 @@ extension GamesViewModel {
         if allSelected {
             headerTitle = "All games"
             headerImageName =  "bookmark.fill"
-            filterSegment(savedGames: savedGames)
         } else {
             if let library {
                 headerTitle = library.title
                 headerImageName = library.icon
             }
-            
-            filterSegment(savedGames: savedGames)
         }
+        
+        filterSegment(savedGames: savedGames)
     }
     
     func onChangeOfDataType(savedGames: [SPGame], library: SPLibrary?, newValue: DataType) {

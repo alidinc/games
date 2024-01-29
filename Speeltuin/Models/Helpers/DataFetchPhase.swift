@@ -10,6 +10,7 @@ import Foundation
 enum DataFetchPhase<T: Equatable>: Equatable {
     
     case empty
+    case loading
     case success(T)
     case fetchingNextPage(T)
     case failure(Error)

@@ -21,7 +21,6 @@ struct GamesTab: View {
     @State var showLibraries = false
     @State var showSelectionOptions = false
     @State var gameToAddForNewLibrary: Game?
-    @State var receivedLibrary: SPLibrary?
     @State var showAddLibraryWithNoGame = false
     
     let dataManager: DataManager
@@ -63,11 +62,6 @@ extension GamesTab {
                 withAnimation {
                     showAddLibraryWithNoGame = true
                 }
-            }
-        })
-        .onReceive(NotificationCenter.default.publisher(for: .addedToLibrary), perform: { notification in
-            if let library = notification.object as? SPLibrary {
-                receivedLibrary = library
             }
         })
         .onReceive(didRemoteChange, perform: { _ in
