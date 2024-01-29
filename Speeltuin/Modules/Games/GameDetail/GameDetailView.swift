@@ -11,7 +11,7 @@ struct GameDetailView: View {
     
     var game: Game?
     var savedGame: SPGame?
-    let dataManager: SPDataManager
+    let dataManager: DataManager
     
     @State var vm = GameDetailViewModel()
     @Environment(GamesViewModel.self) private var gamesVM
@@ -19,12 +19,12 @@ struct GameDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
     
-    init(game: Game, dataManager: SPDataManager) {
+    init(game: Game, dataManager: DataManager) {
         self.game = game
         self.dataManager = dataManager
     }
     
-    init(savedGame: SPGame, dataManager: SPDataManager) {
+    init(savedGame: SPGame, dataManager: DataManager) {
         self.dataManager = dataManager
         if let game = savedGame.game {
             self.game = game
@@ -75,7 +75,9 @@ struct GameDetailView: View {
                     
                     Spacer()
                     
-                    SavingButton(game: game, opacity: 0.5, dataManager: dataManager)
+                    SavingButton(game: game,
+                                 config: .init(opacity: 0.5),
+                                 dataManager: dataManager)
                 }
             }
             

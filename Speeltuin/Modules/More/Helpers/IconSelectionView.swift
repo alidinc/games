@@ -85,24 +85,26 @@ struct IconSelectionView: View {
                                 
                                 Text(icon.title)
                                     .foregroundStyle(Color(uiColor: .label))
+                                    .font(.headline.bold())
                                 
                                 Spacer()
                             }
-                        }
-                        .padding()
-                        .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
-                        .overlay {
-                            if selectedAppIcon == icon {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .strokeBorder(appTint, lineWidth: 2)
+                            .padding()
+                            .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                            .shadow(radius: 1)
+                            .overlay {
+                                if selectedAppIcon == icon {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .strokeBorder(appTint, lineWidth: 2)
+                                }
                             }
                         }
-                        .padding(.horizontal)
                     }
                 }
             }
             .padding(.bottom, 50)
-            
+            .padding(.horizontal)
+            .scrollIndicators(.hidden)
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -139,33 +141,5 @@ struct CheckboxView: View {
     var body: some View {
         Image(systemName: self.isSelected ? "checkmark.square.fill" : "square.fill")
             .foregroundColor(self.isSelected ? (colorScheme == .dark ? .white : .black) : .black.opacity(0.5))
-    }
-}
-
-
-import SwiftUI
-
-struct MoreHeaderTextView: View {
-    
-    var title: String
-    var subtitle: String?
-    
-    var body: some View {
-        VStack {
-            Text(self.title)
-                .font(.headline)
-                .foregroundStyle(.primary)
-                .multilineTextAlignment(.leading)
-                .hSpacing(.leading)
-            
-            
-            if let subtitle {
-                Text(subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.leading)
-                    .hSpacing(.leading)
-            }
-        }
     }
 }

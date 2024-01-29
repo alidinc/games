@@ -24,7 +24,7 @@ struct GamesTab: View {
     @State var receivedLibrary: SPLibrary?
     @State var showAddLibraryWithNoGame = false
     
-    let dataManager: SPDataManager
+    let dataManager: DataManager
     
     var body: some View {
         NavigationStack {
@@ -81,6 +81,11 @@ extension GamesTab {
         })
         .onChange(of: vm.searchQuery) { _, newValue in
             vm.onChangeQuery(for: savedGames, newValue: newValue)
+        }
+        .onChange(of: vm.selectedLibrary) { _, _ in
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
+            }
         }
     }
 }

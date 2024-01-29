@@ -10,25 +10,16 @@ import SwiftUI
 struct GamesNetworkView: View {
     
     @Environment(GamesViewModel.self) private var vm
-    
     @AppStorage("viewType") var viewType: ViewType = .list
     
-    let dataManager: SPDataManager
+    let dataManager: DataManager
     
     var body: some View {
-        VStack(spacing: 0) {
-            switch viewType {
-            case .list:
-                ListView
-            case .grid:
-                GridView
-            }
-            
-            if vm.isFetchingNextPage {
-                ProgressView()
-                    .controlSize(.large)
-                    .padding()
-            }
+        switch viewType {
+        case .list:
+            ListView
+        case .grid:
+            GridView
         }
     }
     
@@ -43,6 +34,18 @@ struct GamesNetworkView: View {
                         if self.vm.hasReachedEnd(of: game) {
                             await vm.fetchNextSetOfGames()
                         }
+                    }
+                    .if(vm.hasReachedEnd(of: game)) { view in
+                        view
+                            .padding(.bottom, 100)
+                            .overlay(alignment: .bottom) {
+                                ZStack(alignment: .center) {
+                                    ProgressView()
+                                        .controlSize(.large)
+                                }
+                                .hSpacing(.center)
+                                .frame(height: 100)
+                            }
                     }
             }
             .listRowSeparator(.hidden)
@@ -75,6 +78,18 @@ struct GamesNetworkView: View {
             .scrollIndicators(.hidden)
             .scrollContentBackground(.hidden)
             .padding(.horizontal, 10)
+            .if(vm.isFetchingNextPage) { view in
+                view
+                    .padding(.bottom, 100)
+                    .overlay(alignment: .bottom) {
+                        ZStack(alignment: .center) {
+                            ProgressView()
+                                .controlSize(.large)
+                        }
+                        .hSpacing(.center)
+                        .frame(height: 100)
+                    }
+            }
         }
     }
 }

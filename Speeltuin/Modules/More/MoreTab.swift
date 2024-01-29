@@ -15,10 +15,7 @@ struct MoreTab: View {
     @AppStorage("selectedIcon") var selectedAppIcon: DeviceAppIcon = .system
     @AppStorage("colorScheme") var scheme: SchemeType = .system
     @Environment(\.openURL) var openURL
-    @State var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
-                                    subject: "Support Email",
-                                    messageHeader: "Please describe your issue below.")
-    
+
     @State var showMailApp = false
     @State var showAbout = false
     @State var showIcons = false
@@ -27,6 +24,9 @@ struct MoreTab: View {
     @State var showStyleSelections = false
     @State var showColorSchemeSelections = false
     @State var showAlertNoDefaulEmailFound = false
+    @State var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
+                                    subject: "Support Email",
+                                    messageHeader: "Please describe your issue below.")
     
     var body: some View {
         NavigationStack {
@@ -35,7 +35,6 @@ struct MoreTab: View {
                 FeedbackSection
                 AboutSection
             }
-            .padding(.bottom, 1)
             .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
             .background(.gray.opacity(0.15))
@@ -123,18 +122,6 @@ struct MoreTab: View {
                 }
             }
         }
-    }
-    
-    private var Header: some View {
-        HStack(spacing: 8) {
-            Text("More")
-                .font(.system(size: 24, weight: .semibold))
-                .foregroundStyle(.primary)
-                .shadow(radius: 10)
-                .hSpacing(.leading)
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
     }
     
     func rateApp() {

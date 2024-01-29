@@ -20,7 +20,7 @@ struct LibraryView: View {
     @Query var savedGames: [SPGame]
     @Query var libraries: [SPLibrary]
     
-    let dataManager: SPDataManager
+    let dataManager: DataManager
     
     var body: some View {
         NavigationStack {

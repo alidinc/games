@@ -71,8 +71,6 @@ extension MoreTab {
                 } label: {
                     Text("iOS email app")
                 }
-            } else {
-                
             }
         }
     }

@@ -50,7 +50,14 @@ extension GamesTab {
                 HapticsManager.shared.vibrateForSelection()
             }
         } label: {
-            SFImage(name: "tray.full.fill", config: .init(opacity: 0.5, padding: 10, color: .secondary))
+            SFImage(
+                name: "tray.full.fill",
+                config: .init(
+                    opacity: 0.5,
+                    padding: 10,
+                    color: .secondary
+                )
+            )
         }
     }
     
@@ -60,13 +67,16 @@ extension GamesTab {
             if hapticsEnabled {
                 HapticsManager.shared.vibrateForSelection()
             }
-        }, label: {
-            SFImage(name: "slider.horizontal.3",
-                    config: .init(
-                        opacity: 0.5,
-                        padding: 10,
-                        color: vm.hasFilters ? appTint : .secondary
-                    ))
+        },
+               label: {
+            SFImage(
+                name: "slider.horizontal.3",
+                config: .init(
+                    opacity: 0.5,
+                    padding: 10,
+                    color: vm.hasFilters ? appTint : .secondary
+                )
+            )
         })
         .animation(.bouncy, value: vm.hasFilters)
     }
@@ -81,12 +91,14 @@ extension GamesTab {
                     HapticsManager.shared.vibrateForSelection()
                 }
             }, label: {
-                SFImage(name: "slider.horizontal.2.gobackward",
-                        config: .init(
-                            opacity: 0.5,
-                            padding: 10,
-                            color: vm.hasFilters ? appTint : .clear
-                        ))
+                SFImage(
+                    name: "slider.horizontal.2.gobackward",
+                    config: .init(
+                        opacity: 0.5,
+                        padding: 10,
+                        color: vm.hasFilters ? appTint : .clear
+                    )
+                )
             })
         }
     }
@@ -124,10 +136,6 @@ extension GamesTab {
             Button {
                 vm.selectedLibrary = nil
                 vm.librarySelectionTapped(allSelected: true, in: savedGames)
-                
-                if hapticsEnabled {
-                    HapticsManager.shared.vibrateForSelection()
-                }
             } label: {
                 Label("All games", systemImage: "bookmark.fill")
             }
@@ -136,10 +144,6 @@ extension GamesTab {
                 Button {
                     vm.selectedLibrary = library
                     vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
-                    
-                    if hapticsEnabled {
-                        HapticsManager.shared.vibrateForSelection()
-                    }
                 } label: {
                     Label(library.title, systemImage: library.icon)
                 }

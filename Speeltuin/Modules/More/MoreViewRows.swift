@@ -30,7 +30,6 @@ extension MoreTab {
             HStack {
                 MoreRowView(imageName: "rectangle.grid.1x2.fill", text: "View Style")
                 Spacer()
-                
                 Text(viewType.rawValue.capitalized)
                     .foregroundStyle(.gray.opacity(0.5))
                     .font(.headline)
@@ -48,9 +47,8 @@ extension MoreTab {
             HStack {
                 MoreRowView(imageName: "hand.tap.fill", text: "Haptics")
                 Spacer()
-                Toggle(isOn: $hapticsEnabled, label: {
-                })
-                .tint(.green)
+                Toggle(isOn: $hapticsEnabled, label: {})
+                    .tint(.green)
             }
         }
     }

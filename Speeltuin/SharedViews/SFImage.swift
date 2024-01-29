@@ -9,39 +9,30 @@ import SwiftUI
 
 struct SFImage: View {
     
-    @Binding var updatingName: String?
-    var name: String? = nil
+    var name: String
     var config: SFConfig
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(\.colorScheme) var colorScheme
 
-    init(updatingName: Binding<String?> = .constant(nil), name: String? = nil, config: SFConfig = .init()) {
-        self._updatingName = updatingName
+    init(name: String, config: SFConfig = .init()) {
         self.name = name
         self.config = config
     }
     
     var body: some View {
-        if let name {
-            Image(systemName: name)
-                .symbolEffect(.bounce, value: name)
-                .frame(width: config.size, height: config.size)
-                .padding(config.padding)
-                .font(.system(size: config.iconSize))
-                .bold(config.isBold)
-                .foregroundStyle(config.color)
-                .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
-        } else if let updatingName {
-            Image(systemName: updatingName)
-                .symbolEffect(.bounce, value: updatingName)
-                .frame(width: config.size, height: config.size)
-                .padding(config.padding)
-                .font(.system(size: config.iconSize))
-                .bold(config.isBold)
-                .foregroundStyle(config.color)
-                .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
-        }
-        
+        Image(systemName: name)
+            .frame(width: config.size, height: config.size)
+            .padding(config.padding)
+            .font(.system(size: config.iconSize))
+            .bold(config.isBold)
+            .foregroundStyle(config.color)
+            .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
+            .onChange(of: name) { oldValue, newValue in
+                if hapticsEnabled {
+                    HapticsManager.shared.vibrateForSelection()
+                }
+            }
     }
 }
 

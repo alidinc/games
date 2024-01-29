@@ -37,10 +37,10 @@ struct AboutView: View {
     private var TeamButton: some View {
         NavigationLink {
             TeamView
-               
         } label: {
             MoreRowView(imageName: "person.fill", text: "Team")
                 .padding(16)
+                .shadow(radius: 1)
                 .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         }
     }
@@ -51,6 +51,7 @@ struct AboutView: View {
         } label: {
             MoreRowView(imageName: "network", text: "Credits")
                 .padding(16)
+                .shadow(radius: 1)
                 .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         }
     }
@@ -108,6 +109,7 @@ struct AboutView: View {
             Link(destination: url) {
                 MoreRowView(imageName: "person.fill", text: name, subtitle: subtitle)
                     .padding(16)
+                    .shadow(radius: 1)
                     .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
                     .overlay(alignment: .trailing) {
                         Image(systemName: "info")

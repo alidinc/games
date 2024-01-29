@@ -10,7 +10,7 @@ import Observation
 import SwiftData
 
 @ModelActor
-actor SPDataManager {
+actor DataManager {
     
     private var bag = Bag()
     
@@ -35,12 +35,15 @@ actor SPDataManager {
         }
     }
     
-    // MARK: - SavedGame
+    func getGameData(game: Game, savedGame: SPGame) {
+        do {
+            savedGame.gameData = try JSONEncoder().encode(game)
+        } catch {
+            print("Error")
+        }
+    }
     
-    func add(game: Game, for library: SPLibrary) {
-        let savedGame = SPGame()
-        savedGame.library = library
-        
+    func getImageData(game: Game, savedGame: SPGame) {
         if let cover = game.cover,
            let urlString = cover.url,
            let url = URL(string: "https:\(urlString.replacingOccurrences(of: "t_thumb", with: "t_720p"))") {
@@ -54,15 +57,15 @@ actor SPDataManager {
                 }
                 .store(in: &bag)
         }
-        
-        Task(priority: .background) {
-            do {
-                savedGame.gameData = try JSONEncoder().encode(game)
-            } catch {
-                print("Error")
-            }
-        }
-        
+    }
+    
+    // MARK: - SavedGame
+    
+    func add(game: Game, for library: SPLibrary) {
+        let savedGame = SPGame()
+        savedGame.library = library
+        getGameData(game: game, savedGame: savedGame)
+        getImageData(game: game, savedGame: savedGame)
         modelContext.insert(savedGame)
         save()
     }

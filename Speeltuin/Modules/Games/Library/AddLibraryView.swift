@@ -13,7 +13,7 @@ struct AddLibraryView: View {
     @AppStorage("appTint") var appTint: Color = .blue
     
     var game: Game?
-    let dataManager: SPDataManager
+    let dataManager: DataManager
    
     @State private var name = ""
     @State private var icon = ""
@@ -117,13 +117,16 @@ struct AddLibraryView: View {
             return
         }
         
-        Task {
-            let dataManager = SPDataManager(modelContainer: context.container)
-            let library = SPLibrary(title: name, icon: icon)
-            await dataManager.addLibrary(library: library)
+        let library = SPLibrary(title: name, icon: icon)
         
-            if let game {
-                await dataManager.toggle(game: game, for: library)
+        Task {
+            let dataManager = DataManager(modelContainer: context.container)
+            await dataManager.addLibrary(library: library)
+            
+            Task {
+                if let game {
+                    await dataManager.toggle(game: game, for: library)
+                }
             }
         }
         

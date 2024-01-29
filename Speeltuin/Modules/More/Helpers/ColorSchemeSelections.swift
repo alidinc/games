@@ -65,6 +65,7 @@ struct ColorSchemeSelections: View {
                             MoreRowView(imageName: type.imageName, text: type.title)
                                 .padding(16)
                                 .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                                .shadow(radius: 1)
                                 .overlay {
                                     if scheme == type {
                                         RoundedRectangle(cornerRadius: 10)

@@ -18,13 +18,13 @@ struct GameListItemView: View {
     
     var game: Game?
     var savedGame: SPGame?
-    let dataManager: SPDataManager
+    let dataManager: DataManager
     
     @State var vm = GameDetailViewModel()
     @Environment(Admin.self) private var admin
     @Environment(\.colorScheme) var colorScheme
     
-    init(game: Game? = nil, savedGame: SPGame? = nil, dataManager: SPDataManager) {
+    init(game: Game? = nil, savedGame: SPGame? = nil, dataManager: DataManager) {
         self.savedGame = savedGame
         self.game = game
         self.dataManager = dataManager
@@ -75,7 +75,7 @@ struct GameListItemView: View {
                         HStack(alignment: .bottom) {
                             RatingView(game: game)
                             Spacer()
-                            SavingButton(game: game, opacity: 0.2, dataManager: dataManager)
+                            SavingButton(game: game, config: .init(opacity: 0.1, padding: 10), dataManager: dataManager)
                         }
                     }
                 }
@@ -118,7 +118,9 @@ struct GameListItemView: View {
                     HStack(alignment: .bottom) {
                         RatingView(game: game)
                         Spacer()
-                        SavingButton(game: game, opacity: 0.2, dataManager: dataManager)
+                        SavingButton(game: game, 
+                                     config: .init(opacity: 0.1, padding: 10),
+                                     dataManager: dataManager)
                     }
                 }
             }

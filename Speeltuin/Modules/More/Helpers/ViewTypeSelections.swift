@@ -33,6 +33,7 @@ struct ViewTypeSelections: View {
                             MoreRowView(imageName: type.imageName, text: type.rawValue.capitalized)
                                 .padding(16)
                                 .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                                .shadow(radius: 1)
                                 .overlay {
                                     if viewType == type {
                                         RoundedRectangle(cornerRadius: 10)
