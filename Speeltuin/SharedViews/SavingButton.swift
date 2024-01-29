@@ -12,8 +12,7 @@ import Combine
 struct SavingButton: View {
     
     var game: Game
-    var config: SFConfig
-    let dataManager: DataManager
+    var config: SFConfig = .init()
     
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
@@ -21,19 +20,25 @@ struct SavingButton: View {
     @Environment(\.modelContext) private var context
     
     @Query var games: [SPGame]
+    let dataManager: DataManager
+    
     @Query var libraries: [SPLibrary]
     
     var body: some View {
         Menu {
-            let libraries = libraries.filter({ !($0.savedGames?.compactMap({$0.game}).contains(game) ?? false) })
+            let libraries = libraries.filter({ !($0.savedGames?.compactMap({$0.gameId}).contains(game.id) ?? false) })
             if !libraries.isEmpty {
                 Label("Add to : ", systemImage: "arrow.turn.right.down")
             }
             
-            ForEach(libraries, id: \.persistentModelID) { library in
+            ForEach(libraries, id: \.savingId) { library in
                 Button {
                     Task {
                         await dataManager.toggle(game: game, for: library)
+                    }
+                    
+                    if hapticsEnabled {
+                        HapticsManager.shared.vibrateForSelection()
                     }
                 } label: {
                     Label(library.title, systemImage: library.icon)
@@ -49,27 +54,30 @@ struct SavingButton: View {
             })
             .tint(appTint)
             
-            if games.compactMap({$0.game}).contains(game) {
+            if games.compactMap({$0.gameId}).contains(game.id) {
                 Button(role: .destructive) {
                     Task {
                         await dataManager.delete(game: game)
+                    }
+                    
+                    if hapticsEnabled {
+                        HapticsManager.shared.vibrateForSelection()
                     }
                 } label: {
                     Label("Delete", systemImage: "trash.fill")
                 }
             }
-
+            
         } label: {
-            SFImage(name: getLibraryName(), 
-                    config: .init(opacity: config.opacity, padding: config.padding))
+            if let name = libraryName() {
+                SFImage(name: name)
+            } else {
+                SFImage(name: "bookmark")
+            }
         }
     }
     
-    func getLibraryName() -> String {
-        if let library = self.games.first(where: { $0.game?.id == game.id })?.library {
-            return library.icon
-        } else {
-            return "bookmark"
-        }
+    func libraryName() -> String? {
+        self.games.first(where: { $0.gameId == game.id })?.library?.icon
     }
 }

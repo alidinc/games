@@ -13,19 +13,22 @@ import SwiftData
 class SPNews {
     
     var title: String = ""
-    var icon: String = "bookmark.fill"
     var savingId: String?
     var link: String?
+    var details: String?
+    var pubDate: Date?
     
     init(
         id: String = UUID().uuidString,
         title: String = "",
-        icon: String = "bookmark.fill",
-        link: String
+        link: String,
+        details: String,
+        pubDate: Date
     ) {
         self.savingId = id
         self.title = title
-        self.icon = icon
         self.link = link
+        self.details = details
+        self.pubDate = pubDate
     }
 }

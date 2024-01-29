@@ -71,6 +71,8 @@
 		DA5557B22B38E57F00D440A4 /* VideosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5557B12B38E57F00D440A4 /* VideosView.swift */; };
 		DA56E6262B677FFC003F1697 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA56E6252B677FFC003F1697 /* UIImage+Extension.swift */; };
 		DA56E6442B67D483003F1697 /* MoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA56E6432B67D483003F1697 /* MoreHeaderView.swift */; };
+		DA56E6642B6868E5003F1697 /* SPNewsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA56E6632B6868E5003F1697 /* SPNewsListView.swift */; };
+		DA56E6662B687869003F1697 /* SPNewsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA56E6652B687869003F1697 /* SPNewsGridView.swift */; };
 		DA65DB162B574D8A00DBA824 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */; };
 		DA6C25872B520CC500791432 /* GamesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C25862B520CC500791432 /* GamesOverlayView.swift */; };
 		DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */; };
@@ -96,7 +98,6 @@
 		DA93BE9B2B351D270047DD37 /* PlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA93BE9A2B351D270047DD37 /* PlatformsView.swift */; };
 		DAAD3E512B40B485005E8EBA /* SavingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E502B40B485005E8EBA /* SavingButton.swift */; };
 		DAAD3E532B40BD32005E8EBA /* SFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E522B40BD32005E8EBA /* SFImage.swift */; };
-		DAAD3E582B40D89B005E8EBA /* ViewTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */; };
 		DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */; };
 		DAAD3E602B41AA97005E8EBA /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */; };
 		DAB6E8122B63C59A0023E38D /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E8112B63C59A0023E38D /* Tab.swift */; };
@@ -191,6 +192,8 @@
 		DA5557B12B38E57F00D440A4 /* VideosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosView.swift; sourceTree = "<group>"; };
 		DA56E6252B677FFC003F1697 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		DA56E6432B67D483003F1697 /* MoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreHeaderView.swift; sourceTree = "<group>"; };
+		DA56E6632B6868E5003F1697 /* SPNewsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPNewsListView.swift; sourceTree = "<group>"; };
+		DA56E6652B687869003F1697 /* SPNewsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPNewsGridView.swift; sourceTree = "<group>"; };
 		DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		DA6C25862B520CC500791432 /* GamesOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesOverlayView.swift; sourceTree = "<group>"; };
 		DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryView.swift; sourceTree = "<group>"; };
@@ -216,7 +219,6 @@
 		DA93BE9A2B351D270047DD37 /* PlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsView.swift; sourceTree = "<group>"; };
 		DAAD3E502B40B485005E8EBA /* SavingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingButton.swift; sourceTree = "<group>"; };
 		DAAD3E522B40BD32005E8EBA /* SFImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFImage.swift; sourceTree = "<group>"; };
-		DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeButton.swift; sourceTree = "<group>"; };
 		DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFModels.swift; sourceTree = "<group>"; };
 		DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		DAB6E8112B63C59A0023E38D /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
@@ -403,6 +405,8 @@
 				DA4466172B49E43C00361071 /* NewsTab.swift */,
 				DAD084262B6073E500D87112 /* NewsListItemView.swift */,
 				DA79C8BE2B62699500837DB3 /* NewsGridItemView.swift */,
+				DA56E6632B6868E5003F1697 /* SPNewsListView.swift */,
+				DA56E6652B687869003F1697 /* SPNewsGridView.swift */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -481,7 +485,6 @@
 				DAAD3E522B40BD32005E8EBA /* SFImage.swift */,
 				DAD084242B6059A800D87112 /* PickerHeaderView.swift */,
 				DA79C8BC2B61D26900837DB3 /* UIKitTabView.swift */,
-				DAAD3E572B40D89B005E8EBA /* ViewTypeButton.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -688,7 +691,6 @@
 				DA43CE4C2B30B66B00DAE0B6 /* APICalypse.swift in Sources */,
 				DA207A1C2B602D86001F8923 /* AllLibrariesView.swift in Sources */,
 				DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */,
-				DAAD3E582B40D89B005E8EBA /* ViewTypeButton.swift in Sources */,
 				DAB6E82E2B63FC690023E38D /* AppCoordinator.swift in Sources */,
 				DA72D2DC2B54B1D900A235C2 /* Binding+Extension.swift in Sources */,
 				DAB6E8272B63F9B30023E38D /* WindowCoordinator.swift in Sources */,
@@ -722,6 +724,7 @@
 				DA43CE3A2B30B65500DAE0B6 /* Int+Extension.swift in Sources */,
 				DA6C25872B520CC500791432 /* GamesOverlayView.swift in Sources */,
 				DA43CE372B30B65500DAE0B6 /* View+Extensions.swift in Sources */,
+				DA56E6642B6868E5003F1697 /* SPNewsListView.swift in Sources */,
 				DA4466152B49DEB000361071 /* NewsViewModel.swift in Sources */,
 				DA4B1BF02B43AA5100EA3E8F /* AboutView.swift in Sources */,
 				DAC503C42B344CF7004D4B03 /* Color+Extension.swift in Sources */,
@@ -733,6 +736,7 @@
 				DA78AA2E2B4D7DB2008F018C /* SafariView.swift in Sources */,
 				DAC503C62B344F57004D4B03 /* IconSelectionView.swift in Sources */,
 				DA5557A82B38769F00D440A4 /* RatingView.swift in Sources */,
+				DA56E6662B687869003F1697 /* SPNewsGridView.swift in Sources */,
 				DA5557A62B38764D00D440A4 /* GenresView.swift in Sources */,
 				DA4B1C0A2B44DA6E00EA3E8F /* Rating.swift in Sources */,
 				DAAD3E512B40B485005E8EBA /* SavingButton.swift in Sources */,
@@ -939,7 +943,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -978,7 +982,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -9,16 +9,11 @@ import SwiftUI
 
 struct SFImage: View {
     
-    var name: String
-    var config: SFConfig
+    @State var name: String
+    var config: SFConfig = .init()
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(\.colorScheme) var colorScheme
-
-    init(name: String, config: SFConfig = .init()) {
-        self.name = name
-        self.config = config
-    }
     
     var body: some View {
         Image(systemName: name)

@@ -11,7 +11,7 @@ import SwiftUI
 @Model
 class SPGame {
     
-    var date: Date?
+    var date: Date = Date.now
     var library: SPLibrary?
     
     @Attribute(.externalStorage)
@@ -20,6 +20,23 @@ class SPGame {
     @Attribute(.externalStorage)
     var imageData: Data?
     
+    init(date: Date = .now, library: SPLibrary? = nil, gameData: Data? = nil, imageData: Data? = nil) {
+        self.date = date
+        self.library = library
+        self.gameData = gameData
+        self.imageData = imageData
+    }
+    
+    @Transient
+    var gameId: Int {
+        guard let game, let id = game.id else {
+            return 0
+        }
+        
+        return id
+    }
+    
+    @Transient
     var game: Game? {
         do {
             guard let gameData = self.gameData else {
@@ -30,10 +47,6 @@ class SPGame {
         } catch {
             return nil
         }
-    }
-    
-    init(date: Date = .now) {
-        self.date = date
     }
 }
 

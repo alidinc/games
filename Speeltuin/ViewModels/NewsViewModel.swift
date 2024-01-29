@@ -18,16 +18,29 @@ class NewsViewModel {
         return nintendo + xbox + ign
     }
     
+    var headerTitle: String = ""
+    var dataType: DataType = .network
+    
     var ign: [RSSFeedItem] = []
     var nintendo: [RSSFeedItem] = []
     var xbox: [RSSFeedItem] = []
-    
     var newsType: NewsType = .all
     
     init() {
+        self.headerTitle = self.newsType.title
+        
         Task {
             await self.fetchNews()
         }
+    }
+    
+    func groupSavedNews(news: [SPNews]) -> [(String, [SPNews])] {
+        let groupedItems = Dictionary(grouping: news) { item in
+            // Customize the date format based on your needs
+            return (item.pubDate ?? .now).asString(style: .medium)
+        }
+        
+        return groupedItems.sorted(by: { $0.0 > $1.0 })
     }
     
     func groupedAndSortedItems(items: [RSSFeedItem]) -> [(String, [RSSFeedItem])] {
@@ -43,6 +56,10 @@ class NewsViewModel {
         guard allNews.isEmpty else {
             return
         }
+        
+        self.ign.removeAll()
+        self.nintendo.removeAll()
+        self.xbox.removeAll()
         
         for type in [NewsType.ign, NewsType.nintendo, NewsType.xbox] {
             guard let url = URL(string: type.urlString) else {

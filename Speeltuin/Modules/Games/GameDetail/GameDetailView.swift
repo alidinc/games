@@ -76,7 +76,6 @@ struct GameDetailView: View {
                     Spacer()
                     
                     SavingButton(game: game,
-                                 config: .init(opacity: 0.5),
                                  dataManager: dataManager)
                 }
             }

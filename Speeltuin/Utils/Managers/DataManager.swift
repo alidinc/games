@@ -35,15 +35,15 @@ actor DataManager {
         }
     }
     
-    func getGameData(game: Game, savedGame: SPGame) {
+    func getGameData(game: Game) -> Data? {
         do {
-            savedGame.gameData = try JSONEncoder().encode(game)
+            return try JSONEncoder().encode(game)
         } catch {
-            print("Error")
+            return nil
         }
     }
     
-    func getImageData(game: Game, savedGame: SPGame) {
+    func getImageData(game: Game, completion: @escaping (Data?) -> Void) {
         if let cover = game.cover,
            let urlString = cover.url,
            let url = URL(string: "https:\(urlString.replacingOccurrences(of: "t_thumb", with: "t_720p"))") {
@@ -53,9 +53,11 @@ actor DataManager {
                 .sink { _ in
                     
                 } receiveValue: { data in
-                    savedGame.imageData = data
+                    completion(data)
                 }
                 .store(in: &bag)
+        } else {
+            completion(nil)
         }
     }
     
@@ -64,16 +66,31 @@ actor DataManager {
     func add(game: Game, for library: SPLibrary) {
         let savedGame = SPGame()
         savedGame.library = library
-        getGameData(game: game, savedGame: savedGame)
-        getImageData(game: game, savedGame: savedGame)
+        
+        getImageData(game: game) { data in
+            if let data {
+                savedGame.imageData = data
+            }
+        }
+        
+        savedGame.gameData = self.getGameData(game: game)
         modelContext.insert(savedGame)
         save()
     }
     
     func delete(game: Game) {
-        if let gameToDelete = fetchSavedGames.first(where: { $0.game?.id == game.id }) {
+        if let gameToDelete = fetchSavedGames.first(where: { $0.gameId == game.id }) {
             modelContext.delete(gameToDelete)
             save()
+        }
+    }
+    
+    func deleteAllLibraries() {
+        do {
+            try modelContext.delete(model: SPLibrary.self)
+            save()
+        } catch {
+            
         }
     }
     
@@ -82,19 +99,20 @@ actor DataManager {
         save()
     }
     
+    func addNews(news: SPNews) {
+        modelContext.insert(news)
+        save()
+    }
+    
+    func deleteNews(news: SPNews) {
+        modelContext.delete(news)
+        save()
+    }
+    
     // MARK: - Toggle
     
-    private func savedAlready(_ game: Game, for library: SPLibrary) -> Bool {
-        fetchSavedGames.first { savedGame in
-            guard let id = game.id,
-                  let savedGameGame = savedGame.game,
-                  let savedGameId = savedGameGame.id,
-                  let savedGameLibrary = savedGame.library else {
-                return false
-            }
-            
-            return savedGameId == id && savedGameLibrary == library
-        } != nil
+    func savedAlready(_ game: Game, for library: SPLibrary) -> Bool {
+        ((library.savedGames?.first(where: { $0.gameId == game.id })) != nil)
     }
     
     func toggle(game: Game, for library: SPLibrary) {
@@ -106,7 +124,5 @@ actor DataManager {
             NotificationCenter.default.post(name: .addedToLibrary, object: library)
             return
         }
-        
-        delete(game: game)
     }
 }
