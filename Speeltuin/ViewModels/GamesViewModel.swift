@@ -20,6 +20,7 @@ class GamesViewModel {
     var headerImageName = ""
     var searchQuery = ""
     var searchPlaceholder = "Search in network"
+    var savedGamesListId = ""
     var dataType: DataType = .network
     var filterType: FilterType = .search
     var savedGames: [SPGame] = []
@@ -161,6 +162,10 @@ extension GamesViewModel {
 // MARK: - Filtering
 extension GamesViewModel {
     
+    func refreshList() {
+        self.savedGamesListId = UUID().uuidString
+    }
+    
     func categorySelected(for category: Category) {
         fetchTaskToken.category = category
         headerTitle = category.title
@@ -194,6 +199,7 @@ extension GamesViewModel {
             }
         }
         
+        refreshList()
         filterSegment(savedGames: savedGames)
     }
     

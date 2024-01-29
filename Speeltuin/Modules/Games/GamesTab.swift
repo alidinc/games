@@ -22,7 +22,7 @@ struct GamesTab: View {
     @State var showSelectionOptions = false
     @State var gameToAddForNewLibrary: Game?
     @State var showAddLibraryWithNoGame = false
-    
+
     let dataManager: DataManager
     
     var body: some View {

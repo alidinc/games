@@ -47,6 +47,7 @@ struct SPGamesCollectionView: View {
             .listRowBackground(Color.clear)
             .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
         }
+        .id(vm.savedGamesListId)
         .listStyle(.plain)
         .scrollIndicators(.hidden)
         .scrollContentBackground(.hidden)
@@ -87,5 +88,6 @@ struct SPGamesCollectionView: View {
             .scrollContentBackground(.hidden)
             .padding(.horizontal, 10)
         }
+        .id(vm.savedGamesListId)
     }
 }
