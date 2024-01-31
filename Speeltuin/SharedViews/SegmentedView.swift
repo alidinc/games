@@ -28,7 +28,7 @@ struct SegmentedView<SegmentItem: Hashable, SegmentContent: View>: View {
                 }
             }
         }
-        .background(Color.gray.opacity(0.15), in: .capsule)
+        .background(Color.segmentUnSelectedBackground, in: .capsule)
         .padding(.horizontal, 20)
     }
 }
@@ -51,7 +51,7 @@ private struct SegmentItemView<SegmentItem: Hashable, SegmentContent: View>: Vie
             .background {
                 if selectedSegment == segment {
                     Capsule()
-                        .fill(scheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5))
+                        .fill(Color.segmentSelectedBackground)
                         .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                 }
             }

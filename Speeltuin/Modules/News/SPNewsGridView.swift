@@ -61,7 +61,7 @@ struct SPNewsGridView: View {
                     Label("Delete", systemImage: "bookmark")
                 }
             })
-            .alert("It's already saved!", isPresented: $showAlert) {
+            .alert(Constants.Alert.alreadySaved, isPresented: $showAlert) {
                 Button(role: .destructive) {
                     if let newsToDelete = savedNews.first(where: {$0.title == item.title }) {
                         modelContext.delete(newsToDelete)
@@ -80,7 +80,7 @@ struct SPNewsGridView: View {
                     Label("Cancel", systemImage: "checkmark")
                 }
             } message: {
-                Text("Would you like to delete it?")
+                Text(Constants.Alert.alreadySavedMessage)
             }
         }
     }

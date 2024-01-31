@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "nintendo-switch-3.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "nintendo-switch-2.png",
       "idiom" : "universal"
     }

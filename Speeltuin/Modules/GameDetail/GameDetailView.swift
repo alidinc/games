@@ -14,7 +14,9 @@ struct GameDetailView: View {
     let dataManager: DataManager
     
     @State var vm = GameDetailViewModel()
+    @State private var isExpanded = false
     @Environment(GamesViewModel.self) private var gamesVM
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
@@ -38,7 +40,7 @@ struct GameDetailView: View {
                 GameImage
                 
                 if let game {
-                    VStack(alignment: .leading, spacing: 25) {
+                    VStack(alignment: .leading, spacing: 20) {
                         Header(game: game)
                         SummaryView(game: game)
                         DetailsView(game: game)
@@ -76,6 +78,7 @@ struct GameDetailView: View {
                     Spacer()
                     
                     SavingButton(game: game,
+                                 config: .init(opacity: 0.25),
                                  dataManager: dataManager)
                 }
             }
@@ -109,18 +112,25 @@ struct GameDetailView: View {
     }
     
     private func DetailsView(game: Game) -> some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack {
+        DisclosureGroup(isExpanded: $isExpanded) {
+            VStack(alignment: .leading, spacing: 30) {
                 GenresView(game: game)
                 PlatformsView(game: game)
-            }
-            
-            HStack {
                 GameModesView(game: game)
-                SocialsView(game: game)
+                LinksView(game: game)
             }
+        } label: {
+            Text(isExpanded ? "" : "Details")
+                .font(.subheadline.bold())
+                .foregroundColor(.primary)
         }
         .padding()
-        .background(colorScheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5), in: .rect(cornerRadius: 10))
+        .background(colorScheme == .dark ? .ultraThickMaterial : .ultraThick, in: .rect(cornerRadius: 10))
+        .shadow(radius: 2)
+        .onChange(of: isExpanded) { oldValue, newValue in
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
+            }
+        }
     }
 }

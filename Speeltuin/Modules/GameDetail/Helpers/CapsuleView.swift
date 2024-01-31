@@ -14,7 +14,7 @@ struct CapsuleView: View {
     var imageName: String?
     
     var body: some View {
-        VStack {
+        HStack(spacing: 10) {
             if let imageName {
                 switch imageType {
                 case .sf:
@@ -35,8 +35,9 @@ struct CapsuleView: View {
                     .multilineTextAlignment(.center)
             }
         }
-        .padding(6)
-    
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color.sfButtonBackground, in: .capsule)
     }
 }
 

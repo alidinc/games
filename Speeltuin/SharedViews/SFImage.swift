@@ -13,7 +13,6 @@ struct SFImage: View {
     var config: SFConfig = .init()
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         Image(systemName: name)
@@ -23,7 +22,7 @@ struct SFImage: View {
             .font(.system(size: config.iconSize))
             .bold(config.isBold)
             .foregroundStyle(config.color)
-            .background(colorScheme == .dark ? .black.opacity(config.opacity) : .gray.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
+            .background(Color.sfButtonBackground.opacity(config.opacity), in: .rect(cornerRadius: config.radius))
             .onChange(of: name) { oldValue, newValue in
                 if hapticsEnabled {
                     HapticsManager.shared.vibrateForSelection()

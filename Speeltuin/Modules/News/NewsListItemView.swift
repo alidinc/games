@@ -79,9 +79,23 @@ struct NewsListItemView: View {
                             }
                         } label: {
                             if !self.savedNews.compactMap({$0.title}).contains(news.title) {
-                                SFImage(name: "bookmark")
+                                SFImage(
+                                    name: "bookmark",
+                                    config: .init(
+                                        opacity: 0.25,
+                                        padding: 8,
+                                        iconSize: 14
+                                    )
+                                )
                             } else {
-                                SFImage(name: "bookmark.fill")
+                                SFImage(
+                                    name: "bookmark.fill",
+                                    config: .init(
+                                        opacity: 1,
+                                        padding: 8,
+                                        iconSize: 14
+                                    )
+                                )
                             }
                         }
                     }
@@ -91,8 +105,8 @@ struct NewsListItemView: View {
         .padding(12)
         .frame(width: UIScreen.main.bounds.size.width - 20)
         .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
-        .shadow(radius: colorScheme == .dark ? 4 : 2)
-        .alert("It's already saved!", isPresented: $showAlert) {
+        .shadow(radius: colorScheme == .dark ? 0 : 4)
+        .alert(Constants.Alert.alreadySaved, isPresented: $showAlert) {
             Button(role: .destructive) {
                 if let newsToDelete = savedNews.first(where: {$0.title == item.title }) {
                     modelContext.delete(newsToDelete)
@@ -111,7 +125,7 @@ struct NewsListItemView: View {
                 Label("Cancel", systemImage: "checkmark")
             }
         } message: {
-            Text("Would you like to delete it?")
+            Text(Constants.Alert.alreadySavedMessage)
         }
     }
 }

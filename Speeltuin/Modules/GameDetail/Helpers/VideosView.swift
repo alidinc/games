@@ -12,8 +12,9 @@ struct VideosView: View {
     
     var game: Game
     
+    @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(\.colorScheme) var colorScheme
-    
+    @State private var isExpanded = false
     var videoURLs: [String] {
         var urls = [String]()
         guard let videos = self.game.videos?.compactMap({$0.videoID ?? ""}) else {
@@ -28,7 +29,7 @@ struct VideosView: View {
     
     var body: some View {
         if !self.videoURLs.isEmpty {
-            DisclosureGroup {
+            DisclosureGroup(isExpanded: $isExpanded) {
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(self.videoURLs, id: \.self) { id in
@@ -41,11 +42,17 @@ struct VideosView: View {
                 .padding(.top)
             } label: {
                 Text("Videos")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
+                    .font(.subheadline.bold())
+                    .foregroundColor(.primary)
             }
             .padding()
-            .background(colorScheme == .dark ? .black.opacity(0.5) : .gray.opacity(0.5), in: .rect(cornerRadius: 10))
+            .background(colorScheme == .dark ? .ultraThickMaterial : .ultraThick, in: .rect(cornerRadius: 10))
+            .shadow(radius: 2)
+            .onChange(of: isExpanded) { oldValue, newValue in
+                if hapticsEnabled {
+                    HapticsManager.shared.vibrateForSelection()
+                }
+            }
         }
     }
 }

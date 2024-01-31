@@ -8,18 +8,6 @@
 import SwiftData
 import SwiftUI
 
-enum SelectionOption: String, CaseIterable, Identifiable {
-    case platform
-    case genre
-    
-    var id: String {
-        switch self {
-        default:
-            UUID().uuidString
-        }
-    }
-}
-
 struct SelectionsView: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
@@ -93,8 +81,9 @@ struct SelectionsView: View {
                 HapticsManager.shared.vibrateForSelection()
             }
         } label: {
-            Image(systemName: "slider.horizontal.3")
+            Image(systemName: vm.hasFilters ? "slider.horizontal.2.gobackward" : "slider.horizontal.3")
                 .foregroundStyle(vm.hasFilters ? appTint : .secondary)
+                .symbolEffect(.bounce, value: vm.hasFilters)
                 .font(.title3)
         }
     }

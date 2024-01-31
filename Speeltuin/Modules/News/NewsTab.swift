@@ -33,9 +33,6 @@ struct NewsTab: View {
                 Header
                 ViewSwitcher
             }
-            .refreshable {
-                await vm.fetchNews()
-            }
             .padding(.bottom, 1)
             .background(.gray.opacity(0.15))
             .fullScreenCover(item: $selectedItem, content: { item in
@@ -102,11 +99,9 @@ struct NewsTab: View {
                 }
             case .unavailable:
                 ContentUnavailableView(
-                    "No network available",
+                    Constants.UnavailableView.networkTitle,
                     systemImage: "exclamationmark.triangle.fill",
-                    description: Text(
-                        "We are unable to display any content as your iPhone is not currently connected to the internet."
-                    )
+                    description: Text(Constants.UnavailableView.networkMessage)
                 )
             }
         case .library:
@@ -114,11 +109,9 @@ struct NewsTab: View {
             default:
                 if savedNews.isEmpty {
                     ContentUnavailableView(
-                        "No content available",
+                        Constants.UnavailableView.contentTitle,
                         systemImage: "exclamationmark.triangle.fill",
-                        description: Text(
-                            "We are unable to display any content, please save some news."
-                        )
+                        description: Text(Constants.UnavailableView.contentNewsMessage)
                     )
                 }
             }
@@ -143,9 +136,15 @@ struct NewsTab: View {
             switch viewType {
             case .list:
                 NewsListView
+                    .refreshable {
+                        await vm.fetchNews()
+                    }
                     .overlay { Overlay }
             case .grid:
                 NewsGridView
+                    .refreshable {
+                        await vm.fetchNews()
+                    }
                     .overlay { Overlay }
             }
         case .library:
@@ -179,7 +178,7 @@ struct NewsTab: View {
                     }
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
-                    .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                    .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
                 }
             }
             .listRowSeparator(.hidden)
@@ -189,7 +188,6 @@ struct NewsTab: View {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
-        .padding(.horizontal, 10)
     }
     
     var SavedNewsGridView: some View {
@@ -223,38 +221,6 @@ struct NewsTab: View {
         .scrollIndicators(.hidden)
         .listStyle(.plain)
         
-    }
-    
-    var NewsSourcePicker: some View {
-        Menu {
-            Picker("", selection: $vm.newsType) {
-                ForEach(NewsType.allCases, id: \.id) { news in
-                    Text(news.title).tag(news)
-                }
-            }
-            
-            Button {
-                vm.dataType = .library
-                vm.headerTitle = "Saved news"
-            } label: {
-                Label("Saved news", systemImage: "bookmark")
-            }
-
-        } label: {
-            PickerHeaderView(title: vm.headerTitle, imageName: "newspaper.fill")
-        }
-    }
-    
-    var TodayView: some View {
-        VStack(alignment: .trailing) {
-            Text("Today")
-                .font(.headline.bold())
-                .foregroundStyle(.primary)
-            
-            Text(Date.now.asString(style: .medium))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-        }
     }
     
     var NewsGridView: some View {
@@ -308,7 +274,7 @@ struct NewsTab: View {
                     }
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
-                    .listRowInsets(.init(top: 5, leading: 0, bottom: 5, trailing: 0))
+                    .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
                 }
             }
             .listRowSeparator(.hidden)
@@ -318,6 +284,38 @@ struct NewsTab: View {
         .scrollContentBackground(.hidden)
         .scrollIndicators(.hidden)
         .listStyle(.plain)
+    }
+    
+    var NewsSourcePicker: some View {
+        Menu {
+            Picker("", selection: $vm.newsType) {
+                ForEach(NewsType.allCases, id: \.id) { news in
+                    Text(news.title).tag(news)
+                }
+            }
+            
+            Button {
+                vm.dataType = .library
+                vm.headerTitle = "Saved news"
+            } label: {
+                Label("Saved news", systemImage: "bookmark")
+            }
+
+        } label: {
+            PickerHeaderView(title: vm.headerTitle, imageName: "newspaper.fill")
+        }
+    }
+    
+    var TodayView: some View {
+        VStack(alignment: .trailing) {
+            Text("Today")
+                .font(.headline.bold())
+                .foregroundStyle(.primary)
+            
+            Text(Date.now.asString(style: .medium))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 

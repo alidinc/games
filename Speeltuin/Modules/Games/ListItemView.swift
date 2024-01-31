@@ -75,7 +75,7 @@ struct ListItemView: View {
                         HStack(alignment: .bottom) {
                             RatingView(game: game)
                             Spacer()
-                            SavingButton(game: game, config: .init(opacity: 0.1, padding: 10), dataManager: dataManager)
+                            SavingButton(game: game, config: .init(opacity: 0.25), dataManager: dataManager)
                         }
                     }
                 }
@@ -83,7 +83,7 @@ struct ListItemView: View {
             .padding(12)
             .frame(width: UIScreen.main.bounds.size.width - 20)
             .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
-            .shadow(radius: colorScheme == .dark ? 4 : 2)
+            .shadow(radius: colorScheme == .dark ? 0 : 4)
         }
     }
     
@@ -118,16 +118,22 @@ struct ListItemView: View {
                     HStack(alignment: .bottom) {
                         RatingView(game: game)
                         Spacer()
-                        SavingButton(game: game, 
-                                     config: .init(opacity: 0.1, padding: 10),
-                                     dataManager: dataManager)
+                        SavingButton(
+                            game: game,
+                            config: .init(
+                                opacity: 0.25,
+                                padding: 8,
+                                iconSize: 14
+                            ),
+                            dataManager: dataManager
+                        )
                     }
                 }
             }
             .padding(12)
             .frame(width: UIScreen.main.bounds.size.width - 20)
             .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
-            .shadow(radius: colorScheme == .dark ? 4 : 2)
+            .shadow(radius: colorScheme == .dark ? 0 : 4)
         }
     }
     

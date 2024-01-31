@@ -20,6 +20,19 @@ struct Constants {
         static let undoAlertTitle = "You won't be able to undo this action."
         static let delete = "Delete"
         static let cancel = "Cancel"
+        static let alreadySaved = "This content's already saved."
+        static let alreadySavedMessage = "Would you like to delete it instead?"
+    }
+    
+    struct UnavailableView {
+        static let networkTitle = "No network available"
+        static let networkMessage =  "We are unable to display any content as your iPhone is not currently connected to the internet."
+        static let contentTitle = "No content available"
+        static let contentNewsMessage = "We are unable to display any content, please save some news."
+        static let contentGamesMessage = "We are unable to display any content, please enhance your query."
+        static let contentFiltersTitle = "No content found for these filters"
+        static let contentLibraryTitle = "No content found for this library"
+        static let contentLibraryMessage = "We are unable to display any content, please save some games."
     }
     
     struct Size {

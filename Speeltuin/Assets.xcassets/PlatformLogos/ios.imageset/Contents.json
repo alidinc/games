@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "apple-black-logo-1.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "apple-black-logo.png",
       "idiom" : "universal"
     }

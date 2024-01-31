@@ -36,11 +36,9 @@ struct GamesOverlayView: View {
                     ContentUnavailableView.search(text: vm.searchQuery)
                 case .failure:
                     ContentUnavailableView(
-                        "No content available",
+                        Constants.UnavailableView.contentTitle,
                         systemImage: "exclamationmark.triangle.fill",
-                        description: Text(
-                            "We are unable to display any content, please enhance your query."
-                        )
+                        description: Text(Constants.UnavailableView.contentGamesMessage)
                     )
                 case .loading:
                     LoadingView
@@ -49,11 +47,9 @@ struct GamesOverlayView: View {
                 }
             case .unavailable:
                 ContentUnavailableView(
-                    "No network available",
+                    Constants.UnavailableView.networkTitle,
                     systemImage: "exclamationmark.triangle.fill",
-                    description: Text(
-                        "We are unable to display any content as your iPhone is not currently connected to the internet."
-                    )
+                    description: Text(Constants.UnavailableView.networkMessage)
                 )
                 .task {
                     await vm.refreshTask()
@@ -66,19 +62,15 @@ struct GamesOverlayView: View {
                     ContentUnavailableView.search(text: vm.searchQuery)
                 case .library:
                     ContentUnavailableView(
-                        "No content found for this library.",
+                        Constants.UnavailableView.contentLibraryTitle,
                         systemImage: "gamecontroller.fill",
-                        description: Text(
-                            "Please add some games from the discover tab."
-                        )
+                        description: Text(Constants.UnavailableView.contentLibraryMessage)
                     )
                 case .genre, .platform:
                     ContentUnavailableView(
-                        "No content found for selected filters",
+                        Constants.UnavailableView.contentFiltersTitle,
                         systemImage: "gamecontroller.fill",
-                        description: Text(
-                            "Please explore some new games."
-                        )
+                        description: Text(Constants.UnavailableView.contentGamesMessage)
                     )
                 }
             }

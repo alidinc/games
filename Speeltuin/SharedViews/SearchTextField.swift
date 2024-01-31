@@ -20,7 +20,7 @@ struct SearchTextField: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
                 .font(.subheadline)
-                .background(colorScheme == .dark ? .quaternary : .tertiary, in: .rect(cornerRadius: 8))
+                .background(Color.searchBarBackground, in: .rect(cornerRadius: 8))
                 .autocorrectionDisabled()
                 .overlay(alignment: .trailing) {
                     HStack {

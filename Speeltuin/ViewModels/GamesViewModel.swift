@@ -190,7 +190,7 @@ extension GamesViewModel {
         filterType = .library
         
         if allSelected {
-            headerTitle = "All games"
+            headerTitle = "Saved games"
             headerImageName =  "bookmark.fill"
         } else {
             if let library {

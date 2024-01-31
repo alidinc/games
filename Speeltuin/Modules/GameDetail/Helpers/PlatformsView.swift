@@ -11,14 +11,14 @@ import SwiftUI
 struct PlatformsView: View {
     
     var game: Game
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         if let platforms = game.platforms, !platforms.isEmpty {
             VStack(alignment: .leading) {
                 Text("Platforms")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                
+                    .font(.subheadline.bold())
+                    .foregroundColor(.primary)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
@@ -27,7 +27,7 @@ struct PlatformsView: View {
                                 if let releaseDates = game.releaseDates,
                                    let platformDate = releaseDates.first(where: { $0.platform == platform.id }) {
                                     if let _ = platformDate.date {
-                                        CapsuleView(imageName: popularPlatform.assetName)
+                                        CapsuleView(title: popularPlatform.title, imageName: popularPlatform.assetName)
                                     } else {
                                         CapsuleView(title: "N/A")
                                     }

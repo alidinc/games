@@ -70,9 +70,24 @@ struct SavingButton: View {
             
         } label: {
             if let name = libraryName() {
-                SFImage(name: name)
+                SFImage(
+                    name: name,
+                    config: .init(
+                        opacity: 1,
+                        padding: config.padding,
+                        iconSize: config.iconSize
+                    )
+                )
             } else {
-                SFImage(name: "bookmark")
+                SFImage(
+                    name: "bookmark",
+                    config: .init(
+                        opacity: 0.5,
+                        padding: config.padding,
+                        color: .secondary,
+                        iconSize: config.iconSize
+                    )
+                )
             }
         }
     }

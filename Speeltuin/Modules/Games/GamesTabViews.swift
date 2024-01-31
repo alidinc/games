@@ -14,6 +14,9 @@ extension GamesTab {
         case .network:
             GamesCollectionView(dataManager: dataManager)
                 .overlay { GamesOverlayView() }
+                .refreshable {
+                    await vm.refreshTask()
+                }
         case .library:
             SPGamesCollectionView(dataManager: dataManager)
                 .overlay { GamesOverlayView() }
@@ -137,7 +140,7 @@ extension GamesTab {
                 vm.selectedLibrary = nil
                 vm.librarySelectionTapped(allSelected: true, in: savedGames)
             } label: {
-                Label("All games", systemImage: "bookmark.fill")
+                Label("All saved games", systemImage: "bookmark.fill")
             }
             
             ForEach(savedLibraries, id: \.persistentModelID) { library in

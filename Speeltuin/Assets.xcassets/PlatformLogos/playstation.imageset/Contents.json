@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "playstation-logotype-2.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "playstation-logotype.png",
       "idiom" : "universal"
     }
