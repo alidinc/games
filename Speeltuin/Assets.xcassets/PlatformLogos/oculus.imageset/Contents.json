@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icons8-oculus-96 (2).png",
+      "filename" : "icons8-oculus-96.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icons8-oculus-96 (1).png",
       "idiom" : "universal"
     }
   ],

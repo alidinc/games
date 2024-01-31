@@ -122,6 +122,7 @@
 		DAC503C62B344F57004D4B03 /* IconSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C52B344F57004D4B03 /* IconSelectionView.swift */; };
 		DACC86E72B6A8D4900639822 /* SelectedOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86E62B6A8D4900639822 /* SelectedOption.swift */; };
 		DACC86E92B6A8D6800639822 /* PlatformWebsite.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */; };
+		DACC86EB2B6A953200639822 /* FeaturedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86EA2B6A953200639822 /* FeaturedGame.swift */; };
 		DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084222B6051C600D87112 /* ViewTypeSelections.swift */; };
 		DAD084252B6059A800D87112 /* PickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084242B6059A800D87112 /* PickerHeaderView.swift */; };
 		DAD084272B6073E500D87112 /* NewsListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084262B6073E500D87112 /* NewsListItemView.swift */; };
@@ -245,6 +246,7 @@
 		DAC503C52B344F57004D4B03 /* IconSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionView.swift; sourceTree = "<group>"; };
 		DACC86E62B6A8D4900639822 /* SelectedOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedOption.swift; sourceTree = "<group>"; };
 		DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformWebsite.swift; sourceTree = "<group>"; };
+		DACC86EA2B6A953200639822 /* FeaturedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedGame.swift; sourceTree = "<group>"; };
 		DAD084222B6051C600D87112 /* ViewTypeSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeSelections.swift; sourceTree = "<group>"; };
 		DAD084242B6059A800D87112 /* PickerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerHeaderView.swift; sourceTree = "<group>"; };
 		DAD084262B6073E500D87112 /* NewsListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListItemView.swift; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 				DAB6E8112B63C59A0023E38D /* Tab.swift */,
 				DACC86E62B6A8D4900639822 /* SelectedOption.swift */,
 				DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */,
+				DACC86EA2B6A953200639822 /* FeaturedGame.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -739,6 +742,7 @@
 				DAB6E8192B63F9980023E38D /* CoordinatorViewController.swift in Sources */,
 				DA8AF74E2B4FF93900C459DA /* LibraryView.swift in Sources */,
 				DA4B1BEA2B43A71700EA3E8F /* MailView.swift in Sources */,
+				DACC86EB2B6A953200639822 /* FeaturedGame.swift in Sources */,
 				DA43CE732B30B6F200DAE0B6 /* CacheManager.swift in Sources */,
 				DA78AA2E2B4D7DB2008F018C /* SafariView.swift in Sources */,
 				DAC503C62B344F57004D4B03 /* IconSelectionView.swift in Sources */,

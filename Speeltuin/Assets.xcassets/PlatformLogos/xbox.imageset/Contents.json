@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "icons8-xbox-96.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "xbox-logo.png",
       "idiom" : "universal"
     }

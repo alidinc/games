@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "icons8-nintendo-wii-u-96.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "icons8-nintendo-wii-u-96 (1).png",
       "idiom" : "universal"
     }

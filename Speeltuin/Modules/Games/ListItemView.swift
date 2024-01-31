@@ -137,6 +137,26 @@ struct ListItemView: View {
         }
     }
     
+    @ViewBuilder
+    private var FeaturedGameImage: some View {
+        if let game, let name = game.name {
+            if (name.lowercased().contains("mario")) {
+                Image(.mario)
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .padding()
+                    .offset(y: 30)
+            } else if (name.lowercased().contains("zelda")) {
+                Image(.zelda)
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .padding()
+                    .offset(y: 30)
+            }
+        }
+    }
+    
+    
     func areAllValuesSame<T: Equatable>(in array: [T]) -> Bool {
         guard let firstValue = array.first else {
             return true  // Empty array, technically all values are the same

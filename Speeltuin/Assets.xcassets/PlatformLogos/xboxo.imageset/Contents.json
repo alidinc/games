@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icons8-xbox-one-s-96.png",
+      "filename" : "icons8-xbox-one-s-100.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icons8-xbox-one-s-100 (1).png",
       "idiom" : "universal"
     }
   ],

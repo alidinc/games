@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icons8-playstation-3-console-96.png",
+      "filename" : "icons8-ps-3-96.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icons8-ps-3-96 (2).png",
       "idiom" : "universal"
     }
   ],

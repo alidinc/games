@@ -23,7 +23,7 @@ struct NewsTab: View {
     
     @Environment(Admin.self) private var admin: Admin
     @State var vm: NewsViewModel
-    @Query private var savedNews: [SPNews]
+    @Query(animation: .easeInOut) private var savedNews: [SPNews]
     
     let dataManager: DataManager
     

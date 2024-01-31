@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icons8-nintendo-30.png",
+      "filename" : "icons8-nintendo-96.png",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icons8-nintendo-30 (1).png",
+      "filename" : "icons8-nintendo-96 (1).png",
       "idiom" : "universal"
     }
   ],
