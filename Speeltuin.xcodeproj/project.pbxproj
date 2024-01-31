@@ -455,10 +455,10 @@
 			isa = PBXGroup;
 			children = (
 				DA8AF74D2B4FF93900C459DA /* LibraryView.swift */,
+				DA207A1B2B602D86001F8923 /* AllLibrariesView.swift */,
 				DA207A192B6028B7001F8923 /* IconsView.swift */,
 				DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */,
 				DA72D2D62B5462AA00A235C2 /* AddLibraryView.swift */,
-				DA207A1B2B602D86001F8923 /* AllLibrariesView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";

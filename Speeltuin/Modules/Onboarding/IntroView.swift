@@ -62,18 +62,15 @@ struct IntroView: View {
             animating = true
         }
         .safeAreaInset(edge: .bottom) {
-            Button(action: {
+            Button("Get Started") {
                 isFirstTime = false
-            }, label: {
-                Text("Get Started")
-                    .fontWeight(.bold)
-                    .foregroundStyle(.black)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(appTint.gradient, in: .rect(cornerRadius: 12))
-                    .contentShape(.rect)
-            })
-            .padding(.horizontal, 20)
+            }
+            .frame(height: 50)
+            .frame(maxWidth: .infinity)
+            .foregroundStyle(.white)
+            .background(appTint.gradient, in: .capsule)
+            .fontWeight(.bold)
+            .padding(20)
         }
     }
     

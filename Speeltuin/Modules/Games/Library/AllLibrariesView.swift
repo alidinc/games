@@ -115,6 +115,12 @@ struct AllLibrariesView: View {
         }, message: {
             Text(Constants.Alert.undoAlertTitle)
         })
+        .overlay(content: {
+            if libraries.isEmpty {
+                ContentUnavailableView("No libraries found.",
+                                       systemImage: "externaldrive.fill.badge.exclamationmark")
+            }
+        })
     }
     
     @ViewBuilder

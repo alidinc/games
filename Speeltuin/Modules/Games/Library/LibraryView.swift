@@ -28,12 +28,6 @@ struct LibraryView: View {
                 Header
                 AllLibrariesView()
             }
-            .overlay(content: {
-                if libraries.isEmpty {
-                    ContentUnavailableView("No libraries found.",
-                                           systemImage: "externaldrive.fill.badge.exclamationmark")
-                }
-            })
             .sheet(isPresented: $showAddLibrary, content: {
                 AddLibraryView(dataManager: dataManager)
                     .presentationDetents([.medium, .large])

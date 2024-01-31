@@ -45,7 +45,7 @@ struct AddLibraryView: View {
                     IconsView(icon: $icon)
                     AddButton
                 }
-                .safeAreaPadding(.bottom)
+                .safeAreaPadding(.vertical)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -53,6 +53,7 @@ struct AddLibraryView: View {
                 }
             }
         }
+        .presentationDragIndicator(.visible)
         .alert("Please name your library.", isPresented: $showEmptyNameAlert, actions: {
             Button(action: {}, label: {
                 Text("OK")

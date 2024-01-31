@@ -42,6 +42,7 @@ struct EditLibraryView: View {
                 }
             }
         }
+        .presentationDragIndicator(.visible)
         .alert("You can't have more than 10 libraries.", isPresented: $showMaxLibraryAlert) {
             Button(action: {}, label: {
                 Text("OK")

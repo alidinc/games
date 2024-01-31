@@ -45,6 +45,7 @@ struct SelectionsView: View {
             
             OptionsView
         }
+        .presentationDragIndicator(.visible)
     }
     
     private var Header: some View {
@@ -150,7 +151,8 @@ struct SelectionsView: View {
             
             Text(title)
                 .font(.caption)
-                .foregroundStyle(isSelected ? Color(uiColor: .label) : .gray)
+                .foregroundStyle(Color(uiColor: .label))
+                .opacity(isSelected ? 1 : 0.5)
                 .multilineTextAlignment(.center)
         }
         .frame(height: 70)
@@ -158,7 +160,7 @@ struct SelectionsView: View {
         .vSpacing(.center)
         .animation(.interactiveSpring(), value: isSelected)
         .padding(10)
-        .background(Color.selectedSegment, in: .rect(cornerRadius: 10))
+        .background(Color.segmentOptionSelectedBackground, in: .rect(cornerRadius: 10))
         .overlay {
             if isSelected {
                 RoundedRectangle(cornerRadius: 10)
