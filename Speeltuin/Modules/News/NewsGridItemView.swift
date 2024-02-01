@@ -76,10 +76,12 @@ struct NewsGridItemView: View {
                 }
                 
                 if self.savedNews.compactMap({$0.title}).contains(news.title) {
-                    Button("Delete", role: .destructive) {
+                    Button(role: .destructive) {
                         if let newsToDelete = savedNews.first(where: {$0.title == item.title }) {
                             modelContext.delete(newsToDelete)
                         }
+                    } label: {
+                        Label("Delete", systemImage: "trash.fill")
                     }
                 }
             }

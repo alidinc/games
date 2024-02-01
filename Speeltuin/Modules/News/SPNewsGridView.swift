@@ -58,7 +58,7 @@ struct SPNewsGridView: View {
                         showAlert = true
                     }
                 } label: {
-                    Label("Delete", systemImage: "bookmark")
+                    Label("Delete", systemImage: "trash.fill")
                 }
             })
             .alert(Constants.Alert.alreadySaved, isPresented: $showAlert) {
