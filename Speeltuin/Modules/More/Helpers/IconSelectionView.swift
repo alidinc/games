@@ -9,7 +9,7 @@ import SwiftUI
 
 enum DeviceAppIcon: Int, Identifiable, CaseIterable {
     
-    case system = 0
+    case teal = 0
     case space
     case sunset
     case indigo
@@ -17,10 +17,17 @@ enum DeviceAppIcon: Int, Identifiable, CaseIterable {
     case ocean
     case forest
     
+    case orange
+    case red
+    case navy
+    case purple
+    case black
+    case green
+    
     var title: String {
         switch self {
-        case .system:
-            return "System"
+        case .teal:
+            return "Teal"
         case .space:
             return "Space"
         case .sunset:
@@ -33,12 +40,24 @@ enum DeviceAppIcon: Int, Identifiable, CaseIterable {
             return "Gold"
         case .ocean:
             return "Ocean"
+        case .orange:
+            return "Orange"
+        case .red:
+            return "Red"
+        case .navy:
+            return "Navy"
+        case .purple:
+            return "Purple"
+        case .black:
+            return "Black"
+        case .green:
+            return "Green"
         }
     }
     
     var assetName: String {
         switch self {
-        case .system:
+        case .teal:
             return "AppIcon"
         default:
             return "AppIcon\(self.id)"
@@ -55,61 +74,129 @@ enum DeviceAppIcon: Int, Identifiable, CaseIterable {
 
 struct IconSelectionView: View {
     
-    private let customIcons: [DeviceAppIcon] = [.system, .space, .sunset, .forest, .indigo, .gold, .ocean]
+    private let dotIcons: [DeviceAppIcon] = [.teal, .space, .sunset, .forest, .indigo, .gold, .ocean]
+    private let plusIcons: [DeviceAppIcon] = [ .black, .orange, .red, .navy, .purple, .green]
+    
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
+    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .black
     @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                MoreHeaderTextView(title: "Change app icon", subtitle: "Select one of the selections below.")
-                Spacer()
-                CloseButton()
+        NavigationStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    MoreHeaderTextView(title: "Change app icon", subtitle: "Select one of the selections below.")
+                    Spacer()
+                    CloseButton()
+                }
+                .padding(.bottom, 20)
+                
+                ScrollView {
+                    VStack {
+                        NavigationLink {
+                            PlusIcons
+                                .navigationTitle("Main icons")
+                        } label: {
+                            MoreRowView(imageName: "app", text: "Main icons")
+                                .padding(16)
+                                .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                                .shadow(radius: 1)
+                        }
+                        
+                        NavigationLink {
+                            DotIcons
+                                .navigationTitle("Secondary icons")
+                        } label: {
+                            MoreRowView(imageName: "app.dashed", text: "Secondary icons")
+                                .padding(16)
+                                .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                                .shadow(radius: 1)
+                        }
+                    }
+                }
             }
             .padding()
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(self.customIcons, id: \.self) { icon in
-                        Button {
-                            self.updateIcon(to: icon)
-                        } label: {
-                            HStack {
-                                Image(icon.title.lowercased())
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .scaledToFit()
-                                    .clipShape(.rect(cornerRadius: 10))
-                                
-                                Text(icon.title)
-                                    .foregroundStyle(Color(uiColor: .label))
-                                    .font(.headline.bold())
-                                
-                                Spacer()
-                            }
-                            .padding()
-                            .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
-                            .shadow(radius: 1)
-                            .overlay {
-                                if selectedAppIcon == icon {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .strokeBorder(appTint, lineWidth: 2)
-                                }
+        }
+    }
+    
+    private var PlusIcons: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(self.plusIcons, id: \.self) { icon in
+                    Button {
+                        self.updateIcon(to: icon)
+                    } label: {
+                        HStack {
+                            Image(icon.title.lowercased())
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .scaledToFit()
+                                .clipShape(.rect(cornerRadius: 10))
+                                .shadow(radius: 4)
+                            
+                            Text(icon.title)
+                                .foregroundStyle(Color(uiColor: .label))
+                                .font(.headline.bold())
+                            
+                            Spacer()
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                        .shadow(radius: 1)
+                        .overlay {
+                            if selectedAppIcon == icon {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(appTint, lineWidth: 2)
                             }
                         }
                     }
                 }
             }
-            .padding(.bottom, 50)
-            .padding(.horizontal)
-            .scrollIndicators(.hidden)
         }
-        .edgesIgnoringSafeArea(.all)
+        .padding(.horizontal)
+        .scrollIndicators(.hidden)
     }
     
-    @MainActor
+    private var DotIcons: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(self.dotIcons, id: \.self) { icon in
+                    Button {
+                        self.updateIcon(to: icon)
+                    } label: {
+                        HStack {
+                            Image(icon.title.lowercased())
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .scaledToFit()
+                                .clipShape(.rect(cornerRadius: 10))
+                                .shadow(radius: 4)
+                            
+                            Text(icon.title)
+                                .foregroundStyle(Color(uiColor: .label))
+                                .font(.headline.bold())
+                            
+                            Spacer()
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
+                        .shadow(radius: 1)
+                        .overlay {
+                            if selectedAppIcon == icon {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(appTint, lineWidth: 2)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
+        .scrollIndicators(.hidden)
+    }
+    
+
     func updateIcon(to icon: DeviceAppIcon) {
         self.selectedAppIcon = icon
         Task { @MainActor in

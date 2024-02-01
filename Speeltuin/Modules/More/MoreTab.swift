@@ -12,7 +12,7 @@ struct MoreTab: View {
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("viewType") var viewType: ViewType = .list
-    @AppStorage("selectedIcon") var selectedAppIcon: DeviceAppIcon = .system
+    @AppStorage("selectedIcon") var selectedAppIcon: DeviceAppIcon = .black
     @AppStorage("colorScheme") var scheme: SchemeType = .system
     @Environment(\.openURL) var openURL
 

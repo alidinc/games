@@ -11,7 +11,7 @@ struct IntroView: View {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     @AppStorage("appTint") var appTint: Color =  .blue
-    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .system
+    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .black
     
     @State private var animating = false
     
@@ -19,8 +19,10 @@ struct IntroView: View {
         VStack(alignment: .leading, spacing: 15) {
             Image(selectedAppIcon.title.lowercased())
                 .resizable()
-                .frame(width: 70, height: 70)
+                .frame(width: 50, height: 50)
                 .scaledToFit()
+                .clipShape(.rect(cornerRadius: 10))
+                .shadow(radius: 4)
                
             Text("Speeltuin: \nYour hub for organising and saving games in personalised libraries.")
                 .font(.title.bold())
@@ -57,6 +59,7 @@ struct IntroView: View {
         .background(
             LinearGradient(colors: [.clear, .gray.opacity(0.5)], startPoint: .bottom, endPoint: .top)
         )
+        .shadow(radius: 2)
         .onAppear {
             animating = true
         }
