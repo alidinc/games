@@ -15,12 +15,12 @@ struct Constants {
     static let allGamesLibraryID = "FC6AAA3D-5EEC-4852-847B-39982C11CD14"
     
     struct Alert {
-        static let deleteLibraryAlertTitle = "Are you sure to delete this library?"
-        static let deleteAllLibrariesAlertTitle = "Are you sure to delete all of your libraries?"
-        static let undoAlertTitle = "You won't be able to undo this action."
+        static let deleteLibraryAlertTitle = "Are you sure you want to delete this library?"
+        static let deleteAllLibrariesAlertTitle = "Are you sure you want to delete all of your libraries?"
+        static let undoAlertTitle = "This action cannot be undone."
         static let delete = "Delete"
         static let cancel = "Cancel"
-        static let alreadySaved = "This content's already saved."
+        static let alreadySaved = "This content is already saved."
         static let alreadySavedMessage = "Would you like to delete it instead?"
     }
     

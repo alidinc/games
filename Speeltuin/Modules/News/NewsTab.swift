@@ -41,11 +41,13 @@ struct NewsTab: View {
     }
     
     var Header: some View {
-        HStack {
+        HStack(alignment: .bottom) {
             NewsSourcePicker
             Spacer()
             Text(headerDate)
                 .font(.subheadline.bold())
+                .frame(height: 44)
+                .offset(y: 10)
         }
         .foregroundStyle(appTint)
         .padding(.horizontal)

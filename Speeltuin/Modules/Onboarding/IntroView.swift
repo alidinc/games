@@ -34,18 +34,18 @@ struct IntroView: View {
                 PointView(
                     symbol: "folder.fill",
                     title: "Information",
-                    subtitle: "Effortlessly curate and access your games."
+                    subtitle: "Curate and access your games."
                 )
                 
                 PointView(
                     symbol: "wand.and.stars",
-                    title: "Visually stunning",
-                    subtitle: "Say goodbye to scattered game lists."
+                    title: "Clean and intuitive design",
+                    subtitle: "Customise the look and feel in the settings."
                 )
                 
                 PointView(
                     symbol: "magnifyingglass",
-                    title: "Advance Filters",
+                    title: "Advance filters",
                     subtitle: "Find the games you want by advance search and filtering."
                 )
             }

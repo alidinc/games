@@ -24,17 +24,17 @@ struct EditLibraryView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack {
-                    NameView
-                    IconsView(icon: $library.icon)
-                }
+                NameView
                 .vSpacing(.top)
             }
             .navigationTitle("Edit library")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
-                UpdateButton
-                    .safeAreaPadding(.bottom)
+                VStack(spacing: 20) {
+                    IconsView(icon: $library.icon)
+                    UpdateButton
+                }
+                .safeAreaPadding(.vertical)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

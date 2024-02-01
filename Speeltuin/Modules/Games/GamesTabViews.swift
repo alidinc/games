@@ -8,6 +8,7 @@
 import SwiftUI
 
 extension GamesTab {
+    
     @ViewBuilder
     var ViewSwitcher: some View {
         switch vm.dataType {
@@ -25,10 +26,10 @@ extension GamesTab {
     
     var Header: some View {
         VStack {
-            HStack {
+            HStack(alignment: .bottom) {
                 MultiPicker
                 Spacer()
-                HStack(spacing: 4) {
+                HStack(alignment: .bottom, spacing: 4) {
                     SearchButton
                     FiltersButton
                     if vm.hasFilters {
@@ -40,11 +41,13 @@ extension GamesTab {
             .padding(.horizontal)
             
             if showSearch {
-                SearchTextField(searchQuery: $vm.searchQuery,
-                                prompt: vm.searchPlaceholder)
+                SearchTextField(
+                    searchQuery: $vm.searchQuery,
+                    prompt: vm.searchPlaceholder,
+                    isFocused: $isTextFieldFocused
+                )
                 .padding(.horizontal, 10)
             }
-            
         }
         .padding(.top)
     }
@@ -91,6 +94,10 @@ extension GamesTab {
         Button {
             withAnimation(.bouncy) {
                 showSearch.toggle()
+            }
+            
+            if hapticsEnabled {
+                HapticsManager.shared.vibrateForSelection()
             }
         } label: {
             SFImage(

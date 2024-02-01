@@ -96,9 +96,9 @@ struct IconSelectionView: View {
                     VStack {
                         NavigationLink {
                             PlusIcons
-                                .navigationTitle("Main icons")
+                                .navigationTitle("Solid series")
                         } label: {
-                            MoreRowView(imageName: "app", text: "Main icons")
+                            MoreRowView(imageName: "app", text: "Solid series")
                                 .padding(16)
                                 .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
                                 .shadow(radius: 1)
@@ -106,9 +106,9 @@ struct IconSelectionView: View {
                         
                         NavigationLink {
                             DotIcons
-                                .navigationTitle("Secondary icons")
+                                .navigationTitle("Pastel series")
                         } label: {
-                            MoreRowView(imageName: "app.dashed", text: "Secondary icons")
+                            MoreRowView(imageName: "app.dashed", text: "Pastel series")
                                 .padding(16)
                                 .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
                                 .shadow(radius: 1)

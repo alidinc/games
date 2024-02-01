@@ -12,6 +12,14 @@ struct SearchTextField: View {
     @Binding var searchQuery: String
     var prompt: String
     @Environment(\.colorScheme) var colorScheme
+    @Binding var isFocused: Bool
+    @FocusState private var focused: Bool
+    
+    init(searchQuery: Binding<String>, prompt: String, isFocused: Binding<Bool> = .constant(false)) {
+        self._searchQuery = searchQuery
+        self._isFocused = isFocused
+        self.prompt = prompt
+    }
     
     var body: some View {
         HStack(spacing: 0) {
@@ -20,8 +28,12 @@ struct SearchTextField: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
                 .font(.subheadline)
+                .focused($focused)
                 .background(Color.searchBarBackground, in: .rect(cornerRadius: 8))
                 .autocorrectionDisabled()
+                .onChange(of: isFocused, { oldValue, newValue in
+                    focused = newValue
+                })
                 .overlay(alignment: .trailing) {
                     HStack {
                         Spacer()

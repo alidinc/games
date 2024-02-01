@@ -24,7 +24,7 @@ struct MoreTab: View {
     @State var showStyleSelections = false
     @State var showColorSchemeSelections = false
     @State var showAlertNoDefaulEmailFound = false
-    @State var email = SupportEmail(toAddress: "alidinc.uk@outlook.com",
+    @State var email = SupportEmail(toAddress: "info@normprojects.com",
                                     subject: "Support Email",
                                     messageHeader: "Please describe your issue below.")
     
@@ -66,7 +66,7 @@ struct MoreTab: View {
             })
             .alert("No default email app found", isPresented: $showAlertNoDefaulEmailFound, actions: {
                 Button {
-                    addToClipboardWithHaptics(with: "brendan.koeleman@outlook.com")
+                    addToClipboardWithHaptics(with: "info@normprojects.com")
                 } label: {
                     Text("Copy our support email here.")
                 }

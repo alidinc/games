@@ -34,7 +34,6 @@ struct AddLibraryView: View {
                 VStack {
                     RemainingLibraryCountView
                     NameView
-                   
                 }
                 .vSpacing(.top)
             }

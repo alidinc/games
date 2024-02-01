@@ -16,6 +16,7 @@ struct GamesTab: View {
     @AppStorage("appTint") var appTint: Color = .blue
     @Query(animation: .easeInOut) var savedGames: [SPGame]
     @Query(animation: .easeInOut) var savedLibraries: [SPLibrary]
+    @State var isTextFieldFocused: Bool = false
    
     @State var vm: GamesViewModel
     @State var showSearch = false
@@ -81,6 +82,9 @@ extension GamesTab {
             if hapticsEnabled {
                 HapticsManager.shared.vibrateForSelection()
             }
+        }
+        .onChange(of: showSearch) { oldValue, newValue in
+            isTextFieldFocused = newValue
         }
     }
 }
