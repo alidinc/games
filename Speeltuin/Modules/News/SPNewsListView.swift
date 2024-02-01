@@ -33,7 +33,8 @@ struct SPNewsListView: View {
                     Text(description)
                         .font(.caption)
                         .foregroundStyle(.gray)
-                        .lineLimit(6, reservesSpace: true)
+                        .lineLimit(4, reservesSpace: true)
+                        .multilineTextAlignment(.leading)
                 }
                 
                 Spacer()
@@ -53,6 +54,7 @@ struct SPNewsListView: View {
                     )
                 }
             }
+            
         }
         .padding(12)
         .frame(width: UIScreen.main.bounds.size.width - 20)

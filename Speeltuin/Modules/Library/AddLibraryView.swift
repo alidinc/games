@@ -41,7 +41,7 @@ struct AddLibraryView: View {
             .navigationTitle("Add library")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
-                VStack {
+                VStack(spacing: 20) {
                     IconsView(icon: $icon)
                     AddButton
                 }

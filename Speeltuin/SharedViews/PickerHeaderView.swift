@@ -12,19 +12,13 @@ struct PickerHeaderView: View {
     @AppStorage("appTint") var appTint: Color = .blue
     
     var title: String
-    var imageName: String
     
     var body: some View {
         HStack(alignment: .center, spacing: 4) {
-            HStack {
-                Image(systemName: imageName)
-                    .foregroundStyle(appTint)
-                
-                Text(title)
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(.primary)
-                    .shadow(radius: 10)
-            }
+            Text(title)
+                .font(.system(size: 24, weight: .semibold))
+                .foregroundStyle(.primary)
+                .shadow(radius: 10)
             
             Image(systemName: "chevron.down")
                 .font(.system(size: 20, weight: .bold))

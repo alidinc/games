@@ -27,26 +27,24 @@ class NewsViewModel {
     var newsType: NewsType = .all
     
     init() {
-        self.headerTitle = self.newsType.title
-        
         Task {
             await self.fetchNews()
         }
+        
+        self.headerTitle = self.newsType.title
     }
     
-    func groupSavedNews(news: [SPNews]) -> [(String, [SPNews])] {
+    func groupSavedNews(news: [SPNews]) -> [(Date, [SPNews])] {
         let groupedItems = Dictionary(grouping: news) { item in
-            // Customize the date format based on your needs
-            return (item.pubDate ?? .now).asString(style: .medium)
+            return Calendar.current.startOfDay(for: (item.pubDate ?? .now))
         }
         
         return groupedItems.sorted(by: { $0.0 > $1.0 })
     }
     
-    func groupedAndSortedItems(items: [RSSFeedItem]) -> [(String, [RSSFeedItem])] {
+    func groupNews(items: [RSSFeedItem]) -> [(Date, [RSSFeedItem])] {
         let groupedItems = Dictionary(grouping: items) { item in
-            // Customize the date format based on your needs
-            return (item.pubDate ?? .now).asString(style: .medium)
+            return Calendar.current.startOfDay(for: (item.pubDate ?? .now))
         }
         
         return groupedItems.sorted(by: { $0.0 > $1.0 })

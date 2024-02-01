@@ -32,3 +32,10 @@ class SPNews {
         self.pubDate = pubDate
     }
 }
+
+extension SPNews {
+    
+    var dateString: String {
+        self.pubDate?.asString(style: .medium) ?? ""
+    }
+}

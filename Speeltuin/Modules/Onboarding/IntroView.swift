@@ -17,7 +17,6 @@ struct IntroView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            
             Image(selectedAppIcon.title.lowercased())
                 .resizable()
                 .frame(width: 70, height: 70)

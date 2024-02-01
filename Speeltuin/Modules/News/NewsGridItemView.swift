@@ -10,10 +10,10 @@ import SwiftUI
 import SwiftData
 
 struct NewsGridItemView: View {
-    
-    var onSelect: () -> Void
+
     var item: RSSFeedItem
     let dataManager: DataManager
+    var onSelect: () -> Void
     
     @Query private var savedNews: [SPNews]
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
@@ -24,32 +24,30 @@ struct NewsGridItemView: View {
         Button {
             onSelect()
         } label: {
-            if let media = item.media,
-               let mediaContents = media.mediaContents,
-               let content = mediaContents.first,
-               let attributes = content.attributes,
-               let urlString = attributes.url {
-                
+            ZStack(alignment: .bottom) {
+                if let media = item.media,
+                   let mediaContents = media.mediaContents,
+                   let content = mediaContents.first,
+                   let attributes = content.attributes,
+                   let urlString = attributes.url {
+                    AsyncImageView(with: urlString, type: .gridNews)
+                }
+
+                LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
+                    .clipShape(.rect(cornerRadius: 5))
                 
                 if let title = item.title {
-                    ZStack(alignment: .bottom) {
-                        AsyncImageView(with: urlString, type: .gridNews)
-                        
-                        
-                        LinearGradient(colors: [.clear, .black], startPoint: .top, endPoint: .bottom)
-                            .clipShape(.rect(cornerRadius: 5))
-                        
-                        Text(title)
-                            .font(.system(size: 12, weight: .semibold))
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(4)
-                            .padding(.horizontal, 4)
-                            .padding(.bottom, 6)
-                            .foregroundStyle(.white)
-                    }
-                    .clipShape(.rect(cornerRadius: 5))
+                    Text(title)
+                        .font(.system(size: 12, weight: .semibold))
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(4)
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 6)
+                        .foregroundStyle(.white)
                 }
             }
+            .clipShape(.rect(cornerRadius: 5))
+            .shadow(radius: 4)
         }
         .contextMenu(menuItems: {
             if let title = item.title,

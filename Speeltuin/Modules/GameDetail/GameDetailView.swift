@@ -44,6 +44,7 @@ struct GameDetailView: View {
                         Header(game: game)
                         SummaryView(game: game)
                         DetailsView(game: game)
+                            .scrollTargetLayout()
                         VideosView(game: game)
                         
                         if !vm.gamesFromIds.isEmpty {
@@ -60,11 +61,13 @@ struct GameDetailView: View {
                     }
                 }
             }
+            
         }
         .padding(.bottom, 1)
         .background(.gray.opacity(0.15))
         .ignoresSafeArea(edges: (savedGame?.imageData != nil) || (game != nil) ? .top : .leading)
         .scrollIndicators(.hidden)
+        .scrollTargetBehavior(.paging)
     }
     
     private func Header(game: Game) -> some View {

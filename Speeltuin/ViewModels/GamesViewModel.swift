@@ -17,7 +17,6 @@ class GamesViewModel {
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     var headerTitle = ""
-    var headerImageName = ""
     var searchQuery = ""
     var searchPlaceholder = "Search in network"
     var savedGamesListId = ""
@@ -37,7 +36,6 @@ class GamesViewModel {
         )
         
         headerTitle = fetchTaskToken.category.title
-        headerImageName = fetchTaskToken.category.systemImage
         
         Task {
             await self.fetchGames()
@@ -169,7 +167,6 @@ extension GamesViewModel {
     func categorySelected(for category: Category) {
         fetchTaskToken.category = category
         headerTitle = category.title
-        headerImageName = category.systemImage
         searchPlaceholder = "Search in network"
         dataType = .network
         filterType = .search
@@ -191,11 +188,9 @@ extension GamesViewModel {
         
         if allSelected {
             headerTitle = "Saved games"
-            headerImageName =  "bookmark.fill"
         } else {
             if let library {
                 headerTitle = library.title
-                headerImageName = library.icon
             }
         }
         

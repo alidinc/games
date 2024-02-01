@@ -38,20 +38,20 @@ struct SPNewsGridView: View {
                         .font(.caption2)
                         .foregroundStyle(.gray)
                         .multilineTextAlignment(.leading)
-                        .lineLimit(5)
+                        
                 }
             }
             .padding(.horizontal, 4)
-            .padding(.top, 18)
-            .padding(.bottom, 6)
+            .padding(.vertical, 10)
             .frame(width: AsyncImageType.gridNews.width,
                    height: AsyncImageType.gridNews.height)
             .background(
-                LinearGradient(colors: [appTint.opacity(0.5), .black.opacity(0.75), .black],
+                LinearGradient(colors: [appTint, appTint.opacity(0.75), .black, .black],
                                startPoint: .top,
-                               endPoint: .center),
+                               endPoint: .bottom),
                 in: .rect(cornerRadius: 5)
             )
+            .shadow(radius: 4)
             .contextMenu(menuItems: {
                 Button(role: .destructive) {
                     if self.savedNews.compactMap({$0.persistentModelID}).contains(item.persistentModelID) {

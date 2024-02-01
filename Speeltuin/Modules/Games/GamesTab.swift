@@ -18,6 +18,7 @@ struct GamesTab: View {
     @Query(animation: .easeInOut) var savedLibraries: [SPLibrary]
    
     @State var vm: GamesViewModel
+    @State var showSearch = false
     @State var showLibraries = false
     @State var showSelectionOptions = false
     @State var gameToAddForNewLibrary: Game?
@@ -31,7 +32,7 @@ struct GamesTab: View {
         }
         .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
         .sheet(isPresented: $showLibraries, content: {
-            LibraryView(dataManager: dataManager).presentationDetents([.medium])
+            LibraryView(dataManager: dataManager).presentationDetents([.medium, .large])
         })
         .sheet(isPresented: $showAddLibraryWithNoGame) {
             AddLibraryView(dataManager: dataManager).presentationDetents([.medium, .large])

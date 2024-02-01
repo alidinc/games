@@ -29,6 +29,7 @@ extension GamesTab {
                 MultiPicker
                 Spacer()
                 HStack(spacing: 4) {
+                    SearchButton
                     FiltersButton
                     if vm.hasFilters {
                         ClearFiltersButton
@@ -36,11 +37,13 @@ extension GamesTab {
                     LibraryButton
                 }
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal)
             
-            SearchTextField(searchQuery: $vm.searchQuery,
-                            prompt: vm.searchPlaceholder)
-            .padding(.horizontal, 10)
+            if showSearch {
+                SearchTextField(searchQuery: $vm.searchQuery,
+                                prompt: vm.searchPlaceholder)
+                .padding(.horizontal, 10)
+            }
             
         }
         .padding(.top)
@@ -84,6 +87,24 @@ extension GamesTab {
         .animation(.bouncy, value: vm.hasFilters)
     }
     
+    var SearchButton: some View {
+        Button {
+            withAnimation(.bouncy) {
+                showSearch.toggle()
+            }
+        } label: {
+            SFImage(
+                name: "magnifyingglass",
+                config: .init(
+                    opacity: 0.5,
+                    padding: 10,
+                    color: showSearch ? appTint : .secondary
+                )
+            )
+        }
+        .transition(.move(edge: .top))
+    }
+    
     @ViewBuilder
     var ClearFiltersButton: some View {
         if vm.hasFilters {
@@ -113,7 +134,7 @@ extension GamesTab {
             LibraryPicker
             
         } label: {
-            PickerHeaderView(title: vm.headerTitle, imageName: vm.headerImageName)
+            PickerHeaderView(title: vm.headerTitle)
         }
     }
     
@@ -126,11 +147,12 @@ extension GamesTab {
                         HapticsManager.shared.vibrateForSelection()
                     }
                 } label: {
-                    Label(category.title, systemImage: category.systemImage).tag(category)
+                    Text(category.title)
                 }
+                .tag(category)
             }
         } label: {
-            Label("Internet", systemImage: "sparkle.magnifyingglass")
+            Text("Internet")
         }
     }
     
@@ -148,12 +170,12 @@ extension GamesTab {
                     vm.selectedLibrary = library
                     vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
                 } label: {
-                    Label(library.title, systemImage: library.icon)
+                    Text(library.title)
                 }
-                .tag(library.savingId)
+                .tag(library.persistentModelID)
             }
         } label: {
-            Label("Libraries", systemImage: "tray.full.fill")
+            Text("Libraries")
         }
     }
 }

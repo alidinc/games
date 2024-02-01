@@ -82,9 +82,8 @@ struct SavingButton: View {
                 SFImage(
                     name: "bookmark",
                     config: .init(
-                        opacity: 0.5,
+                        opacity: config.opacity,
                         padding: config.padding,
-                        color: .secondary,
                         iconSize: config.iconSize
                     )
                 )

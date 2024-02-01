@@ -28,6 +28,7 @@ struct LibraryView: View {
                 Header
                 AllLibrariesView()
             }
+            .presentationDragIndicator(.visible)
             .sheet(isPresented: $showAddLibrary, content: {
                 AddLibraryView(dataManager: dataManager)
                     .presentationDetents([.medium, .large])

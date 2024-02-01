@@ -56,7 +56,7 @@ struct SpeeltuinApp: App {
                                 GamesTab(vm: gamesViewModel, dataManager: dataManager),
                              barItem: UITabBarItem(title: "Games", image: UIImage(systemName: "gamecontroller.fill"), tag: 0)),
             UIKitTabView.Tab(view:
-                                NewsTab(vm: newsViewModel, dataManager: dataManager),
+                                NewsTab(dataManager: dataManager, vm: newsViewModel),
                              barItem: UITabBarItem(title: "News", image: UIImage(systemName: "newspaper.fill"), tag: 1)),
             UIKitTabView.Tab(view:
                                 MoreTab(),

@@ -123,6 +123,9 @@
 		DACC86E72B6A8D4900639822 /* SelectedOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86E62B6A8D4900639822 /* SelectedOption.swift */; };
 		DACC86E92B6A8D6800639822 /* PlatformWebsite.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */; };
 		DACC86EB2B6A953200639822 /* FeaturedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86EA2B6A953200639822 /* FeaturedGame.swift */; };
+		DACC86F02B6B951600639822 /* NewsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86EF2B6B951600639822 /* NewsCollectionView.swift */; };
+		DACC86F22B6B95BD00639822 /* NewsOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86F12B6B95BD00639822 /* NewsOverlayView.swift */; };
+		DACC86F42B6B964A00639822 /* SPNewsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86F32B6B964A00639822 /* SPNewsCollectionView.swift */; };
 		DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084222B6051C600D87112 /* ViewTypeSelections.swift */; };
 		DAD084252B6059A800D87112 /* PickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084242B6059A800D87112 /* PickerHeaderView.swift */; };
 		DAD084272B6073E500D87112 /* NewsListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084262B6073E500D87112 /* NewsListItemView.swift */; };
@@ -247,6 +250,9 @@
 		DACC86E62B6A8D4900639822 /* SelectedOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedOption.swift; sourceTree = "<group>"; };
 		DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformWebsite.swift; sourceTree = "<group>"; };
 		DACC86EA2B6A953200639822 /* FeaturedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedGame.swift; sourceTree = "<group>"; };
+		DACC86EF2B6B951600639822 /* NewsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCollectionView.swift; sourceTree = "<group>"; };
+		DACC86F12B6B95BD00639822 /* NewsOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsOverlayView.swift; sourceTree = "<group>"; };
+		DACC86F32B6B964A00639822 /* SPNewsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPNewsCollectionView.swift; sourceTree = "<group>"; };
 		DAD084222B6051C600D87112 /* ViewTypeSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeSelections.swift; sourceTree = "<group>"; };
 		DAD084242B6059A800D87112 /* PickerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerHeaderView.swift; sourceTree = "<group>"; };
 		DAD084262B6073E500D87112 /* NewsListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListItemView.swift; sourceTree = "<group>"; };
@@ -409,10 +415,13 @@
 			isa = PBXGroup;
 			children = (
 				DA4466172B49E43C00361071 /* NewsTab.swift */,
+				DACC86F12B6B95BD00639822 /* NewsOverlayView.swift */,
 				DAD084262B6073E500D87112 /* NewsListItemView.swift */,
 				DA79C8BE2B62699500837DB3 /* NewsGridItemView.swift */,
+				DACC86EF2B6B951600639822 /* NewsCollectionView.swift */,
 				DA56E6632B6868E5003F1697 /* SPNewsListView.swift */,
 				DA56E6652B687869003F1697 /* SPNewsGridView.swift */,
+				DACC86F32B6B964A00639822 /* SPNewsCollectionView.swift */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -712,6 +721,7 @@
 				DA93BE8A2B34EAC40047DD37 /* SimilarGamesView.swift in Sources */,
 				DA43CE672B30B6CD00DAE0B6 /* HapticsManager.swift in Sources */,
 				DA0C20822B38F81F000E2D6E /* SummaryView.swift in Sources */,
+				DACC86F02B6B951600639822 /* NewsCollectionView.swift in Sources */,
 				DA43CE522B30B66B00DAE0B6 /* FetchTaskToken.swift in Sources */,
 				DA207A1A2B6028B7001F8923 /* IconsView.swift in Sources */,
 				DA5557B22B38E57F00D440A4 /* VideosView.swift in Sources */,
@@ -751,6 +761,7 @@
 				DA5557A62B38764D00D440A4 /* GenresView.swift in Sources */,
 				DA4B1C0A2B44DA6E00EA3E8F /* Rating.swift in Sources */,
 				DAAD3E512B40B485005E8EBA /* SavingButton.swift in Sources */,
+				DACC86F42B6B964A00639822 /* SPNewsCollectionView.swift in Sources */,
 				DA4B1BE12B43948200EA3E8F /* LibraryType.swift in Sources */,
 				DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */,
 				DA93BE992B35142E0047DD37 /* RatingStarsView.swift in Sources */,
@@ -788,6 +799,7 @@
 				DA43CE5B2B30B69100DAE0B6 /* GamesTab.swift in Sources */,
 				DA4B1BF82B43CD7E00EA3E8F /* Admin.swift in Sources */,
 				DAD084252B6059A800D87112 /* PickerHeaderView.swift in Sources */,
+				DACC86F22B6B95BD00639822 /* NewsOverlayView.swift in Sources */,
 				DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */,
 				DA56E6262B677FFC003F1697 /* UIImage+Extension.swift in Sources */,
 				DA43CE702B30B6F200DAE0B6 /* KeysTracker.swift in Sources */,

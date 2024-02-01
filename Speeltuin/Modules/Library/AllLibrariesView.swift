@@ -29,7 +29,7 @@ struct AllLibrariesView: View {
             TotalGames
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-                .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
+                .listRowInsets(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
                 .swipeActions {
                     Button(role: .destructive) {
                         showAlertToDeleteAllLibraries = true
@@ -79,9 +79,10 @@ struct AllLibrariesView: View {
             }
             .listRowSeparator(.hidden)
             .listRowBackground(Color.clear)
-            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
+            .listRowInsets(.init(top: 0, leading: 20, bottom: 0, trailing: 20))
         }
         .listStyle(.plain)
+        .listRowSpacing(10)
         .scrollContentBackground(.hidden)
         .alert(Constants.Alert.deleteLibraryAlertTitle, isPresented: $showAlertToDeleteLibrary, actions: {
             Button(role: .destructive) {
@@ -128,7 +129,6 @@ struct AllLibrariesView: View {
         if !libraries.isEmpty {
             Button {
                 gamesVM.headerTitle = "All games"
-                gamesVM.headerImageName =  "bookmark"
                 gamesVM.searchPlaceholder = "Search in library"
                 gamesVM.dataType = .library
                 gamesVM.filterType = .library
