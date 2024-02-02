@@ -11,7 +11,7 @@ struct IntroView: View {
     
     @AppStorage("isFirstTime") private var isFirstTime: Bool = true
     @AppStorage("appTint") var appTint: Color =  .blue
-    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .black
+    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .teal
     
     @State private var animating = false
     

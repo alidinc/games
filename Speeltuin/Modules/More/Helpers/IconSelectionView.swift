@@ -78,7 +78,7 @@ struct IconSelectionView: View {
     private let plusIcons: [DeviceAppIcon] = [ .black, .orange, .red, .navy, .purple, .green]
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .black
+    @AppStorage("selectedIcon") private var selectedAppIcon: DeviceAppIcon = .teal
     @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) private var dismiss
     
