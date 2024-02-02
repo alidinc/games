@@ -9,10 +9,7 @@ import SwiftUI
 
 struct Constants {
     
-    static var AppStoreURL = "https://apps.apple.com/us/app/goodgames/id1662221677"
-    static var GameSpotAPIKey = "ecd63198f3fba5326bad7e9f675821b17aaa0103"
-    static var ButtonSize: CGFloat = 24
-    static let allGamesLibraryID = "FC6AAA3D-5EEC-4852-847B-39982C11CD14"
+    static var AppStoreURL = "https://apps.apple.com/us/app/speeltuin/id6476612720"
     
     struct Alert {
         static let deleteLibraryAlertTitle = "Are you sure you want to delete this library?"
@@ -75,19 +72,6 @@ struct Constants {
     static let indicatorWidth: CGFloat = 60
     static let snapRatio: CGFloat = 0.25
     static let minHeightRatio: CGFloat = 0.3
-    
-    struct Text {
-        static let AddGames = "In order to see our recommendations here, please add some games to your collection."
-        static let AddGamesForStats = "In order to see your stats here, please add some games to your collection."
-        static let FindingSimilarGames = "Please wait, we're finding you similar games in your collection"
-        static let UpdatedCollection = "There's been an update on your collection. Please wait, we're finding you some new recommendations"
-        static let CuratedOnes = "Check out these curated ones just selected for you"
-        static let EmptyCollectionsPlaceholder = "Why not enhance your collection of games by adding some more?"
-        static let GamesTextField = "Search in database..."
-        static let NotesTextField = "Please add your notes here..."
-        static let TitleStats = "Stats"
-        static let SubtitleStats = "Current statistics based on your collections"
-    }
     
     struct IGDBAPI  {
         static let BaseURL = "https://api.igdb.com/v4/games"
