@@ -12,9 +12,9 @@ struct SimilarGamesView: View {
     var similarGames: [Game]
     let dataManager: DataManager
     
-    @State private var isExpanded = false
+    @State private var isExpanded = true
     @Environment(\.colorScheme) var colorScheme
-    @AppStorage("hapticsEnabled") var hapticsEnabled = true
+    
     
     @ViewBuilder
     var body: some View {
@@ -46,10 +46,8 @@ struct SimilarGamesView: View {
         .padding()
         .background(colorScheme == .dark ? .ultraThickMaterial : .ultraThick, in: .rect(cornerRadius: 10))
         .shadow(radius: 2)
-        .onChange(of: isExpanded) { oldValue, newValue in
-            if hapticsEnabled {
-                HapticsManager.shared.vibrateForSelection()
-            }
+        .onTapGesture {
+            isExpanded.toggle()
         }
     }
 }

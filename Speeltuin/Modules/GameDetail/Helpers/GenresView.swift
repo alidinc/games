@@ -10,7 +10,6 @@ import SwiftUI
 struct GenresView: View {
     
     var game: Game
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         if let genres = game.genres {

@@ -15,8 +15,8 @@ struct GameDetailView: View {
     
     @State var vm = GameDetailViewModel()
     @State private var isExpanded = false
-    @Environment(GamesViewModel.self) private var gamesVM
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
+    @Environment(GamesViewModel.self) private var gamesVM
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
@@ -40,11 +40,10 @@ struct GameDetailView: View {
                 GameImage
                 
                 if let game {
-                    VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 25) {
                         Header(game: game)
                         SummaryView(game: game)
                         DetailsView(game: game)
-                            .scrollTargetLayout()
                         VideosView(game: game)
                         
                         if !vm.gamesFromIds.isEmpty {
@@ -61,33 +60,11 @@ struct GameDetailView: View {
                     }
                 }
             }
-            
         }
         .padding(.bottom, 1)
         .background(.gray.opacity(0.15))
         .ignoresSafeArea(edges: (savedGame?.imageData != nil) || (game != nil) ? .top : .leading)
         .scrollIndicators(.hidden)
-        .scrollTargetBehavior(.paging)
-    }
-    
-    private func Header(game: Game) -> some View {
-        VStack(alignment: .leading) {
-            if let name = game.name {
-                HStack {
-                    Text(name)
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundStyle(.primary)
-                    
-                    Spacer()
-                    
-                    SavingButton(game: game,
-                                 config: .init(opacity: 0.25),
-                                 dataManager: dataManager)
-                }
-            }
-            
-            RatingView(game: game)
-        }
     }
     
     @ViewBuilder
@@ -157,6 +134,27 @@ struct GameDetailView: View {
         }
     }
     
+    private func Header(game: Game) -> some View {
+        VStack(alignment: .leading) {
+            if let name = game.name {
+                HStack {
+                    Text(name)
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundStyle(.primary)
+                    
+                    Spacer()
+                    
+                    SavingButton(game: game,
+                                 config: .init(opacity: 0.25),
+                                 dataManager: dataManager)
+                }
+            }
+            
+            RatingView(game: game)
+        }
+    }
+    
+    
     @ViewBuilder
     private var GameImage: some View {
         switch admin.networkStatus {
@@ -193,7 +191,7 @@ struct GameDetailView: View {
                 GenresView(game: game)
                 PlatformsView(game: game)
                 GameModesView(game: game)
-                LinksView(game: game)
+                SocialsView(game: game)
             }
         } label: {
             Text(isExpanded ? "" : "Details")

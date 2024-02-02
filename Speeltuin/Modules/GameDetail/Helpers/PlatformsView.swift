@@ -11,7 +11,6 @@ import SwiftUI
 struct PlatformsView: View {
     
     var game: Game
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         if let platforms = game.platforms, !platforms.isEmpty {
@@ -20,6 +19,7 @@ struct PlatformsView: View {
                     .font(.subheadline.bold())
                     .foregroundColor(.primary)
                 
+                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(platforms, id: \.self) { platform in
@@ -27,7 +27,9 @@ struct PlatformsView: View {
                                 if let releaseDates = game.releaseDates,
                                    let platformDate = releaseDates.first(where: { $0.platform == platform.id }) {
                                     if let _ = platformDate.date {
-                                        CapsuleView(title: popularPlatform.title, imageName: popularPlatform.assetName)
+                                        CapsuleView(title: popularPlatform.title,
+                                                    imageType: .asset,
+                                                    imageName: popularPlatform.assetName)
                                     } else {
                                         CapsuleView(title: "N/A")
                                     }

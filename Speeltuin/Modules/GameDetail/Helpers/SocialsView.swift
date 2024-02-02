@@ -1,5 +1,5 @@
 //
-//  LinksView.swift
+//  SocialsView.swift
 //  Speeltuin
 //
 //  Created by Ali Dinç on 21/12/2023.
@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct LinksView: View {
+struct SocialsView: View {
     
     var game: Game
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         if let websites = game.websites, !websites.isEmpty {
@@ -40,6 +39,7 @@ struct LinksView: View {
                 }
                 .fadeOutSides(side: .trailing)
                 .frame(maxWidth: .infinity)
+                
             }
             .hSpacing(.leading)
         }

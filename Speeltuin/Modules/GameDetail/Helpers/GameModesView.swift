@@ -12,7 +12,6 @@ struct GameModesView: View {
     var game: Game
     
     @AppStorage("appTint") var appTint: Color = .blue
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         if let gameModes = game.gameModes {
@@ -21,12 +20,13 @@ struct GameModesView: View {
                     .font(.subheadline.bold())
                     .foregroundColor(.primary)
                 
+                
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(gameModes, id: \.id) { mode in
                             if let id = mode.id, let availableMode = AvailableMode(rawValue: id) {
                                 CapsuleView(title: availableMode.title,
-                                            imageType: .sf, 
+                                            imageType: .sf,
                                             imageName: availableMode.imageName)
                             }
                         }

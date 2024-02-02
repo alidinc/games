@@ -10,11 +10,11 @@ import SwiftUI
 struct CapsuleView: View {
     
     var title: String?
-    var imageType: ImageType = .asset
+    @State var imageType: ImageType = .asset
     var imageName: String?
     
     var body: some View {
-        HStack(spacing: 10) {
+        HStack {
             if let imageName {
                 switch imageType {
                 case .sf:
