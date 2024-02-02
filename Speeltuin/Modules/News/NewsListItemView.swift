@@ -105,7 +105,7 @@ struct NewsListItemView: View {
         .padding(12)
         .frame(width: UIScreen.main.bounds.size.width - 20)
         .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 20))
-        .shadow(radius: colorScheme == .dark ? 0 : 4)
+        .shadow(radius: 2)
         .alert(Constants.Alert.alreadySaved, isPresented: $showAlert) {
             Button(role: .destructive) {
                 if let newsToDelete = savedNews.first(where: {$0.title == item.title }) {

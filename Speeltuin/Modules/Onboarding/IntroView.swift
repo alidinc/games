@@ -59,7 +59,6 @@ struct IntroView: View {
         .background(
             LinearGradient(colors: [.clear, .gray.opacity(0.5)], startPoint: .bottom, endPoint: .top)
         )
-        .shadow(radius: 2)
         .onAppear {
             animating = true
         }

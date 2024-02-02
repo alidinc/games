@@ -101,7 +101,6 @@ struct IconSelectionView: View {
                             MoreRowView(imageName: "app", text: "Solid series")
                                 .padding(16)
                                 .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
-                                .shadow(radius: 1)
                         }
                         
                         NavigationLink {
@@ -111,7 +110,6 @@ struct IconSelectionView: View {
                             MoreRowView(imageName: "app.dashed", text: "Pastel series")
                                 .padding(16)
                                 .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
-                                .shadow(radius: 1)
                         }
                     }
                 }
@@ -143,7 +141,6 @@ struct IconSelectionView: View {
                         }
                         .padding()
                         .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
-                        .shadow(radius: 1)
                         .overlay {
                             if selectedAppIcon == icon {
                                 RoundedRectangle(cornerRadius: 10)
@@ -181,7 +178,6 @@ struct IconSelectionView: View {
                         }
                         .padding()
                         .background(Color.gray.opacity(0.15), in: .rect(cornerRadius: 10))
-                        .shadow(radius: 1)
                         .overlay {
                             if selectedAppIcon == icon {
                                 RoundedRectangle(cornerRadius: 10)

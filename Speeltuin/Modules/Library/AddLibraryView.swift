@@ -112,9 +112,18 @@ struct AddLibraryView: View {
     }
     
     func addLibrary() {
-        guard !name.isEmpty || libraries.count < 11 else {
+        guard !name.isEmpty else {
             showEmptyNameAlert = true
             return
+        }
+        
+        guard libraries.count < 11 else {
+            showMaxLibraryAlert = true
+            return
+        }
+        
+        if icon.isEmpty {
+            self.icon = "bookmark.fill"
         }
         
         let library = SPLibrary(title: name, icon: icon)

@@ -78,7 +78,7 @@ struct IconsView: View {
     
     private func setIcon(symbol: String) {
         if symbol == self.icon {
-            self.icon = "bookmark"
+            self.icon = "bookmark.fill"
         } else {
             self.icon = symbol
         }

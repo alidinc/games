@@ -97,7 +97,7 @@ struct AsyncImageView: View {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .shadow(color: .white.opacity(0.7), radius: 10)
+                            .shadow(radius: 10)
                             .frame(width: self.type.width, height: self.type.height)
                             .clipShape(.rect(cornerRadius: 5))
                     default:

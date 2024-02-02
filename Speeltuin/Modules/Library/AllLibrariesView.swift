@@ -122,22 +122,25 @@ struct AllLibrariesView: View {
                                        systemImage: "externaldrive.fill.badge.exclamationmark")
             }
         })
+        .onReceive(didRemoteChange) { _ in
+            if gamesVM.dataType == .library && libraries.isEmpty {
+                gamesVM.librarySelectionTapped(allSelected: true, in: savedGames)
+            } else if gamesVM.dataType == .library && !libraries.isEmpty {
+                gamesVM.librarySelectionTapped(allSelected: true, in: savedGames)
+            }
+        }
     }
     
     @ViewBuilder
     private var TotalGames: some View {
         if !libraries.isEmpty {
             Button {
-                gamesVM.headerTitle = "All games"
-                gamesVM.searchPlaceholder = "Search in library"
-                gamesVM.dataType = .library
-                gamesVM.filterType = .library
-                gamesVM.selectedLibrary = nil
-                gamesVM.filterSegment(savedGames: savedGames)
+                gamesVM.librarySelectionTapped(allSelected: true, in: savedGames)
                 
                 if hapticsEnabled {
                     HapticsManager.shared.vibrateForSelection()
                 }
+                
                 dismiss()
             } label: {
                 HStack {

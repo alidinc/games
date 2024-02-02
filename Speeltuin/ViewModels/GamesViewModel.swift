@@ -187,9 +187,11 @@ extension GamesViewModel {
         filterType = .library
         
         if allSelected {
+            selectedLibrary = nil
             headerTitle = "Saved games"
         } else {
             if let library {
+                selectedLibrary = library
                 headerTitle = library.title
             }
         }
@@ -317,7 +319,7 @@ extension GamesViewModel {
     
     func filterSegment(savedGames: [SPGame]) {
         withAnimation {
-            var libraryGames = selectedLibrary != nil ? savedGames.filter({ $0.library == selectedLibrary }) : savedGames
+            let libraryGames = selectedLibrary != nil ? savedGames.filter({ $0.library == selectedLibrary }) : savedGames
             let selectedGenres = fetchTaskToken.genres.filter({ $0 != PopularGenre.allGenres })
             let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
 

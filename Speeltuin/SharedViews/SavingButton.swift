@@ -20,6 +20,8 @@ struct SavingButton: View {
     @Environment(\.modelContext) private var context
     
     @Query var games: [SPGame]
+    @State var name: String?
+    
     let dataManager: DataManager
     
     @Query var libraries: [SPLibrary]
@@ -78,6 +80,10 @@ struct SavingButton: View {
                         iconSize: config.iconSize
                     )
                 )
+                .id(self.name)
+                .onReceive(didRemoteChange, perform: { _ in
+                    self.name = UUID().uuidString
+                })
             } else {
                 SFImage(
                     name: "bookmark",

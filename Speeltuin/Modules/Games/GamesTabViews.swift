@@ -21,6 +21,7 @@ extension GamesTab {
         case .library:
             SPGamesCollectionView(dataManager: dataManager)
                 .overlay { GamesOverlayView() }
+                .id(vm.savedGamesListId)
         }
     }
     
@@ -166,20 +167,20 @@ extension GamesTab {
     var LibraryPicker: some View {
         Menu {
             Button {
-                vm.selectedLibrary = nil
                 vm.librarySelectionTapped(allSelected: true, in: savedGames)
             } label: {
                 Label("All saved games", systemImage: "bookmark.fill")
             }
             
             ForEach(savedLibraries, id: \.persistentModelID) { library in
-                Button {
-                    vm.selectedLibrary = library
-                    vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
-                } label: {
-                    Text(library.title)
+                if savedLibraries.compactMap({$0.persistentModelID}).contains(library.persistentModelID) {
+                    Button {
+                        vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
+                    } label: {
+                        Text(library.title)
+                    }
+                    .tag(library.persistentModelID)
                 }
-                .tag(library.persistentModelID)
             }
         } label: {
             Text("Libraries")
