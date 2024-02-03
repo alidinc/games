@@ -159,6 +159,14 @@ actor NetworkManager {
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
     }
     
+    nonisolated func fetchGame(id: Int) async throws -> [Game] {
+        let apicalypse = APICalypse(type: .standard)
+            .fields(fields: Constants.IGDBAPI.DetailFields)
+            .where(query: "id=(\(id))")
+        
+        return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
+    }
+    
      func showNetworkResponse(data : Data){
         do {
             if let jsonResult = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {

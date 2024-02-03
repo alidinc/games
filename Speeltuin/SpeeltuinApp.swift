@@ -18,10 +18,8 @@ struct SpeeltuinApp: App {
     @State private var preferences = Admin()
     @State private var gamesViewModel = GamesViewModel()
     @State private var newsViewModel = NewsViewModel()
-    
     private var dataManager: DataManager
-    
-    var modelContainer: ModelContainer = {
+    private var modelContainer: ModelContainer = {
         let schema = Schema([
             SPLibrary.self,
             SPNews.self
@@ -34,6 +32,8 @@ struct SpeeltuinApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    @State private var gameToGoToDetailView: Game?
     
     init() {
         self.dataManager = DataManager(container: modelContainer)
@@ -67,8 +67,29 @@ struct SpeeltuinApp: App {
         .environment(gamesViewModel)
         .environment(newsViewModel)
         .preferredColorScheme(setColorScheme())
+        .sheet(item: $gameToGoToDetailView, content: { game in
+            NavigationStack {
+                GameDetailView(game: game, dataManager: dataManager, type: .deeplink)
+                    
+            }
+            .environment(preferences)
+            .environment(gamesViewModel)
+            .environment(newsViewModel)
+        })
+        .onOpenURL(perform: { url in
+            if let idString = url.host(), let id = Int(idString)  {
+                Task {
+                    if let game = try await NetworkManager.shared.fetchGame(id: id).first {
+                        self.gameToGoToDetailView = game
+                    }
+                }
+            }
+        })
     }
-    
+}
+
+// MARK: - Color scheme
+extension SpeeltuinApp {
     func setColorScheme() -> ColorScheme? {
         switch self.scheme {
         case .system:
@@ -80,8 +101,3 @@ struct SpeeltuinApp: App {
         }
     }
 }
-
-var didRemoteChange = NotificationCenter
-    .default
-    .publisher(for: .NSPersistentStoreRemoteChange)
-    .receive(on: RunLoop.main)

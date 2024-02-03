@@ -69,6 +69,8 @@
 		DA56E6662B687869003F1697 /* SPNewsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA56E6652B687869003F1697 /* SPNewsGridView.swift */; };
 		DA65DB162B574D8A00DBA824 /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */; };
 		DA6C25872B520CC500791432 /* GamesOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6C25862B520CC500791432 /* GamesOverlayView.swift */; };
+		DA71D4C22B6E5457005EB5D3 /* DidRemoteChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D4C12B6E5457005EB5D3 /* DidRemoteChange.swift */; };
+		DA71D4C42B6E693C005EB5D3 /* FeatureGameImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA71D4C32B6E693C005EB5D3 /* FeatureGameImage.swift */; };
 		DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */; };
 		DA72D2D72B5462AA00A235C2 /* AddLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2D62B5462AA00A235C2 /* AddLibraryView.swift */; };
 		DA72D2DC2B54B1D900A235C2 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA72D2DB2B54B1D900A235C2 /* Binding+Extension.swift */; };
@@ -196,6 +198,8 @@
 		DA56E6652B687869003F1697 /* SPNewsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPNewsGridView.swift; sourceTree = "<group>"; };
 		DA65DB152B574D8A00DBA824 /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		DA6C25862B520CC500791432 /* GamesOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesOverlayView.swift; sourceTree = "<group>"; };
+		DA71D4C12B6E5457005EB5D3 /* DidRemoteChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidRemoteChange.swift; sourceTree = "<group>"; };
+		DA71D4C32B6E693C005EB5D3 /* FeatureGameImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureGameImage.swift; sourceTree = "<group>"; };
 		DA72D2D42B531FD100A235C2 /* EditLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryView.swift; sourceTree = "<group>"; };
 		DA72D2D62B5462AA00A235C2 /* AddLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLibraryView.swift; sourceTree = "<group>"; };
 		DA72D2DB2B54B1D900A235C2 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
@@ -483,6 +487,7 @@
 				DA98C6B62B6D2DB400EF8C5B /* SocialsView.swift */,
 				DA98C6B72B6D2DB400EF8C5B /* SummaryView.swift */,
 				DA98C6C02B6D2DB400EF8C5B /* VideosView.swift */,
+				DA71D4C32B6E693C005EB5D3 /* FeatureGameImage.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -585,6 +590,7 @@
 				DACC86E62B6A8D4900639822 /* SelectedOption.swift */,
 				DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */,
 				DACC86EA2B6A953200639822 /* FeaturedGame.swift */,
+				DA71D4C12B6E5457005EB5D3 /* DidRemoteChange.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -763,6 +769,7 @@
 				DAB6E82C2B63FA320023E38D /* LogManager.swift in Sources */,
 				DA72D2D52B531FD100A235C2 /* EditLibraryView.swift in Sources */,
 				DA98C6C72B6D2DB400EF8C5B /* GenresView.swift in Sources */,
+				DA71D4C22B6E5457005EB5D3 /* DidRemoteChange.swift in Sources */,
 				DA43CE692B30B6CD00DAE0B6 /* PagingData.swift in Sources */,
 				DA4B1C062B44AF4500EA3E8F /* SPGamesCollectionView.swift in Sources */,
 				DA79C8BD2B61D26900837DB3 /* UIKitTabView.swift in Sources */,
@@ -777,6 +784,7 @@
 				DAB6E8262B63F9B30023E38D /* ChildCoordinator.swift in Sources */,
 				DA98C6B42B6D2DA500EF8C5B /* GameDetailView.swift in Sources */,
 				DAAD3E602B41AA97005E8EBA /* SearchTextField.swift in Sources */,
+				DA71D4C42B6E693C005EB5D3 /* FeatureGameImage.swift in Sources */,
 				DA98C6C42B6D2DB400EF8C5B /* CapsuleView.swift in Sources */,
 				DA4466222B4B77B600361071 /* NewsType.swift in Sources */,
 				DA43CE712B30B6F200DAE0B6 /* Cache.swift in Sources */,

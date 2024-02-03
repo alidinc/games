@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+enum DetailType {
+    case deeplink
+    case standard
+}
+
+
 struct GameDetailView: View {
     
     var game: Game?
@@ -15,19 +21,23 @@ struct GameDetailView: View {
     
     @State var vm = GameDetailViewModel()
     @State private var isExpanded = false
+    @State private var gameToAddForNewLibrary: Game?
+    @State private var showAddLibraryWithNoGame = false
+    var type: DetailType = .standard
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @Environment(GamesViewModel.self) private var gamesVM
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
     
-    init(game: Game, dataManager: DataManager) {
+    init(game: Game, dataManager: DataManager, type: DetailType = .standard) {
         self.game = game
         self.dataManager = dataManager
+        self.type = type
     }
     
-    init(savedGame: SPGame, dataManager: DataManager) {
+    init(savedGame: SPGame, dataManager: DataManager, type: DetailType = .standard) {
         self.dataManager = dataManager
+        self.type = type
         if let game = savedGame.game {
             self.game = game
             self.savedGame = savedGame
@@ -63,76 +73,45 @@ struct GameDetailView: View {
         }
         .padding(.bottom, 1)
         .background(.gray.opacity(0.15))
-        .ignoresSafeArea(edges: (savedGame?.imageData != nil) || (game != nil) ? .top : .leading)
         .scrollIndicators(.hidden)
-    }
-    
-    @ViewBuilder
-    private var FeaturedGameImage: some View {
-        if let game, let name = game.name {
-            if (name.lowercased().contains("mario")) {
-                Image(.mario)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("zelda")) {
-                Image(.zelda)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("assassin's creed")) {
-                Image(.assassinsCreed)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("the witcher")) {
-                Image(.witcher)
-                    .resizable()
-                    .frame(width: 120, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("red dead redemption")) {
-                Image(.reddead)
-                    .resizable()
-                    .frame(width: 150, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("grand theft auto")) {
-                Image(.gta)
-                    .resizable()
-                    .frame(width: 60, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("marvel")), let summary = game.summary, summary.lowercased().contains("marvel") {
-                Image(.marvel)
-                    .resizable()
-                    .frame(width: 60, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("lego")) {
-                Image(.lego)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("lord of the rings")) {
-                Image(.lord)
-                    .resizable()
-                    .frame(width: 200, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("pokémon")) {
-                Image(.pokemon)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding()
-                    .offset(y: 30)
+        .ignoresSafeArea(edges: (savedGame?.imageData != nil) || (game != nil) ? .top : .leading)
+        .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
+            if let game = notification.object as? Game {
+                gameToAddForNewLibrary = game
+            } else {
+                withAnimation {
+                    showAddLibraryWithNoGame = true
+                }
+            }
+        })
+        .sheet(item: $gameToAddForNewLibrary, content: { game in
+            AddLibraryView(game: game, dataManager: dataManager).presentationDetents([.medium, .large])
+        })
+        .sheet(isPresented: $showAddLibraryWithNoGame) {
+            AddLibraryView(dataManager: dataManager).presentationDetents([.medium, .large])
+        }
+        .toolbar {
+            if type == .standard {
+                ToolbarItem(placement: .topBarTrailing) {
+                    if let gameId = game?.id, let url = URL(string: "speeltuin://\(gameId)") {
+                        if let game, let name = game.name, let imageURLString = game.cover?.url, let imageURL = URL(string: imageURLString) {
+                            ShareLink(item: url,
+                                      message: Text("Please check this out!"),
+                                      preview:
+                                        SharePreview("\(name)",
+                                                     
+                                                     icon: Image(.teal)
+                                                    )
+                            ) {
+                                Image(systemName: "square.and.arrow.up.fill")
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+    
     
     private func Header(game: Game) -> some View {
         VStack(alignment: .leading) {
@@ -164,7 +143,13 @@ struct GameDetailView: View {
                     .ignoresSafeArea()
                     .fadeOutSides(length: 100, side: .bottom)
                     .overlay(alignment: .bottomLeading) {
-                        FeaturedGameImage
+                        FeatureGameImage(game: game)
+                    }
+                    .overlay(alignment: .topTrailing) {
+                        if type == .deeplink {
+                            CloseButton()
+                                .padding()
+                        }
                     }
             }
         case .unavailable:
@@ -178,7 +163,15 @@ struct GameDetailView: View {
                         .ignoresSafeArea(edges: .top)
                         .fadeOutSides(length: 100, side: .bottom)
                         .overlay(alignment: .bottomLeading) {
-                            FeaturedGameImage
+                            if let game = savedGame.game {
+                                FeatureGameImage(game: game)
+                            }
+                        }
+                        .overlay(alignment: .topTrailing) {
+                            if type == .deeplink {
+                                CloseButton()
+                                    .padding()
+                            }
                         }
                 }
             }
