@@ -18,6 +18,10 @@ struct SpeeltuinApp: App {
     @State private var preferences = Admin()
     @State private var gamesViewModel = GamesViewModel()
     @State private var newsViewModel = NewsViewModel()
+    
+    @State private var showLoadingView = false
+    @State private var gameToGoToDetailView: Game?
+    
     private var dataManager: DataManager
     private var modelContainer: ModelContainer = {
         let schema = Schema([
@@ -32,8 +36,6 @@ struct SpeeltuinApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-    
-    @State private var gameToGoToDetailView: Game?
     
     init() {
         self.dataManager = DataManager(container: modelContainer)
@@ -67,25 +69,49 @@ struct SpeeltuinApp: App {
         .environment(gamesViewModel)
         .environment(newsViewModel)
         .preferredColorScheme(setColorScheme())
-        .sheet(item: $gameToGoToDetailView, content: { game in
+        .sheet(item: $gameToGoToDetailView) { game in
             NavigationStack {
-                GameDetailView(game: game, dataManager: dataManager, type: .deeplink)
-                    
+                if showLoadingView {
+                    ProgressView()
+                } else {
+                    GameDetailView(game: game, dataManager: dataManager, type: .deeplink)
+                }
             }
             .environment(preferences)
             .environment(gamesViewModel)
             .environment(newsViewModel)
-        })
+        }
         .onOpenURL(perform: { url in
-            if let idString = url.host(), let id = Int(idString)  {
-                Task {
-                    if let game = try await NetworkManager.shared.fetchGame(id: id).first {
-                        self.gameToGoToDetailView = game
+            self.showLoadingView = true
+            
+            if UIApplication.shared.canOpenURL(url) {
+                if let gameId = extractProductId(from: url), let id = Int(gameId)  {
+                    Task {
+                        if let game = try await NetworkManager.shared.fetchGame(id: id).first {
+                            await MainActor.run {
+                                self.gameToGoToDetailView = game
+                                self.showLoadingView = false
+                            }
+                        }
                     }
                 }
             }
         })
     }
+    
+    func extractProductId(from url: URL) -> String? {
+        let path = url.path
+        // Check if the path contains the specified pattern
+        if path.contains("product") {
+            // Split the path by '/' and get the last component as the product ID
+            let pathComponents = path.components(separatedBy: "/")
+            if let lastComponent = pathComponents.last {
+                return lastComponent
+            }
+        }
+        return nil
+    }
+
 }
 
 // MARK: - Color scheme

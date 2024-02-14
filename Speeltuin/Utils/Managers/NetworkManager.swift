@@ -117,7 +117,7 @@ actor NetworkManager {
         let genreQuery = genres.contains(.allGenres) ? "" : "genres = (\(genreString)) &"
         let apicalypse = APICalypse(type: .multi)
             .multiQuery(name: "games")
-            .fields(fields: Constants.IGDBAPI.DetailFields)
+            .fields(fields: Constants.IGDBAPI.Fields.DetailFields)
             .search(searchQuery: query)
             .sort(field: category.sort, order: category.sortBy)
             .where(query: "\(platformQuery)\(genreQuery)\(category.where)")
@@ -141,7 +141,7 @@ actor NetworkManager {
         let genreQuery = genres.contains(.allGenres) ? "" : "genres = (\(genreString)) &"
         
         let apicalypse = APICalypse(type: .standard)
-            .fields(fields: Constants.IGDBAPI.DetailFields)
+            .fields(fields: Constants.IGDBAPI.Fields.DetailFields)
             .search(searchQuery: query)
             .sort(field: category.sort, order: category.sortBy)
             .where(query: "\(platformQuery)\(genreQuery)\(category.where)")
@@ -153,7 +153,7 @@ actor NetworkManager {
     
     nonisolated func fetchGames(ids: [Int]) async throws -> [Game] {
         let apicalypse = APICalypse(type: .standard)
-            .fields(fields: Constants.IGDBAPI.DetailFields)
+            .fields(fields: Constants.IGDBAPI.Fields.DetailFields)
             .where(query: "id=(\(ids.compactMap({String($0)}).joined(separator: ",")))")
         
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)
@@ -161,7 +161,7 @@ actor NetworkManager {
     
     nonisolated func fetchGame(id: Int) async throws -> [Game] {
         let apicalypse = APICalypse(type: .standard)
-            .fields(fields: Constants.IGDBAPI.DetailFields)
+            .fields(fields: Constants.IGDBAPI.Fields.DetailFields)
             .where(query: "id=(\(id))")
         
         return try await self.fetch(with: Constants.IGDBAPI.BaseURL, with: apicalypse)

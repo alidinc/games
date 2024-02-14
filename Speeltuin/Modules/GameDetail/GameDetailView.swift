@@ -23,7 +23,10 @@ struct GameDetailView: View {
     @State private var isExpanded = false
     @State private var gameToAddForNewLibrary: Game?
     @State private var showAddLibraryWithNoGame = false
+    @State private var isSharePresented = false
+    
     var type: DetailType = .standard
+    
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
@@ -90,27 +93,31 @@ struct GameDetailView: View {
         .sheet(isPresented: $showAddLibraryWithNoGame) {
             AddLibraryView(dataManager: dataManager).presentationDetents([.medium, .large])
         }
-        .toolbar {
-            if type == .standard {
-                ToolbarItem(placement: .topBarTrailing) {
-                    if let gameId = game?.id, let url = URL(string: "speeltuin://\(gameId)") {
-                        if let game, let name = game.name, let imageURLString = game.cover?.url, let imageURL = URL(string: imageURLString) {
-                            ShareLink(item: url,
-                                      message: Text("Please check this out!"),
-                                      preview:
-                                        SharePreview("\(name)",
-                                                     
-                                                     icon: Image(.teal)
-                                                    )
-                            ) {
-                                Image(systemName: "square.and.arrow.up.fill")
-                            }
-                        }
-                    }
-                }
+        .sheet(isPresented: $isSharePresented, onDismiss: {
+            print("Dismiss")
+        }, content: {
+            if let gameId = game?.id, let url = URL(string: "https://hellospeeltuin.web.app/product/\(gameId)")  {
+                ActivityViewController(activityItems: [url])
+                    .ignoresSafeArea()
+                    .presentationDetents([.medium, .large])
+            }
+        })
+    }
+    
+    @ViewBuilder
+    private func Share(urlString: String) -> some View {
+        if let game, let name = game.name, let string = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            ShareLink(
+                item: string,
+                preview: SharePreview("\(name)", icon: Image(.teal))
+                
+            ) {
+                SFImage(name: "square.and.arrow.up.fill",
+                        config: .init(opacity: 0.25))
             }
         }
     }
+    
     
     
     private func Header(game: Game) -> some View {
@@ -122,6 +129,16 @@ struct GameDetailView: View {
                         .foregroundStyle(.primary)
                     
                     Spacer()
+                    
+                    if type != .deeplink {
+                        if let gameId = game.id {
+                            Button {
+                                isSharePresented = true
+                            } label: {
+                                SFImage(name: "square.and.arrow.up.fill")
+                            }
+                        }
+                    }
                     
                     SavingButton(game: game,
                                  config: .init(opacity: 0.25),
@@ -200,4 +217,23 @@ struct GameDetailView: View {
             }
         }
     }
+}
+
+
+import UIKit
+import SwiftUI
+
+struct ActivityViewController: UIViewControllerRepresentable {
+    
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+        controller.modalPresentationStyle = .formSheet
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
+    
 }

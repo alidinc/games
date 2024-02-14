@@ -86,43 +86,38 @@ struct Constants {
         static let ClientID = "9ipkbw3f1dzvsiz4mbigsvdy481y3s"
         static let ClientScreet = "xam1av902mpgwqasz4ujaamqn90rnq"
         
-        static let SearchFields =
-"""
-alternative_name,character,checksum,collection,company,description,game,name,platform,published_at,test_dummy,theme;
-"""
-        static let CompanyField =
-"""
-change_date,change_date_category,changed_company_id,checksum,country,created_at,description,developed,logo,name,parent,published,slug,start_date,start_date_category,updated_at,url,websites;
-"""
-        
-        static let DatabaseFields = 
-"""
-query platforms/count "Count of Platforms" {
-       
-      };
-"""
-        
-        static let StandardFields =
-"""
-genres.name,name,platforms.*,total_rating,cover.url,first_release_date,release_dates.*,artworks.*,videos.video_id,websites.*,screenshots.url,summary
-"""
-        
-        static let AllFields = "*"
-        
-        static let DetailFields =
-"""
-artworks.*,game_modes.name,genres.name,name,platforms.*,screenshots.url,summary,total_rating,rating_count,cover.url,first_release_date,release_dates.*,videos.video_id,websites.*,similar_games
-"""
-        
-        static let PlatformFields =
-"""
-abbreviation,alternative_name,category,checksum,created_at,generation,name,platform_family,platform_logo,slug,summary,updated_at,url,versions,websites
-"""
-
-    
-        static let PlatformWebsiteFields =
-"""
-category,checksum,trusted,url
-"""
+        struct Fields {
+            static let SearchFields =
+    """
+    alternative_name,character,checksum,collection,company,description,game,name,platform,published_at,test_dummy,theme;
+    """
+            static let CompanyField =
+    """
+    change_date,change_date_category,changed_company_id,checksum,country,created_at,description,developed,logo,name,parent,published,slug,start_date,start_date_category,updated_at,url,websites;
+    """
+            static let DatabaseFields =
+    """
+    query platforms/count "Count of Platforms" {
+          };
+    """
+            static let StandardFields =
+    """
+    genres.name,name,platforms.*,total_rating,cover.url,first_release_date,release_dates.*,artworks.*,videos.video_id,websites.*,screenshots.url,summary
+    """
+            static let AllFields = "*"
+            
+            static let DetailFields =
+    """
+    artworks.*,game_modes.name,genres.name,name,platforms.*,screenshots.url,summary,total_rating,rating_count,cover.url,first_release_date,release_dates.*,videos.video_id,websites.*,similar_games
+    """
+            static let PlatformFields =
+    """
+    abbreviation,alternative_name,category,checksum,created_at,generation,name,platform_family,platform_logo,slug,summary,updated_at,url,versions,websites
+    """
+            static let PlatformWebsiteFields =
+    """
+    category,checksum,trusted,url
+    """
+        }
     }
 }
