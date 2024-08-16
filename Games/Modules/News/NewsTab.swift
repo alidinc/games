@@ -11,81 +11,68 @@ import SwiftData
 import SafariServices
 
 struct NewsTab: View {
-    
-    let dataManager: DataManager
-    
+
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("viewType") var viewType: ViewType = .list
-    @State var vm: NewsViewModel
-    
-    @State var headerDate = ""
-    
+
+    @Environment(Admin.self) private var admin
+    @State var selectedItem: RSSFeedItem?
+    @Bindable var vm: NewsViewModel
+
+    @State private var id = UUID()
+
     var body: some View {
         NavigationStack {
-            ViewSwitcher
-            .onChange(of: vm.newsType) { oldValue, newValue in
-                vm.dataType = .network
-                vm.headerTitle = newValue.title
-                
+            Group {
+                switch viewType {
+                case .list:
+                    List {
+                        ForEach(vm.news) { item in
+                            Button {
+                                selectedItem = item
+                            } label: {
+                                NewsListItemView(item: item)
+                            }
+                            .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
+                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                        }
+                    }
+                    .scrollContentBackground(.hidden)
+                    .listStyle(.plain)
+                case .grid:
+                    ScrollView {
+                        ForEach(vm.news) { item in
+                            LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5)  {
+                                NewsGridItemView(item: item) {
+                                    self.selectedItem = item
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.top, 10)
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                    }
+                    .scrollContentBackground(.hidden)
+                    .listStyle(.plain)
+                }
+            }
+            .id(id)
+            .fullScreenCover(item: $selectedItem, content: { item in
+                if let urlString = item.link, let url = URL(string: urlString) {
+                    SFSafariView(url: url)
+                        .navigationTitle(item.title ?? "")
+                        .ignoresSafeArea()
+                }
+            })
+            .onChange(of: vm.newsType) { _,_ in
+                self.id = UUID()
                 if hapticsEnabled {
                     HapticsManager.shared.vibrateForSelection()
                 }
             }
-        }
-    }
-    
-    var Header: some View {
-        HStack(alignment: .bottom) {
-            NewsSourcePicker
-            Spacer()
-            Text(headerDate)
-                .font(.subheadline.bold())
-                .frame(height: 44)
-                .offset(y: 10)
-        }
-        .foregroundStyle(appTint)
-        .padding(.horizontal)
-        .padding(.top)
-    }
-    
-    @ViewBuilder
-    var ViewSwitcher: some View {
-        switch vm.dataType {
-        case .network:
-            NewsCollectionView(dataManager: dataManager) { headerDate in
-                self.headerDate = headerDate
-            }
-        case .library:
-            SPNewsCollectionView(dataManager: dataManager) { headerDate in
-                self.headerDate = headerDate
-            }
-        }
-    }
-    
-    var NewsSourcePicker: some View {
-        Menu {
-            ForEach(NewsType.allCases, id: \.id) { news in
-                Button {
-                    vm.dataType = .network
-                    vm.newsType = news
-                    vm.headerTitle = news.title
-                } label: {
-                    Text(news.title)
-                }
-            }
-            
-            Divider()
-            
-            Button {
-                vm.dataType = .library
-                vm.headerTitle = "Saved news"
-            } label: {
-                Label("Saved news", systemImage: "bookmark")
-            }
-
-        } label: {
-            PickerHeaderView(title: vm.headerTitle)
         }
     }
 }

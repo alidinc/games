@@ -19,8 +19,7 @@ struct LibraryView: View {
     @State private var showAddLibrary = false
     @Query var savedGames: [SPGame]
     @Query var libraries: [SPLibrary]
-    
-    let dataManager: DataManager
+
     
     var body: some View {
         NavigationStack {
@@ -30,7 +29,7 @@ struct LibraryView: View {
             }
             .presentationDragIndicator(.visible)
             .sheet(isPresented: $showAddLibrary, content: {
-                AddLibraryView(dataManager: dataManager)
+                AddLibraryView()
                     .presentationDetents([.medium, .large])
             })
         }

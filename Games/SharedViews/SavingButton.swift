@@ -12,7 +12,6 @@ import Combine
 struct SavingButton: View {
     
     var game: Game
-    var config: SFConfig = .init()
     
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
@@ -21,8 +20,7 @@ struct SavingButton: View {
     
     @Query var games: [SPGame]
     @State var name: String?
-    
-    let dataManager: DataManager
+
     
     @Query var libraries: [SPLibrary]
     
@@ -35,10 +33,6 @@ struct SavingButton: View {
             
             ForEach(libraries, id: \.savingId) { library in
                 Button {
-                    Task {
-                        await dataManager.toggle(game: game, for: library)
-                    }
-                    
                     if hapticsEnabled {
                         HapticsManager.shared.vibrateForSelection()
                     }
@@ -58,9 +52,7 @@ struct SavingButton: View {
             
             if games.compactMap({$0.gameId}).contains(game.id) {
                 Button(role: .destructive) {
-                    Task {
-                        await dataManager.delete(game: game)
-                    }
+                
                     
                     if hapticsEnabled {
                         HapticsManager.shared.vibrateForSelection()
@@ -73,21 +65,19 @@ struct SavingButton: View {
         } label: {
             if let name = libraryName() {
                 SFImage(
-                    name: name,
                     config: .init(
-                        opacity: 1,
-                        padding: config.padding,
-                        iconSize: config.iconSize
+                        name: name,
+                        padding: 10,
+                        iconSize: 20
                     )
                 )
                 .id(self.name)
             } else {
                 SFImage(
-                    name: "bookmark",
                     config: .init(
-                        opacity: config.opacity,
-                        padding: config.padding,
-                        iconSize: config.iconSize
+                        name: "plus.circle.fill",
+                        padding: 10,
+                        iconSize: 18
                     )
                 )
             }

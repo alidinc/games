@@ -16,40 +16,26 @@ struct NewsOverlayView: View {
     @Query(animation: .easeInOut) private var savedNews: [SPNews]
     
     var body: some View {
-        switch vm.dataType {
-        case .network:
-            switch admin.networkStatus {
-            case .available:
-                if vm.ign.isEmpty || vm.nintendo.isEmpty || vm.xbox.isEmpty {
-                    ZStack {
-                        ProgressView("Please wait, \nwhile we are getting ready! ☺️")
-                            .font(.subheadline)
-                            .tint(.white)
-                            .multilineTextAlignment(.center)
-                            .controlSize(.large)
-                    }
-                    .hSpacing(.center)
-                    .padding(.horizontal, 50)
-                    .ignoresSafeArea()
+        switch admin.networkStatus {
+        case .available:
+            if vm.news.isEmpty {
+                ZStack {
+                    ProgressView("Please wait, \nwhile we are getting ready! ☺️")
+                        .font(.subheadline)
+                        .tint(.white)
+                        .multilineTextAlignment(.center)
+                        .controlSize(.large)
                 }
-            case .unavailable:
-                ContentUnavailableView(
-                    Constants.UnavailableView.networkTitle,
-                    systemImage: "exclamationmark.triangle.fill",
-                    description: Text(Constants.UnavailableView.networkMessage)
-                )
+                .hSpacing(.center)
+                .padding(.horizontal, 50)
+                .ignoresSafeArea()
             }
-        case .library:
-            switch admin.networkStatus {
-            default:
-                if savedNews.isEmpty {
-                    ContentUnavailableView(
-                        Constants.UnavailableView.contentTitle,
-                        systemImage: "exclamationmark.triangle.fill",
-                        description: Text(Constants.UnavailableView.contentNewsMessage)
-                    )
-                }
-            }
+        case .unavailable:
+            ContentUnavailableView(
+                Constants.UnavailableView.networkTitle,
+                systemImage: "exclamationmark.triangle.fill",
+                description: Text(Constants.UnavailableView.networkMessage)
+            )
         }
     }
 }

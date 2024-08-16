@@ -48,8 +48,6 @@ struct MainView: View {
     @State var showAddLibraryWithNoGame = false
 
     @State var contentType: ContentType = .games
-
-    let dataManager: DataManager
     
     var body: some View {
         NavigationStack {
@@ -72,6 +70,7 @@ extension MainView {
                 .foregroundStyle(appTint)
         }
         .frame(height: UIScreen.main.bounds.height/5.5)
+        
     }
 
 
@@ -79,13 +78,13 @@ extension MainView {
     var ContentTypeView: some View {
         switch self.contentType {
         case .games:
-            GamesCollectionView(dataManager: dataManager)
+            GamesCollectionView()
                 .overlay { GamesOverlayView() }
                 .refreshable {
                     await vm.refreshTask()
                 }
         case .news:
-            NewsTab(dataManager: dataManager, vm: newsVM)
+            NewsTab(vm: newsVM)
         }
     }
 

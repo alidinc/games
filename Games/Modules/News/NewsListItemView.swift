@@ -12,7 +12,6 @@ import SwiftData
 struct NewsListItemView: View {
     
     var item: RSSFeedItem
-    let dataManager: DataManager
 
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
@@ -67,9 +66,6 @@ struct NewsListItemView: View {
                         
                         Button {
                             if !self.savedNews.compactMap({$0.title}).contains(news.title) {
-                                Task {
-                                    await dataManager.addNews(news: news)
-                                }
                                 
                                 if hapticsEnabled {
                                     HapticsManager.shared.vibrateForSelection()
@@ -80,18 +76,16 @@ struct NewsListItemView: View {
                         } label: {
                             if !self.savedNews.compactMap({$0.title}).contains(news.title) {
                                 SFImage(
-                                    name: "bookmark",
                                     config: .init(
-                                        opacity: 0.25,
+                                        name: "bookmark",
                                         padding: 8,
                                         iconSize: 14
                                     )
                                 )
                             } else {
                                 SFImage(
-                                    name: "bookmark.fill",
                                     config: .init(
-                                        opacity: 1,
+                                        name: "bookmark.fill",
                                         padding: 8,
                                         iconSize: 14
                                     )

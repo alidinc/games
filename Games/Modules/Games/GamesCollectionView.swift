@@ -11,9 +11,7 @@ struct GamesCollectionView: View {
     
     @Environment(GamesViewModel.self) private var vm
     @AppStorage("viewType") var viewType: ViewType = .list
-    
-    let dataManager: DataManager
-    
+
     var body: some View {
         switch viewType {
         case .list:
@@ -26,9 +24,9 @@ struct GamesCollectionView: View {
     private var ListView: some View {
         List {
             ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
-                ListItemView(game: game, dataManager: dataManager)
+                ListItemView(game: game)
                     .navigationLink({
-                        GameDetailView(game: game, dataManager: dataManager)
+                        GameDetailView(game: game)
                     })
                     .task {
                         if self.vm.hasReachedEnd(of: game) {
@@ -63,7 +61,7 @@ struct GamesCollectionView: View {
                 ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {
                         NavigationLink {
-                            GameDetailView(game: game, dataManager: dataManager)
+                            GameDetailView(game: game)
                         } label: {
                             AsyncImageView(with: url, type: .grid)
                                 .task {

@@ -12,7 +12,6 @@ import SwiftData
 struct NewsGridItemView: View {
 
     var item: RSSFeedItem
-    let dataManager: DataManager
     var onSelect: () -> Void
     
     @Query private var savedNews: [SPNews]
@@ -65,9 +64,6 @@ struct NewsGridItemView: View {
                 
                 if !self.savedNews.compactMap({$0.title}).contains(news.title) {
                     Button("Save") {
-                        Task {
-                            await dataManager.addNews(news: news)
-                        }
                         
                         if hapticsEnabled {
                             HapticsManager.shared.vibrateForSelection()

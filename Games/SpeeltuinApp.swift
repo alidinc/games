@@ -22,12 +22,13 @@ struct SpeeltuinApp: App {
     @State private var showLoadingView = false
     @State private var gameToGoToDetailView: Game?
 
-    private var dataManager: DataManager
     private var modelContainer: ModelContainer = {
         let schema = Schema([
             SPLibrary.self,
             SPNews.self
         ])
+
+
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
@@ -38,22 +39,20 @@ struct SpeeltuinApp: App {
     }()
 
     init() {
-        self.dataManager = DataManager(container: modelContainer)
+
     }
 
     var body: some Scene {
         WindowGroup {
-            if isFirstTime {
-                IntroView()
-            } else {
-                TabView
-            }
+            TabView
+                .opacity(isFirstTime ? 0 : 1)
+                .fullScreenCover(isPresented: $isFirstTime, content: { IntroView() })
         }
         .modelContainer(modelContainer)
     }
 
     private var TabView: some View {
-        MainView(vm: gamesViewModel, dataManager: dataManager)
+        MainView(vm: gamesViewModel)
             .tint(appTint)
             .environment(preferences)
             .environment(gamesViewModel)
@@ -64,7 +63,7 @@ struct SpeeltuinApp: App {
                     if showLoadingView {
                         ProgressView()
                     } else {
-                        GameDetailView(game: game, dataManager: dataManager, type: .deeplink)
+                        GameDetailView(game: game, type: .deeplink)
                     }
                 }
                 .environment(preferences)

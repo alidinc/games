@@ -17,7 +17,6 @@ struct GameDetailView: View {
     
     var game: Game?
     var savedGame: SPGame?
-    let dataManager: DataManager
     
     @State var vm = GameDetailViewModel()
     @State private var isExpanded = false
@@ -33,14 +32,12 @@ struct GameDetailView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(Admin.self) private var admin
     
-    init(game: Game, dataManager: DataManager, type: DetailType = .standard) {
+    init(game: Game, type: DetailType = .standard) {
         self.game = game
-        self.dataManager = dataManager
         self.type = type
     }
     
-    init(savedGame: SPGame, dataManager: DataManager, type: DetailType = .standard) {
-        self.dataManager = dataManager
+    init(savedGame: SPGame, type: DetailType = .standard) {
         self.type = type
         if let game = savedGame.game {
             self.game = game
@@ -61,7 +58,7 @@ struct GameDetailView: View {
                         VideosView(game: game)
                         
                         if !vm.gamesFromIds.isEmpty {
-                            SimilarGamesView(similarGames: vm.gamesFromIds, dataManager: dataManager)
+                            SimilarGamesView(similarGames: vm.gamesFromIds)
                         }
                         
                         Spacer(minLength: 20)
@@ -89,10 +86,10 @@ struct GameDetailView: View {
             }
         })
         .sheet(item: $gameToAddForNewLibrary, content: { game in
-            AddLibraryView(game: game, dataManager: dataManager).presentationDetents([.medium, .large])
+            AddLibraryView(game: game).presentationDetents([.medium, .large])
         })
         .sheet(isPresented: $showAddLibraryWithNoGame) {
-            AddLibraryView(dataManager: dataManager).presentationDetents([.medium, .large])
+            AddLibraryView().presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $isSharePresented, onDismiss: {
             print("Dismiss")
@@ -113,8 +110,7 @@ struct GameDetailView: View {
                 preview: SharePreview("\(name)", icon: Image(.teal))
                 
             ) {
-                SFImage(name: "square.and.arrow.up.fill",
-                        config: .init(opacity: 0.25))
+                SFImage(config: .init(name: "square.and.arrow.up.fill"))
             }
         }
     }
@@ -136,14 +132,12 @@ struct GameDetailView: View {
                             Button {
                                 isSharePresented = true
                             } label: {
-                                SFImage(name: "square.and.arrow.up.fill")
+                                SFImage(config: .init(name: "square.and.arrow.up.fill"))
                             }
                         }
                     }
                     
-                    SavingButton(game: game,
-                                 config: .init(opacity: 0.25),
-                                 dataManager: dataManager)
+                    SavingButton(game: game)
                 }
             }
             

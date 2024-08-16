@@ -18,7 +18,6 @@ struct ListItemView: View {
     
     var game: Game?
     var savedGame: SPGame?
-    let dataManager: DataManager
     
     @AppStorage("appTint") var appTint: Color = .blue
 
@@ -26,10 +25,9 @@ struct ListItemView: View {
     @Environment(Admin.self) private var admin
     @Environment(\.colorScheme) var colorScheme
     
-    init(game: Game? = nil, savedGame: SPGame? = nil, dataManager: DataManager) {
+    init(game: Game? = nil, savedGame: SPGame? = nil) {
         self.savedGame = savedGame
         self.game = game
-        self.dataManager = dataManager
     }
     
     var body: some View {
@@ -77,7 +75,7 @@ struct ListItemView: View {
                         HStack(alignment: .bottom) {
                             RatingView(game: game)
                             Spacer()
-                            SavingButton(game: game, config: .init(opacity: 0.25), dataManager: dataManager)
+                            SavingButton(game: game)
                         }
                     }
                 }
@@ -121,17 +119,9 @@ struct ListItemView: View {
 
                     Spacer()
 
-                    SavingButton(
-                        game: game,
-                        config: .init(
-                            opacity: 0.25,
-                            padding: 8,
-                            iconSize: 14
-                        ),
-                        dataManager: dataManager
-                    )
+                    SavingButton(game: game)
                 }
-                .padding(.vertical, 4)
+                .padding(.top, 4)
             }
             .padding(8)
             .frame(width: UIScreen.main.bounds.size.width - 20)
@@ -252,7 +242,7 @@ struct ListItemView: View {
         case 50...80:
             return  "arrowtriangle.up.square"
         case 80...100:
-            return  "star.square.fill"
+            return  "star.circle.fill"
         default:
             return "dot.squareshape.fill"
         }

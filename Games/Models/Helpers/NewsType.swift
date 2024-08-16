@@ -7,20 +7,15 @@
 
 import Foundation
 
-enum NewsType: String, CaseIterable {
-    
+enum NewsType: String, CaseIterable, Identifiable {
+
     case all
     case nintendo
     case xbox
     case ign
     
-    var id: String {
-        switch self {
-        default :
-            return UUID().uuidString
-        }
-    }
-    
+    var id: Self { self }
+
     var title: String {
         switch self {
         case .ign:

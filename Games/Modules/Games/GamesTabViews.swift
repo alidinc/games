@@ -13,13 +13,13 @@ extension MainView {
     var ViewSwitcher: some View {
         switch vm.dataType {
         case .network:
-            GamesCollectionView(dataManager: dataManager)
+            GamesCollectionView()
                 .overlay { GamesOverlayView() }
                 .refreshable {
                     await vm.refreshTask()
                 }
         case .library:
-            SPGamesCollectionView(dataManager: dataManager)
+            SPGamesCollectionView()
                 .overlay { GamesOverlayView() }
                 .id(vm.savedGamesListId)
         }
@@ -31,11 +31,10 @@ extension MainView {
                 MultiPicker
                 Spacer()
                 HStack(alignment: .bottom, spacing: 4) {
-                    SearchButton
-                    FiltersButton
-                    if vm.hasFilters {
-                        ClearFiltersButton
+                    if contentType == .games {
+                        SearchButton
                     }
+                    FiltersButton
                     LibraryButton
                 }
             }
@@ -53,12 +52,12 @@ extension MainView {
     
     var LibraryButton: some View {
         NavigationLink {
-            LibraryView(dataManager: dataManager)
+            LibraryView()
         } label: {
             SFImage(
-                name: "tray.full.fill",
+
                 config: .init(
-                    opacity: 0.5,
+                    name: "tray.full.fill",
                     padding: 10,
                     color: .secondary
                 )
@@ -68,16 +67,91 @@ extension MainView {
     
     var FiltersButton: some View {
         Menu {
+            switch contentType {
+            case .games:
+                Menu {
+                    let platforms = PopularPlatform.allCases.filter({$0 != PopularPlatform.database }).sorted(by: { $0.title < $1.title })
 
+                    ForEach(platforms) { platform in
+                        Button {
+                            if hapticsEnabled {
+                                HapticsManager.shared.vibrateForSelection()
+                            }
+                            vm.togglePlatform(platform, selectedLibrary: vm.selectedLibrary, savedGames: savedGames)
+                        } label: {
+                            HStack {
+                                Text(platform.title)
+                                if vm.fetchTaskToken.platforms.contains(platform) {
+                                    Image(systemName: "checkmark")
+                                }
+                                Image(platform.assetName)
+                            }
+                        }
+                    }
+                } label: {
+                    Text("Platform")
+                }
+
+                Divider()
+
+                Menu {
+                    let genres = PopularGenre.allCases.filter({$0 != PopularGenre.allGenres }).sorted(by: { $0.title < $1.title })
+
+                    ForEach(genres) { genre in
+                        Button {
+                            if hapticsEnabled {
+                                HapticsManager.shared.vibrateForSelection()
+                            }
+                            vm.toggleGenre(genre, selectedLibrary: vm.selectedLibrary, savedGames: savedGames)
+                        } label: {
+                            HStack {
+                                Text(genre.title)
+                                if vm.fetchTaskToken.genres.contains(genre) {
+                                    Image(systemName: "checkmark")
+                                }
+                                Image(genre.assetName)
+                            }
+                        }
+                    }
+                } label: {
+                    Text("Genre")
+                }
+
+                Button(role: .destructive) {
+                    vm.fetchTaskToken.platforms = []
+                    vm.fetchTaskToken.genres = []
+                } label: {
+                    Text("Remove filters")
+                }
+
+            case .news:
+                ForEach(NewsType.allCases) { news in
+                    Button {
+                        newsVM.newsType = news
+                    } label: {
+                        Text(news.title)
+                    }
+                }
+            }
         } label: {
-            SFImage(
-                name: "slider.horizontal.3",
-                config: .init(
-                    opacity: 0.5,
-                    padding: 10,
-                    color: vm.hasFilters ? appTint : .secondary
+            switch contentType {
+            case .games:
+                SFImage(
+                    config: .init(
+                        name: "slider.horizontal.3",
+                        padding: 10,
+                        color: vm.hasFilters ? appTint : .secondary
+                    )
                 )
-            )
+            case .news:
+                SFImage(
+                    config: .init(
+                        name: "slider.horizontal.3",
+                        padding: 10,
+                        color: vm.hasFilters ? appTint : .secondary
+                    )
+                )
+            }
         }
         .animation(.bouncy, value: vm.hasFilters)
     }
@@ -93,9 +167,8 @@ extension MainView {
             }
         } label: {
             SFImage(
-                name: "magnifyingglass",
                 config: .init(
-                    opacity: 0.5,
+                    name: "magnifyingglass",
                     padding: 10,
                     color: showSearch ? appTint : .secondary
                 )
@@ -104,37 +177,11 @@ extension MainView {
         .transition(.move(edge: .top))
     }
     
-    @ViewBuilder
-    var ClearFiltersButton: some View {
-        if vm.hasFilters {
-            Button(action: {
-                vm.removeFilters()
-                
-                if hapticsEnabled {
-                    HapticsManager.shared.vibrateForSelection()
-                }
-            }, label: {
-                SFImage(
-                    name: "slider.horizontal.2.gobackward",
-                    config: .init(
-                        opacity: 0.5,
-                        padding: 10,
-                        color: vm.hasFilters ? appTint : .clear
-                    )
-                )
-            })
-        }
-    }
-    
     var MultiPicker: some View {
-        Menu {
-            ForEach(ContentType.allCases) { type in
-                Button(type.title) {
-                    self.contentType = type
-                }
-            }
+        Button {
+            self.contentType = self.contentType == .games ? .news : .games
         } label: {
-            Label(contentType.title, systemImage: contentType.imageName)
+            Image(systemName: contentType.imageName)
                 .font(.subheadline)
                 .fontWeight(.medium)
         }
