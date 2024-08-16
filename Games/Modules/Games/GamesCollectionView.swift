@@ -51,7 +51,6 @@ struct GamesCollectionView: View {
             .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
         }
         .listStyle(.plain)
-        .scrollIndicators(.hidden)
         .scrollContentBackground(.hidden)
     }
     

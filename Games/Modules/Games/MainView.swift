@@ -51,8 +51,48 @@ struct MainView: View {
     
     var body: some View {
         NavigationStack {
-            CountView
-            MainStack
+            VStack {
+                CountView
+                Header
+                ContentTypeView
+            }
+            .ignoresSafeArea(edges: .bottom)
+            .toolbarBackground(.hidden, for: .tabBar)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
+                if let game = notification.object as? Game {
+                    gameToAddForNewLibrary = game
+                } else {
+                    withAnimation {
+                        showAddLibraryWithNoGame = true
+                    }
+                }
+            })
+            .onReceive(didRemoteChange, perform: { _ in
+                vm.filterSegment(savedGames: savedGames)
+            })
+            .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
+                vm.onChangePlatforms(for: savedGames, newValue: newValue)
+            })
+            .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
+                vm.onChangeGenres(for: savedGames, newValue: newValue)
+            })
+            .onChange(of: vm.searchQuery) { _, newValue in
+                vm.onChangeQuery(for: savedGames, newValue: newValue)
+            }
+            .onChange(of: showSearch) { oldValue, newValue in
+                isTextFieldFocused = newValue
+            }
+            .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        MoreTab()
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                    }
+                }
+            }
         }
     }
 }
@@ -70,7 +110,6 @@ extension MainView {
                 .foregroundStyle(appTint)
         }
         .frame(height: UIScreen.main.bounds.height/5.5)
-        
     }
 
 
@@ -85,50 +124,6 @@ extension MainView {
                 }
         case .news:
             NewsTab(vm: newsVM)
-        }
-    }
-
-    var MainStack: some View {
-        VStack {
-            Header
-            ContentTypeView
-        }
-        .ignoresSafeArea(edges: .bottom)
-        .toolbarBackground(.hidden, for: .tabBar)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
-            if let game = notification.object as? Game {
-                gameToAddForNewLibrary = game
-            } else {
-                withAnimation {
-                    showAddLibraryWithNoGame = true
-                }
-            }
-        })
-        .onReceive(didRemoteChange, perform: { _ in
-            vm.filterSegment(savedGames: savedGames)
-        })
-        .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
-            vm.onChangePlatforms(for: savedGames, newValue: newValue)
-        })
-        .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
-            vm.onChangeGenres(for: savedGames, newValue: newValue)
-        })
-        .onChange(of: vm.searchQuery) { _, newValue in
-            vm.onChangeQuery(for: savedGames, newValue: newValue)
-        }
-        .onChange(of: showSearch) { oldValue, newValue in
-            isTextFieldFocused = newValue
-        }
-        .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink {
-                    MoreTab()
-                } label: {
-                    Image(systemName: "gearshape.fill")
-                }
-            }
         }
     }
 }

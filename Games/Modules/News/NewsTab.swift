@@ -7,7 +7,6 @@
 
 import FeedKit
 import SwiftUI
-import SwiftData
 import SafariServices
 
 struct NewsTab: View {
@@ -43,20 +42,15 @@ struct NewsTab: View {
                     .listStyle(.plain)
                 case .grid:
                     ScrollView {
-                        ForEach(vm.news) { item in
-                            LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5)  {
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 5), count: 3), spacing: 10) {
+                            ForEach(vm.news) { item in
                                 NewsGridItemView(item: item) {
                                     self.selectedItem = item
                                 }
                             }
                         }
                         .padding(.horizontal, 10)
-                        .padding(.top, 10)
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
                     }
-                    .scrollContentBackground(.hidden)
-                    .listStyle(.plain)
                 }
             }
             .id(id)

@@ -70,6 +70,18 @@ extension MainView {
             switch contentType {
             case .games:
                 Menu {
+                    ForEach(Category.allCases) { category in
+                        Button(category.title, systemImage: category.systemImage) {
+                            vm.fetchTaskToken.category = category
+                        }
+                    }
+                } label: {
+                    Text("Category")
+                }
+
+                Divider()
+
+                Menu {
                     let platforms = PopularPlatform.allCases.filter({$0 != PopularPlatform.database }).sorted(by: { $0.title < $1.title })
 
                     ForEach(platforms) { platform in
@@ -116,6 +128,8 @@ extension MainView {
                 } label: {
                     Text("Genre")
                 }
+
+                Divider()
 
                 Button(role: .destructive) {
                     vm.fetchTaskToken.platforms = []
