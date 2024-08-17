@@ -48,6 +48,11 @@ class SavedGame {
             return nil
         }
     }
+
+    func hasSameGameData(as game: Game) -> Bool {
+        guard let savedGame = self.game else { return false }
+        return savedGame.id == game.id
+    }
 }
 
 extension SavedGame {

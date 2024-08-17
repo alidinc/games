@@ -64,11 +64,19 @@ struct ListItemView: View {
                     Menu {
                         ForEach(libraries) { library in
                             Button {
-                               let savedGame = dataManager.add(game: game, for: library)
-                               context.insert(savedGame)
+                                if let savedGame = dataManager.add(game: game, for: library) {
+                                    context.insert(savedGame)
+                                }
+
                             } label: {
                                 Text(library.title)
                             }
+                        }
+
+                        Button {
+
+                        } label: {
+
                         }
                     } label: {
                         Image(systemName: "plus.circle.fill")

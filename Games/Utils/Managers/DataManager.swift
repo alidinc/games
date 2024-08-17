@@ -42,16 +42,23 @@ class DataManager {
     
     // MARK: - SavedGame
     
-    func add(game: Game, for library: Library) -> SavedGame {
+    func add(game: Game, for library: Library) -> SavedGame? {
+        // Check if the game already exists in the library
+        if let existingSavedGame = library.savedGames?.first(where: { $0.hasSameGameData(as: game) }) {
+            // Return the existing SavedGame if it already exists
+            return nil
+        }
+
+        // If no existing SavedGame found, create a new one
         let savedGame = SavedGame()
         savedGame.library = library
-        
+
         getImageData(game: game) { data in
             if let data {
                 savedGame.imageData = data
             }
         }
-        
+
         savedGame.gameData = self.getGameData(game: game)
         return savedGame
     }

@@ -14,10 +14,10 @@
 		DA24E45E2C70197800246681 /* GlassModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E45D2C70197800246681 /* GlassModifier.swift */; };
 		DA24E4602C701C0300246681 /* LabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E45F2C701C0300246681 /* LabelStyle.swift */; };
 		DA24E4622C70205A00246681 /* AddLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4612C70205A00246681 /* AddLibraryView.swift */; };
-		DA24E4642C702FD600246681 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4632C702FD600246681 /* LibraryView.swift */; };
 		DA24E4662C714F6900246681 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4652C714F6900246681 /* ContentType.swift */; };
 		DA24E4682C7161A000246681 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4672C7161A000246681 /* MarqueeView.swift */; };
 		DA24E46A2C7161C700246681 /* CustomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4692C7161C700246681 /* CustomSelectionView.swift */; };
+		DA24E46C2C7166F400246681 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E46B2C7166F400246681 /* LibraryView.swift */; };
 		DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27972D2B5AA7E40042E59B /* DataType.swift */; };
 		DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */; };
 		DA43CE212B30B61500DAE0B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA43CE202B30B61500DAE0B6 /* Assets.xcassets */; };
@@ -104,7 +104,6 @@
 		DAAD3E5E2B4130A5005E8EBA /* SFModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */; };
 		DAAD3E602B41AA97005E8EBA /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */; };
 		DAB6E8122B63C59A0023E38D /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E8112B63C59A0023E38D /* Tab.swift */; };
-		DAB6E8142B63ED000023E38D /* GamesTabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E8132B63ED000023E38D /* GamesTabViews.swift */; };
 		DAB6E8192B63F9980023E38D /* CoordinatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E8182B63F9980023E38D /* CoordinatorViewController.swift */; };
 		DAB6E8222B63F9B30023E38D /* CardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E81C2B63F9B20023E38D /* CardCoordinator.swift */; };
 		DAB6E8232B63F9B30023E38D /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E81D2B63F9B20023E38D /* MainCoordinator.swift */; };
@@ -140,10 +139,10 @@
 		DA24E45D2C70197800246681 /* GlassModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifier.swift; sourceTree = "<group>"; };
 		DA24E45F2C701C0300246681 /* LabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelStyle.swift; sourceTree = "<group>"; };
 		DA24E4612C70205A00246681 /* AddLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLibraryView.swift; sourceTree = "<group>"; };
-		DA24E4632C702FD600246681 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DA24E4652C714F6900246681 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 		DA24E4672C7161A000246681 /* MarqueeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
 		DA24E4692C7161C700246681 /* CustomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSelectionView.swift; sourceTree = "<group>"; };
+		DA24E46B2C7166F400246681 /* LibraryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DA27972D2B5AA7E40042E59B /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		DA43CE192B30B61500DAE0B6 /* Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Games.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeeltuinApp.swift; sourceTree = "<group>"; };
@@ -231,7 +230,6 @@
 		DAAD3E5D2B4130A5005E8EBA /* SFModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFModels.swift; sourceTree = "<group>"; };
 		DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		DAB6E8112B63C59A0023E38D /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
-		DAB6E8132B63ED000023E38D /* GamesTabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTabViews.swift; sourceTree = "<group>"; };
 		DAB6E8182B63F9980023E38D /* CoordinatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinatorViewController.swift; sourceTree = "<group>"; };
 		DAB6E81C2B63F9B20023E38D /* CardCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCoordinator.swift; sourceTree = "<group>"; };
 		DAB6E81D2B63F9B20023E38D /* MainCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
@@ -354,10 +352,9 @@
 			isa = PBXGroup;
 			children = (
 				DA43CE592B30B69100DAE0B6 /* MainView.swift */,
-				DAB6E8132B63ED000023E38D /* GamesTabViews.swift */,
-				DA43CE7A2B31D35900DAE0B6 /* ListItemView.swift */,
 				DA6C25862B520CC500791432 /* GamesOverlayView.swift */,
 				DA4B1C032B44A32F00EA3E8F /* GamesCollectionView.swift */,
+				DA43CE7A2B31D35900DAE0B6 /* ListItemView.swift */,
 			);
 			path = Games;
 			sourceTree = "<group>";
@@ -448,10 +445,9 @@
 			isa = PBXGroup;
 			children = (
 				DA8AF74D2B4FF93900C459DA /* LibrariesView.swift */,
-				DA24E4632C702FD600246681 /* LibraryView.swift */,
+				DA24E46B2C7166F400246681 /* LibraryView.swift */,
 				DA24E4612C70205A00246681 /* AddLibraryView.swift */,
 				DA207A192B6028B7001F8923 /* IconsView.swift */,
-				DA24E45D2C70197800246681 /* GlassModifier.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -487,6 +483,7 @@
 		DAAD3E552B40D121005E8EBA /* SharedViews */ = {
 			isa = PBXGroup;
 			children = (
+				DA24E45D2C70197800246681 /* GlassModifier.swift */,
 				DAC503BE2B344827004D4B03 /* CloseButton.swift */,
 				DA44660C2B48747100361071 /* GradientMask.swift */,
 				DA78AA2D2B4D7DB2008F018C /* SafariView.swift */,
@@ -695,7 +692,6 @@
 				DA4B1BEC2B43A7B100EA3E8F /* Bundle+Ext.swift in Sources */,
 				DA0C208C2B3E9F97000E2D6E /* CacheAsyncImage.swift in Sources */,
 				DA43CE502B30B66B00DAE0B6 /* PopularGenre.swift in Sources */,
-				DAB6E8142B63ED000023E38D /* GamesTabViews.swift in Sources */,
 				DAB6E8122B63C59A0023E38D /* Tab.swift in Sources */,
 				DA43CE412B30B65E00DAE0B6 /* GamesViewModel.swift in Sources */,
 				DA43CE6F2B30B6F200DAE0B6 /* CacheEntry.swift in Sources */,
@@ -764,7 +760,6 @@
 				DA43CE692B30B6CD00DAE0B6 /* PagingData.swift in Sources */,
 				DA79C8BD2B61D26900837DB3 /* UIKitTabView.swift in Sources */,
 				DA4B1C082B44CB9400EA3E8F /* SavedGame.swift in Sources */,
-				DA24E4642C702FD600246681 /* LibraryView.swift in Sources */,
 				DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */,
 				DA4B1C042B44A32F00EA3E8F /* GamesCollectionView.swift in Sources */,
 				DAAD3E532B40BD32005E8EBA /* SFImage.swift in Sources */,
@@ -788,6 +783,7 @@
 				DA98C6C12B6D2DB400EF8C5B /* SocialsView.swift in Sources */,
 				DA78AA302B4D7F4A008F018C /* String+Extension.swift in Sources */,
 				DA8AF7502B4FF9C700C459DA /* Library.swift in Sources */,
+				DA24E46C2C7166F400246681 /* LibraryView.swift in Sources */,
 				DA79C8C52B63306800837DB3 /* MoreViewSections.swift in Sources */,
 				DAB6E8232B63F9B30023E38D /* MainCoordinator.swift in Sources */,
 				DA98C6C82B6D2DB400EF8C5B /* RatingStarsView.swift in Sources */,
