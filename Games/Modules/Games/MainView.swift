@@ -58,6 +58,9 @@ struct MainView: View {
         return [label, appTint.opacity(0.45)]
     }
 
+    @State var selectedPlatforms: Set<PopularPlatform> = []
+    @State var selectedGenres: Set<PopularGenre> = []
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -206,40 +209,61 @@ extension MainView {
         }
     }
 
+    private var filteredSavedGames: [SavedGame] {
+        // Check if a specific library is selected
+        if let libraryToEdit = libraryToEdit {
+            // Filter saved games in the selected library
+            return (libraryToEdit.savedGames ?? []).filter { savedGame in
+                let game = savedGame.game
+
+                // Check if game matches selected genres
+                let matchesGenre = selectedGenres.isEmpty || (game?.genres?.contains { genre in
+                    selectedGenres.contains(genre.popularGenre)
+                } ?? false)
+
+                // Check if game matches selected platforms
+                let matchesPlatform = selectedPlatforms.isEmpty || (game?.platforms?.contains { platform in
+                    selectedPlatforms.contains(platform.popularPlatform)
+                } ?? false)
+
+                return matchesGenre && matchesPlatform
+            }
+        } else {
+            // No specific library selected, apply filters to all libraries
+            return libraries.flatMap { library in
+                (library.savedGames ?? []).filter { savedGame in
+                    let game = savedGame.game
+
+                    let matchesGenre = selectedGenres.isEmpty || (game?.genres?.contains { genre in
+                        selectedGenres.contains(genre.popularGenre)
+                    } ?? false)
+
+                    let matchesPlatform = selectedPlatforms.isEmpty || (game?.platforms?.contains { platform in
+                        selectedPlatforms.contains(platform.popularPlatform)
+                    } ?? false)
+
+                    return matchesGenre && matchesPlatform
+                }
+            }
+        }
+    }
 
     @ViewBuilder
     func LibraryView() -> some View {
-        if let libraryToEdit = libraryToEdit, let savedGames = libraryToEdit.savedGames {
-            List {
-                ForEach(savedGames) { data in
-                    ListItemView(game: data.game)
-                        .navigationLink({
-                            GameDetailView(savedGame: data)
-                        })
-                }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
-                .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
+        List {
+            ForEach(filteredSavedGames) { savedGame in
+                ListItemView(game: savedGame.game)
+                    .navigationLink({
+                        GameDetailView(savedGame: savedGame)
+                    })
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .padding(.vertical, 12)
-        } else {
-            List {
-                ForEach(libraries.flatMap { $0.savedGames ?? [] }) { data in
-                    ListItemView(game: data.game)
-                        .navigationLink({
-                            GameDetailView(savedGame: data)
-                        })
-                }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
-                .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
-            }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .padding(.vertical, 12)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .padding(.vertical, 12)
     }
 }
 

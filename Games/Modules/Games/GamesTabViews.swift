@@ -128,7 +128,69 @@ extension MainView {
                     }
                 }
             case .library:
-                Text("Showing libraries")
+                Menu {
+                    let genres = PopularGenre.allCases.filter({$0 != PopularGenre.allGenres }).sorted(by: { $0.title < $1.title })
+
+                    ForEach(genres) { genre in
+                        Button {
+                            if hapticsEnabled {
+                                HapticsManager.shared.vibrateForSelection()
+                            }
+
+                            if !self.selectedGenres.contains(genre) {
+                                self.selectedGenres.insert(genre)
+                            } else {
+                                self.selectedGenres.remove(genre)
+                            }
+                        } label: {
+                            HStack {
+                                Text(genre.title)
+                                if self.selectedGenres.contains(genre) {
+                                    Image(systemName: "checkmark")
+                                }
+                                Image(genre.assetName)
+                            }
+                        }
+                    }
+                } label: {
+                    Text("Genre")
+                }
+
+                Menu {
+                    let platforms = PopularPlatform.allCases.filter({$0 != PopularPlatform.database }).sorted(by: { $0.title < $1.title })
+
+                    ForEach(platforms) { platform in
+                        Button {
+                            if hapticsEnabled {
+                                HapticsManager.shared.vibrateForSelection()
+                            }
+
+                            if !self.selectedPlatforms.contains(platform) {
+                                self.selectedPlatforms.insert(platform)
+                            } else {
+                                self.selectedPlatforms.remove(platform)
+                            }
+                        } label: {
+                            HStack {
+                                Text(platform.title)
+                                if vm.fetchTaskToken.platforms.contains(platform) {
+                                    Image(systemName: "checkmark")
+                                }
+                                Image(platform.assetName)
+                            }
+                        }
+                    }
+                } label: {
+                    Text("Platform")
+                }
+
+
+                Button(role: .destructive) {
+                    self.selectedGenres = []
+                    self.selectedPlatforms = []
+                } label: {
+                    Text("Remove filters")
+                }
             }
         } label: {
             SFImage(
