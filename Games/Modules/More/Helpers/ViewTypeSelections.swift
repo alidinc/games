@@ -10,7 +10,7 @@ import SwiftUI
 struct ViewTypeSelections: View {
     
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("viewType") private var viewType: ViewType = .list
+    @AppStorage("viewType") private var viewType: ViewType = .grid
     @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) var dismiss
     

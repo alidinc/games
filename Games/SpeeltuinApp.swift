@@ -18,6 +18,7 @@ struct SpeeltuinApp: App {
     @State private var preferences = Admin()
     @State private var gamesViewModel = GamesViewModel()
     @State private var newsViewModel = NewsViewModel()
+    @State private var dataManager = DataManager()
 
     @State private var showLoadingView = false
     @State private var gameToGoToDetailView: Game?
@@ -52,11 +53,12 @@ struct SpeeltuinApp: App {
     }
 
     private var TabView: some View {
-        MainView(vm: gamesViewModel)
+        MainView()
             .tint(appTint)
             .environment(preferences)
             .environment(gamesViewModel)
             .environment(newsViewModel)
+            .environment(dataManager)
             .preferredColorScheme(setColorScheme())
             .sheet(item: $gameToGoToDetailView) { game in
                 NavigationStack {

@@ -13,7 +13,7 @@ struct NewsTab: View {
 
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
-    @AppStorage("viewType") var viewType: ViewType = .list
+    @AppStorage("viewType") var viewType: ViewType = .grid
 
     @Environment(Admin.self) private var admin
     @State var selectedItem: RSSFeedItem?

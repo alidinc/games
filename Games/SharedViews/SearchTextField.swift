@@ -30,7 +30,7 @@ struct SearchTextField: View {
                 .font(.subheadline)
                 .focused($focused)
                 .labelStyle()
-                .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
+                .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 8))
                 .autocorrectionDisabled()
                 .onChange(of: isFocused, { oldValue, newValue in
                     focused = newValue

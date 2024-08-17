@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import PhotosUI
 import SwiftData
 
 struct AddLibraryView: View {
@@ -15,58 +14,26 @@ struct AddLibraryView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var scheme
     @Environment(\.dismiss) private var dismiss
+
+    let library: Library?
+
     @State private var title: String = ""
-    @State private var subtitle: String = ""
     @State private var date: Date = Date()
-    @State private var imageData: Data?
-    @State private var selectedItem: PhotosPickerItem? = nil
 
     var body: some View {
         VStack {
-            if let imageData, let uiImage = UIImage(data: imageData) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .frame(width: 200, height: 200)
-                    .cornerRadius(10)
-                    .padding()
-            } else {
-                PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                    VStack {
-                        Image(scheme == .dark ? .icon5 : .icon1)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200, height: 200)
-                            .foregroundColor(.gray)
-                            .cornerRadius(10)
-                            .padding()
-                        Text("Select Image")
-                    }
-                }
-                .onChange(of: selectedItem) { _, newItem in
-                    Task {
-                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            imageData = data
-                        }
-                    }
-                }
-            }
-
-            VStack(alignment: .center, spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
                 TextField("Enter Library Title", text: $title)
                     .font(.title2)
                     .fontWeight(.bold)
-                    .padding()
-                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
 
-                TextField("Enter Description", text: $subtitle, axis: .vertical)
-                    .font(.title3)
-                    .foregroundStyle(appTint)
-                    .multilineTextAlignment(.center)
 
                 Text(Date.now, format: .dateTime.year().month(.wide).day())
                     .font(.footnote)
                     .foregroundColor(.gray)
             }
+            .multilineTextAlignment(.leading)
 
             Spacer()
 
@@ -82,43 +49,36 @@ struct AddLibraryView: View {
             }
             .padding()
         }
-        .navigationTitle("Add Library")
+        .navigationTitle("\(library == nil ? "Add" : "Edit") Library")
         .padding()
+        .presentationDetents([.fraction(0.65)])
+        .onAppear {
+            if let library {
+                title = library.title
+                date = library.date
+            }
+        }
     }
 
     private func saveLibrary() {
-        let newLibrary = Library(title: title, subtitle: subtitle, imageData: imageData)
-        modelContext.insert(newLibrary)
-        dismiss()
-    }
-}
+        if let library {
+            DispatchQueue.main.async {
+                library.title = self.title
+                library.date = self.date
 
-
-struct TrackRow: View {
-    let trackNumber: String
-    let trackTitle: String
-    var explicit: Bool = false
-
-    var body: some View {
-        HStack {
-            Text(trackNumber)
-                .font(.body)
-                .foregroundColor(.gray)
-
-            Text(trackTitle)
-                .font(.body)
-                .fontWeight(.regular)
-
-            if explicit {
-                Image(systemName: "e.square.fill")
-                    .foregroundColor(.gray)
             }
 
-            Spacer()
+            do {
+                try modelContext.save()
+            } catch {
 
-            Image(systemName: "chevron.right")
-                .foregroundColor(.gray)
+            }
+            
+        } else {
+            let newLibrary = Library(title: title)
+            modelContext.insert(newLibrary)
         }
-        .padding(.vertical, 5)
+
+        dismiss()
     }
 }

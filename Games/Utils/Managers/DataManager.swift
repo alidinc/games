@@ -9,32 +9,11 @@ import SwiftUI
 import Observation
 import SwiftData
 
-@ModelActor
-actor DataManager {
-    
+@Observable
+class DataManager {
+
     private var bag = Bag()
-    
-    init(container: ModelContainer) {
-        modelContainer = container
-        modelExecutor = DefaultSerialModelExecutor(modelContext: ModelContext(container))
-    }
-    
-    var fetchSavedGames: [SavedGame] {
-        do {
-            return try modelContext.fetch(FetchDescriptor<SavedGame>())
-        } catch {
-            return []
-        }
-    }
-    
-    private func save() {
-        do {
-            try modelContext.save()
-        } catch {
-            
-        }
-    }
-    
+
     func getGameData(game: Game) -> Data? {
         do {
             return try JSONEncoder().encode(game)
@@ -63,7 +42,7 @@ actor DataManager {
     
     // MARK: - SavedGame
     
-    func add(game: Game, for library: Library) {
+    func add(game: Game, for library: Library) -> SavedGame {
         let savedGame = SavedGame()
         savedGame.library = library
         
@@ -74,55 +53,6 @@ actor DataManager {
         }
         
         savedGame.gameData = self.getGameData(game: game)
-        modelContext.insert(savedGame)
-        save()
-    }
-    
-    func delete(game: Game) {
-        if let gameToDelete = fetchSavedGames.first(where: { $0.gameId == game.id }) {
-            modelContext.delete(gameToDelete)
-            save()
-        }
-    }
-    
-    func deleteAllLibraries() {
-        do {
-            try modelContext.delete(model: Library.self)
-            save()
-        } catch {
-            
-        }
-    }
-    
-    func addLibrary(library: Library) {
-        modelContext.insert(library)
-        save()
-    }
-    
-    func addNews(news: SPNews) {
-        modelContext.insert(news)
-        save()
-    }
-    
-    func deleteNews(news: SPNews) {
-        modelContext.delete(news)
-        save()
-    }
-    
-    // MARK: - Toggle
-    
-    func savedAlready(_ game: Game, for library: Library) -> Bool {
-        ((library.savedGames?.first(where: { $0.gameId == game.id })) != nil)
-    }
-    
-    func toggle(game: Game, for library: Library) {
-        guard savedAlready(game, for: library) else {
-            
-            delete(game: game)
-            add(game: game, for: library)
-            
-            NotificationCenter.default.post(name: .addedToLibrary, object: library)
-            return
-        }
+        return savedGame
     }
 }

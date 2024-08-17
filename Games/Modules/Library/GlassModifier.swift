@@ -32,7 +32,7 @@ struct GlassBackgroundModifier: ViewModifier {
             /// Light White Border
             .background {
                 RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .stroke((scheme == .dark ? Color.white.opacity(0.3) : Color.black.opacity(0.2)), lineWidth: 1.5)
+                    .stroke((scheme == .dark ? Color.white.opacity(0.3) : Color.black.opacity(0.3)), lineWidth: 1.5)
             }
     }
 }

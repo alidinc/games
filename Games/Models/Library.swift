@@ -12,20 +12,14 @@ import SwiftData
 final class Library {
     
     var title: String = ""
-    var subtitle: String?
     var date: Date = Date.now
 
     var id: String { return UUID().uuidString }
 
-    @Attribute(.externalStorage)
-    var imageData: Data?
-
     @Relationship(deleteRule: .cascade, inverse: \SavedGame.library)
     var savedGames: [SavedGame]? = []
     
-    init(title: String = "", subtitle: String?, imageData: Data?) {
+    init(title: String = "") {
         self.title = title
-        self.subtitle = subtitle
-        self.imageData = imageData
     }
 }

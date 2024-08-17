@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LibraryView: View {
 
@@ -13,69 +14,52 @@ struct LibraryView: View {
 
     @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.modelContext) private var context
+
+    @State private var gameToDelete: SavedGame?
+    @State private var showDeleteAlert = false
+    @State private var selectedGame: SavedGame?
+
+    @Query private var libraries: [Library]
 
     var body: some View {
         NavigationStack {
-            VStack {
-                ImageView
-
-                VStack(alignment: .center, spacing: 8) {
-                    Text(library.title)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding()
-                        .multilineTextAlignment(.center)
-
-                    if let subtitle = library.subtitle {
-                        Text(subtitle)
-                            .font(.caption)
-                            .foregroundStyle(appTint)
-                            .multilineTextAlignment(.center)
-                    }
-
-                    Text(library.date, format: .dateTime.year().month(.wide).day())
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                }
-
+            VStack(alignment: .leading) {
                 if let savedGames = library.savedGames {
                     List {
                         ForEach(savedGames) { data in
-                            if let game = data.game, let name = game.name {
-                                Text(name)
-                                    .font(.subheadline)
-                            }
+                            ListItemView(game: data.game)
+                                .navigationLink({
+                                    GameDetailView(savedGame: data)
+                                })
                         }
+                        .onDelete(perform: deleteGame)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
                     }
+                    .listStyle(.plain)
                     .scrollContentBackground(.hidden)
+                    .padding(.vertical, 12)
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    CloseButton()
+            .confirmationDialog("Are you sure to delete this game from your library?\nYou can't undo this action.",
+                                isPresented: $showDeleteAlert, titleVisibility: .visible, actions: {
+                Button("Delete", role: .destructive) {
+                    if let gameToDelete {
+                        context.delete(gameToDelete)
+                    }
                 }
-            }
+            })
         }
     }
 
-    @ViewBuilder
-    private var ImageView: some View {
-        if let imageData = library.imageData, let uiImage = UIImage(data: imageData) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 200, height: 200)
-                .foregroundStyle(.gray)
-                .cornerRadius(10)
-
-        } else {
-            Image(scheme == .dark ? .icon5 : .icon1)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 200, height: 200)
-                .foregroundStyle(.gray)
-                .cornerRadius(10)
-
+    private func deleteGame(at offsets: IndexSet) {
+        if let index = offsets.first, index < (library.savedGames?.count ?? 0) {
+            // Fetch the game to be deleted
+            self.showDeleteAlert = true
+            self.gameToDelete = library.savedGames?[index]
+            // Show the confirmation alert
         }
     }
 }

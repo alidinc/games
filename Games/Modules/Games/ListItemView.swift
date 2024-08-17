@@ -7,6 +7,7 @@
 
 import Connectivity
 import SwiftUI
+import SwiftData
 import Combine
 
 enum NetworkStatus {
@@ -17,84 +18,25 @@ enum NetworkStatus {
 struct ListItemView: View {
     
     var game: Game?
-    var savedGame: SavedGame?
     
     @AppStorage("appTint") var appTint: Color = .blue
 
     @State var vm = GameDetailViewModel()
+
+    @Environment(DataManager.self) private var dataManager
     @Environment(Admin.self) private var admin
-    @Environment(\.colorScheme) var colorScheme
-    
-    init(game: Game? = nil, savedGame: SavedGame? = nil) {
-        self.savedGame = savedGame
-        self.game = game
-    }
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.modelContext) private var context
+
+    @Query var libraries: [Library]
     
     var body: some View {
-        switch admin.networkStatus {
-        case .unavailable:
-            LocalView
-        case .available:
-            NetworkView
-        }
-    }
-    
-    @ViewBuilder
-    var LocalView: some View {
-        if let savedGame {
-            HStack(alignment: .top, spacing: 10) {
-                if let imageData = savedGame.imageData, let uiImage = UIImage(data: imageData)  {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .shadow(radius: 10)
-                        .frame(width: 120, height: 160)
-                        .clipShape(.rect(cornerRadius: 5))
-                }
-                
-                if let game = savedGame.game {
-                    VStack(alignment: .leading, spacing: 6) {
-                        if let name = game.name {
-                            Text(name)
-                                .foregroundStyle(.primary)
-                                .font(.headline)
-                                .lineLimit(2)
-                                .multilineTextAlignment(.leading)
-                        }
-                        
-                        DatesView(game: game)
-                        
-                        Text(game.availablePlatforms)
-                            .foregroundStyle(.secondary)
-                            .font(.caption)
-                            .lineLimit(2)
-                            .multilineTextAlignment(.leading)
-                        
-                        Spacer()
-                        
-                        HStack(alignment: .bottom) {
-                            RatingView(game: game)
-                            Spacer()
-                            SavingButton(game: game)
-                        }
-                    }
-                }
-            }
-            .padding(12)
-            .frame(width: UIScreen.main.bounds.size.width - 20)
-            .glass()
-            .shadow(radius: 2)
-        }
-    }
-    
-    @ViewBuilder
-    var NetworkView: some View {
         if let game {
             HStack(alignment: .top, spacing: 10) {
                 if let cover = game.cover, let url = cover.url {
                     AsyncImageView(with: url, type: .list)
                 }
-                
+
                 VStack(alignment: .leading, spacing: 6) {
                     if let name = game.name {
                         Text(name)
@@ -102,7 +44,7 @@ struct ListItemView: View {
                             .lineLimit(2)
                             .multilineTextAlignment(.leading)
                     }
-                    
+
                     Text(game.availablePlatforms)
                         .foregroundStyle(.secondary)
                         .font(.caption)
@@ -110,16 +52,27 @@ struct ListItemView: View {
                         .multilineTextAlignment(.leading)
 
                     Spacer()
-
-                    DatesView(game: game)
                 }
+
+                Spacer()
 
                 VStack {
                     RatingView(game: game)
 
                     Spacer()
 
-                    SavingButton(game: game)
+                    Menu {
+                        ForEach(libraries) { library in
+                            Button {
+                               let savedGame = dataManager.add(game: game, for: library)
+                               context.insert(savedGame)
+                            } label: {
+                                Text(library.title)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                    }
                 }
                 .padding(.top, 4)
             }
@@ -127,63 +80,6 @@ struct ListItemView: View {
             .frame(width: UIScreen.main.bounds.size.width - 20)
             .glass()
         }
-    }
-    
-    @ViewBuilder
-    private var FeaturedGameImage: some View {
-        if let game, let name = game.name {
-            if (name.lowercased().contains("mario")) {
-                Image(.mario)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            } else if (name.lowercased().contains("zelda")) {
-                Image(.zelda)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding()
-                    .offset(y: 30)
-            }
-        }
-    }
-    
-    
-    func areAllValuesSame<T: Equatable>(in array: [T]) -> Bool {
-        guard let firstValue = array.first else {
-            return true  // Empty array, technically all values are the same
-        }
-        
-        return array.allSatisfy { $0 == firstValue }
-    }
-    
-    @ViewBuilder
-    private func DatesView(game: Game) -> some View {
-        let now = Int(Date.now.timeIntervalSince1970)
-        if let releaseDates = game.releaseDates {
-            
-            let dates = releaseDates.compactMap { $0.date }
-            let _ = areAllValuesSame(in: dates)
-            let _ = !dates.compactMap({$0 > now }).isEmpty && dates.compactMap({$0 < now}).isEmpty
-            let _ = !dates.compactMap({$0 < now}).isEmpty && dates.compactMap({$0 > now}).isEmpty
-            
-            if let firstReleaseDate = game.firstReleaseDate {
-                DateEntryView(date: firstReleaseDate.numberToDateString(), imageName: "calendar")
-            }
-        }
-    }
-    
-    private func DateEntryView(date: String, imageName: String) -> some View {
-        HStack {
-            Image(systemName: imageName)
-                .font(.system(size: 10))
-                .foregroundStyle(.secondary)
-            
-            Text(date)
-                .foregroundStyle(.secondary)
-                .font(.caption)
-        }
-        .hSpacing(.leading)
     }
     
     private func RatingView(game: Game) -> some View {

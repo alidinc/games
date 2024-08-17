@@ -58,9 +58,6 @@ struct GameDetailView: View {
                         Header(game: game)
                         SummaryView(game: game)
                         DetailsView(game: game)
-
-                        
-
                         Spacer(minLength: 20)
                     }
                     .padding(.horizontal)
@@ -74,9 +71,10 @@ struct GameDetailView: View {
         }
         .padding(.bottom, 1)
         .toolbarRole(.editor)
+        .navigationBarTitleDisplayMode(.inline)
         .background(LinearGradient(colors: gradientColors, startPoint: .top, endPoint: .bottom))
+        .ignoresSafeArea()
         .scrollIndicators(.hidden)
-        .ignoresSafeArea(edges: (savedGame?.imageData != nil) || (game != nil) ? .top : .leading)
         .sheet(isPresented: $isSharePresented, onDismiss: {
             print("Dismiss")
         }, content: {
@@ -114,7 +112,7 @@ struct GameDetailView: View {
                     Spacer()
                     
                     if type != .deeplink {
-                        if let gameId = game.id {
+                        if let _ = game.id {
                             Button {
                                 isSharePresented = true
                             } label: {
@@ -138,7 +136,6 @@ struct GameDetailView: View {
         case .available:
             if let game {
                 ImagesView(game: game)
-                    .ignoresSafeArea()
                     .fadeOutSides(length: 100, side: .bottom)
                     .overlay(alignment: .bottomLeading) {
                         FeatureGameImage(game: game)

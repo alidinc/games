@@ -9,34 +9,15 @@ import SwiftUI
 
 extension MainView {
     
-    @ViewBuilder
-    var ViewSwitcher: some View {
-        switch vm.dataType {
-        case .network:
-            GamesCollectionView()
-                .overlay { GamesOverlayView() }
-                .refreshable {
-                    await vm.refreshTask()
-                }
-        case .library:
-            SPGamesCollectionView()
-                .overlay { GamesOverlayView() }
-                .id(vm.savedGamesListId)
-        }
-    }
-    
     var Header: some View {
         VStack {
             HStack(alignment: .center) {
                 MultiPicker
-                Spacer()
-                HStack(alignment: .bottom, spacing: 4) {
-                    if contentType == .games {
-                        SearchButton
-                    }
-                    FiltersButton
-                    LibraryButton
+                if contentType == .games {
+                    SearchButton
                 }
+                Spacer()
+                FiltersButton
             }
 
             if showSearch {
@@ -146,26 +127,17 @@ extension MainView {
                         Text(news.title)
                     }
                 }
+            case .library:
+                Text("Showing libraries")
             }
         } label: {
-            switch contentType {
-            case .games:
-                SFImage(
-                    config: .init(
-                        name: "slider.horizontal.3",
-                        padding: 10,
-                        color: .primary
-                    )
+            SFImage(
+                config: .init(
+                    name: "slider.horizontal.3",
+                    padding: 10,
+                    color: .primary
                 )
-            case .news:
-                SFImage(
-                    config: .init(
-                        name: "slider.horizontal.3",
-                        padding: 10,
-                        color: .primary
-                    )
-                )
-            }
+            )
         }
         .animation(.bouncy, value: vm.hasFilters)
     }

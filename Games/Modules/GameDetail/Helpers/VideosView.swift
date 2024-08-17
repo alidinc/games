@@ -28,26 +28,29 @@ struct VideosView: View {
     
     var body: some View {
         if !self.videoURLs.isEmpty {
-            Divider()
-            DisclosureGroup {
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(self.videoURLs, id: \.self) { id in
-                            YoutubeVideoView(youtubeVideoID: id)
+            VStack {
+                Divider()
+                DisclosureGroup {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(self.videoURLs, id: \.self) { id in
+                                YoutubeVideoView(youtubeVideoID: id)
+                            }
+                            .frame(width: 120, height: 80)
+                            .clipShape(.rect(cornerRadius: 8))
+                            .padding(.bottom)
+                            .padding(.leading)
                         }
-                        .frame(width: 120, height: 80)
-                        .clipShape(.rect(cornerRadius: 8))
-                        .padding(.bottom)
-                        .padding(.leading)
                     }
+                    .padding(.top)
+                } label: {
+                    Text("Videos")
+                        .font(.subheadline.bold())
+                        .foregroundColor(.primary)
+                        .padding(.leading)
                 }
-                .padding(.top)
-            } label: {
-                Text("Videos")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.primary)
-                    .padding(.leading)
             }
+            .padding(.vertical, 6)
         }
     }
 }

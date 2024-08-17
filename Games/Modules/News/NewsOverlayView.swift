@@ -12,7 +12,7 @@ struct NewsOverlayView: View {
     
     @Environment(NewsViewModel.self) private var vm: NewsViewModel
     @Environment(Admin.self) private var admin
-    @AppStorage("viewType") var viewType: ViewType = .list
+    @AppStorage("viewType") var viewType: ViewType = .grid
     @Query(animation: .easeInOut) private var savedNews: [SPNews]
     
     var body: some View {
