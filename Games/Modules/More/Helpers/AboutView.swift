@@ -8,115 +8,94 @@
 import SwiftUI
 
 struct AboutView: View {
-    
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.openURL) var openURL
-    @Environment(\.colorScheme) var colorScheme
-    
+
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+    @Environment(\.colorScheme) private var scheme
+
+    @AppStorage("selectedAppIcon") private var selectedAppIcon: DeviceAppIcon = .black
+    @State private var showSafari = false
+
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading) {
-                Header
-                CreditsButton
-                TeamButton
+        NavigationStack {
+            VStack(spacing: 20) {
+                Text("Games is for everyone, but if you want to know more how we got here. Many thanks for the games data by IGDB and the news data by; IGN, Nintendo News, and Xbox News.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                TeamMemberView
+
                 Spacer()
+
+                Marquee(targetVelocity: 50) {
+                    CustomSelectionView(assetName: scheme == .dark ? "Icon5" : "Icon1",
+                                        title: "Games \(Bundle.main.appVersionLong)",
+                                        subtitle: "Built with SwiftUI and ❤️",
+                                        config: .init(titleFont: .system(size: 12),
+                                                      titleFontWeight: .medium,
+                                                      subtitleFont: .caption2,
+                                                      subtitleFontWeight: .regular,
+                                                      showChevron: false))
+                    .onTapGesture { showSafari = true }
+                }
+                .padding(.bottom, 40)
             }
             .padding()
-        }
-    }
-    
-    private var Header: some View {
-        HStack {
-            MoreHeaderTextView(title: "About", subtitle: "You can find more about us here.")
-            Spacer()
-            CloseButton { self.dismiss() }
-        }
-        .padding(.bottom, 20)
-    }
-    
-    private var TeamButton: some View {
-        NavigationLink {
-            TeamView
-        } label: {
-            MoreRowView(imageName: "person.fill", text: "Team")
-                .padding(16)
-                .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-        }
-    }
-    
-    private var CreditsButton: some View {
-        NavigationLink {
-            CreditsView
-        } label: {
-            MoreRowView(imageName: "network", text: "Credits")
-                .padding(16)
-                .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-        }
-    }
-    
-    private var TeamView: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                TeamMemberView(with: Constants.URLs.LinkedIn(profile: "ali-dinc/"), name: "Ali Dinç", subtitle: "Developer")
-                TeamMemberView(with: Constants.URLs.LinkedIn(profile: "erwinbaragula/"), name: "Erwin Baragula", subtitle: "UX Consultant")
+            .navigationTitle("About")
+            .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showSafari, content: { SFSafariView(url: URL(string: Constants.URLs.SwiftUI)!).ignoresSafeArea()  })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    CloseButton()
+                }
             }
-            .padding()
-            .navigationTitle("Credits")
         }
     }
-    
-    private var CreditsView: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                Link(destination: Constants.URLs.IGDB) { CreditPlatformView(text: "Game data", logoName: "IGDB") }
-                
-                Link(destination: Constants.URLs.IGN) { CreditPlatformView(text: "IGN articles", logoName: "IGN")  }
-                
-                Link(destination: Constants.URLs.NintendoLife) { CreditPlatformView(text: "Nintendo articles", logoName: "nintendoLife")  }
-                
-                Link(destination: Constants.URLs.PureXbox) { CreditPlatformView(text: "Xbox articles", logoName: "pureXbox")  }
-            }
-            .padding()
-            .navigationTitle("Credits")
-        }
-    }
-    
-    private func CreditPlatformView(text: String, logoName: String) -> some View {
-        HStack(spacing: 0) {
-            Text(text)
-                .font(.subheadline.bold())
-                .foregroundColor(.secondary)
-            
-            Spacer()
-            
-            Image(logoName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 80, height: 80)
-                .hSpacing(.trailing)
-        }
-        .hSpacing(.leading)
-        .padding()
-        .frame(height: 80)
-        .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-    }
-    
+
     @ViewBuilder
-    private func TeamMemberView(with urlString: String, name: String, subtitle: String) -> some View {
-        if let url = URL(string: urlString) {
-            Link(destination: url) {
-                MoreRowView(imageName: "person.fill", text: name, subtitle: subtitle)
-                    .padding(16)
-                    .background(colorScheme == .dark ? .ultraThinMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-                    .overlay(alignment: .trailing) {
-                        Image(systemName: "info")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 14, height: 14)
-                            .foregroundColor(.white)
-                            .padding()
+    private var TeamMemberView: some View {
+        VStack {
+            HStack(spacing: 10) {
+                Image(systemName: "person.fill")
+                    .imageScale(.large)
+
+                VStack(alignment: .leading) {
+                    Text("Ali Dinç")
+                        .font(.headline.bold())
+                        .foregroundColor(.primary)
+
+                    Text("Developer")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+
+                HStack {
+                    if let url = URL(string: Constants.URLs.LinkedIn(profile: "ali-dinc/")) {
+                        Link(destination: url) {
+                            Image(.linkedin)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                        }
                     }
+
+                    if let url = URL(string: Constants.URLs.ThreadsURL) {
+                        Link(destination: url) {
+                            Image(.threads)
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                        }
+                    }
+
+                }
+                .hSpacing(.trailing)
             }
+            .padding(.horizontal)
+
         }
+        .padding(.vertical)
+        .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 12))
     }
 }

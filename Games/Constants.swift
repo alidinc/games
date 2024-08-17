@@ -37,6 +37,9 @@ struct Constants {
     }
     
     struct URLs {
+        static let ThreadsURL = "https://www.threads.net/@alidinc._"
+        static let SwiftUI = "https://developer.apple.com/documentation/swiftui/"
+        
         static var IGDB: URL {
             return URL(string: "https://www.igdb.com/")!
         }

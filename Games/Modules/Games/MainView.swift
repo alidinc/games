@@ -51,10 +51,7 @@ struct MainView: View {
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
             .background(LinearGradient(colors: gradientColors, startPoint: .top, endPoint: .bottom))
-            .onChange(of: vm.searchQuery) { _, newValue in
-                
-            }
-            .onChange(of: showSearch) { oldValue, newValue in
+            .onChange(of: showSearch) { _, newValue in
                 isTextFieldFocused = newValue
             }
             .sheet(isPresented: $showAddLibrary, content: {
@@ -106,7 +103,6 @@ extension MainView {
             GamesCollectionView()
                 .overlay(content: { GamesOverlayView() })
                 .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
-                .refreshable { await vm.refreshTask() }
         case .news:
             NewsTab(vm: newsVM)
         case .library:
@@ -242,7 +238,6 @@ extension MainView {
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .padding(.vertical, 12)
     }
 }
 

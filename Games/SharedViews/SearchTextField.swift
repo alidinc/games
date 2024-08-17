@@ -12,6 +12,7 @@ struct SearchTextField: View {
     @Binding var searchQuery: String
     var prompt: String
     @Environment(\.colorScheme) var colorScheme
+    @Environment(GamesViewModel.self) private var gamesVM
     @Binding var isFocused: Bool
     @FocusState private var focused: Bool
     
@@ -42,6 +43,9 @@ struct SearchTextField: View {
                         if !searchQuery.isEmpty {
                             Button {
                                 searchQuery = ""
+                                Task {
+                                    await gamesVM.refreshTask()
+                                }
                             } label: {
                                 Image(systemName: "multiply.circle.fill")
                             }
