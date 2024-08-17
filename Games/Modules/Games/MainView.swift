@@ -28,6 +28,7 @@ struct MainView: View {
     @State var selectedGenres: Set<PopularGenre> = []
 
     @State private var showDeleteAlert = false
+    @State private var showAddLibrary = false
     @State private var libraryToDelete: Library?
 
     @Query var savedGames: [SavedGame]
@@ -56,8 +57,11 @@ struct MainView: View {
             .onChange(of: showSearch) { oldValue, newValue in
                 isTextFieldFocused = newValue
             }
-            .onChange(of: vm.fetchTaskToken, { oldValue, newValue in
-
+            .sheet(isPresented: $showAddLibrary, content: {
+                AddLibraryView(library: nil)
+            })
+            .onChange(of: contentType, { _,_ in
+                self.libraryToEdit = nil
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -138,10 +142,13 @@ extension MainView {
                 self.libraryToEdit = nil
                 self.contentType = .library
             } label: {
-                HStack {
-                    Text("Show All Games")
-                    Image(systemName: "tray.full.fill")
-                }
+                Label("Show all saved games", systemImage: "tray.full.fill")
+            }
+
+            Button {
+                showAddLibrary = true
+            } label: {
+                Label("Add a new library", systemImage: "plus")
             }
 
         } label: {

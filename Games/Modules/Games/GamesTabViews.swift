@@ -201,13 +201,24 @@ extension MainView {
                 config: .init(
                     name: "slider.horizontal.3",
                     padding: 10,
-                    color: .primary
+                    color: hasFilters ? appTint : .primary
                 )
             )
         }
         .animation(.bouncy, value: vm.hasFilters)
     }
-    
+
+    var hasFilters: Bool {
+        if contentType == .games {
+            return !(self.vm.fetchTaskToken.platforms.contains(.database) && self.vm.fetchTaskToken.platforms.count == 1 ) ||
+                    !(self.vm.fetchTaskToken.genres.contains(.allGenres) && self.vm.fetchTaskToken.genres.count == 1)
+        } else if contentType == .library {
+            return !self.selectedGenres.isEmpty || !self.selectedPlatforms.isEmpty
+        } else {
+            return false
+        }
+    }
+
     var SearchButton: some View {
         Button {
             withAnimation(.bouncy) {

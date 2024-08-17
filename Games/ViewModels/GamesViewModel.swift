@@ -173,28 +173,16 @@ extension GamesViewModel {
     }
 
     func toggleGenre(_ genre: PopularGenre) {
-        if fetchTaskToken.genres.contains(genre) {
-            if let index = fetchTaskToken.genres.firstIndex(of: genre) {
-                fetchTaskToken.genres.remove(at: index)
-            }
-        } else {
-            fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
-            fetchTaskToken.genres.append(genre)
-        }
+        fetchTaskToken.genres.removeAll()
+        fetchTaskToken.genres.append(genre)
         Task {
             await refreshTask()
         }
     }
 
     func togglePlatform(_ platform: PopularPlatform) {
-        if fetchTaskToken.platforms.contains(platform) {
-            if let index = fetchTaskToken.platforms.firstIndex(of: platform) {
-                fetchTaskToken.platforms.remove(at: index)
-            }
-        } else {
-            fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
-            fetchTaskToken.platforms.append(platform)
-        }
+        fetchTaskToken.platforms.removeAll()
+        fetchTaskToken.platforms.append(platform)
         Task {
             await refreshTask()
         }
