@@ -53,7 +53,7 @@ extension MainView {
                 Menu {
                     ForEach(Category.allCases) { category in
                         Button(category.title, systemImage: category.systemImage) {
-                            vm.fetchTaskToken.category = category
+                            vm.categorySelected(for: category)
                         }
                     }
                 } label: {
@@ -70,7 +70,7 @@ extension MainView {
                             if hapticsEnabled {
                                 HapticsManager.shared.vibrateForSelection()
                             }
-                            vm.togglePlatform(platform, selectedLibrary: vm.selectedLibrary, savedGames: savedGames)
+                            vm.togglePlatform(platform)
                         } label: {
                             HStack {
                                 Text(platform.title)
@@ -95,7 +95,8 @@ extension MainView {
                             if hapticsEnabled {
                                 HapticsManager.shared.vibrateForSelection()
                             }
-                            vm.toggleGenre(genre, selectedLibrary: vm.selectedLibrary, savedGames: savedGames)
+
+                            vm.toggleGenre(genre)
                         } label: {
                             HStack {
                                 Text(genre.title)
@@ -113,8 +114,11 @@ extension MainView {
                 Divider()
 
                 Button(role: .destructive) {
-                    vm.fetchTaskToken.platforms = []
-                    vm.fetchTaskToken.genres = []
+                    vm.fetchTaskToken.platforms = [.database]
+                    vm.fetchTaskToken.genres = [.allGenres]
+                    Task {
+                        await vm.refreshTask()
+                    }
                 } label: {
                     Text("Remove filters")
                 }
@@ -226,13 +230,19 @@ extension MainView {
     }
     
     var MultiPicker: some View {
-        Button {
-            self.contentType = self.contentType == .games ? .news : .games
+        Menu {
+            ForEach(ContentType.allCases) { type in
+                Button {
+                    self.contentType = type
+                } label: {
+                    Label(type.title, systemImage: type.imageName)
+                }
+            }
         } label: {
-            Image(systemName: contentType.imageName)
-                .font(.subheadline)
-                .fontWeight(.medium)
+            Image(systemName: self.contentType.imageName)
         }
+        .font(.subheadline)
+        .fontWeight(.medium)
     }
     
     var CategoryPicker: some View {

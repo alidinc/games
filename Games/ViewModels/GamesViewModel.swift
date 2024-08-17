@@ -16,7 +16,6 @@ class GamesViewModel {
     var offset = 0
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
-    var headerTitle = ""
     var searchQuery = ""
     var searchPlaceholder = "Search in network"
     var savedGamesListId = ""
@@ -34,8 +33,6 @@ class GamesViewModel {
             genres: [.allGenres],
             token: .now
         )
-        
-        headerTitle = fetchTaskToken.category.title
         
         Task {
             await self.fetchGames()
@@ -166,174 +163,45 @@ extension GamesViewModel {
     
     func categorySelected(for category: Category) {
         fetchTaskToken.category = category
-        headerTitle = category.title
-        searchPlaceholder = "Search in network"
-        dataType = .network
-        filterType = .search
-        
         if fetchTaskToken.genres.isEmpty || fetchTaskToken.platforms.isEmpty {
             fetchTaskToken.genres = [.allGenres]
             fetchTaskToken.platforms = [.database]
         }
-        
         Task {
             await refreshTask()
         }
     }
-    
-    func librarySelectionTapped(allSelected: Bool, for library: Library? = nil, in savedGames: [SavedGame]) {
-        searchPlaceholder = "Search in library"
-        dataType = .library
-        filterType = .library
-        
-        if allSelected {
-            selectedLibrary = nil
-            headerTitle = "Saved games"
-        } else {
-            if let library {
-                selectedLibrary = library
-                headerTitle = library.title
-            }
-        }
-        
-        refreshList()
-        filterSegment(savedGames: savedGames)
-    }
-    
-    func onChangeOfDataType(savedGames: [SavedGame], library: Library?, newValue: DataType) {
-        switch newValue {
-        case .network:
-            Task {
-                await refreshTask()
-            }
-        case .library:
-            filterSegment(savedGames: savedGames)
-        }
-    }
-    
-    func onChangeQuery(
-        for games: [SavedGame],
-        newValue: String
-    ) {
-        filterType = .search
-        
-        switch dataType {
-        case .network:
-            Task {
-                if !newValue.isEmpty {
-                    try await Task.sleep(seconds: 0.5)
-                    await refreshTask()
-                } else {
-                    await refreshTask()
-                }
-            }
-        case .library:
-            filterSegment(savedGames: games)
-        }
-    }
-    
-    func onChangeGenres(
-        for savedGames: [SavedGame],
-        newValue: [PopularGenre]
-    ) {
-        filterType = .genre
-        switch dataType {
-        case .network:
-            if fetchTaskToken.genres.isEmpty {
-                fetchTaskToken.genres = [.allGenres]
-            } else {
-                fetchTaskToken.genres = newValue
-            }
-            
-            Task {
-                await refreshTask()
-            }
-            
-        case .library:
-            fetchTaskToken.genres = newValue
-            filterSegment(savedGames: savedGames)
-        }
-    }
-    
-    func onChangePlatforms(
-        for savedGames: [SavedGame],
-        newValue: [PopularPlatform]
-    ) {
-        filterType = .platform
-        switch dataType {
-        case .network:
-            if fetchTaskToken.platforms.isEmpty {
-                fetchTaskToken.platforms = [.database]
-            } else {
-                fetchTaskToken.platforms = newValue
-            }
-            
-            Task {
-                await refreshTask()
-            }
-        case .library:
-            fetchTaskToken.platforms = newValue
-            filterSegment(savedGames: savedGames)
-        }
-    }
-    
-    func toggleGenre(_ genre: PopularGenre, selectedLibrary: Library?,  savedGames: [SavedGame]) {
-        switch dataType {
-        default:
-            if fetchTaskToken.genres.contains(genre) {
-                if let index = fetchTaskToken.genres.firstIndex(of: genre) {
-                    fetchTaskToken.genres.remove(at: index)
-                }
-            } else {
-                fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
-                fetchTaskToken.genres.append(genre)
-            }
-        }
-    }
-    
-    func togglePlatform(_ platform: PopularPlatform, selectedLibrary: Library?, savedGames: [SavedGame]) {
-        switch dataType {
-        default:
-            if fetchTaskToken.platforms.contains(platform) {
-                if let index = fetchTaskToken.platforms.firstIndex(of: platform) {
-                    fetchTaskToken.platforms.remove(at: index)
-                }
-                
-            } else {
-                fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
-                fetchTaskToken.platforms.append(platform)
-            }
-        }
-    }
-    
-    func removeFilters() {
-        switch dataType {
-        case .network:
-            fetchTaskToken.platforms = [.database]
-            fetchTaskToken.genres = [.allGenres]
-        case .library:
-            fetchTaskToken.platforms = []
-            fetchTaskToken.genres = []
-        }
-    }
-    
-    func filterSegment(savedGames: [SavedGame]) {
-        withAnimation {
-            let libraryGames = selectedLibrary != nil ? savedGames.filter({ $0.library == selectedLibrary }) : savedGames
-            let selectedGenres = fetchTaskToken.genres.filter({ $0 != PopularGenre.allGenres })
-            let selectedPlatforms = fetchTaskToken.platforms.filter({ $0 != PopularPlatform.database })
 
-            if self.searchQuery.isEmpty {
-                self.savedGames = libraryGames.filter {
-                    ($0.containsGenres(selectedGenres) || selectedGenres.isEmpty) &&
-                    ($0.containsPlatforms(selectedPlatforms) || selectedPlatforms.isEmpty)
-                }
-            } else {
-                self.savedGames = libraryGames.filter {
-                    $0.game?.name?.lowercased().contains(self.searchQuery.lowercased()) ?? false &&
-                    ($0.containsSelections(selectedGenres, selectedPlatforms) || (selectedGenres.isEmpty && selectedPlatforms.isEmpty))
-                }
+    func toggleGenre(_ genre: PopularGenre) {
+        if fetchTaskToken.genres.contains(genre) {
+            if let index = fetchTaskToken.genres.firstIndex(of: genre) {
+                fetchTaskToken.genres.remove(at: index)
             }
+        } else {
+            fetchTaskToken.genres.removeAll(where: { $0.id == PopularGenre.allGenres.id })
+            fetchTaskToken.genres.append(genre)
         }
+        Task {
+            await refreshTask()
+        }
+    }
+
+    func togglePlatform(_ platform: PopularPlatform) {
+        if fetchTaskToken.platforms.contains(platform) {
+            if let index = fetchTaskToken.platforms.firstIndex(of: platform) {
+                fetchTaskToken.platforms.remove(at: index)
+            }
+        } else {
+            fetchTaskToken.platforms.removeAll(where: { $0.id == PopularPlatform.database.id })
+            fetchTaskToken.platforms.append(platform)
+        }
+        Task {
+            await refreshTask()
+        }
+    }
+
+    func removeFilters() {
+        fetchTaskToken.platforms = [.database]
+        fetchTaskToken.genres = [.allGenres]
     }
 }

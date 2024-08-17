@@ -53,7 +53,7 @@ struct SpeeltuinApp: App {
     }
 
     private var TabView: some View {
-        MainView()
+        MainView(vm: gamesViewModel)
             .tint(appTint)
             .environment(preferences)
             .environment(gamesViewModel)

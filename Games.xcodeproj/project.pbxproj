@@ -15,6 +15,7 @@
 		DA24E4602C701C0300246681 /* LabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E45F2C701C0300246681 /* LabelStyle.swift */; };
 		DA24E4622C70205A00246681 /* AddLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4612C70205A00246681 /* AddLibraryView.swift */; };
 		DA24E4642C702FD600246681 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4632C702FD600246681 /* LibraryView.swift */; };
+		DA24E4662C714F6900246681 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4652C714F6900246681 /* ContentType.swift */; };
 		DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27972D2B5AA7E40042E59B /* DataType.swift */; };
 		DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */; };
 		DA43CE212B30B61500DAE0B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA43CE202B30B61500DAE0B6 /* Assets.xcassets */; };
@@ -113,7 +114,6 @@
 		DAB6E82C2B63FA320023E38D /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E82B2B63FA320023E38D /* LogManager.swift */; };
 		DAB6E82E2B63FC690023E38D /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E82D2B63FC690023E38D /* AppCoordinator.swift */; };
 		DAB6E8312B63FCCA0023E38D /* GamesTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB6E8302B63FCCA0023E38D /* GamesTabCoordinator.swift */; };
-		DAC503B92B327234004D4B03 /* SelectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503B82B327234004D4B03 /* SelectionsView.swift */; };
 		DAC503BB2B343AC9004D4B03 /* ViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503BA2B343AC9004D4B03 /* ViewType.swift */; };
 		DAC503BD2B34457A004D4B03 /* Task+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503BC2B34457A004D4B03 /* Task+Extension.swift */; };
 		DAC503BF2B344827004D4B03 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503BE2B344827004D4B03 /* CloseButton.swift */; };
@@ -139,6 +139,7 @@
 		DA24E45F2C701C0300246681 /* LabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelStyle.swift; sourceTree = "<group>"; };
 		DA24E4612C70205A00246681 /* AddLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLibraryView.swift; sourceTree = "<group>"; };
 		DA24E4632C702FD600246681 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		DA24E4652C714F6900246681 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 		DA27972D2B5AA7E40042E59B /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		DA43CE192B30B61500DAE0B6 /* Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Games.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeeltuinApp.swift; sourceTree = "<group>"; };
@@ -238,7 +239,6 @@
 		DAB6E82B2B63FA320023E38D /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		DAB6E82D2B63FC690023E38D /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		DAB6E8302B63FCCA0023E38D /* GamesTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTabCoordinator.swift; sourceTree = "<group>"; };
-		DAC503B82B327234004D4B03 /* SelectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionsView.swift; sourceTree = "<group>"; };
 		DAC503BA2B343AC9004D4B03 /* ViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewType.swift; sourceTree = "<group>"; };
 		DAC503BC2B34457A004D4B03 /* Task+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Extension.swift"; sourceTree = "<group>"; };
 		DAC503BE2B344827004D4B03 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
@@ -328,6 +328,7 @@
 				DA8AF74F2B4FF9C700C459DA /* Library.swift */,
 				DA4B1C072B44CB9400EA3E8F /* SavedGame.swift */,
 				DAD084282B607B1000D87112 /* SPNews.swift */,
+				DA24E4652C714F6900246681 /* ContentType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -486,7 +487,6 @@
 				DA44660C2B48747100361071 /* GradientMask.swift */,
 				DA78AA2D2B4D7DB2008F018C /* SafariView.swift */,
 				DAAD3E5F2B41AA97005E8EBA /* SearchTextField.swift */,
-				DAC503B82B327234004D4B03 /* SelectionsView.swift */,
 				DA772C902B4DA94600DD064A /* SegmentedView.swift */,
 				DAAD3E502B40B485005E8EBA /* SavingButton.swift */,
 				DAAD3E522B40BD32005E8EBA /* SFImage.swift */,
@@ -731,7 +731,6 @@
 				DA43CE652B30B6CD00DAE0B6 /* DataStore.swift in Sources */,
 				DAD084272B6073E500D87112 /* NewsListItemView.swift in Sources */,
 				DAD084292B607B1000D87112 /* SPNews.swift in Sources */,
-				DAC503B92B327234004D4B03 /* SelectionsView.swift in Sources */,
 				DA43CE3A2B30B65500DAE0B6 /* Int+Extension.swift in Sources */,
 				DA98C6C62B6D2DB400EF8C5B /* PlatformsView.swift in Sources */,
 				DA6C25872B520CC500791432 /* GamesOverlayView.swift in Sources */,
@@ -761,6 +760,7 @@
 				DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */,
 				DA4B1C042B44A32F00EA3E8F /* GamesCollectionView.swift in Sources */,
 				DAAD3E532B40BD32005E8EBA /* SFImage.swift in Sources */,
+				DA24E4662C714F6900246681 /* ContentType.swift in Sources */,
 				DA43CE722B30B6F200DAE0B6 /* CacheImplementation.swift in Sources */,
 				DA4B1BE82B43A71700EA3E8F /* Feedback+Enum.swift in Sources */,
 				DAB6E8242B63F9B30023E38D /* Coordinator.swift in Sources */,

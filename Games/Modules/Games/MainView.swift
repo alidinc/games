@@ -9,30 +9,6 @@ import SwiftData
 import SwiftUI
 import Combine
 
-
-enum ContentType: String, CaseIterable, Identifiable {
-    case games
-    case news
-    case library
-
-    var id: Self { return self }
-
-    var title: String {
-        return self.rawValue.capitalized
-    }
-
-    var imageName: String {
-        switch self {
-        case .games:
-            return "gamecontroller.fill"
-        case .news:
-            return "newspaper.fill"
-        case .library:
-            return "tray.full.fill"
-        }
-    }
-}
-
 struct MainView: View {
 
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
@@ -40,26 +16,27 @@ struct MainView: View {
     @AppStorage("appTint") var appTint: Color = .blue
 
     @Environment(\.colorScheme) private var scheme
-    @Query(animation: .easeInOut) var savedGames: [SavedGame]
-    @Query(animation: .easeInOut) var libraries: [Library]
 
     @State var newsVM = NewsViewModel()
-    @State var vm = GamesViewModel()
+    @Bindable var vm: GamesViewModel
     @State var isTextFieldFocused: Bool = false
     @State var showSearch = false
     @State var contentType: ContentType = .games
 
-    @State private var libraryToDelete: Library?
-    @State private var libraryToEdit: Library?
+    @State var libraryToEdit: Library?
+    @State var selectedPlatforms: Set<PopularPlatform> = []
+    @State var selectedGenres: Set<PopularGenre> = []
+
     @State private var showDeleteAlert = false
+    @State private var libraryToDelete: Library?
+
+    @Query var savedGames: [SavedGame]
+    @Query var libraries: [Library]
 
     private var gradientColors: [Color] {
         let label = scheme == .dark ? Color.black : Color.white.opacity(0.15)
         return [label, appTint.opacity(0.45)]
     }
-
-    @State var selectedPlatforms: Set<PopularPlatform> = []
-    @State var selectedGenres: Set<PopularGenre> = []
 
     var body: some View {
         NavigationStack {
@@ -73,19 +50,15 @@ struct MainView: View {
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
             .background(LinearGradient(colors: gradientColors, startPoint: .top, endPoint: .bottom))
-            .onChange(of: vm.fetchTaskToken.platforms, { oldValue, newValue in
-                vm.onChangePlatforms(for: savedGames, newValue: newValue)
-            })
-            .onChange(of: vm.fetchTaskToken.genres, { oldValue, newValue in
-                vm.onChangeGenres(for: savedGames, newValue: newValue)
-            })
             .onChange(of: vm.searchQuery) { _, newValue in
-                vm.onChangeQuery(for: savedGames, newValue: newValue)
+                
             }
             .onChange(of: showSearch) { oldValue, newValue in
                 isTextFieldFocused = newValue
             }
-            .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
+            .onChange(of: vm.fetchTaskToken, { oldValue, newValue in
+
+            })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
@@ -128,9 +101,8 @@ extension MainView {
         case .games:
             GamesCollectionView()
                 .overlay(content: { GamesOverlayView() })
-                .refreshable {
-                    await vm.refreshTask()
-                }
+                .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
+                .refreshable { await vm.refreshTask() }
         case .news:
             NewsTab(vm: newsVM)
         case .library:

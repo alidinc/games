@@ -39,6 +39,7 @@ struct MoreTab: View {
             .scrollIndicators(.hidden)
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarRole(.editor)
             .confirmationDialog("Rate us", isPresented: $showAppStore, titleVisibility: .visible, actions: {
                 Button {
                     self.rateApp()
