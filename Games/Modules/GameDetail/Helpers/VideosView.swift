@@ -28,14 +28,17 @@ struct VideosView: View {
     
     var body: some View {
         if !self.videoURLs.isEmpty {
+            Divider()
             DisclosureGroup {
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(self.videoURLs, id: \.self) { id in
                             YoutubeVideoView(youtubeVideoID: id)
                         }
-                        .frame(width: 300, height: 170)
+                        .frame(width: 120, height: 80)
                         .clipShape(.rect(cornerRadius: 8))
+                        .padding(.bottom)
+                        .padding(.leading)
                     }
                 }
                 .padding(.top)
@@ -43,10 +46,8 @@ struct VideosView: View {
                 Text("Videos")
                     .font(.subheadline.bold())
                     .foregroundColor(.primary)
+                    .padding(.leading)
             }
-            .padding()
-            .background(colorScheme == .dark ? .ultraThickMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-            .shadow(radius: 2)
         }
     }
 }

@@ -35,20 +35,24 @@ struct MainView: View {
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("viewType") var viewType: ViewType = .list
     @AppStorage("appTint") var appTint: Color = .blue
-    @Query(animation: .easeInOut) var savedGames: [SPGame]
-    @Query(animation: .easeInOut) var savedLibraries: [SPLibrary]
+
+    @Environment(\.colorScheme) private var scheme
+    @Query(animation: .easeInOut) var savedGames: [SavedGame]
+    @Query(animation: .easeInOut) var savedLibraries: [Library]
 
     @State var newsVM = NewsViewModel()
     @State var isTextFieldFocused: Bool = false
     @State var vm: GamesViewModel
     @State var showSearch = false
     @State var showLibraries = false
-    @State var showSelectionOptions = false
-    @State var gameToAddForNewLibrary: Game?
-    @State var showAddLibraryWithNoGame = false
 
     @State var contentType: ContentType = .games
-    
+
+    private var gradientColors: [Color] {
+        let label = scheme == .dark ? Color.black : Color.white.opacity(0.15)
+        return [label, appTint.opacity(0.45)]
+    }
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -59,15 +63,7 @@ struct MainView: View {
             .ignoresSafeArea(edges: .bottom)
             .toolbarBackground(.hidden, for: .tabBar)
             .toolbarBackground(.hidden, for: .navigationBar)
-            .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
-                if let game = notification.object as? Game {
-                    gameToAddForNewLibrary = game
-                } else {
-                    withAnimation {
-                        showAddLibraryWithNoGame = true
-                    }
-                }
-            })
+            .background(LinearGradient(colors: gradientColors, startPoint: .top, endPoint: .bottom))
             .onReceive(didRemoteChange, perform: { _ in
                 vm.filterSegment(savedGames: savedGames)
             })
@@ -107,6 +103,7 @@ extension MainView {
                 .contentTransition(.numericText())
 
             Text("Played in 2024")
+                .font(.headline)
                 .foregroundStyle(appTint)
         }
         .frame(height: UIScreen.main.bounds.height/5.5)
@@ -118,7 +115,7 @@ extension MainView {
         switch self.contentType {
         case .games:
             GamesCollectionView()
-                .overlay { GamesOverlayView() }
+                .overlay(content: { GamesOverlayView() })
                 .refreshable {
                     await vm.refreshTask()
                 }

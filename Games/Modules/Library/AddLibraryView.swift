@@ -1,133 +1,124 @@
 //
 //  AddLibraryView.swift
-//  Speeltuin
+//  Games
 //
-//  Created by Ali Dinç on 14/01/2024.
+//  Created by Ali Dinç on 17/08/2024.
 //
 
-import SwiftData
 import SwiftUI
+import PhotosUI
+import SwiftData
 
 struct AddLibraryView: View {
-    
+
     @AppStorage("appTint") var appTint: Color = .blue
-    
-    var game: Game?
-   
-    @State private var name = ""
-    @State private var icon = ""
-    
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var scheme
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var context
-    
-    @Query var savedGames: [SPGame]
-    @Query var libraries: [SPLibrary]
-    
-    @State private var iconsExpanded = false
-    @State private var showEmptyNameAlert = false
-    @State private var showMaxLibraryAlert = false
-    
+    @State private var title: String = ""
+    @State private var subtitle: String = ""
+    @State private var date: Date = Date()
+    @State private var imageData: Data?
+    @State private var selectedItem: PhotosPickerItem? = nil
+
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack {
-                    RemainingLibraryCountView
-                    NameView
+        VStack {
+            if let imageData, let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .frame(width: 200, height: 200)
+                    .cornerRadius(10)
+                    .padding()
+            } else {
+                PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                    VStack {
+                        Image(scheme == .dark ? .icon5 : .icon1)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                            .foregroundColor(.gray)
+                            .cornerRadius(10)
+                            .padding()
+                        Text("Select Image")
+                    }
                 }
-                .vSpacing(.top)
-            }
-            .navigationTitle("Add library")
-            .navigationBarTitleDisplayMode(.inline)
-            .safeAreaInset(edge: .bottom) {
-                VStack(spacing: 20) {
-                    IconsView(icon: $icon)
-                    AddButton
-                }
-                .safeAreaPadding(.vertical)
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    CloseButton()
+                .onChange(of: selectedItem) { _, newItem in
+                    Task {
+                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                            imageData = data
+                        }
+                    }
                 }
             }
-        }
-        .presentationDragIndicator(.visible)
-        .alert("Please name your library.", isPresented: $showEmptyNameAlert, actions: {
-            Button(action: {}, label: {
-                Text("OK")
-            })
-        })
-        .alert("You can't have more than 10 libraries.", isPresented: $showMaxLibraryAlert) {
-            Button(action: {}, label: {
-                Text("OK")
-            })
-        }
-    }
-    
-    private var NameView: some View {
-        TextField("Name", text: $name)
-            .frame(height: 24, alignment: .leading)
-            .padding()
-            .clipShape(.rect(cornerRadius: 8))
-            .font(.headline)
-            .foregroundStyle(Color(uiColor: .label))
-            .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-            .padding(.horizontal)
-            .autocorrectionDisabled()
-    }
 
-    
-    private var RemainingLibraryCountView: some View {
-        Section {
-            Text("\(10 - libraries.count)")
-                .font(.headline.bold())
-            
-            +
-            
-            Text(" remaining slots to create a library.")
-                .font(.subheadline)
+            VStack(alignment: .center, spacing: 8) {
+                TextField("Enter Library Title", text: $title)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding()
+                    .multilineTextAlignment(.center)
+
+                TextField("Enter Description", text: $subtitle, axis: .vertical)
+                    .font(.title3)
+                    .foregroundStyle(appTint)
+                    .multilineTextAlignment(.center)
+
+                Text(Date.now, format: .dateTime.year().month(.wide).day())
+                    .font(.footnote)
+                    .foregroundColor(.gray)
+            }
+
+            Spacer()
+
+            Button(action: saveLibrary) {
+                Text("Save")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .padding()
         }
+        .navigationTitle("Add Library")
         .padding()
-        .hSpacing(.leading)
-        .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-        .padding(.horizontal)
     }
-    
-    private var AddButton: some View {
-        Button(action: {
-            addLibrary()
-        }, label: {
-            HStack {
-                Image(systemName: "plus")
-                Text("Add library")
-            }
-            .hSpacing(.center)
-            .foregroundStyle(.white)
-            .bold()
-            .padding()
-            .background(.blue, in: .capsule)
-        })
-        .padding(.horizontal)
-    }
-    
-    func addLibrary() {
-        guard !name.isEmpty else {
-            showEmptyNameAlert = true
-            return
-        }
-        
-        guard libraries.count < 11 else {
-            showMaxLibraryAlert = true
-            return
-        }
-        
-        if icon.isEmpty {
-            self.icon = "bookmark.fill"
-        }
-        
-        let library = SPLibrary(title: name, icon: icon)
 
-        
+    private func saveLibrary() {
+        let newLibrary = Library(title: title, subtitle: subtitle, imageData: imageData)
+        modelContext.insert(newLibrary)
         dismiss()
+    }
+}
+
+
+struct TrackRow: View {
+    let trackNumber: String
+    let trackTitle: String
+    var explicit: Bool = false
+
+    var body: some View {
+        HStack {
+            Text(trackNumber)
+                .font(.body)
+                .foregroundColor(.gray)
+
+            Text(trackTitle)
+                .font(.body)
+                .fontWeight(.regular)
+
+            if explicit {
+                Image(systemName: "e.square.fill")
+                    .foregroundColor(.gray)
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .foregroundColor(.gray)
+        }
+        .padding(.vertical, 5)
     }
 }

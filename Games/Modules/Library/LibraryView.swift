@@ -1,85 +1,81 @@
 //
-//  AddLibraryButton.swift
-//  Speeltuin
+//  LibraryView.swift
+//  Games
 //
-//  Created by Ali Dinç on 11/01/2024.
+//  Created by Ali Dinç on 17/08/2024.
 //
 
-import SwiftData
 import SwiftUI
 
 struct LibraryView: View {
-    
-    @AppStorage("hapticsEnabled") var hapticsEnabled = true
-    @AppStorage("appTint") var appTint: Color = .blue
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var context
-    @Environment(GamesViewModel.self) private var gamesVM: GamesViewModel
-    
-    @State private var showAddLibrary = false
-    @Query var savedGames: [SPGame]
-    @Query var libraries: [SPLibrary]
 
-    
+    let library: Library
+
+    @AppStorage("appTint") var appTint: Color = .blue
+    @Environment(\.colorScheme) private var scheme
+
     var body: some View {
         NavigationStack {
             VStack {
-                Header
-                AllLibrariesView()
+                ImageView
+
+                VStack(alignment: .center, spacing: 8) {
+                    Text(library.title)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .padding()
+                        .multilineTextAlignment(.center)
+
+                    if let subtitle = library.subtitle {
+                        Text(subtitle)
+                            .font(.caption)
+                            .foregroundStyle(appTint)
+                            .multilineTextAlignment(.center)
+                    }
+
+                    Text(library.date, format: .dateTime.year().month(.wide).day())
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                }
+
+                if let savedGames = library.savedGames {
+                    List {
+                        ForEach(savedGames) { data in
+                            if let game = data.game, let name = game.name {
+                                Text(name)
+                                    .font(.subheadline)
+                            }
+                        }
+                    }
+                    .scrollContentBackground(.hidden)
+                }
             }
-            .presentationDragIndicator(.visible)
-            .sheet(isPresented: $showAddLibrary, content: {
-                AddLibraryView()
-                    .presentationDetents([.medium, .large])
-            })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    CloseButton()
+                }
+            }
         }
     }
-    
-    private var Header: some View {
-        HStack {
-            VStack {
-                Text("Libraries")
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-                    .multilineTextAlignment(.leading)
-                    .hSpacing(.leading)
-                
-                Text("Tap to view a library or swipe for more.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.leading)
-                    .hSpacing(.leading)
-            }
-            
-            Button {
-                dismiss()
-                
-                if hapticsEnabled {
-                    HapticsManager.shared.vibrateForSelection()
-                }
-                
-                Task {
-                    do {
-                        try await Task.sleep(seconds: 0.05)
-                        
-                        NotificationCenter.default.post(name: .newLibraryButtonTapped, object: nil)
-                    } catch {
-                        
-                    }
-                }
-                
-            } label: {
-                Circle()
-                    .fill(Color(.secondarySystemBackground))
-                    .frame(width: 30, height: 30)
-                    .overlay {
-                        Image(systemName: "plus")
-                            .foregroundStyle(.gray)
-                    }
-            }
-            
-            CloseButton()
+
+    @ViewBuilder
+    private var ImageView: some View {
+        if let imageData = library.imageData, let uiImage = UIImage(data: imageData) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 200, height: 200)
+                .foregroundStyle(.gray)
+                .cornerRadius(10)
+
+        } else {
+            Image(scheme == .dark ? .icon5 : .icon1)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200, height: 200)
+                .foregroundStyle(.gray)
+                .cornerRadius(10)
+
         }
-        .padding(20)
     }
 }

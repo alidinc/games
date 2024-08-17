@@ -17,7 +17,7 @@ enum NetworkStatus {
 struct ListItemView: View {
     
     var game: Game?
-    var savedGame: SPGame?
+    var savedGame: SavedGame?
     
     @AppStorage("appTint") var appTint: Color = .blue
 
@@ -25,7 +25,7 @@ struct ListItemView: View {
     @Environment(Admin.self) private var admin
     @Environment(\.colorScheme) var colorScheme
     
-    init(game: Game? = nil, savedGame: SPGame? = nil) {
+    init(game: Game? = nil, savedGame: SavedGame? = nil) {
         self.savedGame = savedGame
         self.game = game
     }
@@ -82,7 +82,7 @@ struct ListItemView: View {
             }
             .padding(12)
             .frame(width: UIScreen.main.bounds.size.width - 20)
-            .background(appTint.gradient, in: .rect(cornerRadius: 20))
+            .glass()
             .shadow(radius: 2)
         }
     }
@@ -125,7 +125,7 @@ struct ListItemView: View {
             }
             .padding(8)
             .frame(width: UIScreen.main.bounds.size.width - 20)
-            .background(.ultraThinMaterial, in: .rect(cornerRadius: 12))
+            .glass()
         }
     }
     

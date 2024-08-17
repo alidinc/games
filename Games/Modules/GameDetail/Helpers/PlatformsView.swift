@@ -14,12 +14,10 @@ struct PlatformsView: View {
     
     var body: some View {
         if let platforms = game.platforms, !platforms.isEmpty {
+            Divider()
+            
             VStack(alignment: .leading) {
-                Text("Platforms")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.primary)
-                
-                
+
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(platforms, id: \.self) { platform in

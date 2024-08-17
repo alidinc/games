@@ -13,11 +13,9 @@ struct SocialsView: View {
     
     var body: some View {
         if let websites = game.websites, !websites.isEmpty {
+            Divider()
+
             VStack(alignment: .leading) {
-                Text("Links")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.primary)
-                
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .center) {
                         ForEach(websites, id: \.id) { website in

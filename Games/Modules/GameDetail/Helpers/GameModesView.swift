@@ -15,12 +15,8 @@ struct GameModesView: View {
     
     var body: some View {
         if let gameModes = game.gameModes {
+            Divider()
             VStack(alignment: .leading) {
-                Text("Available modes")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.primary)
-                
-                
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(gameModes, id: \.id) { mode in

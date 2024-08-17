@@ -9,10 +9,10 @@ import SwiftData
 import SwiftUI
 
 @Model
-class SPGame {
+class SavedGame {
     
     var date: Date = Date.now
-    var library: SPLibrary?
+    var library: Library?
     
     @Attribute(.externalStorage)
     var gameData: Data?
@@ -20,7 +20,7 @@ class SPGame {
     @Attribute(.externalStorage)
     var imageData: Data?
     
-    init(date: Date = .now, library: SPLibrary? = nil, gameData: Data? = nil, imageData: Data? = nil) {
+    init(date: Date = .now, library: Library? = nil, gameData: Data? = nil, imageData: Data? = nil) {
         self.date = date
         self.library = library
         self.gameData = gameData
@@ -50,7 +50,7 @@ class SPGame {
     }
 }
 
-extension SPGame {
+extension SavedGame {
     func containsSelections(_ matchingGenres: [PopularGenre], _ matchingPlatforms: [PopularPlatform]) -> Bool {
         guard let game = self.game,
               let platforms = game.platforms,

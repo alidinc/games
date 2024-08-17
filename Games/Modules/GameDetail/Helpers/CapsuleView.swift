@@ -14,7 +14,7 @@ struct CapsuleView: View {
     var imageName: String?
     
     var body: some View {
-        HStack {
+        HStack(alignment: .center) {
             if let imageName {
                 switch imageType {
                 case .sf:
@@ -37,7 +37,7 @@ struct CapsuleView: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
-        .background(Color.sfButtonBackground, in: .capsule)
+        
     }
 }
 

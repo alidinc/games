@@ -19,9 +19,9 @@ actor DataManager {
         modelExecutor = DefaultSerialModelExecutor(modelContext: ModelContext(container))
     }
     
-    var fetchSavedGames: [SPGame] {
+    var fetchSavedGames: [SavedGame] {
         do {
-            return try modelContext.fetch(FetchDescriptor<SPGame>())
+            return try modelContext.fetch(FetchDescriptor<SavedGame>())
         } catch {
             return []
         }
@@ -63,8 +63,8 @@ actor DataManager {
     
     // MARK: - SavedGame
     
-    func add(game: Game, for library: SPLibrary) {
-        let savedGame = SPGame()
+    func add(game: Game, for library: Library) {
+        let savedGame = SavedGame()
         savedGame.library = library
         
         getImageData(game: game) { data in
@@ -87,14 +87,14 @@ actor DataManager {
     
     func deleteAllLibraries() {
         do {
-            try modelContext.delete(model: SPLibrary.self)
+            try modelContext.delete(model: Library.self)
             save()
         } catch {
             
         }
     }
     
-    func addLibrary(library: SPLibrary) {
+    func addLibrary(library: Library) {
         modelContext.insert(library)
         save()
     }
@@ -111,11 +111,11 @@ actor DataManager {
     
     // MARK: - Toggle
     
-    func savedAlready(_ game: Game, for library: SPLibrary) -> Bool {
+    func savedAlready(_ game: Game, for library: Library) -> Bool {
         ((library.savedGames?.first(where: { $0.gameId == game.id })) != nil)
     }
     
-    func toggle(game: Game, for library: SPLibrary) {
+    func toggle(game: Game, for library: Library) {
         guard savedAlready(game, for: library) else {
             
             delete(game: game)

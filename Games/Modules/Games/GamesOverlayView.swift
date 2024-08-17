@@ -27,8 +27,7 @@ struct GamesOverlayView: View {
     }
     
     var body: some View {
-        switch vm.dataType {
-        case .network:
+        Group {
             switch admin.networkStatus {
             case .available:
                 switch vm.dataFetchPhase {
@@ -55,25 +54,7 @@ struct GamesOverlayView: View {
                     await vm.refreshTask()
                 }
             }
-        case .library:
-            if vm.savedGames.isEmpty {
-                switch vm.filterType {
-                case .search:
-                    ContentUnavailableView.search(text: vm.searchQuery)
-                case .library:
-                    ContentUnavailableView(
-                        Constants.UnavailableView.contentLibraryTitle,
-                        systemImage: "gamecontroller.fill",
-                        description: Text(Constants.UnavailableView.contentLibraryMessage)
-                    )
-                case .genre, .platform:
-                    ContentUnavailableView(
-                        Constants.UnavailableView.contentFiltersTitle,
-                        systemImage: "gamecontroller.fill",
-                        description: Text(Constants.UnavailableView.contentGamesMessage)
-                    )
-                }
-            }
         }
+       
     }
 }

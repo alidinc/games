@@ -16,12 +16,10 @@ enum DetailType {
 struct GameDetailView: View {
     
     var game: Game?
-    var savedGame: SPGame?
+    var savedGame: SavedGame?
     
     @State var vm = GameDetailViewModel()
     @State private var isExpanded = false
-    @State private var gameToAddForNewLibrary: Game?
-    @State private var showAddLibraryWithNoGame = false
     @State private var isSharePresented = false
     
     var type: DetailType = .standard
@@ -29,15 +27,20 @@ struct GameDetailView: View {
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) var dismiss
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var scheme
     @Environment(Admin.self) private var admin
-    
+
+    private var gradientColors: [Color] {
+        let label = scheme == .dark ? Color.black : Color.white.opacity(0.15)
+        return [label, appTint.opacity(0.25)]
+    }
+
     init(game: Game, type: DetailType = .standard) {
         self.game = game
         self.type = type
     }
     
-    init(savedGame: SPGame, type: DetailType = .standard) {
+    init(savedGame: SavedGame, type: DetailType = .standard) {
         self.type = type
         if let game = savedGame.game {
             self.game = game
@@ -55,12 +58,9 @@ struct GameDetailView: View {
                         Header(game: game)
                         SummaryView(game: game)
                         DetailsView(game: game)
-                        VideosView(game: game)
+
                         
-                        if !vm.gamesFromIds.isEmpty {
-                            SimilarGamesView(similarGames: vm.gamesFromIds)
-                        }
-                        
+
                         Spacer(minLength: 20)
                     }
                     .padding(.horizontal)
@@ -73,24 +73,10 @@ struct GameDetailView: View {
             }
         }
         .padding(.bottom, 1)
-
+        .toolbarRole(.editor)
+        .background(LinearGradient(colors: gradientColors, startPoint: .top, endPoint: .bottom))
         .scrollIndicators(.hidden)
         .ignoresSafeArea(edges: (savedGame?.imageData != nil) || (game != nil) ? .top : .leading)
-        .onReceive(NotificationCenter.default.publisher(for: .newLibraryButtonTapped), perform: { notification in
-            if let game = notification.object as? Game {
-                gameToAddForNewLibrary = game
-            } else {
-                withAnimation {
-                    showAddLibraryWithNoGame = true
-                }
-            }
-        })
-        .sheet(item: $gameToAddForNewLibrary, content: { game in
-            AddLibraryView(game: game).presentationDetents([.medium, .large])
-        })
-        .sheet(isPresented: $showAddLibraryWithNoGame) {
-            AddLibraryView().presentationDetents([.medium, .large])
-        }
         .sheet(isPresented: $isSharePresented, onDismiss: {
             print("Dismiss")
         }, content: {
@@ -191,26 +177,18 @@ struct GameDetailView: View {
     }
     
     private func DetailsView(game: Game) -> some View {
-        DisclosureGroup(isExpanded: $isExpanded) {
-            VStack(alignment: .leading, spacing: 30) {
-                GenresView(game: game)
-                PlatformsView(game: game)
-                GameModesView(game: game)
-                SocialsView(game: game)
+        VStack(alignment: .leading) {
+            GenresView(game: game)
+            PlatformsView(game: game)
+            GameModesView(game: game)
+            SocialsView(game: game)
+            VideosView(game: game)
+            if !vm.gamesFromIds.isEmpty {
+                SimilarGamesView(similarGames: vm.gamesFromIds)
             }
-        } label: {
-            Text(isExpanded ? "" : "Details")
-                .font(.subheadline.bold())
-                .foregroundColor(.primary)
         }
         .padding()
-        .background(colorScheme == .dark ? .ultraThickMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-        .shadow(radius: 2)
-        .onChange(of: isExpanded) { oldValue, newValue in
-            if hapticsEnabled {
-                HapticsManager.shared.vibrateForSelection()
-            }
-        }
+        .glass()
     }
 }
 

@@ -14,10 +14,7 @@ struct GenresView: View {
     var body: some View {
         if let genres = game.genres {
             VStack(alignment: .leading) {
-                Text("Genres")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.primary)
-                
+
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         let popularGenres = genres.compactMap({ PopularGenre(rawValue: $0.id ?? 0) })

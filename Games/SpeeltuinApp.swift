@@ -24,7 +24,7 @@ struct SpeeltuinApp: App {
 
     private var modelContainer: ModelContainer = {
         let schema = Schema([
-            SPLibrary.self,
+            Library.self,
             SPNews.self
         ])
 

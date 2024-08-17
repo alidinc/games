@@ -17,36 +17,39 @@ struct SimilarGamesView: View {
     
     @ViewBuilder
     var body: some View {
-        DisclosureGroup(
-            isExpanded: $isExpanded,
-            content: {
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(similarGames, id: \.id) { game in
-                            NavigationLink {
-                                GameDetailView(game: game)
-                            } label: {
-                                if let cover = game.cover, let url = cover.url {
-                                    AsyncImageView(with: url, type: .grid)
+        VStack {
+            Divider()
+
+            DisclosureGroup(
+                isExpanded: $isExpanded,
+                content: {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(similarGames, id: \.id) { game in
+                                NavigationLink {
+                                    GameDetailView(game: game)
+                                } label: {
+                                    if let cover = game.cover, let url = cover.url {
+                                        AsyncImageView(with: url, type: .grid)
+                                    }
                                 }
                             }
                         }
                     }
+                    .padding(.top)
+                    .fadeOutSides(side: .trailing)
+                },
+                label: {
+                    Text("Similar games")
+                        .font(.subheadline.bold())
+                        .foregroundColor(.primary)
+
                 }
-                .padding(.top)
-                .fadeOutSides(side: .trailing)
-            },
-            label: {
-                Text("Similar games")
-                    .font(.subheadline.bold())
-                    .foregroundColor(.primary)
+            )
+            .padding(.leading)
+            .onTapGesture {
+                isExpanded.toggle()
             }
-        )
-        .padding()
-        .background(colorScheme == .dark ? .ultraThickMaterial : .ultraThick, in: .rect(cornerRadius: 10))
-        .shadow(radius: 2)
-        .onTapGesture {
-            isExpanded.toggle()
         }
     }
 }

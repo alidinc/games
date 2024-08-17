@@ -29,7 +29,8 @@ struct SearchTextField: View {
                 .padding(.vertical, 4)
                 .font(.subheadline)
                 .focused($focused)
-                .background(Color.searchBarBackground, in: .rect(cornerRadius: 8))
+                .labelStyle()
+                .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
                 .autocorrectionDisabled()
                 .onChange(of: isFocused, { oldValue, newValue in
                     focused = newValue

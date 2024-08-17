@@ -47,19 +47,19 @@ extension MainView {
                 )
             }
         }
+        .labelStyle()
         .padding(.horizontal)
     }
     
     var LibraryButton: some View {
         NavigationLink {
-            LibraryView()
+            LibrariesView()
         } label: {
             SFImage(
-
                 config: .init(
                     name: "tray.full.fill",
                     padding: 10,
-                    color: .secondary
+                    color: .primary
                 )
             )
         }
@@ -154,7 +154,7 @@ extension MainView {
                     config: .init(
                         name: "slider.horizontal.3",
                         padding: 10,
-                        color: vm.hasFilters ? appTint : .secondary
+                        color: .primary
                     )
                 )
             case .news:
@@ -162,7 +162,7 @@ extension MainView {
                     config: .init(
                         name: "slider.horizontal.3",
                         padding: 10,
-                        color: vm.hasFilters ? appTint : .secondary
+                        color: .primary
                     )
                 )
             }
@@ -184,7 +184,7 @@ extension MainView {
                 config: .init(
                     name: "magnifyingglass",
                     padding: 10,
-                    color: showSearch ? appTint : .secondary
+                    color: .primary
                 )
             )
         }
@@ -216,29 +216,6 @@ extension MainView {
             }
         } label: {
             Text("Internet")
-        }
-    }
-    
-    var LibraryPicker: some View {
-        Menu {
-            Button {
-                vm.librarySelectionTapped(allSelected: true, in: savedGames)
-            } label: {
-                Label("All saved games", systemImage: "bookmark.fill")
-            }
-            
-            ForEach(savedLibraries, id: \.persistentModelID) { library in
-                if savedLibraries.compactMap({$0.persistentModelID}).contains(library.persistentModelID) {
-                    Button {
-                        vm.librarySelectionTapped(allSelected: false, for: library, in: savedGames)
-                    } label: {
-                        Text(library.title)
-                    }
-                    .tag(library.persistentModelID)
-                }
-            }
-        } label: {
-            Text("Libraries")
         }
     }
 }

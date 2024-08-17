@@ -37,6 +37,8 @@ struct MoreTab: View {
             }
             .scrollContentBackground(.hidden)
             .scrollIndicators(.hidden)
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
             .confirmationDialog("Rate us", isPresented: $showAppStore, titleVisibility: .visible, actions: {
                 Button {
                     self.rateApp()
