@@ -16,9 +16,9 @@ enum NetworkStatus {
 }
 
 struct ListItemView: View {
-    
+
     var game: Game?
-    
+
     @AppStorage("appTint") var appTint: Color = .blue
 
     @State var vm = GameDetailViewModel()
@@ -29,7 +29,7 @@ struct ListItemView: View {
     @Environment(\.modelContext) private var context
 
     @Query var libraries: [Library]
-    
+
     var body: some View {
         if let game {
             HStack(alignment: .top, spacing: 10) {
@@ -62,21 +62,17 @@ struct ListItemView: View {
                     Spacer()
 
                     Menu {
-                        ForEach(libraries) { library in
+                        Text("Add to: ")
+                        Divider()
+
+                        ForEach(filteredLibraries(for: game)) { library in
                             Button {
                                 if let savedGame = dataManager.add(game: game, for: library) {
                                     context.insert(savedGame)
                                 }
-
                             } label: {
                                 Text(library.title)
                             }
-                        }
-
-                        Button {
-
-                        } label: {
-
                         }
                     } label: {
                         Image(systemName: "plus.circle.fill")
@@ -89,33 +85,20 @@ struct ListItemView: View {
             .glass()
         }
     }
-    
+
+    private func filteredLibraries(for game: Game) -> [Library] {
+        libraries.filter { library in
+            !(library.savedGames?.contains { $0.hasSameGameData(as: game) } ?? false)
+        }
+    }
+
     private func RatingView(game: Game) -> some View {
         Image(systemName: ratingImageName(game: game))
             .resizable()
             .frame(width: 16, height: 16)
             .foregroundStyle(ratingColor(game: game))
     }
-    
-    func ratingText(game: Game) -> String {
-        guard let rating = game.totalRating else {
-            return Rating.NotReviewed.rawValue
-        }
-        
-        switch Int(rating) {
-        case 0...40:
-            return Rating.Skip.rawValue
-        case 40...50:
-            return Rating.Meh.rawValue
-        case 50...80:
-            return Rating.Good.rawValue
-        case 80...100:
-            return Rating.Exceptional.rawValue
-        default:
-            return Rating.NotReviewed.rawValue
-        }
-    }
-    
+
     func ratingColor(game: Game) -> Color {
         guard let rating = game.totalRating else {
             return Color.gray
@@ -133,7 +116,7 @@ struct ListItemView: View {
             return Color.gray
         }
     }
-    
+
     func ratingImageName(game: Game) -> String {
         guard let rating = game.totalRating else {
             return "dot.squareshape.fill"
@@ -152,4 +135,3 @@ struct ListItemView: View {
         }
     }
 }
-

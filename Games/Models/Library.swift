@@ -19,7 +19,8 @@ final class Library {
     @Relationship(deleteRule: .cascade, inverse: \SavedGame.library)
     var savedGames: [SavedGame]? = []
     
-    init(title: String = "") {
+    init(title: String = "", date: Date = .now) {
         self.title = title
+        self.date = date
     }
 }

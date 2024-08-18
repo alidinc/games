@@ -30,6 +30,8 @@ struct MainView: View {
     @State var showAddLibrary = false
     @State var libraryToDelete: Library?
 
+    @State var librariesMenuTitle: String = "All saved games"
+
     @Query var libraries: [Library]
 
     private var gradientColors: [Color] {
@@ -52,12 +54,9 @@ struct MainView: View {
             .onChange(of: showSearch) { _, newValue in
                 isTextFieldFocused = newValue
             }
-            .sheet(isPresented: $showAddLibrary, content: {
-                AddLibraryView(library: nil)
-            })
-            .onChange(of: contentType, { _,_ in
-                self.libraryToEdit = nil
-            })
+            .onChange(of: libraryToEdit) { _,newLibrary in
+                librariesMenuTitle = newLibrary?.title ?? "All saved games"
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
@@ -66,6 +65,16 @@ struct MainView: View {
                         Image(systemName: "gearshape.fill")
                     }
                 }
+            }
+            .floatingBottomSheet(isPresented: $showAddLibrary) {
+                SampleSheetView(title: "Add a new library",
+                                image: .init(content: "folder.fill.badge.plus",
+                                             tint: appTint, foreground: .white)) {
+                    AddLibraryView { library in
+                        self.libraryToEdit = library
+                    }
+                }
+                .presentationDetents([.height(350)])
             }
         }
     }
@@ -148,31 +157,21 @@ extension MainView {
             }
 
         } label: {
-            if let library = libraryToEdit {
-                VStack(alignment: .center, spacing: 2) {
-                    Text(library.title)
+            VStack(alignment: .center, spacing: 2) {
+                HStack {
+                    Text(librariesMenuTitle)
                         .font(.title2)
                         .fontWeight(.bold)
 
-                    Text(library.date, format: .dateTime.year().month(.wide).day())
-                        .font(.footnote)
-                        .foregroundColor(.gray)
+                    Image(systemName: "chevron.down")
                 }
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-            } else {
-                VStack(alignment: .center, spacing: 2) {
-                    Text("All saved games")
-                        .font(.title2)
-                        .fontWeight(.bold)
 
-                    Text(Date.now, format: .dateTime.year().month(.wide).day())
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                }
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+                Text(libraryToEdit?.date ?? Date.now, format: .dateTime.year().month(.wide).day())
+                    .font(.footnote)
+                    .foregroundColor(.gray)
             }
+            .multilineTextAlignment(.center)
+            .padding(.horizontal)
         }
     }
 
@@ -185,42 +184,36 @@ extension MainView {
     }
 
     private var filteredSavedGames: [SavedGame] {
-        // Check if a specific library is selected
+        // Determine which saved games to filter based on whether a specific library is selected
+        let savedGamesToFilter: [SavedGame]
+
         if let libraryToEdit = libraryToEdit {
             // Filter saved games in the selected library
-            return (libraryToEdit.savedGames ?? []).filter { savedGame in
-                let game = savedGame.game
-
-                // Check if game matches selected genres
-                let matchesGenre = selectedGenres.isEmpty || (game?.genres?.contains { genre in
-                    selectedGenres.contains(genre.popularGenre)
-                } ?? false)
-
-                // Check if game matches selected platforms
-                let matchesPlatform = selectedPlatforms.isEmpty || (game?.platforms?.contains { platform in
-                    selectedPlatforms.contains(platform.popularPlatform)
-                } ?? false)
-
-                return matchesGenre && matchesPlatform
-            }
+            savedGamesToFilter = libraryToEdit.savedGames ?? []
         } else {
-            // No specific library selected, apply filters to all libraries
-            return libraries.flatMap { library in
-                (library.savedGames ?? []).filter { savedGame in
-                    let game = savedGame.game
-
-                    let matchesGenre = selectedGenres.isEmpty || (game?.genres?.contains { genre in
-                        selectedGenres.contains(genre.popularGenre)
-                    } ?? false)
-
-                    let matchesPlatform = selectedPlatforms.isEmpty || (game?.platforms?.contains { platform in
-                        selectedPlatforms.contains(platform.popularPlatform)
-                    } ?? false)
-
-                    return matchesGenre && matchesPlatform
-                }
-            }
+            // No specific library selected, collect saved games from all libraries
+            savedGamesToFilter = libraries.flatMap { $0.savedGames ?? [] }
         }
+
+        // Apply the genre and platform filters
+        return savedGamesToFilter.filter { savedGame in
+            let game = savedGame.game
+            return matchesSelectedGenres(game) && matchesSelectedPlatforms(game)
+        }
+    }
+
+    private func matchesSelectedGenres(_ game: Game?) -> Bool {
+        // Check if game matches selected genres
+        return selectedGenres.isEmpty || (game?.genres?.contains { genre in
+            selectedGenres.contains(genre.popularGenre)
+        } ?? false)
+    }
+
+    private func matchesSelectedPlatforms(_ game: Game?) -> Bool {
+        // Check if game matches selected platforms
+        return selectedPlatforms.isEmpty || (game?.platforms?.contains { platform in
+            selectedPlatforms.contains(platform.popularPlatform)
+        } ?? false)
     }
 
     @ViewBuilder

@@ -16,44 +16,39 @@ struct AddLibraryView: View {
     @Environment(\.dismiss) private var dismiss
 
     let library: Library?
+    let onSave: (Library) -> Void
 
     @State private var title: String = ""
     @State private var date: Date = Date()
 
+    // Initializer with optional library parameter
+    init(library: Library? = nil, onSave: @escaping (Library) -> Void) {
+        self.library = library
+        self.onSave = onSave
+    }
+
     var body: some View {
         VStack {
-            VStack(alignment: .leading, spacing: 8) {
-                TextField("Enter Library Title", text: $title)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.horizontal)
-
-
-                Text(Date.now, format: .dateTime.year().month(.wide).day())
-                    .font(.footnote)
-                    .foregroundColor(.gray)
-            }
-            .multilineTextAlignment(.leading)
-
-            Spacer()
+            TextField("Enter Library Title", text: $title)
+                .font(.headline)
+                .fontWeight(.semibold)
+                .padding(.horizontal)
+                .multilineTextAlignment(.center)
 
             Button(action: saveLibrary) {
                 Text("Save")
-                    .font(.title2)
+                    .font(.headline)
                     .fontWeight(.semibold)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.blue)
+                    .background(appTint)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
             .padding()
         }
-        .navigationTitle("\(library == nil ? "Add" : "Edit") Library")
-        .padding()
-        .presentationDetents([.fraction(0.65)])
         .onAppear {
-            if let library {
+            if let library = library {
                 title = library.title
                 date = library.date
             }
@@ -61,22 +56,22 @@ struct AddLibraryView: View {
     }
 
     private func saveLibrary() {
-        if let library {
-            DispatchQueue.main.async {
-                library.title = self.title
-                library.date = self.date
+        let savedLibrary: Library
 
-            }
-
-            do {
-                try modelContext.save()
-            } catch {
-
-            }
-            
+        if let library = library {
+            library.title = title
+            library.date = date
+            savedLibrary = library
         } else {
-            let newLibrary = Library(title: title)
-            modelContext.insert(newLibrary)
+            savedLibrary = Library(title: title, date: date)
+            modelContext.insert(savedLibrary)
+        }
+
+        do {
+            try modelContext.save()
+            onSave(savedLibrary)
+        } catch {
+            print("Failed to save library: \(error.localizedDescription)")
         }
 
         dismiss()
