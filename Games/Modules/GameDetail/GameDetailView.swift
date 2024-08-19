@@ -81,7 +81,7 @@ struct GameDetailView: View {
         if let name = game.name, let string = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             ShareLink(
                 item: string,
-                preview: SharePreview("\(name)", icon: Image(.teal))
+                preview: SharePreview("\(name)", icon: Image(.icon))
                 
             ) {
                 SFImage(config: .init(name: "square.and.arrow.up.fill"))

@@ -12,14 +12,18 @@ struct MoreTab: View {
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("viewType") var viewType: ViewType = .grid
-    @AppStorage("selectedIcon") var selectedAppIcon: DeviceAppIcon = .teal
+    @AppStorage("selectedIcon") var selectedAppIcon: AppIcon = .black
     @AppStorage("colorScheme") var scheme: SchemeType = .system
     @Environment(\.openURL) var openURL
+
+    @State var store = TipStore()
 
     @State var showMailApp = false
     @State var showAbout = false
     @State var showIcons = false
     @State var showSendEmail = false
+    @State var showThanks = false
+    @State var showTips = false
     @State var showAppStore = false
     @State var showStyleSelections = false
     @State var showColorSchemeSelections = false
@@ -123,6 +127,38 @@ struct MoreTab: View {
                     HapticsManager.shared.vibrateForSelection()
                 }
             }
+            .alert(isPresented: $store.hasError, error: store.error) {}
+            .onChange(of: store.action) { _, action in
+                if action == .successful {
+                    showTips = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        showThanks = true
+                        store.reset()
+                    }
+                }
+            }
+            .confirmationDialog("Tips", isPresented: $showTips, titleVisibility: .visible, actions: {
+                ForEach(store.items, id: \.self) { item in
+                    Button {
+                        Task {
+                            await self.store.purchase(item)
+                        }
+                    } label: {
+                        Text(item.displayPrice)
+                    }
+                }
+            })
+            .customAlert(
+                isPresented: $showThanks,
+                config: .init(title: "Thank You 💕",
+                              subtitle: "Much appreciate your support. Please let me know, if you have any feedback.",
+                              primaryActions: [
+                                .init(title: "OK", action: {
+                                    showThanks = false
+                                })
+                              ]
+                            )
+            )
         }
     }
     

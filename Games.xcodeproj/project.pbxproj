@@ -24,6 +24,9 @@
 		DA24E4782C7349EF00246681 /* TappableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4772C7349EF00246681 /* TappableModifier.swift */; };
 		DA24E47A2C734E9000246681 /* EditLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4792C734E9000246681 /* EditLibraryView.swift */; };
 		DA24E47C2C736F9C00246681 /* FiltersMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E47B2C736F9C00246681 /* FiltersMenu.swift */; };
+		DA24E47E2C7381E300246681 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E47D2C7381E300246681 /* CustomAlertView.swift */; };
+		DA24E4822C73829F00246681 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4802C73829F00246681 /* TipStore.swift */; };
+		DA24E4832C73829F00246681 /* TipsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4812C73829F00246681 /* TipsError.swift */; };
 		DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27972D2B5AA7E40042E59B /* DataType.swift */; };
 		DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */; };
 		DA43CE212B30B61500DAE0B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA43CE202B30B61500DAE0B6 /* Assets.xcassets */; };
@@ -154,6 +157,10 @@
 		DA24E4772C7349EF00246681 /* TappableModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableModifier.swift; sourceTree = "<group>"; };
 		DA24E4792C734E9000246681 /* EditLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryView.swift; sourceTree = "<group>"; };
 		DA24E47B2C736F9C00246681 /* FiltersMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersMenu.swift; sourceTree = "<group>"; };
+		DA24E47D2C7381E300246681 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
+		DA24E4802C73829F00246681 /* TipStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
+		DA24E4812C73829F00246681 /* TipsError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsError.swift; sourceTree = "<group>"; };
+		DA24E4842C7382C400246681 /* Games - tracker.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Games - tracker.storekit"; sourceTree = "<group>"; };
 		DA27972D2B5AA7E40042E59B /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		DA43CE192B30B61500DAE0B6 /* Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Games.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeeltuinApp.swift; sourceTree = "<group>"; };
@@ -280,6 +287,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA24E47F2C73829900246681 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				DA24E4812C73829F00246681 /* TipsError.swift */,
+				DA24E4802C73829F00246681 /* TipStore.swift */,
+				DA24E4842C7382C400246681 /* Games - tracker.storekit */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
 		DA43CE102B30B61500DAE0B6 = {
 			isa = PBXGroup;
 			children = (
@@ -299,6 +316,7 @@
 		DA43CE1B2B30B61500DAE0B6 /* Games */ = {
 			isa = PBXGroup;
 			children = (
+				DA24E47F2C73829900246681 /* Store */,
 				DA43CE2C2B30B62600DAE0B6 /* Models */,
 				DAAD3E552B40D121005E8EBA /* SharedViews */,
 				DAFAEB1D2B474B68008E1090 /* ViewModels */,
@@ -511,6 +529,7 @@
 				DA24E46D2C72057E00246681 /* FloatingSheet.swift */,
 				DA24E46F2C72058D00246681 /* SampleSheet.swift */,
 				DA24E4752C72281F00246681 /* UnavailableView.swift */,
+				DA24E47D2C7381E300246681 /* CustomAlertView.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -763,6 +782,7 @@
 				DA4466152B49DEB000361071 /* NewsViewModel.swift in Sources */,
 				DA24E46E2C72057E00246681 /* FloatingSheet.swift in Sources */,
 				DA4B1BF02B43AA5100EA3E8F /* AboutView.swift in Sources */,
+				DA24E4822C73829F00246681 /* TipStore.swift in Sources */,
 				DAC503C42B344CF7004D4B03 /* Color+Extension.swift in Sources */,
 				DA43CE7B2B31D35900DAE0B6 /* ListItemView.swift in Sources */,
 				DAB6E8192B63F9980023E38D /* CoordinatorViewController.swift in Sources */,
@@ -789,7 +809,9 @@
 				DA4B1BE82B43A71700EA3E8F /* Feedback+Enum.swift in Sources */,
 				DAB6E8242B63F9B30023E38D /* Coordinator.swift in Sources */,
 				DA43CE392B30B65500DAE0B6 /* AsyncImageView.swift in Sources */,
+				DA24E4832C73829F00246681 /* TipsError.swift in Sources */,
 				DAB6E8262B63F9B30023E38D /* ChildCoordinator.swift in Sources */,
+				DA24E47E2C7381E300246681 /* CustomAlertView.swift in Sources */,
 				DA98C6B42B6D2DA500EF8C5B /* GameDetailView.swift in Sources */,
 				DAAD3E602B41AA97005E8EBA /* SearchTextField.swift in Sources */,
 				DA71D4C42B6E693C005EB5D3 /* FeatureGameImage.swift in Sources */,
@@ -951,7 +973,7 @@
 		DA43CE282B30B61500DAE0B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1 AppIcon12 AppIcon11 AppIcon10 AppIcon9 AppIcon8 AppIcon7";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1 AppIcon9 AppIcon8 AppIcon7";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Games/Utils/Resources/Speeltuin.entitlements;
@@ -974,7 +996,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alidinc.speeltuin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -991,7 +1013,7 @@
 		DA43CE292B30B61500DAE0B6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1 AppIcon12 AppIcon11 AppIcon10 AppIcon9 AppIcon8 AppIcon7";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1 AppIcon9 AppIcon8 AppIcon7";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Games/Utils/Resources/Speeltuin.entitlements;
@@ -1014,7 +1036,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.02;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alidinc.speeltuin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

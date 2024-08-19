@@ -26,17 +26,23 @@ extension MoreTab {
             ForEach(Feedback.allCases, id: \.id) { feedback in
                 switch feedback {
                 case .rate:
-                    Button(action: {
+                    Button {
                         showAppStore = true
-                    }, label: {
+                    } label: {
                         MoreRowView(imageName: feedback.imageName, text: feedback.title)
-                    })
+                    }
+                case .tips:
+                    Button {
+                        showTips = true
+                    } label: {
+                        MoreRowView(imageName: feedback.imageName, text: feedback.title)
+                    }
                 case .email:
-                    Button(action: {
+                    Button {
                         showSendEmail = true
-                    }, label: {
+                    } label: {
                         MoreRowView(imageName: feedback.imageName, text: feedback.title)
-                    })
+                    }
                 case .share:
                     ShareLink(item: Constants.AppStoreURL) {
                         MoreRowView(imageName: feedback.imageName, text: feedback.title)
@@ -50,7 +56,7 @@ extension MoreTab {
     var AboutSection: some View {
         Section("About") {
             Button {
-                self.showAbout.toggle()
+                showAbout.toggle()
             } label: {
                 MoreRowView(imageName: "info.circle.fill", text: "About")
             }

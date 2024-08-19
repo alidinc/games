@@ -13,13 +13,13 @@ struct AboutView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.colorScheme) private var scheme
 
-    @AppStorage("selectedAppIcon") private var selectedAppIcon: DeviceAppIcon = .black
+    @AppStorage("selectedAppIcon") private var selectedAppIcon: AppIcon = .black
     @State private var showSafari = false
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                Text("Games is for everyone, but if you want to know more how we got here. Many thanks for the games data by IGDB and the news data by; IGN, Nintendo News, and Xbox News.")
+                Text("Games is for everyone. Many thanks for the games data by IGDB and the news data by; IGN, Nintendo News, and Xbox News.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
 
@@ -28,7 +28,7 @@ struct AboutView: View {
                 Spacer()
 
                 Marquee(targetVelocity: 50) {
-                    CustomSelectionView(assetName: scheme == .dark ? "Icon5" : "Icon1",
+                    CustomSelectionView(assetName: scheme == .dark ? "Icon5" : "Icon",
                                         title: "Games \(Bundle.main.appVersionLong)",
                                         subtitle: "Built with SwiftUI and ❤️",
                                         config: .init(titleFont: .system(size: 12),

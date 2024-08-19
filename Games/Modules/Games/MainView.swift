@@ -20,6 +20,7 @@ struct MainView: View {
     
     @Environment(\.colorScheme) private var scheme
     
+    @State var count = 0
     @State var isTextFieldFocused: Bool = false
     @State var showSearch = false
     @State var contentType: ContentType = .games
@@ -86,7 +87,7 @@ extension MainView {
     
     var CountView: some View {
         VStack(spacing: 6) {
-            Text(countOfSavedGames, format: .number)
+            Text(count, format: .number)
                 .font(.system(size: 80))
                 .fontWeight(.semibold)
                 .contentTransition(.numericText())
@@ -96,7 +97,7 @@ extension MainView {
                     Button {
                         showEditLibrary = true
                     } label: {
-                        Image(systemName: "pencil.circle.fill")
+                        Image(systemName: "pencil.line")
                     }
                 }
                 
@@ -105,6 +106,14 @@ extension MainView {
             .padding(.horizontal, 50)
         }
         .frame(height: UIScreen.main.bounds.height / 5)
+        .onAppear {
+            count = countOfSavedGames
+        }
+        .onChange(of: countOfSavedGames) { oldValue, newValue in
+            withAnimation {
+                count = newValue
+            }
+        }
     }
     
     private var countOfSavedGames: Int {
@@ -306,6 +315,7 @@ extension MainView {
             ForEach(ContentType.allCases) { type in
                 Button {
                     self.contentType = type
+                    self.libraryToEdit = nil
                 } label: {
                     Label(type.title, systemImage: type.imageName)
                 }

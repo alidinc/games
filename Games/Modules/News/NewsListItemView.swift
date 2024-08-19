@@ -40,7 +40,7 @@ struct NewsListItemView: View {
 
                     if let pubDate = item.pubDate {
                         Text(pubDate, format: .dateTime.day().month().year().hour().minute())
-                            .font(.caption)
+                            .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -53,7 +53,7 @@ struct NewsListItemView: View {
                 }
             }
         }
-        .padding(8)
+        .padding(10)
         .frame(width: UIScreen.main.bounds.size.width - 20)
         .glass()
         .alert(Constants.Alert.alreadySaved, isPresented: $showAlert) {

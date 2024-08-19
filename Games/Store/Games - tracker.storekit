@@ -1,0 +1,113 @@
+{
+  "identifier" : "553F2981",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6642707517",
+      "localizations" : [
+        {
+          "description" : "Thank you! ",
+          "displayName" : "Treat me to a lunch",
+          "locale" : "en_GB"
+        }
+      ],
+      "productID" : "com.alidinc.Games.largeTip",
+      "referenceName" : "Large Tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6642707436",
+      "localizations" : [
+        {
+          "description" : "Thank you! ",
+          "displayName" : "Buy me a flat white",
+          "locale" : "en_GB"
+        }
+      ],
+      "productID" : "com.alidinc.Games.mediumTip",
+      "referenceName" : "Medium Tip",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "6642707029",
+      "localizations" : [
+        {
+          "description" : "Thank you! ",
+          "displayName" : "Buy me an espresso",
+          "locale" : "en_GB"
+        }
+      ],
+      "productID" : "com.alidinc.Games.tinyTip",
+      "referenceName" : "Tiny Tip",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6476612720",
+    "_developerTeamID" : "GD7GT762TS",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 745768308.00803101,
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

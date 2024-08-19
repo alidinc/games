@@ -13,13 +13,7 @@ extension MoreTab {
         Button {
             self.showIcons.toggle()
         } label: {
-            HStack {
-                MoreRowView(imageName: "bolt.square.fill", text: " App Icon")
-                Spacer()
-                Text(selectedAppIcon.title)
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .font(.headline)
-            }
+            MoreRowView(imageName: "bolt.square.fill", text: " App Icon")
         }
     }
     
