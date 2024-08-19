@@ -16,6 +16,8 @@ class GamesViewModel {
     var offset = 0
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
+    var selectedPlatforms: Set<PopularPlatform> = []
+    var selectedGenres: Set<PopularGenre> = []
 
     var searchQuery = "" {
         didSet {
@@ -78,6 +80,15 @@ extension GamesViewModel {
     var hasFilters: Bool {
         (!fetchTaskToken.genres.isEmpty && !fetchTaskToken.genres.contains(.allGenres))
         || (!fetchTaskToken.platforms.isEmpty && !fetchTaskToken.platforms.contains(.database))
+    }
+
+    var hasLibraryFilters: Bool {
+        !self.selectedGenres.isEmpty || !self.selectedPlatforms.isEmpty
+    }
+
+    func resetLibraryFilters() {
+        self.selectedGenres = []
+        self.selectedPlatforms = []
     }
 
     @MainActor

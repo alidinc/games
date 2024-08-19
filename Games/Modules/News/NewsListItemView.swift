@@ -21,84 +21,41 @@ struct NewsListItemView: View {
     @State private var showAlert = false
     
     var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            if let media = item.media, let mediaContents = media.mediaContents,
-               let content = mediaContents.first, let attributes = content.attributes, let urlString = attributes.url {
-                AsyncImageView(with: urlString, type: .news)
-                    .shadow(radius: 4)
+        VStack(alignment: .leading) {
+            if let title = item.title {
+                Text(title)
+                    .foregroundStyle(.primary)
+                    .font(.headline)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
             }
-            
-            VStack(alignment: .leading, spacing: 6) {
-                if let title = item.title {
-                    Text(title)
-                        .foregroundStyle(.primary)
-                        .font(.headline)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(4, reservesSpace: true)
-                }
-                
-                if let description = item.description, description.isEmpty {
-                    Spacer().frame(height: 20)
-                }
-                
-                HStack(alignment: .bottom) {
-                    if let description = item.description, let desc = description.htmlToString() {
-                        Text(desc)
+
+            HStack(alignment: .top, spacing: 10) {
+                VStack(alignment: .leading) {
+                    if let media = item.media, let mediaContents = media.mediaContents,
+                       let content = mediaContents.first, let attributes = content.attributes, let urlString = attributes.url {
+                        AsyncImageView(with: urlString, type: .news)
+                            .shadow(radius: 4)
+                    }
+
+                    if let pubDate = item.pubDate {
+                        Text(pubDate, format: .dateTime.day().month().year().hour().minute())
                             .font(.caption)
-                            .foregroundStyle(.gray)
-                            .lineLimit(4, reservesSpace: true)
+                            .foregroundStyle(.secondary)
                     }
-                    
-                    Spacer()
-                    
-                    if let title = item.title, 
-                        let link = item.link,
-                        let details = item.description,
-                        let detailsDecoded = details.htmlToString(),
-                        let pubDate = item.pubDate {
-                        
-                        let news = SPNews(
-                            title: title,
-                            link: link,
-                            details: detailsDecoded,
-                            pubDate: pubDate
-                        )
-                        
-                        Button {
-                            if !self.savedNews.compactMap({$0.title}).contains(news.title) {
-                                
-                                if hapticsEnabled {
-                                    HapticsManager.shared.vibrateForSelection()
-                                }
-                            } else {
-                               showAlert = true
-                            }
-                        } label: {
-                            if !self.savedNews.compactMap({$0.title}).contains(news.title) {
-                                SFImage(
-                                    config: .init(
-                                        name: "bookmark",
-                                        padding: 8,
-                                        iconSize: 14
-                                    )
-                                )
-                            } else {
-                                SFImage(
-                                    config: .init(
-                                        name: "bookmark.fill",
-                                        padding: 8,
-                                        iconSize: 14
-                                    )
-                                )
-                            }
-                        }
-                    }
+                }
+
+                if let description = item.description, let desc = description.htmlToString() {
+                    Text(desc)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(6, reservesSpace: true)
                 }
             }
         }
         .padding(8)
         .frame(width: UIScreen.main.bounds.size.width - 20)
-        .background(.ultraThinMaterial, in: .rect(cornerRadius: 12))
+        .glass()
         .alert(Constants.Alert.alreadySaved, isPresented: $showAlert) {
             Button(role: .destructive) {
                 if let newsToDelete = savedNews.first(where: {$0.title == item.title }) {

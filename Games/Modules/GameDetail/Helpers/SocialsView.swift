@@ -25,7 +25,6 @@ struct SocialsView: View {
                                let platform = PlatformWebsite(rawValue: category) {
                                 Link(destination: websiteURL) {
                                     CapsuleView(
-                                        title: platform.title,
                                         imageType: platform == .official ? .sf : .asset,
                                         imageName: platform.imageName
                                     )

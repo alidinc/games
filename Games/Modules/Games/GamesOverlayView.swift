@@ -15,11 +15,10 @@ struct GamesOverlayView: View {
     
     private var LoadingView: some View {
         ZStack {
-            ProgressView("Please wait, \nwhile we are getting ready! ☺️")
+            ProgressView("Please wait...")
                 .font(.subheadline)
                 .tint(.gray)
                 .multilineTextAlignment(.center)
-                .controlSize(.large)
         }
         .hSpacing(.center)
         .padding(.horizontal, 50)

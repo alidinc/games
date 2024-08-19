@@ -39,7 +39,7 @@ enum AsyncImageType: String, CaseIterable {
         case .list:
             return 120
         case .news:
-            return 160
+            return 80
         case .gridNews:
             return self.width * 1.32
         case .grid:

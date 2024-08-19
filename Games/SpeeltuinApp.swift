@@ -53,7 +53,7 @@ struct SpeeltuinApp: App {
     }
 
     private var TabView: some View {
-        MainView(vm: gamesViewModel)
+        MainView(vm: gamesViewModel, newsVM: newsViewModel)
             .tint(appTint)
             .environment(preferences)
             .environment(gamesViewModel)
@@ -65,7 +65,7 @@ struct SpeeltuinApp: App {
                     if showLoadingView {
                         ProgressView()
                     } else {
-                        GameDetailView(game: game, type: .deeplink)
+                        GameDetailView(game: game, showAddLibrary: .constant(false), type: .deeplink)
                     }
                 }
                 .environment(preferences)

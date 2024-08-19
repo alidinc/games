@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct GamesCollectionView: View {
-    
+
+    let games: [Game]
+    let contentType: ContentType
+    @Binding var showAddLibrary: Bool
+
     @Environment(GamesViewModel.self) private var vm
     @AppStorage("viewType") var viewType: ViewType = .grid
 
@@ -23,17 +27,17 @@ struct GamesCollectionView: View {
     
     private var ListView: some View {
         List {
-            ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
-                ListItemView(game: game)
+            ForEach(games, id: \.id) { game in
+                ListItemView(game: game, showAddLibrary: $showAddLibrary)
                     .navigationLink({
-                        GameDetailView(game: game)
+                        GameDetailView(game: game, showAddLibrary: $showAddLibrary)
                     })
                     .task {
                         if self.vm.hasReachedEnd(of: game) {
                             await vm.fetchNextSetOfGames()
                         }
                     }
-                    .if(vm.hasReachedEnd(of: game)) { view in
+                    .if(vm.hasReachedEnd(of: game) && contentType == .games) { view in
                         view
                             .padding(.bottom, 100)
                             .overlay(alignment: .bottom) {
@@ -57,14 +61,14 @@ struct GamesCollectionView: View {
     private var GridView: some View {
         ScrollView(showsIndicators: false)  {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3), spacing: 5) {
-                ForEach(vm.dataFetchPhase.value ?? [], id: \.id) { game in
+                ForEach(games, id: \.id) { game in
                     if let cover = game.cover, let url = cover.url {
                         NavigationLink {
-                            GameDetailView(game: game)
+                            GameDetailView(game: game, showAddLibrary: $showAddLibrary)
                         } label: {
                             AsyncImageView(with: url, type: .grid)
                                 .task {
-                                    if vm.hasReachedEnd(of: game) {
+                                    if vm.hasReachedEnd(of: game) && contentType == .games {
                                         await vm.fetchNextSetOfGames()
                                     }
                                 }

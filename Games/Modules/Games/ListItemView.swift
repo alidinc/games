@@ -18,6 +18,7 @@ enum NetworkStatus {
 struct ListItemView: View {
 
     var game: Game?
+    @Binding var showAddLibrary: Bool
 
     @AppStorage("appTint") var appTint: Color = .blue
 
@@ -41,97 +42,31 @@ struct ListItemView: View {
                     if let name = game.name {
                         Text(name)
                             .font(.subheadline)
-                            .lineLimit(2)
-                            .multilineTextAlignment(.leading)
+                            .fontWeight(.medium)
                     }
 
                     Text(game.availablePlatforms)
                         .foregroundStyle(.secondary)
                         .font(.caption)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.leading)
 
                     Spacer()
                 }
+                .multilineTextAlignment(.leading)
 
                 Spacer()
 
                 VStack {
-                    RatingView(game: game)
+                    ListItemRatingView(game: game)
 
                     Spacer()
 
-                    Menu {
-                        Text("Add to: ")
-                        Divider()
-
-                        ForEach(filteredLibraries(for: game)) { library in
-                            Button {
-                                if let savedGame = dataManager.add(game: game, for: library) {
-                                    context.insert(savedGame)
-                                }
-                            } label: {
-                                Text(library.title)
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                    }
+                    SavingMenu(game: game, showAddLibrary: $showAddLibrary)
                 }
                 .padding(.top, 4)
             }
             .padding(8)
             .frame(width: UIScreen.main.bounds.size.width - 20)
             .glass()
-        }
-    }
-
-    private func filteredLibraries(for game: Game) -> [Library] {
-        libraries.filter { library in
-            !(library.savedGames?.contains { $0.hasSameGameData(as: game) } ?? false)
-        }
-    }
-
-    private func RatingView(game: Game) -> some View {
-        Image(systemName: ratingImageName(game: game))
-            .resizable()
-            .frame(width: 16, height: 16)
-            .foregroundStyle(ratingColor(game: game))
-    }
-
-    func ratingColor(game: Game) -> Color {
-        guard let rating = game.totalRating else {
-            return Color.gray
-        }
-        switch Int(rating) {
-        case 0...40:
-            return Color.red
-        case 40...50:
-            return Color.orange
-        case 50...80:
-            return Color.blue
-        case 80...100:
-            return Color.green
-        default:
-            return Color.gray
-        }
-    }
-
-    func ratingImageName(game: Game) -> String {
-        guard let rating = game.totalRating else {
-            return "dot.squareshape.fill"
-        }
-        switch Int(rating) {
-        case 0...40:
-            return  "arrowtriangle.down.square.fill"
-        case 40...50:
-            return  "minus.square.fill"
-        case 50...80:
-            return  "arrowtriangle.up.square"
-        case 80...100:
-            return  "star.circle.fill"
-        default:
-            return "dot.squareshape.fill"
         }
     }
 }

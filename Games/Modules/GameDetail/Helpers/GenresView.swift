@@ -20,7 +20,8 @@ struct GenresView: View {
                         let popularGenres = genres.compactMap({ PopularGenre(rawValue: $0.id ?? 0) })
                         ForEach(popularGenres, id: \.id) { genre in
                             CapsuleView(title: genre.title,
-                                imageName: genre.assetName)
+                                        imageType: .asset, 
+                                        imageName: genre.assetName)
                         }
                     }
                 }

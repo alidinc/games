@@ -33,7 +33,7 @@ struct NewsTab: View {
                             } label: {
                                 NewsListItemView(item: item)
                             }
-                            .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 10))
+                            .listRowInsets(.init(top: 5, leading: 12, bottom: 5, trailing: 12))
                             .listRowSeparator(.hidden)
                             .listRowBackground(Color.clear)
                         }
@@ -49,7 +49,7 @@ struct NewsTab: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, 12)
                     }
                 }
             }

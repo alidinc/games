@@ -10,35 +10,32 @@ import SwiftUI
 import Combine
 
 struct MainView: View {
-
+    
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("viewType") var viewType: ViewType = .grid
     @AppStorage("appTint") var appTint: Color = .blue
-
+    
     @Bindable var vm: GamesViewModel
-
+    @Bindable var newsVM: NewsViewModel
+    
     @Environment(\.colorScheme) private var scheme
-
-    @State var newsVM = NewsViewModel()
+    
     @State var isTextFieldFocused: Bool = false
     @State var showSearch = false
     @State var contentType: ContentType = .games
     @State var libraryToEdit: Library?
-    @State var selectedPlatforms: Set<PopularPlatform> = []
-    @State var selectedGenres: Set<PopularGenre> = []
     @State var showDeleteAlert = false
     @State var showAddLibrary = false
+    @State var showEditLibrary = false
     @State var libraryToDelete: Library?
-
-    @State var librariesMenuTitle: String = "All saved games"
-
+    
     @Query var libraries: [Library]
-
+    
     private var gradientColors: [Color] {
         let label = scheme == .dark ? Color.black : Color.white.opacity(0.15)
         return [label, appTint.opacity(0.45)]
     }
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -54,9 +51,6 @@ struct MainView: View {
             .onChange(of: showSearch) { _, newValue in
                 isTextFieldFocused = newValue
             }
-            .onChange(of: libraryToEdit) { _,newLibrary in
-                librariesMenuTitle = newLibrary?.title ?? "All saved games"
-            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
@@ -68,69 +62,97 @@ struct MainView: View {
             }
             .floatingBottomSheet(isPresented: $showAddLibrary) {
                 SampleSheetView(title: "Add a new library",
-                                image: .init(content: "folder.fill.badge.plus",
+                                image: .init(content: "tray",
                                              tint: appTint, foreground: .white)) {
-                    AddLibraryView { library in
-                        self.libraryToEdit = library
+                    AddLibraryView()
+                }
+                                             .presentationDetents([.height(350)])
+            }
+            .floatingBottomSheet(isPresented: $showEditLibrary) {
+                SampleSheetView(title: "Edit library",
+                                image: .init(content: "tray",
+                                             tint: appTint, foreground: .white)) {
+                    EditLibraryView(library: $libraryToEdit) {
+                        self.libraryToEdit = nil
                     }
                 }
-                .presentationDetents([.height(350)])
+                                             .presentationDetents([.height(350)])
             }
         }
     }
 }
 
 extension MainView {
-
+    
     var CountView: some View {
         VStack(spacing: 6) {
-            Text(self.countOfSavedGames, format: .number)
+            Text(countOfSavedGames, format: .number)
                 .font(.system(size: 80))
                 .fontWeight(.semibold)
                 .contentTransition(.numericText())
-
-            LibrariesMenu
+            
+            HStack {
+                if libraryToEdit != nil {
+                    Button {
+                        showEditLibrary = true
+                    } label: {
+                        Image(systemName: "pencil.circle.fill")
+                    }
+                }
+                
+                LibrariesMenu
+            }
+            .padding(.horizontal, 50)
         }
         .frame(height: UIScreen.main.bounds.height / 5)
     }
-
-    // Computed property to get the count of saved games based on the content type and selected library
+    
     private var countOfSavedGames: Int {
-        if let libraryToEdit = libraryToEdit, contentType == .library {
+        if let libraryToEdit = libraryToEdit {
             return libraryToEdit.savedGames?.count ?? 0
         } else {
             return libraries.reduce(0) { $0 + ($1.savedGames?.count ?? 0) }
         }
     }
-
+    
     @ViewBuilder
     var ContentTypeView: some View {
         switch self.contentType {
         case .games:
-            GamesCollectionView()
+            GamesCollectionView(games: vm.dataFetchPhase.value ?? [], contentType: .games, showAddLibrary: $showAddLibrary)
                 .overlay(content: { GamesOverlayView() })
                 .task(id: vm.fetchTaskToken) { await vm.fetchGames() }
         case .news:
             NewsTab(vm: newsVM)
         case .library:
-            LibraryView()
+            GamesCollectionView(games: filteredSavedGames.compactMap({ $0.game }), contentType: .library, showAddLibrary: $showAddLibrary)
+                .opacity(filteredSavedGames.isEmpty ? 0 : 1)
+                .overlay(alignment: .center) {
+                    if vm.hasLibraryFilters {
+                        UnavailableView(unavailableViewTitle, systemImage: "exclamationmark.triangle", action: vm.resetLibraryFilters)
+                            .opacity(filteredSavedGames.isEmpty ? 1 : 0)
+                    } else {
+                        UnavailableView(unavailableViewTitle, systemImage: "exclamationmark.triangle", action: nil)
+                            .opacity(filteredSavedGames.isEmpty ? 1 : 0)
+                    }
+                }
         }
     }
-
+    
     var LibrariesMenu: some View {
         Menu {
             ForEach(libraries) { library in
                 Button {
                     DispatchQueue.main.async {
-                        self.contentType = .library
                         self.libraryToEdit = library
+                        self.contentType = .library
                     }
                 } label: {
                     HStack {
                         Text(library.title)
                             .font(.body)
                             .fontWeight(.regular)
-
+                        
                         if let savedGames = library.savedGames {
                             Text(savedGames.count, format: .number)
                                 .font(.body)
@@ -140,41 +162,37 @@ extension MainView {
                     }
                 }
             }
-
+            
             Divider()
-
+            
             Button {
-                self.libraryToEdit = nil
-                self.contentType = .library
+                DispatchQueue.main.async {
+                    self.libraryToEdit = nil
+                    self.contentType = .library
+                }
             } label: {
-                Label("Show all saved games", systemImage: "tray.full.fill")
+                Label("Show all libraries", systemImage: "tray.full.fill")
             }
-
+            
             Button {
                 showAddLibrary = true
             } label: {
                 Label("Add a new library", systemImage: "plus")
             }
-
+            
         } label: {
-            VStack(alignment: .center, spacing: 2) {
-                HStack {
-                    Text(librariesMenuTitle)
-                        .font(.title2)
-                        .fontWeight(.bold)
+            HStack {
+                Text(libraryToEdit?.title ?? "All saved games")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .lineLimit(1)
 
-                    Image(systemName: "chevron.down")
-                }
-
-                Text(libraryToEdit?.date ?? Date.now, format: .dateTime.year().month(.wide).day())
-                    .font(.footnote)
-                    .foregroundColor(.gray)
+                Image(systemName: "chevron.down")
             }
             .multilineTextAlignment(.center)
-            .padding(.horizontal)
         }
     }
-
+    
     private func deleteLibrary(at offsets: IndexSet) {
         for index in offsets {
             let library = libraries[index]
@@ -182,71 +200,62 @@ extension MainView {
             self.showDeleteAlert = true
         }
     }
-
+    
     private var filteredSavedGames: [SavedGame] {
         // Determine which saved games to filter based on whether a specific library is selected
         let savedGamesToFilter: [SavedGame]
-
+        
         if let libraryToEdit = libraryToEdit {
-            // Filter saved games in the selected library
             savedGamesToFilter = libraryToEdit.savedGames ?? []
         } else {
-            // No specific library selected, collect saved games from all libraries
             savedGamesToFilter = libraries.flatMap { $0.savedGames ?? [] }
         }
-
-        // Apply the genre and platform filters
+        
         return savedGamesToFilter.filter { savedGame in
             let game = savedGame.game
             return matchesSelectedGenres(game) && matchesSelectedPlatforms(game)
         }
     }
-
+    
     private func matchesSelectedGenres(_ game: Game?) -> Bool {
-        // Check if game matches selected genres
-        return selectedGenres.isEmpty || (game?.genres?.contains { genre in
-            selectedGenres.contains(genre.popularGenre)
+        return vm.selectedGenres.isEmpty || (game?.genres?.contains { genre in
+            vm.selectedGenres.contains(genre.popularGenre)
         } ?? false)
     }
-
+    
     private func matchesSelectedPlatforms(_ game: Game?) -> Bool {
-        // Check if game matches selected platforms
-        return selectedPlatforms.isEmpty || (game?.platforms?.contains { platform in
-            selectedPlatforms.contains(platform.popularPlatform)
+        return vm.selectedPlatforms.isEmpty || (game?.platforms?.contains { platform in
+            vm.selectedPlatforms.contains(platform.popularPlatform)
         } ?? false)
     }
-
-    @ViewBuilder
-    func LibraryView() -> some View {
-        List {
-            ForEach(filteredSavedGames) { savedGame in
-                ListItemView(game: savedGame.game)
-                    .navigationLink({
-                        GameDetailView(savedGame: savedGame)
-                    })
-            }
-            .listRowSeparator(.hidden)
-            .listRowBackground(Color.clear)
-            .listRowInsets(.init(top: 5, leading: 20, bottom: 5, trailing: 20))
+    
+    private var unavailableViewTitle: String {
+        if !vm.selectedPlatforms.isEmpty && vm.selectedGenres.isEmpty {
+            return "No games found for this criteria"
+        } else if vm.selectedPlatforms.isEmpty && !vm.selectedGenres.isEmpty {
+            return "No games found for this criteria"
+        } else if !vm.selectedPlatforms.isEmpty && !vm.selectedGenres.isEmpty {
+            return "No games found for this criteria"
+        } else {
+            return  "No saved games available."
         }
-        .listStyle(.plain)
-        .scrollContentBackground(.hidden)
     }
 }
 
 extension MainView {
-
+    
     var Header: some View {
         VStack {
             HStack(alignment: .center) {
-                MultiPicker
+                ContentTypePicker
                 if contentType == .games {
                     SearchButton
                 }
                 Spacer()
-                FiltersButton
+                
+                FiltersMenu(contentType: contentType, gamesVM: vm, newsVM: newsVM)
             }
-
+            
             if showSearch {
                 SearchTextField(
                     searchQuery: $vm.searchQuery,
@@ -257,187 +266,26 @@ extension MainView {
         }
         .labelStyle()
         .padding(.horizontal)
-    }
-
-    var FiltersButton: some View {
-        Menu {
-            switch contentType {
-            case .games:
-                Menu {
-                    ForEach(Category.allCases) { category in
-                        Button(category.title, systemImage: category.systemImage) {
-                            vm.categorySelected(for: category)
-                        }
-                    }
-                } label: {
-                    Text("Category")
-                }
-
-                Divider()
-
-                Menu {
-                    let platforms = PopularPlatform.allCases.filter({$0 != PopularPlatform.database }).sorted(by: { $0.title < $1.title })
-
-                    ForEach(platforms) { platform in
-                        Button {
-                            if hapticsEnabled {
-                                HapticsManager.shared.vibrateForSelection()
-                            }
-                            vm.togglePlatform(platform)
-                        } label: {
-                            HStack {
-                                Text(platform.title)
-                                if vm.fetchTaskToken.platforms.contains(platform) {
-                                    Image(systemName: "checkmark")
-                                }
-                                Image(platform.assetName)
-                            }
-                        }
-                    }
-                } label: {
-                    Text("Platform")
-                }
-
-                Divider()
-
-                Menu {
-                    let genres = PopularGenre.allCases.filter({$0 != PopularGenre.allGenres }).sorted(by: { $0.title < $1.title })
-
-                    ForEach(genres) { genre in
-                        Button {
-                            if hapticsEnabled {
-                                HapticsManager.shared.vibrateForSelection()
-                            }
-
-                            vm.toggleGenre(genre)
-                        } label: {
-                            HStack {
-                                Text(genre.title)
-                                if vm.fetchTaskToken.genres.contains(genre) {
-                                    Image(systemName: "checkmark")
-                                }
-                                Image(genre.assetName)
-                            }
-                        }
-                    }
-                } label: {
-                    Text("Genre")
-                }
-
-                Divider()
-
-                Button(role: .destructive) {
-                    vm.fetchTaskToken.platforms = [.database]
-                    vm.fetchTaskToken.genres = [.allGenres]
+        .onChange(of: showSearch) { _, showSearch in
+            if showSearch {
+                contentType = .games
+            } else  {
+                if !vm.searchQuery.isEmpty {
+                    vm.searchQuery = ""
                     Task {
                         await vm.refreshTask()
                     }
-                } label: {
-                    Text("Remove filters")
-                }
-
-            case .news:
-                ForEach(NewsType.allCases) { news in
-                    Button {
-                        newsVM.newsType = news
-                    } label: {
-                        Text(news.title)
-                    }
-                }
-            case .library:
-                Menu {
-                    let genres = PopularGenre.allCases.filter({$0 != PopularGenre.allGenres }).sorted(by: { $0.title < $1.title })
-
-                    ForEach(genres) { genre in
-                        Button {
-                            if hapticsEnabled {
-                                HapticsManager.shared.vibrateForSelection()
-                            }
-
-                            if !self.selectedGenres.contains(genre) {
-                                self.selectedGenres.insert(genre)
-                            } else {
-                                self.selectedGenres.remove(genre)
-                            }
-                        } label: {
-                            HStack {
-                                Text(genre.title)
-                                if self.selectedGenres.contains(genre) {
-                                    Image(systemName: "checkmark")
-                                }
-                                Image(genre.assetName)
-                            }
-                        }
-                    }
-                } label: {
-                    Text("Genre")
-                }
-
-                Menu {
-                    let platforms = PopularPlatform.allCases.filter({$0 != PopularPlatform.database }).sorted(by: { $0.title < $1.title })
-
-                    ForEach(platforms) { platform in
-                        Button {
-                            if hapticsEnabled {
-                                HapticsManager.shared.vibrateForSelection()
-                            }
-
-                            if !self.selectedPlatforms.contains(platform) {
-                                self.selectedPlatforms.insert(platform)
-                            } else {
-                                self.selectedPlatforms.remove(platform)
-                            }
-                        } label: {
-                            HStack {
-                                Text(platform.title)
-                                if vm.fetchTaskToken.platforms.contains(platform) {
-                                    Image(systemName: "checkmark")
-                                }
-                                Image(platform.assetName)
-                            }
-                        }
-                    }
-                } label: {
-                    Text("Platform")
-                }
-
-
-                Button(role: .destructive) {
-                    self.selectedGenres = []
-                    self.selectedPlatforms = []
-                } label: {
-                    Text("Remove filters")
                 }
             }
-        } label: {
-            SFImage(
-                config: .init(
-                    name: "slider.horizontal.3",
-                    padding: 10,
-                    color: hasFilters ? appTint : .primary
-                )
-            )
-        }
-        .animation(.bouncy, value: vm.hasFilters)
-    }
-
-    var hasFilters: Bool {
-        if contentType == .games {
-            return !(self.vm.fetchTaskToken.platforms.contains(.database) && self.vm.fetchTaskToken.platforms.count == 1 ) ||
-                    !(self.vm.fetchTaskToken.genres.contains(.allGenres) && self.vm.fetchTaskToken.genres.count == 1)
-        } else if contentType == .library {
-            return !self.selectedGenres.isEmpty || !self.selectedPlatforms.isEmpty
-        } else {
-            return false
         }
     }
-
+    
     var SearchButton: some View {
         Button {
             withAnimation(.bouncy) {
                 showSearch.toggle()
             }
-
+            
             if hapticsEnabled {
                 HapticsManager.shared.vibrateForSelection()
             }
@@ -452,8 +300,8 @@ extension MainView {
         }
         .transition(.move(edge: .top))
     }
-
-    var MultiPicker: some View {
+    
+    var ContentTypePicker: some View {
         Menu {
             ForEach(ContentType.allCases) { type in
                 Button {
@@ -463,7 +311,13 @@ extension MainView {
                 }
             }
         } label: {
-            Image(systemName: self.contentType.imageName)
+            SFImage(
+                config: .init(
+                    name:  contentType.imageName,
+                    padding: 10,
+                    color: .primary
+                )
+            )
         }
         .font(.subheadline)
         .fontWeight(.medium)

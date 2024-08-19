@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 enum DetailType {
     case deeplink
@@ -15,9 +16,9 @@ enum DetailType {
 
 struct GameDetailView: View {
     
-    var game: Game?
-    var savedGame: SavedGame?
-    
+    var game: Game
+    @Binding var showAddLibrary: Bool
+
     @State var vm = GameDetailViewModel()
     @State private var isExpanded = false
     @State private var isSharePresented = false
@@ -28,43 +29,32 @@ struct GameDetailView: View {
     @AppStorage("appTint") var appTint: Color = .blue
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var scheme
+    @Environment(\.modelContext) private var context
     @Environment(Admin.self) private var admin
+    @Environment(DataManager.self) private var dataManager
+
+    @Query private var libraries: [Library]
 
     private var gradientColors: [Color] {
         let label = scheme == .dark ? Color.black : Color.white.opacity(0.15)
         return [label, appTint.opacity(0.25)]
-    }
-
-    init(game: Game, type: DetailType = .standard) {
-        self.game = game
-        self.type = type
-    }
-    
-    init(savedGame: SavedGame, type: DetailType = .standard) {
-        self.type = type
-        if let game = savedGame.game {
-            self.game = game
-            self.savedGame = savedGame
-        }
     }
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
                 GameImage
-                
-                if let game {
-                    VStack(alignment: .leading, spacing: 25) {
-                        Header(game: game)
-                        SummaryView(game: game)
-                        DetailsView(game: game)
-                        Spacer(minLength: 20)
-                    }
-                    .padding(.horizontal)
-                    .task {
-                        if let similarGames = game.similarGames {
-                            await vm.fetchGames(from: similarGames)
-                        }
+
+                VStack(alignment: .leading, spacing: 25) {
+                    Header(game: game)
+                    SummaryView(game: game)
+                    DetailsView(game: game)
+                    Spacer(minLength: 20)
+                }
+                .padding(.horizontal)
+                .task {
+                    if let similarGames = game.similarGames {
+                        await vm.fetchGames(from: similarGames)
                     }
                 }
             }
@@ -78,7 +68,7 @@ struct GameDetailView: View {
         .sheet(isPresented: $isSharePresented, onDismiss: {
             print("Dismiss")
         }, content: {
-            if let gameId = game?.id, let url = URL(string: "https://hellospeeltuin.web.app/product/\(gameId)")  {
+            if let gameId = game.id, let url = URL(string: "https://hellospeeltuin.web.app/product/\(gameId)")  {
                 ActivityViewController(activityItems: [url])
                     .ignoresSafeArea()
                     .presentationDetents([.medium, .large])
@@ -88,7 +78,7 @@ struct GameDetailView: View {
     
     @ViewBuilder
     private func Share(urlString: String) -> some View {
-        if let game, let name = game.name, let string = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+        if let name = game.name, let string = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
             ShareLink(
                 item: string,
                 preview: SharePreview("\(name)", icon: Image(.teal))
@@ -98,9 +88,7 @@ struct GameDetailView: View {
             }
         }
     }
-    
-    
-    
+
     private func Header(game: Game) -> some View {
         VStack(alignment: .leading) {
             if let name = game.name {
@@ -121,7 +109,7 @@ struct GameDetailView: View {
                         }
                     }
                     
-                    SavingButton(game: game)
+                    SavingMenu(game: game, showAddLibrary: $showAddLibrary)
                 }
             }
             
@@ -132,47 +120,19 @@ struct GameDetailView: View {
     
     @ViewBuilder
     private var GameImage: some View {
-        switch admin.networkStatus {
-        case .available:
-            if let game {
-                ImagesView(game: game)
-                    .fadeOutSides(length: 100, side: .bottom)
-                    .overlay(alignment: .bottomLeading) {
-                        FeatureGameImage(game: game)
-                    }
-                    .overlay(alignment: .topTrailing) {
-                        if type == .deeplink {
-                            CloseButton()
-                                .padding()
-                        }
-                    }
+        ImagesView(game: game)
+            .fadeOutSides(length: 100, side: .bottom)
+            .overlay(alignment: .bottomLeading) {
+                FeatureGameImage(game: game)
             }
-        case .unavailable:
-            if let savedGame, let imageData = savedGame.imageData {
-                if let uiImage = UIImage(data: imageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: UIScreen.main.bounds.size.width,
-                               height: UIScreen.main.bounds.size.height * 0.6)
-                        .ignoresSafeArea(edges: .top)
-                        .fadeOutSides(length: 100, side: .bottom)
-                        .overlay(alignment: .bottomLeading) {
-                            if let game = savedGame.game {
-                                FeatureGameImage(game: game)
-                            }
-                        }
-                        .overlay(alignment: .topTrailing) {
-                            if type == .deeplink {
-                                CloseButton()
-                                    .padding()
-                            }
-                        }
+            .overlay(alignment: .topTrailing) {
+                if type == .deeplink {
+                    CloseButton()
+                        .padding()
                 }
             }
-        }
     }
-    
+
     private func DetailsView(game: Game) -> some View {
         VStack(alignment: .leading) {
             GenresView(game: game)
@@ -181,7 +141,7 @@ struct GameDetailView: View {
             SocialsView(game: game)
             VideosView(game: game)
             if !vm.gamesFromIds.isEmpty {
-                SimilarGamesView(similarGames: vm.gamesFromIds)
+                SimilarGamesView(similarGames: vm.gamesFromIds, showAddLibrary: $showAddLibrary)
             }
         }
         .padding()

@@ -10,9 +10,17 @@ import SwiftUI
 struct CapsuleView: View {
     
     var title: String?
-    @State var imageType: ImageType = .asset
+    var subtitle: String?
+    var imageType: ImageType = .asset
     var imageName: String?
-    
+
+    init(title: String? = nil, subtitle: String? = nil, imageType: ImageType, imageName: String? = nil) {
+        self.title = title
+        self.subtitle = subtitle
+        self.imageType = imageType
+        self.imageName = imageName
+    }
+
     var body: some View {
         HStack(alignment: .center) {
             if let imageName {
@@ -29,11 +37,19 @@ struct CapsuleView: View {
                 }
             }
             
-            if let title {
-                Text(title)
-                    .font(.caption2)
-                    .multilineTextAlignment(.center)
+            VStack(alignment: .leading) {
+                if let title {
+                    Text(title)
+                        .font(.footnote)
+                }
+
+                if let subtitle {
+                    Text(subtitle)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
             }
+            .multilineTextAlignment(.leading)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)

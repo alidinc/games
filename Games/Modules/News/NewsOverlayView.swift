@@ -20,7 +20,7 @@ struct NewsOverlayView: View {
         case .available:
             if vm.news.isEmpty {
                 ZStack {
-                    ProgressView("Please wait, \nwhile we are getting ready! ☺️")
+                    ProgressView("Please wait...")
                         .font(.subheadline)
                         .tint(.white)
                         .multilineTextAlignment(.center)

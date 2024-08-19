@@ -17,9 +17,13 @@
 		DA24E4662C714F6900246681 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4652C714F6900246681 /* ContentType.swift */; };
 		DA24E4682C7161A000246681 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4672C7161A000246681 /* MarqueeView.swift */; };
 		DA24E46A2C7161C700246681 /* CustomSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4692C7161C700246681 /* CustomSelectionView.swift */; };
-		DA24E46C2C7166F400246681 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E46B2C7166F400246681 /* LibraryView.swift */; };
 		DA24E46E2C72057E00246681 /* FloatingSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E46D2C72057E00246681 /* FloatingSheet.swift */; };
 		DA24E4702C72058D00246681 /* SampleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E46F2C72058D00246681 /* SampleSheet.swift */; };
+		DA24E4742C72229A00246681 /* SavingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4732C72229A00246681 /* SavingMenu.swift */; };
+		DA24E4762C72281F00246681 /* UnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4752C72281F00246681 /* UnavailableView.swift */; };
+		DA24E4782C7349EF00246681 /* TappableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4772C7349EF00246681 /* TappableModifier.swift */; };
+		DA24E47A2C734E9000246681 /* EditLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4792C734E9000246681 /* EditLibraryView.swift */; };
+		DA24E47C2C736F9C00246681 /* FiltersMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E47B2C736F9C00246681 /* FiltersMenu.swift */; };
 		DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27972D2B5AA7E40042E59B /* DataType.swift */; };
 		DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */; };
 		DA43CE212B30B61500DAE0B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA43CE202B30B61500DAE0B6 /* Assets.xcassets */; };
@@ -143,9 +147,13 @@
 		DA24E4652C714F6900246681 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 		DA24E4672C7161A000246681 /* MarqueeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
 		DA24E4692C7161C700246681 /* CustomSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSelectionView.swift; sourceTree = "<group>"; };
-		DA24E46B2C7166F400246681 /* LibraryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		DA24E46D2C72057E00246681 /* FloatingSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingSheet.swift; sourceTree = "<group>"; };
 		DA24E46F2C72058D00246681 /* SampleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleSheet.swift; sourceTree = "<group>"; };
+		DA24E4732C72229A00246681 /* SavingMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingMenu.swift; sourceTree = "<group>"; };
+		DA24E4752C72281F00246681 /* UnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnavailableView.swift; sourceTree = "<group>"; };
+		DA24E4772C7349EF00246681 /* TappableModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableModifier.swift; sourceTree = "<group>"; };
+		DA24E4792C734E9000246681 /* EditLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLibraryView.swift; sourceTree = "<group>"; };
+		DA24E47B2C736F9C00246681 /* FiltersMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersMenu.swift; sourceTree = "<group>"; };
 		DA27972D2B5AA7E40042E59B /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		DA43CE192B30B61500DAE0B6 /* Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Games.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeeltuinApp.swift; sourceTree = "<group>"; };
@@ -357,6 +365,8 @@
 				DA6C25862B520CC500791432 /* GamesOverlayView.swift */,
 				DA4B1C032B44A32F00EA3E8F /* GamesCollectionView.swift */,
 				DA43CE7A2B31D35900DAE0B6 /* ListItemView.swift */,
+				DA24E4732C72229A00246681 /* SavingMenu.swift */,
+				DA24E47B2C736F9C00246681 /* FiltersMenu.swift */,
 			);
 			path = Games;
 			sourceTree = "<group>";
@@ -446,8 +456,8 @@
 		DA72D2D82B54A2BD00A235C2 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				DA24E46B2C7166F400246681 /* LibraryView.swift */,
 				DA24E4612C70205A00246681 /* AddLibraryView.swift */,
+				DA24E4792C734E9000246681 /* EditLibraryView.swift */,
 				DA207A192B6028B7001F8923 /* IconsView.swift */,
 			);
 			path = Library;
@@ -477,6 +487,7 @@
 				DA98C6B72B6D2DB400EF8C5B /* SummaryView.swift */,
 				DA98C6C02B6D2DB400EF8C5B /* VideosView.swift */,
 				DA71D4C32B6E693C005EB5D3 /* FeatureGameImage.swift */,
+				DA24E4772C7349EF00246681 /* TappableModifier.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -499,6 +510,7 @@
 				DA24E4692C7161C700246681 /* CustomSelectionView.swift */,
 				DA24E46D2C72057E00246681 /* FloatingSheet.swift */,
 				DA24E46F2C72058D00246681 /* SampleSheet.swift */,
+				DA24E4752C72281F00246681 /* UnavailableView.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -689,11 +701,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAB6E8222B63F9B30023E38D /* CardCoordinator.swift in Sources */,
+				DA24E4742C72229A00246681 /* SavingMenu.swift in Sources */,
 				DA43CE4E2B30B66B00DAE0B6 /* DataFetchPhase.swift in Sources */,
 				DA43CE4D2B30B66B00DAE0B6 /* PopularPlatform.swift in Sources */,
 				DA5557AA2B38922300D440A4 /* GameDetailViewModel.swift in Sources */,
 				DA4B1BEC2B43A7B100EA3E8F /* Bundle+Ext.swift in Sources */,
 				DA0C208C2B3E9F97000E2D6E /* CacheAsyncImage.swift in Sources */,
+				DA24E4762C72281F00246681 /* UnavailableView.swift in Sources */,
 				DA43CE502B30B66B00DAE0B6 /* PopularGenre.swift in Sources */,
 				DAB6E8122B63C59A0023E38D /* Tab.swift in Sources */,
 				DA43CE412B30B65E00DAE0B6 /* GamesViewModel.swift in Sources */,
@@ -707,10 +721,12 @@
 				DA43CE382B30B65500DAE0B6 /* Constants.swift in Sources */,
 				DA43CE4C2B30B66B00DAE0B6 /* APICalypse.swift in Sources */,
 				DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */,
+				DA24E47C2C736F9C00246681 /* FiltersMenu.swift in Sources */,
 				DAB6E82E2B63FC690023E38D /* AppCoordinator.swift in Sources */,
 				DA72D2DC2B54B1D900A235C2 /* Binding+Extension.swift in Sources */,
 				DAB6E8272B63F9B30023E38D /* WindowCoordinator.swift in Sources */,
 				DAC503BD2B34457A004D4B03 /* Task+Extension.swift in Sources */,
+				DA24E4782C7349EF00246681 /* TappableModifier.swift in Sources */,
 				DA98C6CB2B6D2DB400EF8C5B /* VideosView.swift in Sources */,
 				DA4B1BF22B43C7B000EA3E8F /* Notification+Name.swift in Sources */,
 				DA98C6C32B6D2DB400EF8C5B /* SimilarGamesView.swift in Sources */,
@@ -733,6 +749,7 @@
 				DA43CE532B30B66B00DAE0B6 /* Game.swift in Sources */,
 				DA24E4622C70205A00246681 /* AddLibraryView.swift in Sources */,
 				DA4B1BF42B43C86200EA3E8F /* Bag.swift in Sources */,
+				DA24E47A2C734E9000246681 /* EditLibraryView.swift in Sources */,
 				DA24E4602C701C0300246681 /* LabelStyle.swift in Sources */,
 				DA79C8C32B63304A00837DB3 /* MoreViewRows.swift in Sources */,
 				DA43CE652B30B6CD00DAE0B6 /* DataStore.swift in Sources */,
@@ -787,7 +804,6 @@
 				DA98C6C12B6D2DB400EF8C5B /* SocialsView.swift in Sources */,
 				DA78AA302B4D7F4A008F018C /* String+Extension.swift in Sources */,
 				DA8AF7502B4FF9C700C459DA /* Library.swift in Sources */,
-				DA24E46C2C7166F400246681 /* LibraryView.swift in Sources */,
 				DA79C8C52B63306800837DB3 /* MoreViewSections.swift in Sources */,
 				DAB6E8232B63F9B30023E38D /* MainCoordinator.swift in Sources */,
 				DA98C6C82B6D2DB400EF8C5B /* RatingStarsView.swift in Sources */,
