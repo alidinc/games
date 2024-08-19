@@ -16,7 +16,7 @@ struct GamesOverlayView: View {
     private var LoadingView: some View {
         ZStack {
             ProgressView("Please wait...")
-                .font(.subheadline)
+                .font(.headline)
                 .tint(.gray)
                 .multilineTextAlignment(.center)
         }

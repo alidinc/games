@@ -11,26 +11,20 @@ import Observation
 @Observable
 class GamesViewModel {
 
-    var showDetails = false
     var limit = 21
     var offset = 0
     var fetchTaskToken: FetchTaskToken
     var dataFetchPhase = DataFetchPhase<[Game]>.empty
     var selectedPlatforms: Set<PopularPlatform> = []
     var selectedGenres: Set<PopularGenre> = []
-
+    var searchPlaceholder = "Search in network"
+    var savedGamesListId = ""
     var searchQuery = "" {
         didSet {
             debounceSearchQuery()
         }
     }
-
-    var searchPlaceholder = "Search in network"
-    var savedGamesListId = ""
-    var dataType: DataType = .network
-    var filterType: FilterType = .search
-    var savedGames: [SavedGame] = []
-    var selectedLibrary: Library?
+    
     var cache = DiskCache<[Game]>(filename: "GamesCache",
                                   expirationInterval: 24 * 60 * 60 * 60)
 
@@ -225,6 +219,7 @@ extension GamesViewModel {
     }
 
     func removeFilters() {
+        fetchTaskToken.category = .topRated
         fetchTaskToken.platforms = [.database]
         fetchTaskToken.genres = [.allGenres]
     }

@@ -20,26 +20,44 @@ struct AddLibraryView: View {
 
     var body: some View {
         VStack {
-            TextField("Enter Library Title", text: $title)
+            TextField("Enter library title", text: $title)
                 .font(.headline)
                 .fontWeight(.semibold)
-                .padding(.horizontal)
+                .padding()
                 .multilineTextAlignment(.center)
 
-            Button(action: saveLibrary) {
-                Text("Save")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(appTint)
-                    .opacity(title.isEmpty ? 0.5 : 1)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .disabled(title.isEmpty)
+            VStack {
+                Button(action: saveLibrary) {
+                    Text("Save")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .padding(12)
+                        .frame(maxWidth: .infinity)
+                        .background(appTint)
+                        .opacity(title.isEmpty ? 0.5 : 1)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .disabled(title.isEmpty)
+                }
+
+                Button(action: cancelAction) {
+                    Text("Cancel")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .padding(12)
+                        .frame(maxWidth: .infinity)
+                        .background(.regularMaterial)
+                        .foregroundStyle(.gray)
+                        .cornerRadius(10)
+                }
+
             }
-            .padding()
+            .padding(.horizontal, 12)
         }
+    }
+
+    private func cancelAction() {
+        dismiss()
     }
 
     private func saveLibrary() {

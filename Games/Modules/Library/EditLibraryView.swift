@@ -23,7 +23,7 @@ struct EditLibraryView: View {
 
     var body: some View {
         VStack {
-            TextField("Enter Library Title", text: $title)
+            TextField("Enter library title", text: $title)
                 .font(.headline)
                 .fontWeight(.semibold)
                 .padding()

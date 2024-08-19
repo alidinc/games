@@ -12,6 +12,7 @@ enum Feedback: Int, CaseIterable, Equatable, Hashable, Identifiable {
     case rate
     case tips
     case share
+    case about
 
     var id: Self { self }
 
@@ -23,12 +24,14 @@ enum Feedback: Int, CaseIterable, Equatable, Hashable, Identifiable {
             return "Rate"
         case .tips:
             return "Tip Jar"
+        case .about:
+            return "About"
         case .share:
             return "Share"
         }
     }
 
-    var subtitle: LocalizedStringResource {
+    var subtitle: String {
         switch self {
         case .email:
             return "Send us an email"
@@ -36,6 +39,8 @@ enum Feedback: Int, CaseIterable, Equatable, Hashable, Identifiable {
             return "Review us on AppStore"
         case .tips:
             return "If you want to support"
+        case .about:
+            return "More about us"
         case .share:
             return "Thank you for sharing!"
         }
@@ -49,6 +54,8 @@ enum Feedback: Int, CaseIterable, Equatable, Hashable, Identifiable {
             return "heart.circle.fill"
         case .tips:
             return "hands.clap.fill"
+        case .about:
+            return "info.circle.fill"
         case .share:
             return "square.and.arrow.up.fill"
         }

@@ -52,15 +52,6 @@ struct MainView: View {
             .onChange(of: showSearch) { _, newValue in
                 isTextFieldFocused = newValue
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        MoreTab()
-                    } label: {
-                        Image(systemName: "gearshape.fill")
-                    }
-                }
-            }
             .floatingBottomSheet(isPresented: $showAddLibrary) {
                 SampleSheetView(title: "Add a new library",
                                 image: .init(content: "tray",
@@ -79,6 +70,15 @@ struct MainView: View {
                 }
                                              .presentationDetents([.height(350)])
             }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        MoreTab()
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                    }
+                }
+            }
         }
     }
 }
@@ -91,20 +91,13 @@ extension MainView {
                 .font(.system(size: 80))
                 .fontWeight(.semibold)
                 .contentTransition(.numericText())
-            
-            HStack {
-                if libraryToEdit != nil {
-                    Button {
-                        showEditLibrary = true
-                    } label: {
-                        Image(systemName: "pencil.line")
-                    }
-                }
-                
-                LibrariesMenu
-            }
-            .padding(.horizontal, 50)
+
+            LibrariesMenu
+
+            SubtitleInfo
+
         }
+        .padding(.horizontal)
         .frame(height: UIScreen.main.bounds.height / 5)
         .onAppear {
             count = countOfSavedGames
@@ -115,7 +108,7 @@ extension MainView {
             }
         }
     }
-    
+
     private var countOfSavedGames: Int {
         if let libraryToEdit = libraryToEdit {
             return libraryToEdit.savedGames?.count ?? 0
@@ -123,7 +116,27 @@ extension MainView {
             return libraries.reduce(0) { $0 + ($1.savedGames?.count ?? 0) }
         }
     }
-    
+
+    @ViewBuilder
+    private var SubtitleInfo: some View {
+        Group {
+            switch contentType {
+            case .games:
+                Text("Currently viewing results from database")
+            case .news:
+                Text("Currently viewing latest news")
+            case .library:
+                if let libraryToEdit {
+                    Text("Currently viewing your \(libraryToEdit.title) library")
+                } else {
+                    Text("Currently viewing all of your libraries")
+                }
+            }
+        }
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+    }
+
     @ViewBuilder
     var ContentTypeView: some View {
         switch self.contentType {
@@ -257,9 +270,25 @@ extension MainView {
         VStack {
             HStack(alignment: .center) {
                 ContentTypePicker
+
+                if libraryToEdit != nil {
+                    Button {
+                        showEditLibrary = true
+                    } label: {
+                        SFImage(
+                            config: .init(
+                                name:  "pencil.line",
+                                padding: 10,
+                                color: .primary
+                            )
+                        )
+                    }
+                }
+
                 if contentType == .games {
                     SearchButton
                 }
+
                 Spacer()
                 
                 FiltersMenu(contentType: contentType, gamesVM: vm, newsVM: newsVM)

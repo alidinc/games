@@ -30,7 +30,7 @@ struct NewsListItemView: View {
                     .lineLimit(2)
             }
 
-            HStack(alignment: .top, spacing: 10) {
+            HStack(alignment: .top) {
                 VStack(alignment: .leading) {
                     if let media = item.media, let mediaContents = media.mediaContents,
                        let content = mediaContents.first, let attributes = content.attributes, let urlString = attributes.url {

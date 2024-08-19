@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 extension View {
 
     func measureWidth(_ onChange: @escaping (CGFloat) -> ()) -> some View {

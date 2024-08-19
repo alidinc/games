@@ -5,20 +5,36 @@
 //  Created by alidinc on 22/01/2024.
 //
 
+enum OnboardingStep: String, Identifiable {
+    case welcome
+
+    var id: Self { self }
+}
+
 import SwiftUI
 
 struct IntroView: View {
-    
-    @AppStorage("isFirstTime") private var isFirstTime: Bool = true
-    @AppStorage("appTint") var appTint: Color =  .blue
+
+    @AppStorage("appTint") var appTint: Color = .blue
 
     @Environment(\.colorScheme) private var scheme
+    @Environment(\.dismiss) private var dismiss
+    @Environment(SessionManager.self) private var session
+
+    @State private var showSheet1 = true
+    @State private var step: OnboardingStep = .welcome
 
     var body: some View {
-        WelcomeView
-        .safeAreaInset(edge: .bottom) {
+        TabView(selection: $step) {
+            WelcomeView.tag(OnboardingStep.welcome)
+        }
+        .ignoresSafeArea()
+        .floatingBottomSheet(isPresented: $showSheet1) {
             Button("Get Started") {
-                
+                DispatchQueue.main.async {
+                    session.completeOnboarding()
+                    dismiss()
+                }
             }
             .frame(height: 50)
             .frame(maxWidth: .infinity)
@@ -26,7 +42,8 @@ struct IntroView: View {
             .background(appTint.gradient, in: .capsule)
             .fontWeight(.bold)
             .padding(20)
-            .displayConfetti(isActive: $isFirstTime)
+            .interactiveDismissDisabled()
+            .presentationDetents([.height(250)])
         }
     }
 
@@ -38,8 +55,9 @@ struct IntroView: View {
                 .clipShape(.rect(cornerRadius: 10))
                 .shadow(color: scheme == .dark ? .white.opacity(0.1) : .black.opacity(0.05), radius: 10)
 
-            Text("Welcome to Steps")
+            Text("Welcome to Games")
                 .font(.system(size: 40))
         }
+        .displayConfetti(isActive: .constant(true))
     }
 }

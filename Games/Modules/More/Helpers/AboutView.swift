@@ -9,47 +9,36 @@ import SwiftUI
 
 struct AboutView: View {
 
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.openURL) private var openURL
     @Environment(\.colorScheme) private var scheme
-
-    @AppStorage("selectedAppIcon") private var selectedAppIcon: AppIcon = .black
     @State private var showSafari = false
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                Text("Games is for everyone. Many thanks for the games data by IGDB and the news data by; IGN, Nintendo News, and Xbox News.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+        VStack(spacing: 20) {
+            Text("This app is for everyone. Many thanks for the games data by IGDB and the news data by; IGN, Nintendo News, and Xbox News.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
 
-                TeamMemberView
+            TeamMemberView
 
-                Spacer()
+            Spacer()
 
-                Marquee(targetVelocity: 50) {
-                    CustomSelectionView(assetName: scheme == .dark ? "Icon5" : "Icon",
-                                        title: "Games \(Bundle.main.appVersionLong)",
-                                        subtitle: "Built with SwiftUI and ❤️",
-                                        config: .init(titleFont: .system(size: 12),
-                                                      titleFontWeight: .medium,
-                                                      subtitleFont: .caption2,
-                                                      subtitleFontWeight: .regular,
-                                                      showChevron: false))
-                    .onTapGesture { showSafari = true }
-                }
-                .padding(.bottom, 40)
+            Marquee(targetVelocity: 50) {
+                CustomSelectionView(assetName: scheme == .dark ? "Icon5" : "Icon",
+                                    title: "Games \(Bundle.main.appVersionLong)",
+                                    subtitle: "Built with SwiftUI and ❤️",
+                                    config: .init(titleFont: .system(size: 12),
+                                                  titleFontWeight: .medium,
+                                                  subtitleFont: .caption2,
+                                                  subtitleFontWeight: .regular,
+                                                  showChevron: false))
+                .onTapGesture { showSafari = true }
             }
-            .padding()
-            .navigationTitle("About")
-            .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented: $showSafari, content: { SFSafariView(url: URL(string: Constants.URLs.SwiftUI)!).ignoresSafeArea()  })
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    CloseButton()
-                }
-            }
+            .padding(.bottom, 40)
         }
+        .padding()
+        .navigationTitle("About")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showSafari, content: { SFSafariView(url: URL(string: Constants.URLs.SwiftUI)!).ignoresSafeArea()  })
     }
 
     @ViewBuilder

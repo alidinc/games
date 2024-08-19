@@ -27,6 +27,9 @@
 		DA24E47E2C7381E300246681 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E47D2C7381E300246681 /* CustomAlertView.swift */; };
 		DA24E4822C73829F00246681 /* TipStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4802C73829F00246681 /* TipStore.swift */; };
 		DA24E4832C73829F00246681 /* TipsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4812C73829F00246681 /* TipsError.swift */; };
+		DA24E4862C73B20000246681 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4852C73B20000246681 /* AppIcon.swift */; };
+		DA24E4882C73B21700246681 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4872C73B21700246681 /* Scheme.swift */; };
+		DA24E48A2C73DFB100246681 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4892C73DFB100246681 /* SessionManager.swift */; };
 		DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27972D2B5AA7E40042E59B /* DataType.swift */; };
 		DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */; };
 		DA43CE212B30B61500DAE0B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA43CE202B30B61500DAE0B6 /* Assets.xcassets */; };
@@ -91,9 +94,8 @@
 		DA78AA322B4D93A3008F018C /* MoreRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA78AA312B4D93A3008F018C /* MoreRowView.swift */; };
 		DA79C8BD2B61D26900837DB3 /* UIKitTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8BC2B61D26900837DB3 /* UIKitTabView.swift */; };
 		DA79C8BF2B62699500837DB3 /* NewsGridItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8BE2B62699500837DB3 /* NewsGridItemView.swift */; };
-		DA79C8C12B63100400837DB3 /* ColorSchemeSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8C02B63100400837DB3 /* ColorSchemeSelections.swift */; };
-		DA79C8C32B63304A00837DB3 /* MoreViewRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8C22B63304A00837DB3 /* MoreViewRows.swift */; };
-		DA79C8C52B63306800837DB3 /* MoreViewSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8C42B63306800837DB3 /* MoreViewSections.swift */; };
+		DA79C8C32B63304A00837DB3 /* MoreTabRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8C22B63304A00837DB3 /* MoreTabRows.swift */; };
+		DA79C8C52B63306800837DB3 /* MoreTabSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA79C8C42B63306800837DB3 /* MoreTabSections.swift */; };
 		DA8AF7502B4FF9C700C459DA /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AF74F2B4FF9C700C459DA /* Library.swift */; };
 		DA98C6B42B6D2DA500EF8C5B /* GameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA98C6B32B6D2DA500EF8C5B /* GameDetailView.swift */; };
 		DA98C6C12B6D2DB400EF8C5B /* SocialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA98C6B62B6D2DB400EF8C5B /* SocialsView.swift */; };
@@ -128,12 +130,10 @@
 		DAC503BF2B344827004D4B03 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503BE2B344827004D4B03 /* CloseButton.swift */; };
 		DAC503C22B344C70004D4B03 /* MoreTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C12B344C70004D4B03 /* MoreTab.swift */; };
 		DAC503C42B344CF7004D4B03 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C32B344CF7004D4B03 /* Color+Extension.swift */; };
-		DAC503C62B344F57004D4B03 /* IconSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC503C52B344F57004D4B03 /* IconSelectionView.swift */; };
 		DACC86E72B6A8D4900639822 /* SelectedOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86E62B6A8D4900639822 /* SelectedOption.swift */; };
 		DACC86E92B6A8D6800639822 /* PlatformWebsite.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */; };
 		DACC86EB2B6A953200639822 /* FeaturedGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86EA2B6A953200639822 /* FeaturedGame.swift */; };
 		DACC86F22B6B95BD00639822 /* NewsOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACC86F12B6B95BD00639822 /* NewsOverlayView.swift */; };
-		DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084222B6051C600D87112 /* ViewTypeSelections.swift */; };
 		DAD084252B6059A800D87112 /* PickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084242B6059A800D87112 /* PickerHeaderView.swift */; };
 		DAD084272B6073E500D87112 /* NewsListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084262B6073E500D87112 /* NewsListItemView.swift */; };
 		DAD084292B607B1000D87112 /* SPNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD084282B607B1000D87112 /* SPNews.swift */; };
@@ -161,6 +161,9 @@
 		DA24E4802C73829F00246681 /* TipStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipStore.swift; sourceTree = "<group>"; };
 		DA24E4812C73829F00246681 /* TipsError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsError.swift; sourceTree = "<group>"; };
 		DA24E4842C7382C400246681 /* Games - tracker.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Games - tracker.storekit"; sourceTree = "<group>"; };
+		DA24E4852C73B20000246681 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		DA24E4872C73B21700246681 /* Scheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheme.swift; sourceTree = "<group>"; };
+		DA24E4892C73DFB100246681 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		DA27972D2B5AA7E40042E59B /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		DA43CE192B30B61500DAE0B6 /* Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Games.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeeltuinApp.swift; sourceTree = "<group>"; };
@@ -226,9 +229,8 @@
 		DA78AA312B4D93A3008F018C /* MoreRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreRowView.swift; sourceTree = "<group>"; };
 		DA79C8BC2B61D26900837DB3 /* UIKitTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTabView.swift; sourceTree = "<group>"; };
 		DA79C8BE2B62699500837DB3 /* NewsGridItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsGridItemView.swift; sourceTree = "<group>"; };
-		DA79C8C02B63100400837DB3 /* ColorSchemeSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemeSelections.swift; sourceTree = "<group>"; };
-		DA79C8C22B63304A00837DB3 /* MoreViewRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewRows.swift; sourceTree = "<group>"; };
-		DA79C8C42B63306800837DB3 /* MoreViewSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreViewSections.swift; sourceTree = "<group>"; };
+		DA79C8C22B63304A00837DB3 /* MoreTabRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreTabRows.swift; sourceTree = "<group>"; };
+		DA79C8C42B63306800837DB3 /* MoreTabSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreTabSections.swift; sourceTree = "<group>"; };
 		DA8AF74F2B4FF9C700C459DA /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		DA98C6B32B6D2DA500EF8C5B /* GameDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailView.swift; sourceTree = "<group>"; };
 		DA98C6B62B6D2DB400EF8C5B /* SocialsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialsView.swift; sourceTree = "<group>"; };
@@ -263,12 +265,10 @@
 		DAC503BE2B344827004D4B03 /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		DAC503C12B344C70004D4B03 /* MoreTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreTab.swift; sourceTree = "<group>"; };
 		DAC503C32B344CF7004D4B03 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
-		DAC503C52B344F57004D4B03 /* IconSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionView.swift; sourceTree = "<group>"; };
 		DACC86E62B6A8D4900639822 /* SelectedOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedOption.swift; sourceTree = "<group>"; };
 		DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformWebsite.swift; sourceTree = "<group>"; };
 		DACC86EA2B6A953200639822 /* FeaturedGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedGame.swift; sourceTree = "<group>"; };
 		DACC86F12B6B95BD00639822 /* NewsOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsOverlayView.swift; sourceTree = "<group>"; };
-		DAD084222B6051C600D87112 /* ViewTypeSelections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeSelections.swift; sourceTree = "<group>"; };
 		DAD084242B6059A800D87112 /* PickerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerHeaderView.swift; sourceTree = "<group>"; };
 		DAD084262B6073E500D87112 /* NewsListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsListItemView.swift; sourceTree = "<group>"; };
 		DAD084282B607B1000D87112 /* SPNews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPNews.swift; sourceTree = "<group>"; };
@@ -434,6 +434,7 @@
 				DA4B1BFA2B44568000EA3E8F /* DataManager.swift */,
 				DA43CE622B30B6CD00DAE0B6 /* HapticsManager.swift */,
 				DAB6E82B2B63FA320023E38D /* LogManager.swift */,
+				DA24E4892C73DFB100246681 /* SessionManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -452,12 +453,9 @@
 		DA4B1BF92B43D2C700EA3E8F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				DA78AA312B4D93A3008F018C /* MoreRowView.swift */,
 				DA4B1BEE2B43AA5100EA3E8F /* AboutView.swift */,
 				DA4B1BE62B43A71700EA3E8F /* MailView.swift */,
-				DAC503C52B344F57004D4B03 /* IconSelectionView.swift */,
-				DAD084222B6051C600D87112 /* ViewTypeSelections.swift */,
-				DA79C8C02B63100400837DB3 /* ColorSchemeSelections.swift */,
+				DA78AA312B4D93A3008F018C /* MoreRowView.swift */,
 				DA56E6432B67D483003F1697 /* MoreHeaderView.swift */,
 			);
 			path = Helpers;
@@ -616,6 +614,8 @@
 				DACC86E82B6A8D6800639822 /* PlatformWebsite.swift */,
 				DACC86EA2B6A953200639822 /* FeaturedGame.swift */,
 				DA71D4C12B6E5457005EB5D3 /* DidRemoteChange.swift */,
+				DA24E4852C73B20000246681 /* AppIcon.swift */,
+				DA24E4872C73B21700246681 /* Scheme.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -625,8 +625,8 @@
 			children = (
 				DA4B1BF92B43D2C700EA3E8F /* Helpers */,
 				DAC503C12B344C70004D4B03 /* MoreTab.swift */,
-				DA79C8C42B63306800837DB3 /* MoreViewSections.swift */,
-				DA79C8C22B63304A00837DB3 /* MoreViewRows.swift */,
+				DA79C8C42B63306800837DB3 /* MoreTabSections.swift */,
+				DA79C8C22B63304A00837DB3 /* MoreTabRows.swift */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -728,6 +728,7 @@
 				DA0C208C2B3E9F97000E2D6E /* CacheAsyncImage.swift in Sources */,
 				DA24E4762C72281F00246681 /* UnavailableView.swift in Sources */,
 				DA43CE502B30B66B00DAE0B6 /* PopularGenre.swift in Sources */,
+				DA24E4882C73B21700246681 /* Scheme.swift in Sources */,
 				DAB6E8122B63C59A0023E38D /* Tab.swift in Sources */,
 				DA43CE412B30B65E00DAE0B6 /* GamesViewModel.swift in Sources */,
 				DA43CE6F2B30B6F200DAE0B6 /* CacheEntry.swift in Sources */,
@@ -738,8 +739,8 @@
 				DAC503BB2B343AC9004D4B03 /* ViewType.swift in Sources */,
 				DA65DB162B574D8A00DBA824 /* UIDevice+Extension.swift in Sources */,
 				DA43CE382B30B65500DAE0B6 /* Constants.swift in Sources */,
+				DA24E48A2C73DFB100246681 /* SessionManager.swift in Sources */,
 				DA43CE4C2B30B66B00DAE0B6 /* APICalypse.swift in Sources */,
-				DAD084232B6051C600D87112 /* ViewTypeSelections.swift in Sources */,
 				DA24E47C2C736F9C00246681 /* FiltersMenu.swift in Sources */,
 				DAB6E82E2B63FC690023E38D /* AppCoordinator.swift in Sources */,
 				DA72D2DC2B54B1D900A235C2 /* Binding+Extension.swift in Sources */,
@@ -770,7 +771,7 @@
 				DA4B1BF42B43C86200EA3E8F /* Bag.swift in Sources */,
 				DA24E47A2C734E9000246681 /* EditLibraryView.swift in Sources */,
 				DA24E4602C701C0300246681 /* LabelStyle.swift in Sources */,
-				DA79C8C32B63304A00837DB3 /* MoreViewRows.swift in Sources */,
+				DA79C8C32B63304A00837DB3 /* MoreTabRows.swift in Sources */,
 				DA43CE652B30B6CD00DAE0B6 /* DataStore.swift in Sources */,
 				DAD084272B6073E500D87112 /* NewsListItemView.swift in Sources */,
 				DAD084292B607B1000D87112 /* SPNews.swift in Sources */,
@@ -790,7 +791,6 @@
 				DACC86EB2B6A953200639822 /* FeaturedGame.swift in Sources */,
 				DA43CE732B30B6F200DAE0B6 /* CacheManager.swift in Sources */,
 				DA78AA2E2B4D7DB2008F018C /* SafariView.swift in Sources */,
-				DAC503C62B344F57004D4B03 /* IconSelectionView.swift in Sources */,
 				DA4B1C0A2B44DA6E00EA3E8F /* Rating.swift in Sources */,
 				DAAD3E512B40B485005E8EBA /* SavingButton.swift in Sources */,
 				DA4B1BE12B43948200EA3E8F /* LibraryType.swift in Sources */,
@@ -811,6 +811,7 @@
 				DA43CE392B30B65500DAE0B6 /* AsyncImageView.swift in Sources */,
 				DA24E4832C73829F00246681 /* TipsError.swift in Sources */,
 				DAB6E8262B63F9B30023E38D /* ChildCoordinator.swift in Sources */,
+				DA24E4862C73B20000246681 /* AppIcon.swift in Sources */,
 				DA24E47E2C7381E300246681 /* CustomAlertView.swift in Sources */,
 				DA98C6B42B6D2DA500EF8C5B /* GameDetailView.swift in Sources */,
 				DAAD3E602B41AA97005E8EBA /* SearchTextField.swift in Sources */,
@@ -826,10 +827,9 @@
 				DA98C6C12B6D2DB400EF8C5B /* SocialsView.swift in Sources */,
 				DA78AA302B4D7F4A008F018C /* String+Extension.swift in Sources */,
 				DA8AF7502B4FF9C700C459DA /* Library.swift in Sources */,
-				DA79C8C52B63306800837DB3 /* MoreViewSections.swift in Sources */,
+				DA79C8C52B63306800837DB3 /* MoreTabSections.swift in Sources */,
 				DAB6E8232B63F9B30023E38D /* MainCoordinator.swift in Sources */,
 				DA98C6C82B6D2DB400EF8C5B /* RatingStarsView.swift in Sources */,
-				DA79C8C12B63100400837DB3 /* ColorSchemeSelections.swift in Sources */,
 				DA98C6CA2B6D2DB400EF8C5B /* RatingView.swift in Sources */,
 				DA43CE5B2B30B69100DAE0B6 /* MainView.swift in Sources */,
 				DA24E45E2C70197800246681 /* GlassModifier.swift in Sources */,
@@ -973,7 +973,7 @@
 		DA43CE282B30B61500DAE0B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1 AppIcon9 AppIcon8 AppIcon7";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5 AppIcon6 AppIcon7 AppIcon8 AppIcon9";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Games/Utils/Resources/Speeltuin.entitlements;
@@ -996,7 +996,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alidinc.speeltuin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1013,7 +1013,7 @@
 		DA43CE292B30B61500DAE0B6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon6 AppIcon5 AppIcon4 AppIcon3 AppIcon2 AppIcon1 AppIcon9 AppIcon8 AppIcon7";
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon1 AppIcon2 AppIcon3 AppIcon4 AppIcon5 AppIcon6 AppIcon7 AppIcon8 AppIcon9";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Games/Utils/Resources/Speeltuin.entitlements;
@@ -1036,7 +1036,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alidinc.speeltuin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

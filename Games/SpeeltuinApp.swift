@@ -11,17 +11,20 @@ import SwiftUI
 @main
 struct SpeeltuinApp: App {
 
-    @AppStorage("isFirstTime") private var isFirstTime: Bool = true
-    @AppStorage("appTint")     private var appTint: Color = .blue
+    @AppStorage("appTint") private var appTint: Color = .blue
     @AppStorage("colorScheme") private var scheme: SchemeType = .system
 
     @State private var preferences = Admin()
     @State private var gamesViewModel = GamesViewModel()
     @State private var newsViewModel = NewsViewModel()
     @State private var dataManager = DataManager()
+    @State private var sessionManager = SessionManager()
 
     @State private var showLoadingView = false
     @State private var gameToGoToDetailView: Game?
+    @State private var showMainView = false
+    @State private var showOnboarding = false
+    @State private var showSplash = false
 
     private var modelContainer: ModelContainer = {
         let schema = Schema([
@@ -39,55 +42,47 @@ struct SpeeltuinApp: App {
         }
     }()
 
-    init() {
-
-    }
-
     var body: some Scene {
         WindowGroup {
-            TabView
-                .opacity(isFirstTime ? 0 : 1)
-                .fullScreenCover(isPresented: $isFirstTime, content: { IntroView() })
-        }
-        .modelContainer(modelContainer)
-    }
-
-    private var TabView: some View {
-        MainView(vm: gamesViewModel, newsVM: newsViewModel)
-            .tint(appTint)
-            .environment(preferences)
-            .environment(gamesViewModel)
-            .environment(newsViewModel)
-            .environment(dataManager)
-            .preferredColorScheme(setColorScheme())
-            .sheet(item: $gameToGoToDetailView) { game in
-                NavigationStack {
-                    if showLoadingView {
-                        ProgressView()
-                    } else {
-                        GameDetailView(game: game, showAddLibrary: .constant(false), type: .deeplink)
+            MainView(vm: gamesViewModel, newsVM: newsViewModel)
+                .tint(appTint)
+                .opacity(showMainView ? 1 : 0)
+                .onAppear(perform: sessionManager.configureCurrentState)
+                .onChange(of: sessionManager.currentState, handleFlow)
+                .fullScreenCover(isPresented: $showOnboarding, content: { IntroView() })
+                .sheet(item: $gameToGoToDetailView) { game in
+                    NavigationStack {
+                        if showLoadingView {
+                            ProgressView()
+                        } else {
+                            GameDetailView(game: game, showAddLibrary: .constant(false), type: .deeplink)
+                        }
                     }
                 }
                 .environment(preferences)
                 .environment(gamesViewModel)
                 .environment(newsViewModel)
-            }
-            .onOpenURL(perform: { url in
-                self.showLoadingView = true
+                .environment(dataManager)
+                .environment(sessionManager)
+                .preferredColorScheme(setColorScheme())
+                .onOpenURL(perform: { url in
+                    self.showLoadingView = true
 
-                if UIApplication.shared.canOpenURL(url) {
-                    if let gameId = extractProductId(from: url), let id = Int(gameId)  {
-                        Task {
-                            if let game = try await NetworkManager.shared.fetchGame(id: id).first {
-                                await MainActor.run {
-                                    self.gameToGoToDetailView = game
-                                    self.showLoadingView = false
+                    if UIApplication.shared.canOpenURL(url) {
+                        if let gameId = extractProductId(from: url), let id = Int(gameId)  {
+                            Task {
+                                if let game = try await NetworkManager.shared.fetchGame(id: id).first {
+                                    await MainActor.run {
+                                        self.gameToGoToDetailView = game
+                                        self.showLoadingView = false
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            })
+                })
+        }
+        .modelContainer(modelContainer)
     }
 
     func extractProductId(from url: URL) -> String? {
@@ -103,6 +98,16 @@ struct SpeeltuinApp: App {
         return nil
     }
 
+    private func handleFlow(_ oldValue: SessionState?, _ newValue: SessionState?) {
+        switch newValue {
+        case .loggedIn:
+            showMainView = true
+        case .onboarding:
+            showOnboarding = true
+        default:
+            showSplash = true
+        }
+    }
 }
 
 // MARK: - Color scheme

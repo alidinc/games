@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MoreTab: View {
-    
+
     @AppStorage("hapticsEnabled") var hapticsEnabled = true
     @AppStorage("appTint") var appTint: Color = .blue
     @AppStorage("viewType") var viewType: ViewType = .grid
@@ -19,64 +19,62 @@ struct MoreTab: View {
     @State var store = TipStore()
 
     @State var showMailApp = false
-    @State var showAbout = false
-    @State var showIcons = false
     @State var showSendEmail = false
     @State var showThanks = false
     @State var showTips = false
     @State var showAppStore = false
-    @State var showStyleSelections = false
-    @State var showColorSchemeSelections = false
+    @State var iconSelected = false
     @State var showAlertNoDefaulEmailFound = false
     @State var email = SupportEmail(toAddress: "info@normprojects.com",
                                     subject: "Support Email",
                                     messageHeader: "Please describe your issue below.")
-    
+
     var body: some View {
         NavigationStack {
-            Form {
-                SettingsSection
-                FeedbackSection
-                AboutSection
+            VStack {
+                List {
+                    Section("Settings") {
+                        SelectAppIconRow
+                        ViewTypeRow
+                        ColorSchemeRow
+                        HapticsRow
+                        ColorPicker(selection: $appTint, supportsOpacity: false, label: {
+                            MoreRowView(imageName: "swatchpalette.fill", text: "Tint Color")
+                        })
+                    }
+                    .listRowBackground(Color(.secondarySystemBackground))
+
+                    FeedbackSection
+                }
+                .scrollContentBackground(.hidden)
+                .scrollIndicators(.hidden)
+
+                Spacer()
             }
-            .scrollContentBackground(.hidden)
-            .scrollIndicators(.hidden)
-            .navigationTitle("Settings")
+            .navigationTitle("More")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarRole(.editor)
             .confirmationDialog("Rate us", isPresented: $showAppStore, titleVisibility: .visible, actions: {
-                Button {
-                    self.rateApp()
-                } label: {
-                    Text("Go to AppStore")
-                }
+                Button("Go to AppStore", action: rateApp)
             })
             .confirmationDialog("Send an email", isPresented: $showSendEmail, titleVisibility: .visible, actions: {
-                Button {
+                Button("Default email app") {
                     self.email.send(openURL: self.openURL) { didSend in
                         showAlertNoDefaulEmailFound = !didSend
                     }
-                } label: {
-                    Text("Default email app")
                 }
-                
+
                 if MailView.canSendMail {
-                    Button {
+                    Button("iOS email app") {
                         self.showMailApp = true
-                    } label: {
-                        Text("iOS email app")
                     }
-                } else {
-                    
                 }
             })
             .alert("No default email app found", isPresented: $showAlertNoDefaulEmailFound, actions: {
-                Button {
+                Button("Copy our support email here.") {
                     addToClipboardWithHaptics(with: "info@normprojects.com")
-                } label: {
-                    Text("Copy our support email here.")
                 }
-                
+
                 Button {} label: {
                     Text("OK")
                 }
@@ -90,22 +88,6 @@ struct MoreTab: View {
                         print(error.localizedDescription)
                     }
                 }
-            })
-            .sheet(isPresented: $showIcons, content: {
-                IconSelectionView()
-                    .presentationDetents([.medium, .large])
-            })
-            .sheet(isPresented: $showAbout, content: {
-                AboutView()
-                    .presentationDetents([.medium])
-            })
-            .sheet(isPresented: $showStyleSelections) {
-                ViewTypeSelections()
-                    .presentationDetents([.medium])
-            }
-            .sheet(isPresented: $showColorSchemeSelections, content: {
-                ColorSchemeSelections()
-                    .presentationDetents([.medium])
             })
             .onChange(of: appTint) { oldValue, newValue in
                 if hapticsEnabled && newValue != oldValue {
@@ -157,18 +139,18 @@ struct MoreTab: View {
                                     showThanks = false
                                 })
                               ]
-                            )
+                             )
             )
         }
     }
-    
+
     func rateApp() {
         let urlStr = "\(Constants.AppStoreURL)?action=write-review"
-        
+
         guard let url = URL(string: urlStr), UIApplication.shared.canOpenURL(url) else {
             return
         }
-        
+
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

@@ -8,22 +8,10 @@
 import SwiftUI
 
 extension MoreTab {
-    var SettingsSection: some View {
-        Section("Settings") {
-            SelectAppIconRow
-            ViewTypeRow
-            HapticsRow
-            ColorSchemeRow
-            ColorPicker(selection: $appTint, supportsOpacity: false, label: {
-                MoreRowView(imageName: "swatchpalette.fill", text: "Tint Color")
-            })
-        }
-        .listRowBackground(Color(.secondarySystemBackground))
-    }
     
     var FeedbackSection: some View {
         Section("Feedback") {
-            ForEach(Feedback.allCases, id: \.id) { feedback in
+            ForEach(Feedback.allCases, id: \.rawValue) { feedback in
                 switch feedback {
                 case .rate:
                     Button {
@@ -31,37 +19,36 @@ extension MoreTab {
                     } label: {
                         MoreRowView(imageName: feedback.imageName, text: feedback.title)
                     }
+                    .buttonStyle(.plain)
                 case .tips:
                     Button {
                         showTips = true
                     } label: {
                         MoreRowView(imageName: feedback.imageName, text: feedback.title)
                     }
+                    .buttonStyle(.plain)
                 case .email:
                     Button {
                         showSendEmail = true
                     } label: {
                         MoreRowView(imageName: feedback.imageName, text: feedback.title)
                     }
+                    .buttonStyle(.plain)
                 case .share:
                     ShareLink(item: Constants.AppStoreURL) {
                         MoreRowView(imageName: feedback.imageName, text: feedback.title)
                     }
+                case .about:
+                    NavigationLink {
+                        AboutView()
+                    } label: {
+                        MoreRowView(imageName: "info.circle.fill", text: "About")
+                    }
+                    .buttonStyle(.plain)
                 }
             }
+            .listRowBackground(Color(.secondarySystemBackground))
         }
-        .listRowBackground(Color(.secondarySystemBackground))
-    }
-    
-    var AboutSection: some View {
-        Section("About") {
-            Button {
-                showAbout.toggle()
-            } label: {
-                MoreRowView(imageName: "info.circle.fill", text: "About")
-            }
-        }
-        .listRowBackground(Color(.secondarySystemBackground))
     }
     
     var SendEmailButtons: some View {

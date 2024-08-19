@@ -18,6 +18,7 @@ struct SFImage: View {
             .font(.system(size: config.iconSize))
             .bold(config.isBold)
             .foregroundStyle(config.color)
+            .contentTransition(.symbolEffect)
     }
 }
 

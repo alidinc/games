@@ -11,8 +11,7 @@ import SwiftUI
 struct MoreRowView: View {
     
     @AppStorage("appTint") var appTint: Color = .blue
-    @Environment(\.colorScheme) var colorScheme
-    
+
     @State var imageName: String
     @State var text: String
     @State var subtitle: String?
@@ -34,6 +33,7 @@ struct MoreRowView: View {
                         .foregroundStyle(.secondary)
                 }
             }
+
             Spacer()
         }
         .frame(height: 40)
