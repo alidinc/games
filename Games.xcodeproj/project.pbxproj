@@ -30,6 +30,7 @@
 		DA24E4862C73B20000246681 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4852C73B20000246681 /* AppIcon.swift */; };
 		DA24E4882C73B21700246681 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4872C73B21700246681 /* Scheme.swift */; };
 		DA24E48A2C73DFB100246681 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA24E4892C73DFB100246681 /* SessionManager.swift */; };
+		DA24E4F52C74896600246681 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA24E4F42C74896600246681 /* StoreKit.framework */; };
 		DA27972E2B5AA7E40042E59B /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27972D2B5AA7E40042E59B /* DataType.swift */; };
 		DA43CE1D2B30B61500DAE0B6 /* SpeeltuinApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */; };
 		DA43CE212B30B61500DAE0B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA43CE202B30B61500DAE0B6 /* Assets.xcassets */; };
@@ -164,6 +165,7 @@
 		DA24E4852C73B20000246681 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		DA24E4872C73B21700246681 /* Scheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheme.swift; sourceTree = "<group>"; };
 		DA24E4892C73DFB100246681 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		DA24E4F42C74896600246681 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		DA27972D2B5AA7E40042E59B /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		DA43CE192B30B61500DAE0B6 /* Games.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Games.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA43CE1C2B30B61500DAE0B6 /* SpeeltuinApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeeltuinApp.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA24E4F52C74896600246681 /* StoreKit.framework in Frameworks */,
 				DA4B1C002B4460CF00EA3E8F /* Connectivity in Frameworks */,
 				DA4466122B49DE5000361071 /* FeedKit in Frameworks */,
 			);
@@ -297,11 +300,20 @@
 			path = Store;
 			sourceTree = "<group>";
 		};
+		DA24E4F32C74896600246681 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA24E4F42C74896600246681 /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DA43CE102B30B61500DAE0B6 = {
 			isa = PBXGroup;
 			children = (
 				DA43CE1B2B30B61500DAE0B6 /* Games */,
 				DA43CE1A2B30B61500DAE0B6 /* Products */,
+				DA24E4F32C74896600246681 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
